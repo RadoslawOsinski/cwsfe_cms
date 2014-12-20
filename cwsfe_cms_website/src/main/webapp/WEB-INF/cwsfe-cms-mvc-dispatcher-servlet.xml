@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+    <context:component-scan base-package="eu.com.cwsfe.cms"/>
+    <context:annotation-config/>
+    <mvc:annotation-driven/>
+
+    <bean id="cwsfeCmsBeanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+
+    <bean id="cwsfeCmsMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--<property name="maxUploadSize" value="2000000"/>-->
+    </bean>
+
+    <bean id="cwsfeCmsInternalResourceViewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean id="cwsfeCmsLocaleResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <property name="defaultLocale" value="en"/>
+    </bean>
+
+    <bean id="cwsfeCmsLocaleChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+        <property name="paramName" value="cmsLanguage"/>
+    </bean>
+
+    <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+        <property name="interceptors">
+            <ref bean="cwsfeCmsLocaleChangeInterceptor"/>
+        </property>
+    </bean>
+
+    <!-- spring sucks in definining different id than messageSource :( -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+          p:basename="classpath:cwsfe_cms_i18n" p:defaultEncoding="UTF-8" p:cacheSeconds="10"/>
+
+    <bean id="cwsfeCmsControllerClassNameHandlerMapping"
+          class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="cwsfeCmsLocaleChangeInterceptor"/>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Handles HTTP GET requests for /resources-cwsfe-cms/** by efficiently serving up static resources in the ${webappRoot}/resources-cwsfe-cms/ directory -->
+    <mvc:resources mapping="/resources-cwsfe-cms/**" location="/resources-cwsfe-cms/" cache-period="31556926"/>
+
+    <import resource="classpath*:cwsfe-cms-dao.xml"/>
+    <import resource="classpath*:cwsfe-cms-cache.xml"/>
+
+    <bean id="cwsfeCmsBlogPostImageServlet" class="eu.com.cwsfe.cms.images.BlogPostImageServlet"/>
+    <bean id="cwsfeCmsNewsImageServlet" class="eu.com.cwsfe.cms.images.NewsImageServlet"/>
+
+    <import resource="cwsfe-cms-mail-configuration.xml"/>
+    <import resource="cwsfe-cms-spring-security.xml"/>
+
+    <bean id="dbMigrationManager" class="eu.com.cwsfe.cms.version.DbMigrationManager" init-method="updateCmsDatabaseSchema">
+        <constructor-arg name="migrationDataSource" ref="dataSource"/>
+    </bean>
+
+</beans>

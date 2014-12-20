@@ -1,0 +1,94 @@
+body {
+    background-color: #202020;
+}
+
+header {
+    background-color: #222222;
+}
+
+.top-bar {
+    background-color: #141414;
+}
+
+.top-bar-section ul li {
+    background-color: #141414;
+}
+
+.top-bar-section li:not(.has-form) a:not(.button) {
+    background-color: #141414;
+}
+
+.top-bar-section .dropdown li:not(.has-form):not(.active)>a:not(.button) {
+    background-color: #222222;
+}
+
+.tab-bar {
+    background-color: #141414;
+}
+/*div.test {*/
+/*background-color: #bbb;*/
+/*background-color: #202020;*/
+/*background-color: #F2E5D5;*/
+/*background-color: #bbb;*/
+/*background-color: #736B68;*/
+/*}*/
+
+input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea {
+    background-color: #141414;
+    color: #bbb;
+    border-color: #151515;
+}
+
+select {
+    background-color: #141414;
+    border-color: #151515;
+}
+
+.breadcrumbs {
+    background-color:#141414;
+    border-color: #151515;
+}
+
+input .button .alert {
+    background-color: #0F182A;
+}
+
+.breadcrumbs> * a{
+    color: #bbb;
+}
+
+label {
+    color: #bbb;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #bbb;
+}
+
+form {
+    background-color: #262626;
+}
+
+.side-nav li a:not(.button) {
+    color: #bbb;
+}
+
+.side-nav li a:not(.button):hover {
+    color: #b4c400;
+}
+
+.button.secondary {
+    /*background-color: #8299af;*/
+}
+
+.button.primary {
+    /*background-color: #355037;*/
+}
+
+.button.alert {
+    /*background-color: #cc6f6f;*/
+}
+
+.button {
+    /*background-color: #0F182A;*/
+}

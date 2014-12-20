@@ -1,0 +1,3 @@
+require(['jquery', 'cmsLayout'], function ($) {
+
+});

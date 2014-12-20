@@ -1,0 +1,139 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.flywaydb:flyway-gradle-plugin:3.0"
+    }
+}
+
+apply plugin: 'maven'
+apply plugin: 'war'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'base'
+apply plugin: 'sonar-runner'
+apply plugin: 'jacoco'
+apply plugin: 'flyway'
+
+version = '1.0'
+group = "eu.com.cwsfe.cms"
+compileJava.options.encoding = 'UTF-8'
+
+idea {
+    module {
+        sourceDirs += file('src/main/java')
+        sourceDirs += file('src/main/resources')
+        testSourceDirs += file('src/test/java')
+        testSourceDirs += file('src/test/resources')
+        excludeDirs += file('target')
+        excludeDirs += file('build')
+        excludeDirs += file('out')
+        excludeDirs += file('.gradle')
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-release" }
+    maven { url "http://repo.springsource.org/plugins-release" }
+    maven { url "http://repo.spring.io/milestone" }  // for AspectJ 1.8.0.M1
+    maven { url "https://repository.apache.org/content/repositories/releases" }  // tomcat 8
+    maven { url "https://maven.java.net/content/repositories/releases" }  // javax.websocket, tyrus
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }  // javax.cache
+}
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+    options.encoding = 'UTF-8'
+    options.compilerArgs = ['-Xlint', '-Xlint:-serial', '-Xlint:-path']
+}
+
+dependencies {
+    compile project(':cwsfe_cms_dao')
+    compile project(':cwsfe_cms_common')
+    providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version: '2.2.1-b03'
+    providedCompile group: 'javax.servlet', name: 'servlet-api', version: '2.5'
+    //providedCompile group: 'org.jboss.spec.javax.jms', name: 'jboss-jms-api_2.0_spec', version: '1.0.0.Final'
+    compile group: 'org.springframework.security', name: 'spring-security-web', version: '3.2.3.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-core', version: '3.2.3.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-config', version: '3.2.3.RELEASE'
+    compile group: 'org.springframework', name: 'spring-webmvc', version: '4.0.6.RELEASE'
+    compile group: 'org.springframework', name: 'spring-tx', version: '4.0.6.RELEASE'
+    compile group: 'org.springframework', name: 'spring-core', version: '4.0.6.RELEASE'
+    compile group: 'org.springframework', name: 'spring-beans', version: '4.0.6.RELEASE'
+    compile group: 'org.springframework', name: 'spring-expression', version: '4.0.6.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context', version: '4.0.6.RELEASE'
+    compile group: 'org.springframework', name: 'spring-aop', version: '4.0.6.RELEASE'
+    compile group: 'org.springframework', name: 'spring-jms', version: '4.0.6.RELEASE'
+    compile group: 'javax.ejb', name: 'ejb-api', version: '3.0'
+    compile group: 'javax.annotation', name: 'javax.annotation-api', version: '1.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.0.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.0.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-web', version: '2.0.2'
+    compile group: 'javax.servlet.jsp.jstl', name: 'jstl-api', version: '1.2'
+    compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+    compile group: 'javax.transaction', name: 'javax.transaction-api', version: '1.2'
+    compile group: 'javax.resource', name: 'javax.resource-api', version: '1.7'
+    compile group: 'javax.persistence', name: 'persistence-api', version: '1.0.2'
+    compile group: 'commons-logging', name: 'commons-logging', version: '1.1.3'
+    compile group: 'commons-io', name: 'commons-io', version: '2.4'
+    compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.3'
+    compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
+    compile group: 'aopalliance', name: 'aopalliance', version: '1.0'
+    compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.8.3'
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2.1'
+    compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
+    compile group: 'commons-pool', name: 'commons-pool', version: '1.6'
+    compile group: 'net.sf.ezmorph', name: 'ezmorph', version: '1.0.6'
+    compile group: 'net.sf.json-lib', name: 'json-lib', version: '2.4', classifier: 'jdk15'
+    compile group: 'org.postgresql', name: 'postgresql', version: '9.2-1003-jdbc4'
+    compile group: 'net.java.dev.rome', name: 'rome', version: '1.0.0'
+    compile group: 'javax.mail', name: 'javax.mail-api', version: '1.5.0'
+    compile group: 'org.flywaydb', name: 'flyway-core', version: '3.0'
+    testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: 'org.springframework', name: 'spring-test', version: '4.0.6.RELEASE'
+    testCompile group: 'org.springframework', name: 'spring-test-mvc', version: '1.0.0.M2'
+}
+
+war {
+    from (project(':cwsfe_cms_dao').file('src/main/resources/'))
+}
+war.archiveName = 'CWSFE_CMS-' + version + '.war';
+
+sonarRunner {
+    def props = new Properties()
+    new File("sensitive_data.properties").withInputStream {
+        stream -> props.load(stream)
+    }
+    sonarProperties {
+        property 'toolVersion', '2.4'
+        property "sonar.host.url", props["sonar.host.url"]
+        property "sonar.jdbc.url", props["sonar.jdbc.url"]
+        property "sonar.jdbc.username", props["sonar.jdbc.username"]
+        property "sonar.jdbc.password", props["sonar.jdbc.password"]
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.login", props["sonar.login"]
+        property "sonar.password", props["sonar.password"]
+    }
+}
+
+jacocoTestReport {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports after running tests."
+    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+}
+
+flyway {
+    def props = new Properties()
+    new File("sensitive_data.properties").withInputStream {
+        stream -> props.load(stream)
+    }
+    url = props["cwsfe_cms.jdbc.url"];
+    user = props["cwsfe_cms.jdbc.user"];
+    password = props["cwsfe_cms.jdbc.password"];
+}

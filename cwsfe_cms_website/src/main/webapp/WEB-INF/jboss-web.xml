@@ -1,0 +1,3 @@
+<jboss-web>
+    <context-root>/CWSFE_CMS</context-root>
+</jboss-web>

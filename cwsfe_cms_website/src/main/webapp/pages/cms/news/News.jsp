@@ -1,0 +1,71 @@
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+
+<t:genericPage>
+    <jsp:body>
+
+        <h3><spring:message code="Search"/></h3>
+
+        <form>
+            <div class="row">
+                <label for="searchAuthor"><spring:message code="Author"/></label>
+                <input type="hidden" id="searchAuthorId"/>
+                <input type="text" id="searchAuthor"/>
+            </div>
+            <div class="row">
+                <label for="searchNewsCode"><spring:message code="NewsCode"/></label>
+                <input type="text" id="searchNewsCode"/>
+            </div>
+            <div class="row">
+                <input type="submit" value="Submit" onclick="searchNews();return false;" class="button small radius">
+                <input type="reset" value="Reset" class="button small radius alert">
+            </div>
+        </form>
+
+        <h3><spring:message code="CmsNewsManagement"/></h3>
+        <table id="newsList">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col"><spring:message code="Author"/></th>
+                <th scope="col"><spring:message code="NewsCode"/></th>
+                <th scope="col"><spring:message code="CreationDate"/></th>
+                <th scope="col"><spring:message code="Actions"/></th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <h3><spring:message code="CmsNewsAdding"/></h3>
+
+        <form id="addNewNewsForm">
+            <div class="row">
+                <label for="author"><spring:message code="Author"/></label>
+                <input type="hidden" id="authorId"/>
+                <input type="text" id="author"/>
+            </div>
+            <div class="row">
+                <label for="newsType"><spring:message code="NewsType"/></label>
+                <input type="hidden" id="newsTypeId"/>
+                <input type="text" id="newsType" value=""/>
+            </div>
+            <div class="row">
+                <label for="newsFolder"><spring:message code="NewsFolder"/></label>
+                <input type="hidden" id="newsFolderId"/>
+                <input type="text" id="newsFolder"/>
+            </div>
+            <div class="row">
+                <label for="newsCode"><spring:message code="NewsCode"/></label>
+                <input type="text" id="newsCode" maxlength="100"/>
+            </div>
+            <div class="row">
+                <input type="button" id="addNewsButton" class="button small radius"
+                       value="<spring:message code="Add"/>">
+                <input type="reset" value="Reset" class="button small radius alert">
+            </div>
+        </form>
+
+    </jsp:body>
+</t:genericPage>
