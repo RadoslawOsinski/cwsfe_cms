@@ -58,6 +58,7 @@
                     <form class="fixed" method="post" action="${userRolesUpdateUrl}" autocomplete="off">
                         <input type="hidden" name="id" value="${cmsUser.id}"/>
 
+                        <%--@elvariable id="cmsRoles" type="java.util.List<CmsRole>"--%>
                         <c:forEach var="role" items="${cmsRoles}">
 
                             <div class="row">

@@ -1,5 +1,7 @@
 require(['jquery', 'foundation'], function ($) {
 
+    $(document).foundation();
+
     function getLoadTime() {
         var now = new Date().getTime();
         // Get the performance object window .

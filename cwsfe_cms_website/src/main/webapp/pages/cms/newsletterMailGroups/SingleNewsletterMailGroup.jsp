@@ -19,8 +19,7 @@
             <div class="row">
                 <label for="language"><spring:message code="Language2LetterCode"/></label>
                 <input type="hidden" id="languageId" value="${newsletterMailGroup.languageId}"/>
-                <input type="text" id="language"
-                       value="${newsletterMailGroupLanguageCode}"/>
+                <input type="text" id="language" value="${newsletterMailGroupLanguageCode}"/>
             </div>
             <div class="row">
                 <input type="button" id="addNewsletterMailGroupButton" class="button small radius"

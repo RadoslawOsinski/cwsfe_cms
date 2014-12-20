@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:genericPage>
     <jsp:body>
@@ -27,9 +28,7 @@
                     <input type="hidden" id="languageId" name="languageId"
                            value="${newsletterTemplate.languageId}"/>
 
-                    <input type="text" id="language" name="language"
-
-                           value="${newsletterTemplateLanguageCode}"/>
+                    <input type="text" id="language" name="language" value="${newsletterTemplateLanguageCode}"/>
                 </div>
                 <div class="row">
                     <label for="newsletterTemplateName"><spring:message code="Name"/></label>

@@ -11,6 +11,7 @@
         <div id="tabs">
             <ul>
                 <li><a href="#basicInfoTab"><spring:message code="BasicInfo"/></a></li>
+                <%--@elvariable id="cmsLanguages" type="java.util.List<Language>"--%>
                 <c:forEach var="cmsLanguage" items="${cmsLanguages}">
                     <li>
                         <a href="#i18nContentTab_${cmsLanguage.getCode()}"><spring:message
@@ -298,6 +299,7 @@
             <form class="fixed" method="post" action="${postCategoriesUpdateUrl}" autocomplete="off">
                 <input type="hidden" name="id" value="${blogPost.id}">
 
+                <%--@elvariable id="blogKeywords" type="java.util.List<BlogKeyword>"--%>
                 <c:forEach var="category" items="${blogKeywords}">
 
                     <div class="row">
