@@ -1,19 +1,15 @@
-#JDK8 instalation
+Prerequisites:
 
-#wget http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.zip
-
-#vmoptions:
+1. JDK8 instalation
+2. wget http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.zip
+3. set vmoptions:
 -Dspring.profiles.active="production_datasource_property"
-
-#copyy modules folder into wildfly
-#file /modules/system/layers/base/org/postgresql/main/postgresql-9.2-1003-jdbc4.jar
-#should exists
-
-#startup script
+4. copy modules folder into wildfly
+5. /modules/system/layers/base/org/postgresql/main/postgresql-9.2-1003-jdbc4.jar
+file should exists
+6. startup script
 .../wildfly-8.0.0.Final-SNAPSHOT/bin/standalone.sh -c standalone-full.xml
-
-#add environment variable to ${JBOSS_HOME}/bin/standalone.conf:
+7. add environment variable to ${JBOSS_HOME}/bin/standalone.conf:
 JAVA_OPTS="$JAVA_OPTS -Dspring.profiles.active=production_datasource_jndi"
-
-#wildfly cofiguration:
+8. wildfly cofiguration:
 ./jboss-cli.sh --file=cwsfe.cli
