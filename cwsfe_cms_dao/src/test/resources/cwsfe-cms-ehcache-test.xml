@@ -1,0 +1,184 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="/META-INF/ehcache.xsd"
+        updateCheck="false"
+        monitoring="autodetect"
+        dynamicConfig="false">
+    <diskStore path="java.io.tmpdir"/>
+
+    <cache name="blogKeywordById"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="100"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="blogPostCodeByPostIdAndCodeId"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="100"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="blogPostImageWithContentById"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="500"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsAuthorById"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="100"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsFolderById"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="100"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsFolderByName"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="100"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsGlobalParamById"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="100"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsGlobalParamByCode"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="100"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsLanguagesById"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="100"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsLanguagesByCode"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="100"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsLanguagesByCodeIgnoreCase"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="100"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsNewsById"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="1000"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsNewsByNewsTypeIdNewsFolderIdNewsCode"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="1000"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsNewsI18nContentById"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="2000"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsNewsI18nContentByLanguageForNews"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="2000"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsNewsImageWithContentById"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="500"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsNewsImageById"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="500"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsRoleById"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="100"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsRoleByCode"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="100"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsTextI18nCategoryById"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="100"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsTextI18nById"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="500"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="cmsUserById"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           maxEntriesLocalHeap="50"
+           memoryStoreEvictionPolicy="LRU"/>
+
+</ehcache>
