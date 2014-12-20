@@ -24,7 +24,7 @@
           type="text/css"/>
 
     <!-- jQuery -->
-    <script src="${pageContext.request.contextPath}/resources-cwsfe-cms/js/jquery-2.0.3.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources-cwsfe-cms/js/foundation/foundation.min.js"></script>
     <script>
         $(document).foundation();
