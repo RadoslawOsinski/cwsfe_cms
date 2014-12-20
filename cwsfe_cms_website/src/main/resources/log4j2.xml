@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" strict="true" monitorInterval="30" debug="false">
+    <Properties>
+        <Property name="log-path">/var/log/wildfly/logs</Property>
+    </Properties>
+    <Appenders>
+        <RollingFile name="CWSFE_CMS_LOG" fileName="${log-path}/cwsfe_cms.log" filePattern="${log-path}/cwsfe_cms-%d{yyyy-MM-dd}.log" append="false">
+            <PatternLayout pattern="[%p] %d [%t] %x %c - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="eu.com.cwsfe.cms" level="INFO" additivity="false">
+            <appender-ref ref="CWSFE_CMS_LOG"/>
+        </Logger>
+        <Logger name="org.springframework" level="WARN" additivity="false">
+            <appender-ref ref="CWSFE_CMS_LOG"/>
+        </Logger>
+        <Root level="DEBUG">
+            <AppenderRef ref="CWSFE_CMS_LOG"/>
+        </Root>
+    </Loggers>
+</Configuration>
