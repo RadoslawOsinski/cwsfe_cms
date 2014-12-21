@@ -19,7 +19,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
-                        return '<button class="button red tiny" name="deleteFolderButton" value="' + o.aData['id'] + '" tabindex="-1">Delete</button>';
+                        return '<button class="button red tiny" name="deleteFolderButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>';
                     }
                 }
             ]
@@ -44,7 +44,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'addFolder',
             data: "folderName=" + folderName + "&orderNumber=" + orderNumber,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#foldersList").dataTable().fnDraw();
                     $('#folderName').val('');
                     $('#orderNumber').val('');
@@ -69,7 +69,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteFolder',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#foldersList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";

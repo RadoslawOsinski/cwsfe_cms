@@ -17,7 +17,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.lastName + " " + item.firstName,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -52,7 +52,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'image',
                     "fnRender": function (o) {
-                        return '<img src="../blogPostImages/?imageId=' + o.aData['image'] + '" height="200" width="480"/>';
+                        return '<img src="../blogPostImages/?imageId=' + o.aData.image + '" height="200" width="480"/>';
                     }
                 },
                 {
@@ -60,7 +60,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                     "fnRender": function (o) {
                         return '' +
                             '<form method="GET" action="#">' +
-                            '<button class="button red tiny" onclick="removeBlogPostImage(' + o.aData['id'] + ');return false;" tabindex="-1">Delete</button>' +
+                            '<button class="button red tiny" onclick="removeBlogPostImage(' + o.aData.id + ');return false;" tabindex="-1">Delete</button>' +
                             '</form>'
                             ;
                     }
@@ -93,7 +93,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                     "fnRender": function (o) {
                         return '' +
                             '<form method="GET" action="#">' +
-                            '<button class="button red tiny" onclick="removeBlogPostCode(' + $('#blogPostId').val() + ',\'' + o.aData['id'] + '\');return false;" tabindex="-1">Delete</button>' +
+                            '<button class="button red tiny" onclick="removeBlogPostCode(' + $('#blogPostId').val() + ',\'' + o.aData.id + '\');return false;" tabindex="-1">Delete</button>' +
                             '</form>'
                             ;
                     }
@@ -113,7 +113,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'updatePostBasicInfo',
             data: "postTextCode=" + postTextCode + "&status=" + status + "&id=" + id,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#basicInfoFormValidation").html("<p>Success</p>").show('slow');
                 } else {
                     var errorInfo = "";
@@ -136,7 +136,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteBlogPostImage',
             data: 'id=' + id,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $('#blogPostImagesList').dataTable().fnDraw();
                 } else {
                     var errorInfo = "";
@@ -162,7 +162,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'addBlogPostCode',
             data: "blogPostId=" + blogPostId + "&codeId=" + codeId + "&code=" + code,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#blogPostCodesList").dataTable().fnDraw();
                     $("#addBlogPostCodeForm").trigger('reset');
                 } else {
@@ -186,7 +186,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteBlogPostCode',
             data: 'blogPostId=' + blogPostId + '&codeId=' + codeId,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $('#blogPostCodesList').dataTable().fnDraw();
                 } else {
                     var errorInfo = "";

@@ -19,7 +19,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
-                        return '<button class="button red tiny" name="removeLanguageButton" value="' + o.aData['id'] + '" tabindex="-1">Delete</button>';
+                        return '<button class="button red tiny" name="removeLanguageButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>';
                     }
                 }
             ]
@@ -44,7 +44,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'addLanguage',
             data: "code=" + code + "&name=" + name,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#LanguagesList").dataTable().fnDraw();
                     $('#code').val('');
                     $('#name').val('');
@@ -69,7 +69,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteLanguage',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#LanguagesList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";

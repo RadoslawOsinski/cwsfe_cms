@@ -21,7 +21,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
-                        return '<button class="button red tiny" name="removeCmsTextI18nButton" value="' + o.aData['id'] + '" tabindex="-1">Delete</button>';
+                        return '<button class="button red tiny" name="removeCmsTextI18nButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>';
                     }
                 }
             ]
@@ -40,7 +40,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.code + " - " + item.name,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -66,7 +66,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.category,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -100,7 +100,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'addCmsTextI18n',
             data: "langId=" + searchLanguageId + "&i18nCategory=" + searchCategoryId + "&i18nKey=" + key + "&i18nText=" + text,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#cmsTextI18nList").dataTable().fnDraw();
                     $('#searchLanguage').val('');
                     $('#searchLanguageId').val('');
@@ -129,7 +129,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteCmsTextI18n',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#cmsTextI18nList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";

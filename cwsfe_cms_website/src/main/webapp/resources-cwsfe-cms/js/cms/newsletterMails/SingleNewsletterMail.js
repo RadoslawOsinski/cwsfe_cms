@@ -15,7 +15,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout'], function ($) {
                             return {
                                 value: item.newsletterMailGroupName,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -39,7 +39,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout'], function ($) {
             url: 'newsletterTestSend',
             data: "id=" + newsletterMailId + "&email=" + testEmail,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#newsletterTestSendFormValidation").html("<p>Success</p>").show('slow');
                 } else {
                     var errorInfo = "";
@@ -74,7 +74,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout'], function ($) {
             url: 'newsletterSend',
             data: "id=" + newsletterMailId,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#newsletterEditFormValidation").html("<p>Success</p>").show('slow');
                 } else {
                     var errorInfo = "";

@@ -18,11 +18,11 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'status',
                     'fnRender': function (o) {
-                        if (o.aData['status'] === 'N') {
+                        if (o.aData.status === 'N') {
                             return '<span class="highlight green">New</span>';
-                        } else if (o.aData['status'] === 'L') {
+                        } else if (o.aData.status === 'L') {
                             return '<span class="highlight blue">Locked</span>';
-                        } else if (o.aData['status'] === 'D') {
+                        } else if (o.aData.status === 'D') {
                             return '<span class="highlight red">Deleted</span>';
                         }
                         return '<span class="highlight red">Deleted</span>';
@@ -32,11 +32,11 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
                         return '' +
-                            '<form method="GET" action="users/' + o.aData['id'] + '">' +
+                            '<form method="GET" action="users/' + o.aData.id + '">' +
                             '<button class="button green tiny" type="submit" tabindex="-1">Select</button>' +
-                            '<a class="icon awesome thumbs-up" title="Unlock" tabindex="-1" onclick="unlockUser(' + o.aData['id'] + ');"></a>' +
-                            '<a class="icon awesome thumbs-down" title="Lock" tabindex="-1" onclick="lockUser(' + o.aData['id'] + ');"></a>' +
-                            '<a class="icon awesome icon-remove-sign" title="Delete" tabindex="-1" onclick="removeUser(' + o.aData['id'] + ');"></a>' +
+                            '<a class="icon awesome thumbs-up" title="Unlock" tabindex="-1" onclick="unlockUser(' + o.aData.id + ');"></a>' +
+                            '<a class="icon awesome thumbs-down" title="Lock" tabindex="-1" onclick="lockUser(' + o.aData.id + ');"></a>' +
+                            '<a class="icon awesome icon-remove-sign" title="Delete" tabindex="-1" onclick="removeUser(' + o.aData.id + ');"></a>' +
                             '</form>';
                     }
                 }
@@ -58,7 +58,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'addUser',
             data: "userName=" + userName + "&passwordHash=" + passwordHash,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#usersList").dataTable().fnDraw();
                     $('#userName').val('');
                 } else {
@@ -82,7 +82,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteUser',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#usersList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";
@@ -105,7 +105,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'lockUser',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#usersList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";
@@ -128,7 +128,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'unlockUser',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#usersList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";

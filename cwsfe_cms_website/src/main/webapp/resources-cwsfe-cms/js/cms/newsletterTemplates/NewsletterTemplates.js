@@ -29,9 +29,9 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'newsletterTemplateStatus',
                     'fnRender': function (o) {
-                        if (o.aData['newsletterTemplateStatus'] === 'N') {
+                        if (o.aData.newsletterTemplateStatus === 'N') {
                             return '<span class="highlight green">Active</span>';
-                        } else if (o.aData['newsletterTemplateStatus'] === 'D') {
+                        } else if (o.aData.newsletterTemplateStatus === 'D') {
                             return '<span class="highlight red">Deleted</span>';
                         }
                         return '<span class="highlight red">Deleted</span>';
@@ -41,10 +41,10 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
                         return '' +
-                            '<form method="GET" action="newsletterTemplates/' + o.aData['id'] + '">' +
+                            '<form method="GET" action="newsletterTemplates/' + o.aData.id + '">' +
                             '<button class="button green tiny" type="submit" tabindex="-1">Select</button>' +
-                            '<a class="icon awesome thumbs-up" title="Undelete" tabindex="-1" onclick="unDeleteNewsletterTemplate(' + o.aData['id'] + ');"></a>' +
-                            '<a class="icon awesome icon-remove-sign" title="Delete" tabindex="-1" onclick="removeNewsletterTemplate(' + o.aData['id'] + ');return false;"></a>' +
+                            '<a class="icon awesome thumbs-up" title="Undelete" tabindex="-1" onclick="unDeleteNewsletterTemplate(' + o.aData.id + ');"></a>' +
+                            '<a class="icon awesome icon-remove-sign" title="Delete" tabindex="-1" onclick="removeNewsletterTemplate(' + o.aData.id + ');return false;"></a>' +
                             '</form>'
                             ;
 
@@ -66,7 +66,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.code + " - " + item.name,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -92,7 +92,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.code + " - " + item.name,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -121,7 +121,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'addNewsletterTemplate',
             data: "name=" + newsletterTemplateName + "&languageId=" + languageId + "&subject=" + subject,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#newsletterTemplatesList").dataTable().fnDraw();
                     $("#addNewNewsletterTemplateForm").trigger('reset');
                 } else {
@@ -145,7 +145,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteNewsletterTemplate',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#newsletterTemplatesList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";
@@ -168,7 +168,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'unDeleteNewsletterTemplate',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#newsletterTemplatesList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";

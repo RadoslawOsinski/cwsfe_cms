@@ -23,13 +23,13 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'status',
                     'fnRender': function (o) {
-                        if (o.aData['status'] === 'A') {
+                        if (o.aData.status === 'A') {
                             return '<span class="highlight green">Active</span>';
-                        } else if (o.aData['status'] === 'I') {
+                        } else if (o.aData.status === 'I') {
                             return '<span class="highlight yellow">Inactive</span>';
-                        } else if (o.aData['status'] === 'E') {
+                        } else if (o.aData.status === 'E') {
                             return '<span class="highlight red">Error</span>';
-                        } else if (o.aData['status'] === 'D') {
+                        } else if (o.aData.status === 'D') {
                             return '<span class="highlight red">Deleted</span>';
                         }
                         return '<span class="highlight red">Deleted</span>';
@@ -40,9 +40,9 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                     "fnRender": function (o) {
                         return '' +
                             '<form method="GET" action="#">' +
-                            '<a class="icon awesome thumbs-up" title="Activate" tabindex="-1" onclick="activateNewsletterMailAddress(' + o.aData['id'] + ');"></a>' +
-                            '<a class="icon awesome thumbs-down" title="Deactivate" tabindex="-1" onclick="deactivateNewsletterMailAddress(' + o.aData['id'] + ');"></a>' +
-                            '<a class="icon awesome icon-remove-sign" title="Delete" tabindex="-1" onclick="removeNewsletterMailAddress(' + o.aData['id'] + ');"></a>' +
+                            '<a class="icon awesome thumbs-up" title="Activate" tabindex="-1" onclick="activateNewsletterMailAddress(' + o.aData.id + ');"></a>' +
+                            '<a class="icon awesome thumbs-down" title="Deactivate" tabindex="-1" onclick="deactivateNewsletterMailAddress(' + o.aData.id + ');"></a>' +
+                            '<a class="icon awesome icon-remove-sign" title="Delete" tabindex="-1" onclick="removeNewsletterMailAddress(' + o.aData.id + ');"></a>' +
                             '</form>'
                             ;
                     }
@@ -63,7 +63,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.code + " - " + item.name,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -92,7 +92,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'updateNewsletterMailGroup',
             data: "id=" + mailGroupId + "&name=" + newsletterMailGroupName + "&languageId=" + languageId,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#mailGroupEditFormValidation").html("<p>Success</p>").show('slow');
                 } else {
                     var errorInfo = "";
@@ -117,7 +117,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'addNewsletterMailAddresses',
             data: "mailGroupId=" + mailGroupId + "&email=" + newsletterMailAddress,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#newsletterMailAddressesList").dataTable().fnDraw();
                     $("#addNewMailAddressForm").trigger('reset');
                 } else {
@@ -141,7 +141,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteNewsletterMailAddress',
             data: 'id=' + id,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $('#newsletterMailAddressesList').dataTable().fnDraw();
                 } else {
                     var errorInfo = "";
@@ -164,7 +164,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'activateNewsletterMailAddress',
             data: 'id=' + id,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $('#newsletterMailAddressesList').dataTable().fnDraw();
                 } else {
                     var errorInfo = "";
@@ -187,7 +187,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deactivateNewsletterMailAddress',
             data: 'id=' + id,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $('#newsletterMailAddressesList').dataTable().fnDraw();
                 } else {
                     var errorInfo = "";

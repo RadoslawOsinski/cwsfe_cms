@@ -18,7 +18,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
-                        return '<button class="button red tiny" name="removeBlogKeywordButton" value="' + o.aData['id'] + '" tabindex="-1">Delete</button>';
+                        return '<button class="button red tiny" name="removeBlogKeywordButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>';
                     }
                 }
             ]
@@ -42,7 +42,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'addBlogKeyword',
             data: "keywordName=" + keywordName,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#blogKeywordsList").dataTable().fnDraw();
                     $('#keywordName').val('');
                 } else {
@@ -66,7 +66,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteBlogKeyword',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#blogKeywordsList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";

@@ -15,7 +15,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundationTabs'], func
                             return {
                                 value: item.lastName + " " + item.firstName,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -41,7 +41,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundationTabs'], func
                             return {
                                 value: item.type,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -68,7 +68,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundationTabs'], func
                             return {
                                 value: item.folderName,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -103,9 +103,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundationTabs'], func
                 {
                     'bSortable': false, mData: 'image',
                     "fnRender": function (o) {
-                        return '' +
-                            '<img src="../newsImages/?imageId=' + o.aData['image'] + '" height="200" width="480"/>'
-                            ;
+                        return '<img src="../newsImages/?imageId=' + o.aData.image + '" height="200" width="480"/>';
                     }
                 },
                 {
@@ -113,7 +111,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundationTabs'], func
                     "fnRender": function (o) {
                         return '' +
                             '<form method="GET" action="#">' +
-                            '<button class="button red tiny" onclick="removeNewsImage(' + o.aData['id'] + ');return false;" tabindex="-1">Delete</button>' +
+                            '<button class="button red tiny" onclick="removeNewsImage(' + o.aData.id + ');return false;" tabindex="-1">Delete</button>' +
                             '</form>'
                             ;
                     }
@@ -135,7 +133,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundationTabs'], func
             url: 'updateNewsBasicInfo',
             data: "newsTypeId=" + newsTypeId + "&newsFolderId=" + newsFolderId + "&newsCode=" + newsCode + "&status=" + status + "&id=" + id,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#basicInfoFormValidation").html("<p>Success</p>").show('slow');
                 } else {
                     var errorInfo = "";
@@ -158,7 +156,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundationTabs'], func
             url: 'deleteCmsNewsImage',
             data: 'id=' + id,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $('#cmsNewsImagesList').dataTable().fnDraw();
                 } else {
                     var errorInfo = "";

@@ -18,9 +18,9 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'status',
                     'fnRender': function (o) {
-                        if (o.aData['status'] === 'N') {
+                        if (o.aData.status === 'N') {
                             return '<span class="highlight yellow">New</span>';
-                        } else if (o.aData['status'] === 'D') {
+                        } else if (o.aData.status === 'D') {
                             return '<span class="highlight red">Deleted</span>';
                         }
                         return '<span class="highlight red">Deleted</span>';
@@ -29,7 +29,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
-                        return '<button class="button red tiny" name="removeCmsTextI18nCategoryButton" value="' + o.aData['id'] + '" tabindex="-1">Delete</button>';
+                        return '<button class="button red tiny" name="removeCmsTextI18nCategoryButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>';
                     }
                 }
             ]
@@ -52,7 +52,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'addCmsTextI18nCategory',
             data: "category=" + category,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#cmsTextI18nCategoriesList").dataTable().fnDraw();
                     $('#category').val('');
                 } else {
@@ -76,7 +76,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteCmsTextI18nCategory',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#cmsTextI18nCategoriesList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";

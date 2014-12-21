@@ -28,9 +28,9 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
                         return '' +
-                            '<form method="GET" action="news/' + o.aData['id'] + '">' +
+                            '<form method="GET" action="news/' + o.aData.id + '">' +
                             '<button class="button green tiny" type="submit" tabindex="-1">Select</button>' +
-                            '<button class="button red tiny" name="removeNewsButton" value="' + o.aData['id'] + '" tabindex="-1">Delete</button>' +
+                            '<button class="button red tiny" name="removeNewsButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>' +
                             '</form>'
                             ;
                     }
@@ -51,7 +51,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.lastName + " " + item.firstName,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -77,7 +77,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.lastName + " " + item.firstName,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -103,7 +103,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.type,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -130,7 +130,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.folderName,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -168,7 +168,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'addNews',
             data: "authorId=" + authorId + "&newsTypeId=" + newsTypeId + "&newsFolderId=" + newsFolderId + "&newsCode=" + newsCode,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#newsList").dataTable().fnDraw();
                     $("#addNewNewsForm").trigger('reset');
                 } else {
@@ -192,7 +192,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteNews',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#newsList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";

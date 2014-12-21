@@ -20,7 +20,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
-                        return '<button class="button red tiny" name="removeAuthorButton" value="' + o.aData['id'] + '" tabindex="-1">Delete</button>';
+                        return '<button class="button red tiny" name="removeAuthorButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>';
                     }
                 }
             ]
@@ -46,7 +46,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'addAuthor',
             data: "firstName=" + firstName + "&lastName=" + lastName + "&googlePlusAuthorLink=" + googlePlusAuthorLink,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#authorsList").dataTable().fnDraw();
                     $('#firstName').val('');
                     $('#googlePlusAuthorLink').val('');
@@ -72,7 +72,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteAuthor',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#authorsList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";

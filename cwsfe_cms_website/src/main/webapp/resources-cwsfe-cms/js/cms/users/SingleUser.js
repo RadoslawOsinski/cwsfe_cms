@@ -19,7 +19,7 @@ require(['jquery', 'cmsLayout'], function ($) {
             url: 'updateUserBasicInfo',
             data: "username=" + username + "&status=" + status + "&id=" + id,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#basicInfoFormValidation").html("<p>Success</p>").show('slow');
                 } else {
                     var errorInfo = "";

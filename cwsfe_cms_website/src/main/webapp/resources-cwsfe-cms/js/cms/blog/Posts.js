@@ -28,10 +28,10 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
                         return '' +
-                            '<form method="GET" action="blogPosts/' + o.aData['id'] + '">' +
+                            '<form method="GET" action="blogPosts/' + o.aData.id + '">' +
                             '<button class="button green tiny" type="submit" tabindex="-1">Select</button>' +
                             '</form>' +
-                            '<button class="button red tiny" name="removeBlogPostButton" value="' + o.aData['id'] + '" tabindex="-1">Delete</button>'
+                            '<button class="button red tiny" name="removeBlogPostButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>'
                             ;
                     }
                 }
@@ -51,7 +51,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.lastName + " " + item.firstName,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -77,7 +77,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.lastName + " " + item.firstName,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -113,7 +113,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'addBlogPost',
             data: "postAuthorId=" + authorId + "&postTextCode=" + postTextCode,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#blogPostsList").dataTable().fnDraw();
                     $("#addNewBlogPostForm").trigger('reset');
                 } else {
@@ -137,7 +137,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteBlogPost',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#blogPostsList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";

@@ -29,13 +29,13 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'newsletterMailStatus',
                     'fnRender': function (o) {
-                        if (o.aData['newsletterMailStatus'] === 'N') {
+                        if (o.aData.newsletterMailStatus === 'N') {
                             return '<span class="highlight yellow">New</span>';
-                        } else if (o.aData['newsletterMailStatus'] === 'P') {
+                        } else if (o.aData.newsletterMailStatus === 'P') {
                             return '<span class="highlight green">Preparing</span>';
-                        } else if (o.aData['newsletterMailStatus'] === 'S') {
+                        } else if (o.aData.newsletterMailStatus === 'S') {
                             return '<span class="highlight blue">Sended</span>';
-                        } else if (o.aData['newsletterMailStatus'] === 'D') {
+                        } else if (o.aData.newsletterMailStatus === 'D') {
                             return '<span class="highlight red">Deleted</span>';
                         }
                         return '<span class="highlight red">Deleted</span>';
@@ -45,9 +45,9 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
                         return '' +
-                            '<form method="GET" action="newsletterMails/' + o.aData['id'] + '">' +
+                            '<form method="GET" action="newsletterMails/' + o.aData.id + '">' +
                             '<button class="button green tiny" type="submit" tabindex="-1">Select</button>' +
-                            '<button class="button red tiny" onclick="removeNewsletterMail(' + o.aData['id'] + ');return false;" tabindex="-1">Delete</button>' +
+                            '<button class="button red tiny" onclick="removeNewsletterMail(' + o.aData.id + ');return false;" tabindex="-1">Delete</button>' +
                             '</form>'
                             ;
                     }
@@ -68,7 +68,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.newsletterMailGroupName,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -94,7 +94,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.newsletterMailGroupName,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -123,7 +123,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'addNewsletterMail',
             data: "name=" + newsletterMailName + "&recipientGroupId=" + recipientGroupId + "&subject=" + newsletterMailSubject,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#newsletterMailsList").dataTable().fnDraw();
                     $("#addNewNewsletterMailForm").trigger('reset');
                 } else {
@@ -147,7 +147,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteNewsletterMail',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#newsletterMailsList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";

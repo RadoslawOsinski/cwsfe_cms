@@ -15,7 +15,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout'], function ($) {
                             return {
                                 value: item.code + " - " + item.name,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -39,7 +39,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout'], function ($) {
             url: 'newsletterTemplateTestSend',
             data: "id=" + newsletterTemplateId + "&email=" + testEmail,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#newsletterTemplateTestSendFormValidation").html("<p>Success</p>").show('slow');
                 } else {
                     var errorInfo = "";

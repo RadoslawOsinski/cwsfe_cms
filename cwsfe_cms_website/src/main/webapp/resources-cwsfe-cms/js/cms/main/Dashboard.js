@@ -21,15 +21,15 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'status',
                     'fnRender': function (o) {
-                        if (o.aData['status'] === 'N') {
+                        if (o.aData.status === 'N') {
                             return '<span class="highlight yellow">New</span>';
-                        } else if (o.aData['status'] === 'P') {
+                        } else if (o.aData.status === 'P') {
                             return '<span class="highlight green">Published</span>';
-                        } else if (o.aData['status'] === 'B') {
+                        } else if (o.aData.status === 'B') {
                             return '<span class="highlight red">Blocked</span>';
-                        } else if (o.aData['status'] === 'S') {
+                        } else if (o.aData.status === 'S') {
                             return '<span class="highlight red">Spam</span>';
-                        } else if (o.aData['status'] === 'D') {
+                        } else if (o.aData.status === 'D') {
                             return '<span class="highlight red">Deleted</span>';
                         }
                         return '<span class="highlight red">Deleted</span>';
@@ -40,10 +40,10 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                     'fnRender': function (o) {
                         return '' +
                             '<form method="GET">' +
-                            '<button class="button red tiny" name="publishBlogCommentButton" value="' + o.aData['id'] + '" tabindex="-1">Publish</button>';
-                            '<button class="button red tiny" name="blockBlogCommentButton" value="' + o.aData['id'] + '" tabindex="-1">Reject</button>';
-                            '<button class="button red tiny" name="markAsSpamBlogPostCommentButton" value="' + o.aData['id'] + '" tabindex="-1">Spam</button>';
-                            '<button class="button red tiny" name="deleteBlogCommentButton" value="' + o.aData['id'] + '" tabindex="-1">Delete</button>';
+                            '<button class="button red tiny" name="publishBlogCommentButton" value="' + o.aData.id + '" tabindex="-1">Publish</button>' +
+                            '<button class="button red tiny" name="blockBlogCommentButton" value="' + o.aData.id + '" tabindex="-1">Reject</button>' +
+                            '<button class="button red tiny" name="markAsSpamBlogPostCommentButton" value="' + o.aData.id + '" tabindex="-1">Spam</button>' +
+                            '<button class="button red tiny" name="deleteBlogCommentButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>' +
                             '</form>'
                             ;
                     }
@@ -78,7 +78,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'publishBlogPostComment',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#blogPostCommentsList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";
@@ -101,7 +101,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'blockBlogPostComment',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#blogPostCommentsList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";
@@ -124,7 +124,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'markAsSpamBlogPostComment',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#blogPostCommentsList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";
@@ -147,7 +147,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteBlogPostComment',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#blogPostCommentsList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";

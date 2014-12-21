@@ -29,9 +29,9 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
                         return '' +
-                            '<form method="GET" action="newsletterMailGroups/' + o.aData['id'] + '">' +
+                            '<form method="GET" action="newsletterMailGroups/' + o.aData.id + '">' +
                             '<button class="button green tiny" type="submit" tabindex="-1">Select</button>' +
-                            '<button class="button red tiny" name="removeNewsletterMailGroupButton" value="' + o.aData['id'] + '" tabindex="-1">Delete</button>' +
+                            '<button class="button red tiny" name="removeNewsletterMailGroupButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>' +
                             '</form>'
                             ;
                     }
@@ -52,7 +52,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.code + " - " + item.name,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -78,7 +78,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                             return {
                                 value: item.code + " - " + item.name,
                                 id: item.id
-                            }
+                            };
                         }));
                     }
                 });
@@ -114,7 +114,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'addNewsletterMailGroup',
             data: "name=" + newsletterMailGroupName + "&languageId=" + languageId,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#newsletterMailGroupsList").dataTable().fnDraw();
                     $("#addNewBlogPostForm").trigger('reset');
                 } else {
@@ -138,7 +138,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             url: 'deleteNewsletterMailGroup',
             data: "id=" + idValue,
             success: function (response) {
-                if (response.status == 'SUCCESS') {
+                if (response.status === 'SUCCESS') {
                     $("#newsletterMailGroupsList").dataTable().fnDraw();
                 } else {
                     var errorInfo = "";
