@@ -18,21 +18,42 @@ module.exports = function(grunt) {
         watch: {
             scripts: {
                 files: ['src/main/webapp/resources-cwsfe-cms/js/cms/**/*.js'],
-                tasks: ['jshint'],
+                tasks: ['jshint', 'uglify:production', 'cssmin:production'],
                 options: {
                     spawn: false
                 }
+            }
+        },
+        uglify: {
+            production: {
+                files: [{
+                    expand: true,
+                    cwd: 'src/main/webapp/resources-cwsfe-cms/js',
+                    src: '**/*.js',
+                    dest: 'build/webapp/resources-cwsfe-cms/js'
+                }]
+            }
+        },
+        cssmin: {
+            production: {
+                expand: true,
+                cwd: 'src/main/webapp/resources-cwsfe-cms/css',
+                src: ['**/*.css'],
+                dest: 'build/webapp/resources-cwsfe-cms/css'
             }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     grunt.registerTask('default', [
-        // execute jshint on file
         'jshint',
-        'watch'
+        'watch',
+        'uglify',
+        'cssmin'
     ]);
 
 };

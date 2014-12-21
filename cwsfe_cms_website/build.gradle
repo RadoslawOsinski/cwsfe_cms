@@ -101,7 +101,15 @@ dependencies {
 }
 
 war {
-    from (project(':cwsfe_cms_dao').file('src/main/resources/'))
+    from (project(':cwsfe_cms_dao').file('src/main/resources/'));
+    exclude "resources-cwsfe-cms/css";
+    exclude "resources-cwsfe-cms/js";
+    from("build/webapp/resources-cwsfe-cms/css") {
+        into '/resources-cwsfe-cms/css'
+    }
+    from("build/webapp/resources-cwsfe-cms/js") {
+        into '/resources-cwsfe-cms/js'
+    }
 }
 war.archiveName = 'CWSFE_CMS-' + version + '.war';
 
