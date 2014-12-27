@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -56,6 +57,8 @@ public class BlogPostI18nContentsDAO {
         try {
             blogPostI18nContent = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
                     mapBlogPostI18nContent(resultSet));
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.error("No post internationalization for postId: " + postId + " and languageId: " + languageId);
         } catch (DataAccessException e) {
             LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
         }
@@ -63,13 +66,16 @@ public class BlogPostI18nContentsDAO {
     }
 
     public Long add(BlogPostI18nContent blogPostI18nContent) {
-        Object[] dbParams = new Object[3];
+        Object[] dbParams = new Object[6];
         Long id = jdbcTemplate.queryForObject("select nextval('BLOG_POST_I18N_CONTENTS_S')", Long.class);
         dbParams[0] = id;
         dbParams[1] = blogPostI18nContent.getPostId();
         dbParams[2] = blogPostI18nContent.getLanguageId();
+        dbParams[3] = blogPostI18nContent.getPostTitle();
+        dbParams[4] = blogPostI18nContent.getPostShortcut();
+        dbParams[5] = blogPostI18nContent.getPostDescription();
         jdbcTemplate.update("INSERT INTO BLOG_POST_I18N_CONTENTS(id, post_id, language_id, post_title, post_shortcut, post_description, status)" +
-                " VALUES (?, ?, ?, '', '', '', 'H')", dbParams);
+                " VALUES (?, ?, ?, ?, ?, ?, 'H')", dbParams);
         return id;
     }
 

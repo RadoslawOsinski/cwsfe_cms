@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -97,20 +98,26 @@ public class CmsNewsI18nContentsDAO {
         CmsNewsI18nContent cmsNewsI18nContent = null;
         try {
             cmsNewsI18nContent = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapCmsNewsI18nContent(resultSet));
+        } catch (EmptyResultDataAccessException ignored) {
+            LOGGER.info("No elements found for newsId: " + newsId + " and languageId: " + languageId);
         } catch (DataAccessException e) {
             LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
         }
         return cmsNewsI18nContent;
     }
 
+    @CacheEvict(value = {"cmsNewsI18nContentById", "cmsNewsI18nContentByLanguageForNews"}, allEntries = true)
     public Long add(CmsNewsI18nContent cmsNewsI18nContent) {
-        Object[] dbParams = new Object[3];
+        Object[] dbParams = new Object[6];
         Long id = jdbcTemplate.queryForObject("SELECT nextval('CMS_NEWS_I18N_CONTENTS_S')", Long.class);
         dbParams[0] = id;
         dbParams[1] = cmsNewsI18nContent.getNewsId();
         dbParams[2] = cmsNewsI18nContent.getLanguageId();
+        dbParams[3] = cmsNewsI18nContent.getNewsTitle();
+        dbParams[4] = cmsNewsI18nContent.getNewsShortcut();
+        dbParams[5] = cmsNewsI18nContent.getNewsDescription();
         jdbcTemplate.update("INSERT INTO CMS_NEWS_I18N_CONTENTS(id, news_id, language_id, news_title, news_shortcut, news_description, status)" +
-                " VALUES (?, ?, ?, '', '', '', 'H')", dbParams);
+                " VALUES (?, ?, ?, ?, ?, ?, 'H')", dbParams);
         return id;
     }
 

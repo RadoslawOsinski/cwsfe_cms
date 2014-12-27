@@ -3,7 +3,6 @@ package eu.com.cwsfe.cms.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class CmsNews implements Serializable {
 
@@ -16,7 +15,6 @@ public class CmsNews implements Serializable {
     private Date creationDate;
     private String newsCode;
     private List<CmsNewsImage> cmsNewsImages;
-    private Map<String, CmsNewsI18nContent> cmsNewsI18nContents;
     private CmsNewsImage thumbnailImage;
     private String status;	//'D'eleted, 'H'idden, 'P'ublished
 
@@ -74,14 +72,6 @@ public class CmsNews implements Serializable {
 
     public void setCmsNewsImages(List<CmsNewsImage> cmsNewsImages) {
         this.cmsNewsImages = cmsNewsImages;
-    }
-
-    public Map<String, CmsNewsI18nContent> getCmsNewsI18nContents() {
-        return cmsNewsI18nContents;
-    }
-
-    public void setCmsNewsI18nContents(Map<String, CmsNewsI18nContent> cmsNewsI18nContents) {
-        this.cmsNewsI18nContents = cmsNewsI18nContents;
     }
 
     public CmsNewsImage getThumbnailImage() {
