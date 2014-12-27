@@ -103,8 +103,15 @@ jacocoTestReport {
 
 flyway {
     def props = new Properties()
-    new File("sensitive_data.properties").withInputStream {
-        stream -> props.load(stream)
+    try {
+        def propertiesFile = new File("sensitive_data.properties")
+        if (propertiesFile != null) {
+            propertiesFile.withInputStream {
+                stream -> props.load(stream)
+            }
+        }
+    } catch (FileNotFoundException ignored) {
+        //file not exists in repo
     }
     url = props["cwsfe_cms.jdbc.url"];
     user = props["cwsfe_cms.jdbc.user"];
