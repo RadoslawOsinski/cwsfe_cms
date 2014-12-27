@@ -1,45 +1,45 @@
-//package eu.com.cwsfe.cms.dao;
-//
-//import eu.com.cwsfe.cms.model.Lang;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.cache.Cache;
-//import org.springframework.cache.ehcache.EhCacheCacheManager;
-//import org.springframework.test.context.ContextConfiguration;
-//import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
-//import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-//import org.springframework.test.context.transaction.TransactionConfiguration;
-//
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertNotNull;
-//
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@TransactionConfiguration(defaultRollback=true)
-//@ContextConfiguration(locations={"classpath:cwsfe-cms-dao-test.xml", "classpath:cwsfe-cms-cache-test.xml"})
-//public class CmsLanguagesDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
-//
-//    @Autowired
-//    private CmsLanguagesDAO cmsLanguagesDAO;
-//    @Autowired
-//    private EhCacheCacheManager cacheManager;
-//
-//    @Test
-//    public void testGetByIdOnExistingLang() throws Exception {
-//        //given
-//        Lang lang = new Lang();
-//        lang.setCode("pl");
-//        lang.setName("PL");
-//        cmsLanguagesDAO.add(lang);
-//
-//        //when
-//        lang = cmsLanguagesDAO.getById(1l);
-//
-//        //then
-//        assertNotNull(lang);
-//        assertNotNull(lang.getCode());
-//    }
-//
+package eu.com.cwsfe.cms.dao;
+
+import eu.com.cwsfe.cms.model.Language;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@TransactionConfiguration(defaultRollback=true)
+@ContextConfiguration(locations={"classpath:cwsfe-cms-dao-test.xml", "classpath:cwsfe-cms-cache-test.xml"})
+public class CmsLanguagesDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
+
+    @Autowired
+    private CmsLanguagesDAO cmsLanguagesDAO;
+    @Autowired
+    private EhCacheCacheManager cacheManager;
+
+    @Test
+    public void testGetByIdOnExistingLang() throws Exception {
+        //given
+        Language lang = new Language();
+        lang.setCode("pl");
+        lang.setName("PL");
+        cmsLanguagesDAO.add(lang);
+
+        //when
+        lang = cmsLanguagesDAO.getById(1l);
+
+        //then
+        assertNotNull(lang);
+        assertNotNull(lang.getCode());
+    }
+
 //    @Test
 //    public void testGetByIdWithCache() throws Exception {
 //        long elementId = 1l;
@@ -146,5 +146,5 @@
 //        assertNotNull(valueWrapper);
 //        assertEquals(langAfterDelete, valueWrapper.get());
 //    }
-//
-//}
+
+}
