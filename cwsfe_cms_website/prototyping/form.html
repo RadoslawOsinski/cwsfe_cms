@@ -7,20 +7,20 @@
     <meta name="robots" content="none"/>
     <title>CWSFE CMS</title>
     <link rel="stylesheet"
-          href="/cwsfe/cwsfe_cms/cwsfe_cms_website/src/main/webapp/resources-cwsfe-cms/css/foundation/normalize.css"
+          href="../src/main/webapp/resources-cwsfe-cms/css/foundation/normalize.css"
           type="text/css"/>
     <link rel="stylesheet"
-          href="/cwsfe/cwsfe_cms/cwsfe_cms_website/src/main/webapp/resources-cwsfe-cms/css/foundation/foundation.min.css"
+          href="../src/main/webapp/resources-cwsfe-cms/css/foundation/foundation.min.css"
           type="text/css"/>
 
-    <script src="/cwsfe/cwsfe_cms/cwsfe_cms_website/src/main/webapp/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min.js"></script>
-    <script src="/cwsfe/cwsfe_cms/cwsfe_cms_website/src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.js"></script>
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min.js"></script>
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.js"></script>
 
     <link rel="stylesheet"
-          href="/cwsfe/cwsfe_cms/cwsfe_cms_website/src/main/webapp/resources-cwsfe-cms/css/cms/shared.css"
+          href="../src/main/webapp/resources-cwsfe-cms/css/cms/shared.css"
           type="text/css"/>
     <link rel="stylesheet"
-          href="/cwsfe/cwsfe_cms/cwsfe_cms_website/src/main/webapp/resources-cwsfe-cms/css/cms/colors.css"
+          href="../src/main/webapp/resources-cwsfe-cms/css/cms/colors.css"
           type="text/css"/>
 
     <script>
@@ -43,41 +43,43 @@
             <li class="name">
                 <!--<figure id="logo"><a href="#" class="logo" tabindex="-1"></a></figure>-->
                 <h1><img
-                        src="/cwsfe/cwsfe_cms/cwsfe_cms_website/src/main/webapp/resources-cwsfe-cms/CWSFE_logo_40x39.png"/>CWSFE
+                        src="../src/main/webapp/resources-cwsfe-cms/CWSFE_logo_40x39.png"/>CWSFE
                     CMS</h1>
             </li>
         </ul>
 
         <section class="top-bar-section">
             <ul class="right">
-                <li class="divider"/>
+                <li class="divider"></li>
                 <li class="has-dropdown not-click">
                     <a href="http://foundation.zurb.com/learn/features.html" class="">Settings</a>
                     <ul class="dropdown">
                         <li class="title back js-generated"><h5><a href="#">« Back</a></h5></li>
-                        <li><a class="parent-link js-generated" href="http://foundation.zurb.com/learn/features.html">Learn</a></li>
+                        <li><a class="parent-link js-generated" href="http://foundation.zurb.com/learn/features.html">Learn</a>
+                        </li>
                         <li><a href="http://foundation.zurb.com/learn/features.html">Users</a></li>
                         <li><a href="http://foundation.zurb.com/learn/faq.html">FAQ</a></li>
                         <li><a href="http://foundation.zurb.com/learn/case-jacquelinewest.html">Case Studies</a></li>
                         <li><a href="http://foundation.zurb.com/learn/website-examples.html">Website Examples</a></li>
-                        <li><a href="http://foundation.zurb.com/learn/video-started-with-foundation.html">Videos</a></li>
+                        <li><a href="http://foundation.zurb.com/learn/video-started-with-foundation.html">Videos</a>
+                        </li>
                         <li><a href="http://foundation.zurb.com/learn/training.html">Users</a></li>
                         <li><a href="http://foundation.zurb.com/learn/about.html">About</a></li>
                     </ul>
                 </li>
-                <li class="divider"/>
+                <li class="divider"></li>
                 <li>
                     <a href="http://foundation.zurb.com/business/services.html" class="">Profile</a>
                 </li>
-                <li class="divider"/>
+                <li class="divider"></li>
                 <li>
                     <a href="http://foundation.zurb.com/business/services.html" class="">Messages</a>
                 </li>
-                <li class="divider"/>
+                <li class="divider"></li>
                 <li>
                     <a href="http://foundation.zurb.com/docs/" class="blue button">Logout</a>
                 </li>
-                <li class="divider"/>
+                <li class="divider"></li>
                 <li class="has-dropdown username not-click">
                 </li>
 
@@ -96,8 +98,8 @@
                     <li role="menuitem"><a href="#" tabindex="-1">Keywords</a></li>
                 </ul>
             </li>
-            <li class="withSubMenu" >
-                <a href="#" tabindex="-1">  Newsletter </a>
+            <li class="withSubMenu">
+                <a href="#" tabindex="-1"> Newsletter </a>
                 <ul class="subMenu">
                     <li role="menuitem"><a href="#" tabindex="-1"> NewsletterMailGroupsManagement </a></li>
                     <li role="menuitem"><a href="#" tabindex="-1">NewsletterTemplatesManagement</a></li>
@@ -143,7 +145,9 @@
             <h1>FORM</h1>
 
             <form id="blogPostBasicInfoForm">
-                <input type="hidden" id="blogPostId" name="blogPost.id" value="${blogPost.id}">
+                <fieldset>
+                    <legend>Personalia:</legend>
+                    <input type="hidden" id="blogPostId" name="blogPost.id" value="${blogPost.id}">
 
                     <div class="row">
                         <label for="author">Author</label>
@@ -159,32 +163,33 @@
 
                         <input type="text" id="postTextCode"
 
-                                                      value="${blogPost.postTextCode}"/>
+                               value="${blogPost.postTextCode}"/>
                     </div>
                     <div class="row">
                         <label for="status">Status</label>
 
-                            <select id="status" >
-                                <option value="H" selected>Hidden</option>
-                                <option value="P">Published</option>
-                            </select>
+                        <select id="status">
+                            <option value="H" selected>Hidden</option>
+                            <option value="P">Published</option>
+                        </select>
                     </div>
                     <div class="row">
                         <label for="postCreationDate">CreationDate</label>
 
-                            <input type="text" id="postCreationDate"
-                                   maxlength="16"
-                                   value="2014-03-25 13:45"
-                                   pattern="yyyy-MM-dd HH:mm"/>
+                        <input type="text" id="postCreationDate"
+                               maxlength="16"
+                               value="2014-03-25 13:45"
+                               pattern="yyyy-MM-dd HH:mm"/>
                     </div>
-                <div class="row">
-                    <input type="submit" value="secondary"
-                           onclick="saveBlogPost();return false;" class="button small radius secondary">
-                    <input type="submit" value="Save"
-                           onclick="saveBlogPost();return false;" class="button small radius">
-                    <input type="reset" value="Revert" class="button small radius alert"/>
-                    <input type="reset" value="primary" class="button small radius primary"/>
-                </div>
+                    <div class="row">
+                        <input type="submit" value="secondary"
+                               onclick="saveBlogPost();return false;" class="button small radius secondary">
+                        <input type="submit" value="Save"
+                               onclick="saveBlogPost();return false;" class="button small radius">
+                        <input type="reset" value="Revert" class="button small radius alert"/>
+                        <input type="reset" value="primary" class="button small radius primary"/>
+                    </div>
+                </fieldset>
             </form>
 
 

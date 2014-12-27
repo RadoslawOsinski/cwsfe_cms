@@ -7,22 +7,22 @@
     <meta name="robots" content="none"/>
     <title>CWSFE CMS</title>
     <link rel="stylesheet"
-          href="/cwsfe/cwsfe_cms/cwsfe_cms_website/src/main/webapp/resources-cwsfe-cms/css/foundation/normalize.css"
+          href="../src/main/webapp/resources-cwsfe-cms/css/foundation/normalize.css"
           type="text/css"/>
     <link rel="stylesheet"
-          href="/cwsfe/cwsfe_cms/cwsfe_cms_website/src/main/webapp/resources-cwsfe-cms/css/foundation/foundation.min.css"
+          href="../src/main/webapp/resources-cwsfe-cms/css/foundation/foundation.min.css"
           type="text/css"/>
 
     <link rel="stylesheet"
-          href="/cwsfe/cwsfe_cms/cwsfe_cms_website/src/main/webapp/resources-cwsfe-cms/css/cms/shared.css"
+          href="../src/main/webapp/resources-cwsfe-cms/css/cms/shared.css"
           type="text/css"/>
     <link rel="stylesheet"
-          href="/cwsfe/cwsfe_cms/cwsfe_cms_website/src/main/webapp/resources-cwsfe-cms/css/cms/colors.css"
+          href="../src/main/webapp/resources-cwsfe-cms/css/cms/colors.css"
           type="text/css"/>
 
-    <script src="/cwsfe/cwsfe_cms/cwsfe_cms_website/src/main/webapp/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min.js"></script>
-    <script src="/cwsfe/cwsfe_cms/cwsfe_cms_website/src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.js"></script>
-    <script src="/cwsfe/cwsfe_cms/cwsfe_cms_website/src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.tab.js"></script>
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min.js"></script>
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.js"></script>
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.tab.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -44,7 +44,7 @@
             <li class="name">
                 <!--<figure id="logo"><a href="#" class="logo" tabindex="-1"></a></figure>-->
                 <h1><img
-                        src="/cwsfe/cwsfe_cms/cwsfe_cms_website/src/main/webapp/resources-cwsfe-cms/CWSFE_logo_40x39.png"/>CWSFE
+                        src="../src/main/webapp/resources-cwsfe-cms/CWSFE_logo_40x39.png"/>CWSFE
                     CMS</h1>
             </li>
         </ul>
@@ -144,22 +144,22 @@
             <h1>TABS</h1>
 
             <ul class="tabs" data-tab role="tablist">
-                <li class="tab-title active" role="presentational" ><a href="#panel2-1" role="tab" tabindex="0" aria-selected="true" controls="panel2-1">Tab 1</a></li>
-                <li class="tab-title" role="presentational" ><a href="#panel2-2" role="tab" tabindex="0"aria-selected="false" controls="panel2-2">Tab 2</a></li>
-                <li class="tab-title" role="presentational"><a href="#panel2-3" role="tab" tabindex="0" aria-selected="false" controls="panel2-3">Tab 3</a></li>
-                <li class="tab-title" role="presentational" ><a href="#panel2-4" role="tab" tabindex="0" aria-selected="false" controls="panel2-4">Tab 4</a></li>
+                <li class="tab-title active" role="presentation" ><a href="#panel2-1" role="tab" tabindex="0" aria-selected="true" aria-controls="panel2-1">Tab 1</a></li>
+                <li class="tab-title" role="presentation" ><a href="#panel2-2" role="tab" tabindex="0"aria-selected="false" aria-controls="panel2-2">Tab 2</a></li>
+                <li class="tab-title" role="presentation"><a href="#panel2-3" role="tab" tabindex="0" aria-selected="false" aria-controls="panel2-3">Tab 3</a></li>
+                <li class="tab-title" role="presentation" ><a href="#panel2-4" role="tab" tabindex="0" aria-selected="false" aria-controls="panel2-4">Tab 4</a></li>
             </ul>
             <div class="tabs-content">
-                <section role="tabpanel" aria-hidden="false" class="content active" id="panel2-1">
+                <section aria-hidden="false" class="content active" id="panel2-1">
                     <h2>First panel content goes here...</h2>
                 </section>
-                <section role="tabpanel" aria-hidden="true" class="content" id="panel2-2">
+                <section aria-hidden="true" class="content" id="panel2-2">
                     <h2>Second panel content goes here...</h2>
                 </section>
-                <section role="tabpanel" aria-hidden="true" class="content" id="panel2-3">
+                <section aria-hidden="true" class="content" id="panel2-3">
                     <h2>Third panel content goes here...</h2>
                 </section>
-                <section role="tabpanel" aria-hidden="true" class="content" id="panel2-4">
+                <section aria-hidden="true" class="content" id="panel2-4">
                     <h2>Fourth panel content goes here...</h2>
                 </section>
             </div>
