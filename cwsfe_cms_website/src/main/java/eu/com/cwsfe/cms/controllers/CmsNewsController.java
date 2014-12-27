@@ -12,8 +12,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.*;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -91,10 +91,13 @@ public class CmsNewsController extends JsonController {
             WebRequest webRequest
     ) {
         Integer searchAuthorId = null;
-        try {
-            searchAuthorId = Integer.parseInt(webRequest.getParameter("searchAuthorId"));
-        } catch (NumberFormatException e) {
-            LOGGER.error("Search author id is not a number: " + webRequest.getParameter("searchAuthorId"), e);
+        String searchAuthorIdText = webRequest.getParameter("searchAuthorId");
+        if (searchAuthorIdText != null && !searchAuthorIdText.isEmpty()) {
+            try {
+                searchAuthorId = Integer.parseInt(searchAuthorIdText);
+            } catch (NumberFormatException e) {
+                LOGGER.error("Search author id is not a number: " + searchAuthorIdText, e);
+            }
         }
         List<Object[]> dbList = cmsNewsDAO.searchByAjax(iDisplayStart, iDisplayLength, searchAuthorId, searchNewsCode);
         Integer dbListDisplayRecordsSize = cmsNewsDAO.searchByAjaxCount(searchAuthorId, searchNewsCode);
@@ -134,6 +137,7 @@ public class CmsNewsController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "newsCode", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsCodeMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
+            //todo reconsider time management
             cmsNews.setCreationDate(new Date());
             cmsNewsDAO.add(cmsNews);
             addJsonSuccess(responseDetailsJson);
@@ -187,16 +191,46 @@ public class CmsNewsController extends JsonController {
         final CmsNews cmsNews = cmsNewsDAO.get(id);
         final List<Language> languages = cmsLanguagesDAO.listAll();
         model.addAttribute("cmsLanguages", languages);
-        Map<String, CmsNewsI18nContent> cmsNewsI18nContents = new HashMap<>(languages.size());
-        for (Language lang : languages) {
-            cmsNewsI18nContents.put(lang.getCode(), cmsNewsI18nContentsDAO.getByLanguageForNews(cmsNews.getId(), lang.getId()));
-        }
-        cmsNews.setCmsNewsI18nContents(cmsNewsI18nContents);
         model.addAttribute("cmsNews", cmsNews);
         model.addAttribute("cmsAuthor", cmsAuthorsDAO.get(cmsNews.getAuthorId()));
         model.addAttribute("newsType", newsTypesDAO.get(cmsNews.getNewsTypeId()));
         model.addAttribute("newsFolder", cmsFoldersDAO.get(cmsNews.getNewsFolderId()));
         return "cms/news/SingleNews";
+    }
+
+    @RequestMapping(value = "/news/{id}/{langId}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @ResponseBody
+    public String getNewsI18n(ModelMap model, @PathVariable("id") Long newsId, @PathVariable("langId") Long langId, Locale locale) {
+        BindingResult result = new BeanPropertyBindingResult(null, "getNewsI18n");
+        if (newsId == null) {
+            result.addError(new ObjectError("id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsMustBeSet")));
+        }
+        if (langId == null) {
+            result.addError(new ObjectError("langId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet")));
+        }
+        JSONObject responseDetailsJson = new JSONObject();
+        if (!result.hasErrors()) {
+            CmsNewsI18nContent cmsNewsI18nContent = cmsNewsI18nContentsDAO.getByLanguageForNews(newsId, langId);
+            if (cmsNewsI18nContent == null) {
+                cmsNewsI18nContent = new CmsNewsI18nContent();
+                cmsNewsI18nContent.setNewsId(newsId);
+                cmsNewsI18nContent.setLanguageId(langId);
+                cmsNewsI18nContent.setNewsTitle("");
+                cmsNewsI18nContent.setNewsShortcut("");
+                cmsNewsI18nContent.setNewsDescription("");
+                cmsNewsI18nContent.setStatus("H");
+            }
+            addJsonSuccess(responseDetailsJson);
+            JSONObject data = new JSONObject();
+            data.put("newsTitle", cmsNewsI18nContent.getNewsTitle());
+            data.put("newsShortcut", cmsNewsI18nContent.getNewsShortcut());
+            data.put("newsDescription", cmsNewsI18nContent.getNewsDescription());
+            data.put("status", cmsNewsI18nContent.getStatus());
+            responseDetailsJson.put("data", data);
+        } else {
+            prepareErrorResponse(result, responseDetailsJson);
+        }
+        return responseDetailsJson.toString();
     }
 
     @RequestMapping(value = "/news/addNewsI18nContent", method = RequestMethod.POST)
@@ -219,7 +253,13 @@ public class CmsNewsController extends JsonController {
         cmsNewsI18nContent.setNewsTitle(cmsNewsI18nContent.getNewsTitle().trim());
         cmsNewsI18nContent.setNewsShortcut(cmsNewsI18nContent.getNewsShortcut().trim());
         cmsNewsI18nContent.setNewsDescription(cmsNewsI18nContent.getNewsDescription().trim());
-        cmsNewsI18nContentsDAO.updateContentWithStatus(cmsNewsI18nContent);
+        CmsNewsI18nContent existingI18nContent = cmsNewsI18nContentsDAO.getByLanguageForNews(cmsNewsI18nContent.getNewsId(), cmsNewsI18nContent.getLanguageId());
+        if (existingI18nContent == null) {
+            cmsNewsI18nContentsDAO.add(cmsNewsI18nContent);
+        } else {
+            cmsNewsI18nContent.setId(existingI18nContent.getId());
+            cmsNewsI18nContentsDAO.updateContentWithStatus(cmsNewsI18nContent);
+        }
         browseNews(model, locale, cmsNewsI18nContent.getNewsId(), httpServletRequest);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("/news/" + cmsNewsI18nContent.getNewsId(), true, false, false));

@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 /**
  * @author Radoslaw Osinski
@@ -196,9 +197,7 @@ class UsersController extends JsonController {
         model.addAttribute("cmsUser", cmsUser);
         cmsUser.setUserRoles(cmsRolesDAO.listUserRoles(cmsUser.getId()));
         List<Long> userSelectedRoles = new ArrayList<>(5);
-        for (CmsRole role : cmsUser.getUserRoles()) {
-            userSelectedRoles.add(role.getId());
-        }
+        userSelectedRoles.addAll(cmsUser.getUserRoles().stream().map(CmsRole::getId).collect(Collectors.toList()));
         model.addAttribute("userSelectedRoles", userSelectedRoles);
         model.addAttribute("cmsRoles", cmsRolesDAO.list());
         return "cms/users/SingleUser";

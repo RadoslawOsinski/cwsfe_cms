@@ -8,3 +8,7 @@
 .subMenu {
     display: none;
 }
+
+fieldset {
+    display: block;
+}

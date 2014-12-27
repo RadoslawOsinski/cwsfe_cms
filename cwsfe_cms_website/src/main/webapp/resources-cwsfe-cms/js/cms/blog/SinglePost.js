@@ -1,8 +1,41 @@
-require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
+require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation', 'foundationTabs'], function ($, ko) {
+
+    function SinglePostViewModel() {
+        var self = this;
+        self.languageId = ko.observable();
+        self.i18nData = ko.observable();
+
+        self.isPostI18nVisible = ko.computed(function() {
+            return self.languageId() != null;
+        });
+
+        self.initializeSinglePostViewModel = function() {
+            self.languageId(null);
+        };
+
+        self.initializeI18nData = function () {
+            $.ajax({
+                url: $('#blogPostId').val() + '/' + self.languageId(),
+                async: true,
+                success: function (response) {
+                    if (response != null && 'SUCCESS' === response.status) {
+                        self.i18nData({
+                            postTitle: response.data.postTitle,
+                            postShortcut: response.data.postShortcut,
+                            postDescription: response.data.postDescription,
+                            status: response.data.status
+                        });
+                    }
+                }
+            });
+        }
+    }
 
     $(document).ready(function () {
 
-        $("#tabs").tabs();
+        var singlePostViewModel = new SinglePostViewModel();
+
+        ko.applyBindings(singlePostViewModel);
 
         $('#author').autocomplete({
             source: function (request, response) {
@@ -58,14 +91,37 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
-                        return '' +
-                            '<form method="GET" action="#">' +
-                            '<button class="button red tiny" onclick="removeBlogPostImage(' + o.aData.id + ');return false;" tabindex="-1">Delete</button>' +
-                            '</form>'
-                            ;
+                        return '<button class="button red tiny" name="removeBlogPostImageButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>';
                     }
                 }
             ]
+        });
+
+        $('#i18nLanguage').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '../cmsLanguagesDropList',
+                    data: {
+                        limit: 5,
+                        term: request.term
+                    },
+                    success: function (data) {
+                        response($.map(data.data, function (item) {
+                            return {
+                                value: item.code + " - " + item.name,
+                                id: item.id
+                            };
+                        }));
+                    }
+                });
+            },
+            minLength: 0,
+            select: function (event, ui) {
+                singlePostViewModel.languageId(ui.item.id);
+                singlePostViewModel.initializeI18nData();
+            }
+        }).focus(function () {
+            $(this).autocomplete("search", "");
         });
 
         $('#blogPostCodesList').dataTable({
@@ -91,14 +147,93 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
+                        return '<button class="button red tiny" name="removeBlogPostCodeButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>';
+                    }
+                }
+            ]
+        });
+
+        $('#blogPostCommentsList').dataTable({
+            'iTabIndex': -1,
+            'bAutoWidth': true,
+            'sPaginationType': 'full_numbers',
+            'bProcessing': true,
+            'bServerSide': true,
+            'bFilter': false,
+            'aLengthMenu': [10, 20, 30],
+            'bPaginate': true,
+            'bLengthChange': true,
+            'sAjaxSource': '../blogPostCommentsList',
+            aoColumns: [
+                {'bSortable': false, mData: '#'},
+                {'bSortable': false, mData: 'username'},
+                {'bSortable': false, mData: 'comment'},
+                {'bSortable': false, mData: 'created'},
+                {
+                    'bSortable': false, mData: 'status',
+                    'fnRender': function (o) {
+                        if (o.aData.status === 'N') {
+                            return '<span class="highlight yellow">New</span>';
+                        } else if (o.aData.status === 'P') {
+                            return '<span class="highlight green">Published</span>';
+                        } else if (o.aData.status === 'B') {
+                            return '<span class="highlight red">Blocked</span>';
+                        } else if (o.aData.status === 'S') {
+                            return '<span class="highlight red">Spam</span>';
+                        } else if (o.aData.status === 'D') {
+                            return '<span class="highlight red">Deleted</span>';
+                        }
+                        return '<span class="highlight red">Deleted</span>';
+                    }
+                },
+                {
+                    'bSortable': false, mData: 'id',
+                    'fnRender': function (o) {
                         return '' +
-                            '<form method="GET" action="#">' +
-                            '<button class="button red tiny" onclick="removeBlogPostCode(' + $('#blogPostId').val() + ',\'' + o.aData.id + '\');return false;" tabindex="-1">Delete</button>' +
+                            '<form method="GET">' +
+                            '<button class="button red tiny" name="publishBlogCommentButton" value="' + o.aData.id + '" tabindex="-1">Publish</button>' +
+                            '<button class="button red tiny" name="blockBlogCommentButton" value="' + o.aData.id + '" tabindex="-1">Reject</button>' +
+                            '<button class="button red tiny" name="markAsSpamBlogPostCommentButton" value="' + o.aData.id + '" tabindex="-1">Spam</button>' +
+                            '<button class="button red tiny" name="deleteBlogCommentButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>' +
                             '</form>'
                             ;
                     }
                 }
             ]
+        });
+
+        $('#saveBlogPostButton').click(function() {
+            saveBlogPost();
+        });
+        $('#addBlogPostCodeButton').click(function() {
+            addBlogPostCode();
+        });
+
+        var $body = $('body');
+        $body.on('click', '#addBlogPostCodeButton', function() {
+            singlePostViewModel.initializeSinglePostViewModel();
+        });
+        $body.on('click', 'button[name="removeBlogPostCodeButton"]', function() {
+            removeBlogPostCode($(this).val());
+        });
+        $body.on('click', 'button[name="removeBlogPostImageButton"]', function() {
+            removeBlogPostImage($(this).val());
+        });
+
+        $body.on('click', 'button[name="publishBlogCommentButton"]', function() {
+            publishBlogComment($(this).val());
+        });
+
+        $body.on('click', 'button[name="blockBlogCommentButton"]', function() {
+            blockBlogComment($(this).val());
+        });
+
+        $body.on('click', 'button[name="markAsSpamBlogPostCommentButton"]', function() {
+            markAsSpamBlogPostComment($(this).val());
+        });
+
+        $body.on('click', 'button[name="deleteBlogCommentButton"]', function() {
+            deleteBlogComment($(this).val());
         });
 
     });
@@ -194,6 +329,98 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                         errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
                     }
                     $('#blogPostCodesTableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
+                }
+            },
+            error: function (response) {
+                console.log('BUG: ' + response);
+            }
+        });
+    }
+
+    function publishBlogComment(idValue) {
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: '../publishBlogPostComment',
+            data: "id=" + idValue,
+            success: function (response) {
+                if (response.status === 'SUCCESS') {
+                    $("#blogPostCommentsList").dataTable().fnDraw();
+                } else {
+                    var errorInfo = "";
+                    for (var i = 0; i < response.result.length; i++) {
+                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    }
+                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
+                }
+            },
+            error: function (response) {
+                console.log('BUG: ' + response);
+            }
+        });
+    }
+
+    function blockBlogComment(idValue) {
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: '../blockBlogPostComment',
+            data: "id=" + idValue,
+            success: function (response) {
+                if (response.status === 'SUCCESS') {
+                    $("#blogPostCommentsList").dataTable().fnDraw();
+                } else {
+                    var errorInfo = "";
+                    for (var i = 0; i < response.result.length; i++) {
+                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    }
+                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
+                }
+            },
+            error: function (response) {
+                console.log('BUG: ' + response);
+            }
+        });
+    }
+
+    function markAsSpamBlogPostComment(idValue) {
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: '../markAsSpamBlogPostComment',
+            data: "id=" + idValue,
+            success: function (response) {
+                if (response.status === 'SUCCESS') {
+                    $("#blogPostCommentsList").dataTable().fnDraw();
+                } else {
+                    var errorInfo = "";
+                    for (var i = 0; i < response.result.length; i++) {
+                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    }
+                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
+                }
+            },
+            error: function (response) {
+                console.log('BUG: ' + response);
+            }
+        });
+    }
+
+    function deleteBlogComment(idValue) {
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: '../deleteBlogPostComment',
+            data: "id=" + idValue,
+            success: function (response) {
+                if (response.status === 'SUCCESS') {
+                    $("#blogPostCommentsList").dataTable().fnDraw();
+                } else {
+                    var errorInfo = "";
+                    for (var i = 0; i < response.result.length; i++) {
+                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    }
+                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {

@@ -55,7 +55,7 @@
 
                     <spring:url value="/userRolesUpdate" var="userRolesUpdateUrl" htmlEscape="true"/>
 
-                    <form class="fixed" method="post" action="${userRolesUpdateUrl}" autocomplete="off">
+                    <form method="post" action="${userRolesUpdateUrl}" autocomplete="off">
                         <input type="hidden" name="id" value="${cmsUser.id}"/>
 
                         <%--@elvariable id="cmsRoles" type="java.util.List<CmsRole>"--%>

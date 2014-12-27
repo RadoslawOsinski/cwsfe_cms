@@ -9,7 +9,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -83,10 +85,13 @@ public class BlogPostsController extends JsonController {
             WebRequest webRequest
     ) {
         Integer searchAuthorId = null;
-        try {
-            searchAuthorId = Integer.parseInt(webRequest.getParameter("searchAuthorId"));
-        } catch (NumberFormatException e) {
-            LOGGER.error("Search author id is not a number: " + webRequest.getParameter("searchAuthorId"));
+        String searchAuthorIdText = webRequest.getParameter("searchAuthorId");
+        if (searchAuthorIdText != null && !searchAuthorIdText.isEmpty()) {
+            try {
+                searchAuthorId = Integer.parseInt(searchAuthorIdText);
+            } catch (NumberFormatException e) {
+                LOGGER.error("Search author id is not a number: " + searchAuthorIdText);
+            }
         }
         List<Object[]> dbList = blogPostsDAO.searchByAjax(iDisplayStart, iDisplayLength, searchAuthorId, searchPostTextCode);
         Integer dbListDisplayRecordsSize = blogPostsDAO.searchByAjaxCount(searchAuthorId, searchPostTextCode);
@@ -159,11 +164,6 @@ public class BlogPostsController extends JsonController {
         BlogPost blogPost = blogPostsDAO.get(id);
         final List<Language> languages = cmsLanguagesDAO.listAll();
         model.addAttribute("cmsLanguages", languages);
-        Map<String, BlogPostI18nContent> blogPostI18nContents = new HashMap<>(languages.size());
-        for (Language lang : languages) {
-            blogPostI18nContents.put(lang.getCode(), blogPostI18nContentsDAO.getByLanguageForPost(blogPost.getId(), lang.getId()));
-        }
-        blogPost.setBlogPostI18nContent(blogPostI18nContents);
         blogPost.setBlogKeywords(blogPostKeywordsDAO.listForPost(blogPost.getId()));
         List<Long> blogPostSelectedKeywords = new ArrayList<>(5);
         blogPostSelectedKeywords.addAll(blogPost.getBlogKeywords().stream().map(BlogKeyword::getId).collect(Collectors.toList()));
@@ -172,6 +172,41 @@ public class BlogPostsController extends JsonController {
         model.addAttribute("blogPost", blogPost);
         model.addAttribute("cmsAuthor", cmsAuthorsDAO.get(blogPost.getPostAuthorId()));
         return "cms/blog/SingleBlogPost";
+    }
+
+    @RequestMapping(value = "/blogPosts/{id}/{langId}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @ResponseBody
+    public String getBlogPostI18n(ModelMap model, @PathVariable("id") Long blogPostId, @PathVariable("langId") Long langId, Locale locale) {
+        BindingResult result = new BeanPropertyBindingResult(null, "getNewsI18n");
+        if (blogPostId == null) {
+            result.addError(new ObjectError("id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet")));
+        }
+        if (langId == null) {
+            result.addError(new ObjectError("langId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet")));
+        }
+        JSONObject responseDetailsJson = new JSONObject();
+        if (!result.hasErrors()) {
+            BlogPostI18nContent cmsBlogPostI18nContent = blogPostI18nContentsDAO.getByLanguageForPost(blogPostId, langId);
+            if (cmsBlogPostI18nContent == null) {
+                cmsBlogPostI18nContent = new BlogPostI18nContent();
+                cmsBlogPostI18nContent.setPostId(blogPostId);
+                cmsBlogPostI18nContent.setLanguageId(langId);
+                cmsBlogPostI18nContent.setPostTitle("");
+                cmsBlogPostI18nContent.setPostShortcut("");
+                cmsBlogPostI18nContent.setPostDescription("");
+                cmsBlogPostI18nContent.setStatus("H");
+            }
+            addJsonSuccess(responseDetailsJson);
+            JSONObject data = new JSONObject();
+            data.put("postTitle", cmsBlogPostI18nContent.getPostTitle());
+            data.put("postShortcut", cmsBlogPostI18nContent.getPostShortcut());
+            data.put("postDescription", cmsBlogPostI18nContent.getPostDescription());
+            data.put("status", cmsBlogPostI18nContent.getStatus());
+            responseDetailsJson.put("data", data);
+        } else {
+            prepareErrorResponse(result, responseDetailsJson);
+        }
+        return responseDetailsJson.toString();
     }
 
     @RequestMapping(value = "/blogPosts/updatePostBasicInfo", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
@@ -213,7 +248,13 @@ public class BlogPostsController extends JsonController {
         blogPostI18nContent.setPostTitle(blogPostI18nContent.getPostTitle().trim());
         blogPostI18nContent.setPostShortcut(blogPostI18nContent.getPostShortcut().trim());
         blogPostI18nContent.setPostDescription(blogPostI18nContent.getPostDescription().trim());
-        blogPostI18nContentsDAO.updateContentWithStatus(blogPostI18nContent);
+        BlogPostI18nContent existingI18nContent = blogPostI18nContentsDAO.getByLanguageForPost(blogPostI18nContent.getPostId(), blogPostI18nContent.getLanguageId());
+        if (existingI18nContent == null) {
+            blogPostI18nContentsDAO.add(blogPostI18nContent);
+        } else {
+            blogPostI18nContent.setId(existingI18nContent.getId());
+            blogPostI18nContentsDAO.updateContentWithStatus(blogPostI18nContent);
+        }
         browseBlogPost(model, locale, blogPostI18nContent.getPostId(), httpServletRequest);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("/blogPosts/" + blogPostI18nContent.getPostId(), true, false, false));

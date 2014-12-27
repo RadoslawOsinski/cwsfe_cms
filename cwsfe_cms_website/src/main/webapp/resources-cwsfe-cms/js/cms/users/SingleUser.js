@@ -1,10 +1,5 @@
 require(['jquery', 'cmsLayout'], function ($) {
 
-    $(document).ready(function () {
-        $("#tabs").tabs();
-        $("#tabs").tabs();
-    });
-
     $('#saveUserButton').click(function() {
         saveUser();
     });

@@ -1,0 +1,183 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="UTF-8">
+    <meta name="description" content="CWSFE CMS"/>
+    <meta name="author" content="Radosław Osiński">
+    <meta name="robots" content="none"/>
+    <title>CWSFE CMS</title>
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/foundation/normalize.css"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/foundation/foundation.min.css"
+          type="text/css"/>
+
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/cms/shared.css"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/cms/colors.css"
+          type="text/css"/>
+
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min.js"></script>
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/cms/layout/CmsLayout.js"></script>
+    <!--<script src="../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.js"></script>-->
+    <!--<script src="../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.tab.js"></script>-->
+
+    <script>
+        $(document).ready(function () {
+            $(document).foundation();
+
+            $('.side-nav li.withSubMenu').click(function () {
+                $(this).siblings().find("ul").hide();
+                $(this).find("ul").toggle();
+            });
+        });
+
+    </script>
+
+</head>
+<body>
+<header>
+    <nav class="top-bar hide-for-small">
+        <ul class="title-area">
+            <li class="name">
+                <!--<figure id="logo"><a href="#" class="logo" tabindex="-1"></a></figure>-->
+                <h1><img
+                        src="../src/main/webapp/resources-cwsfe-cms/CWSFE_logo_40x39.png"/>CWSFE
+                    CMS</h1>
+            </li>
+        </ul>
+
+        <section class="top-bar-section">
+            <ul class="right">
+                <li class="divider"></li>
+                <li class="has-dropdown not-click">
+                    <a href="http://foundation.zurb.com/learn/features.html" class="">Settings</a>
+                    <ul class="dropdown">
+                        <li class="title back js-generated"><h5><a href="#">« Back</a></h5></li>
+                        <li><a class="parent-link js-generated" href="http://foundation.zurb.com/learn/features.html">Learn</a></li>
+                        <li><a href="http://foundation.zurb.com/learn/features.html">Users</a></li>
+                        <li><a href="http://foundation.zurb.com/learn/faq.html">FAQ</a></li>
+                        <li><a href="http://foundation.zurb.com/learn/case-jacquelinewest.html">Case Studies</a></li>
+                        <li><a href="http://foundation.zurb.com/learn/website-examples.html">Website Examples</a></li>
+                        <li><a href="http://foundation.zurb.com/learn/video-started-with-foundation.html">Videos</a></li>
+                        <li><a href="http://foundation.zurb.com/learn/training.html">Users</a></li>
+                        <li><a href="http://foundation.zurb.com/learn/about.html">About</a></li>
+                    </ul>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="http://foundation.zurb.com/business/services.html" class="">Profile</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="http://foundation.zurb.com/business/services.html" class="">Messages</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="http://foundation.zurb.com/docs/" class="blue button">Logout</a>
+                </li>
+                <li class="divider"></li>
+                <li class="has-dropdown username not-click">
+                </li>
+
+            </ul>
+        </section>
+    </nav>
+</header>
+
+<div class="large-12 columns">
+
+    <div class="large-2 columns">
+        <ul class="side-nav">
+            <li class="withSubMenu"><a href="#" tabindex="-1">Blog</a>
+                <ul class="subMenu">
+                    <li role="menuitem"><a href="#" tabindex="-1">BlogPostManagement</a></li>
+                    <li role="menuitem"><a href="#" tabindex="-1">Keywords</a></li>
+                </ul>
+            </li>
+            <li class="withSubMenu" >
+                <a href="#" tabindex="-1">  Newsletter </a>
+                <ul class="subMenu">
+                    <li role="menuitem"><a href="#" tabindex="-1"> NewsletterMailGroupsManagement </a></li>
+                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterTemplatesManagement</a></li>
+                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterMailsManagement</a>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#" tabindex="-1">Languages </a></li>
+            <li class="withSubMenu"><a href="#" tabindex="-1">&#x2192; Translations </a>
+                <ul class="subMenu">
+                    <li role="menuitem">
+                        <a href="#" tabindex="-1">
+                            TextTranslations
+                        </a>
+                    </li>
+                    <li role="menuitem">
+                        <a href="#" tabindex="-1">
+                            TranslationCategories
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li role="menuitem"><a href="#" tabindex="-1">Authors</a></li>
+            <li role="menuitem"><a href="#" tabindex="-1"> Users </a></li>
+            <li role="menuitem"><a href="#" tabindex="-1"> Roles </a></li>
+            <li role="menuitem"><a href="#" tabindex="-1"> Monitoring </a></li>
+        </ul>
+    </div>
+
+    <div class="large-10 columns">
+        <div class="row">
+            <ul class="breadcrumbs">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">a</a></li>
+                <li><a href="#">b</a></li>
+                <li><a href="#">c</a></li>
+                <li class="unavailable"><a href="#">Gene Splicing</a></li>
+                <li class="current"><a href="#">Cloning</a></li>
+            </ul>
+        </div>
+        <div class="row">
+
+            <h1>TABS</h1>
+
+            <ul class="tabs" data-tab role="tablist">
+                <li class="tab-title active" role="presentation" ><a href="#panel2-1" role="tab" tabindex="0" aria-selected="true" aria-controls="panel2-1">Tab 1</a></li>
+                <li class="tab-title" role="presentation" ><a href="#panel2-2" role="tab" tabindex="0"aria-selected="false" aria-controls="panel2-2">Tab 2</a></li>
+                <li class="tab-title" role="presentation"><a href="#panel2-3" role="tab" tabindex="0" aria-selected="false" aria-controls="panel2-3">Tab 3</a></li>
+                <li class="tab-title" role="presentation" ><a href="#panel2-4" role="tab" tabindex="0" aria-selected="false" aria-controls="panel2-4">Tab 4</a></li>
+            </ul>
+            <div class="tabs-content">
+                <section aria-hidden="false" class="content active" id="panel2-1">
+                    <h2>First panel content goes here...</h2>
+                </section>
+                <section aria-hidden="true" class="content" id="panel2-2">
+                    <h2>Second panel content goes here...</h2>
+                </section>
+                <section aria-hidden="true" class="content" id="panel2-3">
+                    <h2>Third panel content goes here...</h2>
+                </section>
+                <section aria-hidden="true" class="content" id="panel2-4">
+                    <h2>Fourth panel content goes here...</h2>
+                </section>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<footer id="pageFooter" class="large-12 columns">
+    <hr/>
+    <div class="row">
+        PageLoadedIn
+        <span id="loadTimeValue"></span>ms
+        <p>&copy; Powered by <a href="http://cwsfe.eu" target="_blank" tabindex="-1">CWSFE</a>.</p>
+    </div>
+</footer>
+
+</body>
+</html>

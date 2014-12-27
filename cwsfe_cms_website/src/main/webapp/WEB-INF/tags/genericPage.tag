@@ -44,6 +44,8 @@
                 jqueryUi: $contextPath + '/resources-cwsfe-cms/js/jqueryui/jquery-ui-1.10.3.custom.min',
                 foundation: $contextPath + '/resources-cwsfe-cms/js/foundation/foundation',
                 foundationTabs: $contextPath + '/resources-cwsfe-cms/js/foundation/foundation.tab',
+                foundationOffCanvas: $contextPath + '/resources-cwsfe-cms/js/foundation/foundation.offcanvas',
+                knockout: $contextPath + '/resources-cwsfe-cms/js/knockout/knockout-3.2.0',
                 cmsLayout: $contextPath + '/resources-cwsfe-cms/js/cms/layout/CmsLayout',
                 dataTable: $contextPath + '/resources-cwsfe-cms/js/jquery.dataTables.min'
             },
@@ -51,7 +53,8 @@
                 'jqueryUi': ['jquery'],
                 'dataTable': ['jquery'],
                 'foundation': ['jquery'],
-                'foundationTabs': ['foundation']
+                'foundationTabs': ['foundation'],
+                'foundationOffCanvas': ['foundation']
             }
         });
     </script>
@@ -70,7 +73,7 @@
                 <%--<spring:url value="/Main" var="mainUrl" htmlEscape="true"/>--%>
                 <%--<figure id="logo"><a href="${mainUrl}" class="logo" tabindex="-1"></a></figure>--%>
                 <h1><img
-                        src="${pageContext.request.contextPath}/resources-cwsfe-cms/CWSFE_logo_40x39.png"/>CWSFE
+                        src="${pageContext.request.contextPath}/resources-cwsfe-cms/CWSFE_logo_40x39.png" alt="CWSFE logo"/>CWSFE
                     CMS</h1>
             </li>
         </ul>
@@ -117,7 +120,7 @@
         <spring:url value="/monitoring/generalInformation" var="monitoringGeneralInformationUrl"
                     htmlEscape="true"/>
 
-        <ul class="side-nav">
+        <ul class="side-nav" role=menubar>
             <li role="menuitem"><a href="${mainUrl}" tabindex="-1"><spring:message code="MainWall"/></a></li>
             <li class="withSubMenu"><a href="#" tabindex="-1"><spring:message code="News"/></a>
                 <ul class="subMenu">

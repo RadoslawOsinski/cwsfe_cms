@@ -1,6 +1,41 @@
-require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundationTabs'], function ($) {
+require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation', 'foundationTabs'], function ($, ko) {
+
+    function SingleNewsViewModel() {
+        var self = this;
+        self.languageId = ko.observable();
+        self.i18nData = ko.observable();
+
+        self.isNewsI18nVisible = ko.computed(function() {
+            return self.languageId() != null;
+        });
+
+        self.initializeSingleNewsViewModel = function() {
+            self.languageId(null);
+        };
+
+        self.initializeI18nData = function () {
+            $.ajax({
+                url: $('#cmsNewsId').val() + '/' + self.languageId(),
+                async: true,
+                success: function (response) {
+                    if (response != null && 'SUCCESS' === response.status) {
+                        self.i18nData({
+                            newsTitle: response.data.newsTitle,
+                            newsShortcut: response.data.newsShortcut,
+                            newsDescription: response.data.newsDescription,
+                            status: response.data.status
+                        });
+                    }
+                }
+            });
+        }
+    }
 
     $(document).ready(function () {
+
+        var singleNewsViewModel = new SingleNewsViewModel();
+
+        ko.applyBindings(singleNewsViewModel);
 
         $('#author').autocomplete({
             source: function (request, response) {
@@ -54,7 +89,6 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundationTabs'], func
             $(this).autocomplete("search", "");
         });
 
-
         $('#newsFolder').autocomplete({
             source: function (request, response) {
                 $.ajax({
@@ -76,6 +110,33 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundationTabs'], func
             minLength: 0,
             select: function (event, ui) {
                 $('#newsFolderId').val(ui.item.id);
+            }
+        }).focus(function () {
+            $(this).autocomplete("search", "");
+        });
+
+        $('#i18nLanguage').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '../cmsLanguagesDropList',
+                    data: {
+                        limit: 5,
+                        term: request.term
+                    },
+                    success: function (data) {
+                        response($.map(data.data, function (item) {
+                            return {
+                                value: item.code + " - " + item.name,
+                                id: item.id
+                            };
+                        }));
+                    }
+                });
+            },
+            minLength: 0,
+            select: function (event, ui) {
+                singleNewsViewModel.languageId(ui.item.id);
+                singleNewsViewModel.initializeI18nData();
             }
         }).focus(function () {
             $(this).autocomplete("search", "");
@@ -109,14 +170,23 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundationTabs'], func
                 {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
-                        return '' +
-                            '<form method="GET" action="#">' +
-                            '<button class="button red tiny" onclick="removeNewsImage(' + o.aData.id + ');return false;" tabindex="-1">Delete</button>' +
-                            '</form>'
-                            ;
+                        return '<button class="button red tiny" name="removeNewsImageButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>';
                     }
                 }
             ]
+        });
+
+        $('#saveNewsButton').click(function() {
+            saveNews();
+        });
+
+        var $body = $('body');
+        $body.on('click', '#revertNewsI18nButton', function() {
+            singleNewsViewModel.initializeSingleNewsViewModel();
+        });
+
+        $body.on('click', 'button[name="removeNewsImageButton"]', function() {
+            removeNewsImage($(this).val());
         });
 
     });

@@ -13,14 +13,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
     <title>CWSFE CMS</title>
 
-    <link href="${pageContext.request.contextPath}/resources-cwsfe-cms/favicon.png" rel="shortcut icon"
+    <link href="${pageContext.request.contextPath}/resources-cwsfe-cms/favicon.ico" rel="shortcut icon"
           type="image/x-icon"/>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources-cwsfe-cms/css/LoginPage-min.css"
-          type="text/css"/>
-
     <!-- jQuery -->
-    <script src="${pageContext.request.contextPath}/resources-cwsfe-cms/js/jquery-2.0.3.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources-cwsfe-cms/js/jqueryui/jquery-ui-1.10.3.custom.min.js"></script>
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources-cwsfe-cms/js/Login.js"></script>
@@ -35,7 +32,7 @@
 
     <h3><spring:message code="CmsConfiguration" text="CmsConfiguration"/></h3>
     <spring:url value="/configuration/addAdminUser" var="addAdminUserUrl" htmlEscape="true"/>
-    <form class="fixed" method="post" action="${addAdminUserUrl}" autocomplete="off"
+    <form method="post" action="${addAdminUserUrl}" autocomplete="off"
           id="addBlogPostImageForm">
         <div class="row">
             <label for="userName"><spring:message code="Username" text="user"/></label>
