@@ -234,6 +234,10 @@ public class BlogPostsController extends JsonController {
             ModelMap model, Locale locale, HttpServletRequest httpServletRequest
     ) {
         blogPostI18nContentsDAO.add(blogPostI18nContent);
+        return redirectToPost(blogPostI18nContent, model, locale, httpServletRequest);
+    }
+
+    private ModelAndView redirectToPost(BlogPostI18nContent blogPostI18nContent, ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {
         browseBlogPost(model, locale, blogPostI18nContent.getPostId(), httpServletRequest);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("/blogPosts/" + blogPostI18nContent.getPostId(), true, false, false));
@@ -255,10 +259,7 @@ public class BlogPostsController extends JsonController {
             blogPostI18nContent.setId(existingI18nContent.getId());
             blogPostI18nContentsDAO.updateContentWithStatus(blogPostI18nContent);
         }
-        browseBlogPost(model, locale, blogPostI18nContent.getPostId(), httpServletRequest);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setView(new RedirectView("/blogPosts/" + blogPostI18nContent.getPostId(), true, false, false));
-        return modelAndView;
+        return redirectToPost(blogPostI18nContent, model, locale, httpServletRequest);
     }
 
     @RequestMapping(value = "/postCategoriesUpdate", method = RequestMethod.POST)

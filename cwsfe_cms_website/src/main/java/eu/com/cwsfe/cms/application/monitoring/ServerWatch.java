@@ -34,7 +34,7 @@ public class ServerWatch {
     }
 
     public double availableMemoryInMB() {
-        long available = (this.memoryMxBean.getHeapMemoryUsage().getCommitted() - this.memoryMxBean.getHeapMemoryUsage().getUsed());
+        long available = this.memoryMxBean.getHeapMemoryUsage().getCommitted() - this.memoryMxBean.getHeapMemoryUsage().getUsed();
         return asMb(available);
     }
 
