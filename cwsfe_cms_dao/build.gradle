@@ -73,8 +73,15 @@ jar.archiveName = "CWSFE_CMS_DAO-" + version + ".jar";
 
 sonarRunner {
     def props = new Properties()
-    new File("sensitive_data.properties").withInputStream {
-        stream -> props.load(stream)
+    try {
+        def propertiesFile = new File("sensitive_data.properties")
+        if (propertiesFile != null) {
+            propertiesFile.withInputStream {
+                stream -> props.load(stream)
+            }
+        }
+    } catch (FileNotFoundException ignored) {
+        //file not exists in repo
     }
     sonarProperties {
         property 'toolVersion', '2.4'
