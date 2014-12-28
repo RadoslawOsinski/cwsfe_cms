@@ -4,7 +4,7 @@ docker build .
 2. Optional: remove existing tag
 docker rm cwsfe_cms_dao_tests
 
-3. Tag output docker ID with name "cwsfe_cms_dao_tests"
+3. Tag output docker ID with name "cwsfe_cms_dao_tests" (64ec7e6ffc7f is an example value)
 docker tag 64ec7e6ffc7f cwsfe_cms_dao_tests
 
 4. Run image with published port 55432
