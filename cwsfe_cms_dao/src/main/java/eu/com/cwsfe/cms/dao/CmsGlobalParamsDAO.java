@@ -1,9 +1,13 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.model.CmsGlobalParam;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +17,8 @@ import java.util.List;
 
 @Repository
 public class CmsGlobalParamsDAO {
+
+    private static final Logger LOGGER = LogManager.getLogger(CmsGlobalParamsDAO.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -56,7 +62,7 @@ public class CmsGlobalParamsDAO {
                 mapCmsGlobalParam(resultSet));
     }
 
-    public List<CmsGlobalParam> listFoldersForDropList(String term, int limit) {
+    public List<CmsGlobalParam> listForDropList(String term, int limit) {
         Object[] dbParams = new Object[2];
         dbParams[0] = '%' + term + '%';
         dbParams[1] = limit;
@@ -80,8 +86,16 @@ public class CmsGlobalParamsDAO {
                         "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
-        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapCmsGlobalParam(resultSet));
+        CmsGlobalParam cmsGlobalParam = null;
+        try {
+            cmsGlobalParam = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
+                    mapCmsGlobalParam(resultSet));
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.error("No global param for id= " + id);
+        } catch (DataAccessException e) {
+            LOGGER.error("Problem with query: " + query + ", and id=" + id);
+        }
+        return cmsGlobalParam;
     }
 
     @Cacheable(value="cmsGlobalParamByCode")

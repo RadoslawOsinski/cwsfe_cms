@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -62,7 +63,7 @@ public class CmsTextI18nDAO {
                 mapCmsTextI18n(resultSet));
     }
 
-    @Cacheable(value="cmsTextI18nById")
+    @Cacheable(value = "cmsTextI18nById")
     public CmsTextI18n get(Long id) {
         String query =
                 "SELECT " +
@@ -71,8 +72,16 @@ public class CmsTextI18nDAO {
                         "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
-        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapCmsTextI18n(resultSet));
+        CmsTextI18n cmsTextI18n = null;
+        try {
+            cmsTextI18n = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
+                    mapCmsTextI18n(resultSet));
+        } catch (EmptyResultDataAccessException ignored) {
+            LOGGER.error("No internationalization for id= " + id);
+        } catch (DataAccessException e) {
+            LOGGER.error("Problem with query: " + query + ", and id=" + id);
+        }
+        return cmsTextI18n;
     }
 
     public String findTranslation(String language2LetterCode, String category, String key) {

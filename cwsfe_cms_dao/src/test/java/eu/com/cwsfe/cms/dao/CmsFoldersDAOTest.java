@@ -202,6 +202,5 @@ public class CmsFoldersDAOTest extends AbstractTransactionalJUnit4SpringContextT
         assertNotNull(cmsFolderResult);
         assertEquals((long) cmsFolder.getId(), (long) cmsFolderResult.getId());
         assertEquals("Unexpected status value for undeleted object", "N", cmsFolderResult.getStatus());
-
     }
 }
