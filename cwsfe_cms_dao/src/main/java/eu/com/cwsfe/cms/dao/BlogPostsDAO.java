@@ -67,7 +67,7 @@ public class BlogPostsDAO {
                 (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
     }
 
-    public Object[] listCountForPageWithPaging(Long languageId) {
+    public long listCountForPageWithPaging(Long languageId) {
         Object[] dbParams = new Object[1];
         dbParams[0] = languageId;
         String query =
@@ -80,9 +80,8 @@ public class BlogPostsDAO {
                         " bpi18n.language_id = ? AND" +
                         " bp.status = 'P' AND bpi18n.status = 'P'" +
                         " ORDER BY bp.post_creation_date DESC" +
-                        ")AS results";
-        return jdbcTemplate.queryForObject(query, dbParams,
-                (resultSet, i) -> new Object[]{resultSet.getInt(1)});
+                        ") AS results";
+        return jdbcTemplate.queryForObject(query, dbParams, Long.class);
     }
 
     public List<Object[]> listForPageWithCategoryAndPaging(Long categoryId, Long languageId, Integer articlesPerPage, Integer currentPage) {
@@ -107,7 +106,7 @@ public class BlogPostsDAO {
                 (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
     }
 
-    public Object[] listCountForPageWithCategoryAndPaging(Long categoryId, Long languageId) {
+    public long listCountForPageWithCategoryAndPaging(Long categoryId, Long languageId) {
         Object[] dbParams = new Object[2];
         dbParams[0] = categoryId;
         dbParams[1] = languageId;
@@ -124,8 +123,7 @@ public class BlogPostsDAO {
                         " bp.status = 'P' AND bpi18n.status = 'P'" +
                         " ORDER BY bp.post_creation_date DESC" +
                         ")AS results";
-        return jdbcTemplate.queryForObject(query, dbParams,
-                (resultSet, i) -> new Object[]{resultSet.getInt(1)});
+        return jdbcTemplate.queryForObject(query, dbParams, Long.class);
     }
 
     public List<Object[]> listForPageWithSearchTextAndPaging(String searchText, Long languageId, Integer articlesPerPage, Integer currentPage) {
@@ -155,7 +153,7 @@ public class BlogPostsDAO {
                 (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
     }
 
-    public Object[] listCountForPageWithSearchTextAndPaging(String searchText, Long languageId) {
+    public long listCountForPageWithSearchTextAndPaging(String searchText, Long languageId) {
         Object[] dbParams = new Object[4];
         dbParams[0] = languageId;
         dbParams[1] = '%' + searchText + '%';
@@ -177,8 +175,7 @@ public class BlogPostsDAO {
                         ")" +
                         " ORDER BY bp.post_creation_date DESC" +
                         ")AS results";
-        return jdbcTemplate.queryForObject(query, dbParams,
-                (resultSet, i) -> new Object[]{resultSet.getInt(1)});
+        return jdbcTemplate.queryForObject(query, dbParams, Long.class);
     }
 
     public List<Object[]> listForPageWithArchiveDateAndPaging(Date startDate, Date endDate, Long languageId, Integer articlesPerPage, Integer currentPage) {
@@ -203,7 +200,7 @@ public class BlogPostsDAO {
                 (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
     }
 
-    public Object[] listCountForPageWithArchiveDateAndPaging(Date startDate, Date endDate, Long languageId) {
+    public long listCountForPageWithArchiveDateAndPaging(Date startDate, Date endDate, Long languageId) {
         Object[] dbParams = new Object[3];
         dbParams[0] = languageId;
         dbParams[1] = startDate;
@@ -220,8 +217,7 @@ public class BlogPostsDAO {
                         " bp.status = 'P' AND bpi18n.status = 'P'" +
                         " ORDER BY bp.post_creation_date DESC" +
                         ")AS results";
-        return jdbcTemplate.queryForObject(query, dbParams,
-                (resultSet, i) -> new Object[]{resultSet.getInt(1)});
+        return jdbcTemplate.queryForObject(query, dbParams, Long.class);
     }
 
     public int getTotalNumberNotDeleted() {

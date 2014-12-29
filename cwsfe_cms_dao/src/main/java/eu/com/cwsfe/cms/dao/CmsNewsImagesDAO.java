@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -67,7 +68,7 @@ public class CmsNewsImagesDAO {
         cmsNewsImage.setWidth(resultSet.getInt("WIDTH"));
         cmsNewsImage.setHeight(resultSet.getInt("HEIGHT"));
         cmsNewsImage.setMimeType(resultSet.getString("MIME_TYPE"));
-        cmsNewsImage.setCreated(resultSet.getDate("CREATED"));
+        cmsNewsImage.setCreated(resultSet.getTimestamp("CREATED"));
         cmsNewsImage.setStatus(resultSet.getString("STATUS"));
         if (withContent) {
             cmsNewsImage.setContent(resultSet.getBytes("CONTENT"));
@@ -90,64 +91,6 @@ public class CmsNewsImagesDAO {
         return jdbcTemplate.queryForObject(query, dbParams, Integer.class);
     }
 
-    public List<CmsNewsImage> listForPostWithoutContent(Long postId) {
-        Object[] dbParams = new Object[1];
-        dbParams[0] = postId;
-        String query =
-                "SELECT " +
-                        " id, news_id, title, file_name, file_size, width, height, " +
-                        " mime_type, created, status " +
-                        " FROM CMS_NEWS_IMAGES" +
-                        " WHERE status <> 'D' AND news_id = ?" +
-                        " ORDER BY created DESC";
-        List<CmsNewsImage> blogPostImages = new ArrayList<>(0);
-        try {
-            blogPostImages = jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                    mapCmsNewsImage(resultSet, false));
-        } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
-        }
-        return blogPostImages;
-    }
-
-    public List<CmsNewsImage> listForPostWithContent(Long postId) {
-        Object[] dbParams = new Object[1];
-        dbParams[0] = postId;
-        String query =
-                "SELECT " +
-                        " id, news_id, title, file_name, file_size, width, height, " +
-                        " mime_type, content, created, status " +
-                        " FROM CMS_NEWS_IMAGES" +
-                        " WHERE status <> 'D' AND news_id = ?" +
-                        " ORDER BY created DESC";
-        List<CmsNewsImage> blogPostImages = new ArrayList<>(0);
-        try {
-            blogPostImages = jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                    mapCmsNewsImage(resultSet, true));
-        } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
-        }
-        return blogPostImages;
-    }
-
-    public List<CmsNewsImage> listWithContent() {
-        String query =
-                "SELECT " +
-                        " id, news_id, title, file_name, file_size, width, height, " +
-                        " mime_type, content, created, status " +
-                        " FROM CMS_NEWS_IMAGES" +
-                        " WHERE status <> 'D'" +
-                        " ORDER BY created DESC";
-        List<CmsNewsImage> blogPostImages = new ArrayList<>(0);
-        try {
-            blogPostImages = jdbcTemplate.query(query, (resultSet, rowNum) ->
-                    mapCmsNewsImage(resultSet, true));
-        } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [" + query + "]", e);
-        }
-        return blogPostImages;
-    }
-
     @Cacheable(value="cmsNewsImageWithContentById")
     public CmsNewsImage getWithContent(Long id) {
         Object[] dbParams = new Object[1];
@@ -158,8 +101,14 @@ public class CmsNewsImagesDAO {
                         " mime_type, content, created, status " +
                         " FROM CMS_NEWS_IMAGES " +
                         " WHERE id = ? ";
-        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapCmsNewsImage(resultSet, true));
+        CmsNewsImage cmsNewsImage = null;
+        try {
+            cmsNewsImage = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
+                    mapCmsNewsImage(resultSet, true));
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("No results for id: " + id);
+        }
+        return cmsNewsImage;
     }
 
     public Long add(CmsNewsImage cmsNewsImage) {
@@ -214,7 +163,6 @@ public class CmsNewsImagesDAO {
         jdbcTemplate.update("UPDATE CMS_NEWS_IMAGES SET status = 'N' WHERE id = ?", dbParams);
     }
 
-
     /////////////////////////// SPECIAL METHODS:
     public List<CmsNewsImage> listImagesForNewsWithoutThumbnails(Long newsId) {
         String query =
@@ -249,6 +197,8 @@ public class CmsNewsImagesDAO {
         try {
             cmsNewsImage = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
                     mapCmsNewsImage(resultSet, true));
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("No results for newsId: " + newsId);
         } catch (DataAccessException e) {
             LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
         }

@@ -66,7 +66,7 @@ public class BlogPostImagesDAO {
         blogPostImage.setWidth(resultSet.getInt("width"));
         blogPostImage.setHeight(resultSet.getInt("height"));
         blogPostImage.setMimeType(resultSet.getString("mime_type"));
-        blogPostImage.setCreated(resultSet.getDate("created"));
+        blogPostImage.setCreated(resultSet.getTimestamp("created"));
         blogPostImage.setStatus(resultSet.getString("STATUS"));
         if (withContent) {
             blogPostImage.setContent(resultSet.getBytes("CONTENT"));
