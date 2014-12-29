@@ -192,7 +192,6 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         assertEquals(username, cmsUserResult.getUserName());
         assertEquals(status, cmsUserResult.getStatus());
         assertEquals(hash, cmsUserResult.getPasswordHash());
-        assertEquals(hash, cmsUserResult.getPasswordHash());
     }
 
     @Test

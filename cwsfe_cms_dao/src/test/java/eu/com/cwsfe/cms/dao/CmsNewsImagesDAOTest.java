@@ -355,7 +355,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         newsImage.setWidth(width);
         newsImage.setHeight(height);
         newsImage.setMimeType(mimeType);
-        Long addedId = dao.add(newsImage);
+        dao.add(newsImage);
 
         //when
         CmsNewsImage result = dao.getThumbnailForNews(NEWS.getId());
