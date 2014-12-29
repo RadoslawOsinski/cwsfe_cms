@@ -2,6 +2,7 @@ package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.model.BlogPostComment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -45,7 +46,7 @@ public class BlogPostCommentsDAO {
         blogPostComment.setUsername(resultSet.getString("user_name"));
         blogPostComment.setEmail(resultSet.getString("email"));
         blogPostComment.setStatus(resultSet.getString("status"));
-        blogPostComment.setCreated(resultSet.getDate("created"));
+        blogPostComment.setCreated(resultSet.getTimestamp("created"));
         return blogPostComment;
     }
 
@@ -80,6 +81,23 @@ public class BlogPostCommentsDAO {
                         " ORDER BY created desc" +
                         ") as results";
         return jdbcTemplate.queryForObject(query, Integer.class);
+    }
+
+    public BlogPostComment get(Long id) {
+        Object[] dbParams = new Object[1];
+        dbParams[0] = id;
+        String query =
+                "SELECT " +
+                        " id, parent_comment_id, blog_post_i18n_content_id, comment, user_name, email, status, created" +
+                        " FROM CMS_BLOG_POST_COMMENTS " +
+                        "WHERE id = ?";
+        BlogPostComment blogPostComment = null;
+        try {
+            blogPostComment = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPostComment(resultSet));
+        } catch (EmptyResultDataAccessException ignored) {
+            blogPostComment = null;
+        }
+        return blogPostComment;
     }
 
     public Long add(BlogPostComment blogPostComment) {
