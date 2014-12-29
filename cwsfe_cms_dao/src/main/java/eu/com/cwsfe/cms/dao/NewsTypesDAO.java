@@ -80,7 +80,7 @@ public class NewsTypesDAO {
                 mapNewsType(resultSet));
     }
 
-    public NewsType getByFolderName(String type) {
+    public NewsType getByType(String type) {
         String query =
                 "SELECT " +
                         "id, type, status " +

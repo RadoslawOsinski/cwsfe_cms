@@ -75,10 +75,9 @@ public class CmsUsersDAO {
     }
 
     public List<CmsUser> listUsersForDropList(String term, int limit) {
-        Object[] dbParams = new Object[3];
+        Object[] dbParams = new Object[2];
         dbParams[0] = '%' + term + '%';
-        dbParams[1] = '%' + term + '%';
-        dbParams[2] = limit;
+        dbParams[1] = limit;
         String query =
                 "SELECT " +
                         " id, username, password_hash, status" +

@@ -37,7 +37,6 @@ public class CmsRolesDAO {
         return cmsRole;
     }
 
-
     public int countForAjax() {
         String query = "SELECT count(id) from CMS_ROLES";
         return jdbcTemplate.queryForObject(query, Integer.class);
