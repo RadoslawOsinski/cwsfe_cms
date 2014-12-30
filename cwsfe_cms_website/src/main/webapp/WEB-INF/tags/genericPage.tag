@@ -72,7 +72,8 @@
             <li class="name">
                 <spring:url value="/Main" var="mainUrl" htmlEscape="true"/>
                 <%--<figure id="logo"><a href="${mainUrl}" class="logo" tabindex="-1"></a></figure>--%>
-                <h1><img src="${pageContext.request.contextPath}/resources-cwsfe-cms/CWSFE_logo_40x39.png" alt="CWSFE logo"/>
+                <h1><img src="${pageContext.request.contextPath}/resources-cwsfe-cms/CWSFE_logo_40x39.png"
+                         alt="CWSFE logo"/>
                     CWSFE CMS
                 </h1>
             </li>
@@ -81,18 +82,19 @@
         <section class="top-bar-section">
             <ul class="right">
                 <%--<li class="has-dropdown not-click">--%>
-                    <%--<a href="http://foundation.zurb.com/learn/features.html" class="">Settings</a>--%>
-                    <%--<ul class="dropdown">--%>
-                        <%--<li class="title back js-generated"><h5><a href="#">« Back</a></h5></li>--%>
-                        <%--<li><a class="parent-link js-generated" href="http://foundation.zurb.com/learn/features.html">Learn</a></li>--%>
-                        <%--<li><a href="http://foundation.zurb.com/learn/about.html">About</a></li>--%>
-                    <%--</ul>--%>
+                <%--<a href="http://foundation.zurb.com/learn/features.html" class="">Settings</a>--%>
+                <%--<ul class="dropdown">--%>
+                <%--<li class="title back js-generated"><h5><a href="#">« Back</a></h5></li>--%>
+                <%--<li><a class="parent-link js-generated" href="http://foundation.zurb.com/learn/features.html">Learn</a></li>--%>
+                <%--<li><a href="http://foundation.zurb.com/learn/about.html">About</a></li>--%>
+                <%--</ul>--%>
                 <%--</li>--%>
                 <%--<li>--%>
-                    <%--<a href="http://foundation.zurb.com/business/services.html" class="">Messages</a>--%>
+                <%--<a href="http://foundation.zurb.com/business/services.html" class="">Messages</a>--%>
                 <%--</li>--%>
                 <spring:url value="/logout" var="logoutUrl" htmlEscape="true"/>
-                <li class="download"><a href="${logoutUrl}" class="small blue nice button src-download" tabindex="-1"><spring:message code="Logout"/></a></li>
+                <li class="download"><a href="${logoutUrl}" class="small blue nice button src-download"
+                                        tabindex="-1"><spring:message code="Logout"/></a></li>
                 <li class="has-dropdown username not-click">
                 </li>
             </ul>
@@ -115,6 +117,7 @@
         <spring:url value="/cmsTextI18nCategories" var="cmsTextI18nCategoriesUrl" htmlEscape="true"/>
         <spring:url value="/authors" var="authorsUrl" htmlEscape="true"/>
         <spring:url value="/users" var="usersUrl" htmlEscape="true"/>
+        <spring:url value="/usersNetAddresses" var="usersNetAddressesUrl" htmlEscape="true"/>
         <spring:url value="/roles" var="rolesUrl" htmlEscape="true"/>
         <spring:url value="/monitoring/generalInformation" var="monitoringGeneralInformationUrl"
                     htmlEscape="true"/>
@@ -184,10 +187,19 @@
                     test="${pageContext.request.requestURI.contains('cms/authors/Authors')}"> class="active"</c:if>>
                 <a
                         href="${authorsUrl}" tabindex="-1"><spring:message code="Authors"/></a></li>
-            <li role="menuitem" <c:if
-                    test="${pageContext.request.requestURI.contains('cms/users/Users')}"> class="active"</c:if>>
-                <a
-                        href="${usersUrl}" tabindex="-1"><spring:message code="Users"/></a></li>
+            <li class="withSubMenu"><a href="#" tabindex="-1"><spring:message code="Users"/></a>
+                <ul class="subMenu">
+                    <li role="menuitem" <c:if
+                            test="${pageContext.request.requestURI.contains('cms/users/Users')}"> class="active"</c:if>>
+                        <a
+                                href="${usersUrl}" tabindex="-1"><spring:message code="Users"/></a></li>
+                    <li role="menuitem" <c:if
+                            test="${pageContext.request.requestURI.contains('cms/users/UsersNetAddresses')}"> class="active"</c:if>>
+                        <a href="${usersNetAddressesUrl}" tabindex="-1"><spring:message
+                                code="UsersNetAddresses"/></a>
+                    </li>
+                </ul>
+            </li>
             <li role="menuitem" <c:if
                     test="${pageContext.request.requestURI.contains('cms/roles/Roles')}"> class="active"</c:if>>
                 <a

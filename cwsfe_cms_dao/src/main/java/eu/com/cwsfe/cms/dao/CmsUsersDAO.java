@@ -1,9 +1,12 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.model.CmsUser;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +19,8 @@ import java.util.List;
  */
 @Repository
 public class CmsUsersDAO {
+
+    private static final Logger LOGGER = LogManager.getLogger(CmsUsersDAO.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -98,8 +103,14 @@ public class CmsUsersDAO {
                         "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
-        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapCmsUser(resultSet));
+        CmsUser cmsUser = null;
+        try {
+            cmsUser = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
+                    mapCmsUser(resultSet));
+        } catch (DataAccessException e) {
+            LOGGER.error("User does not exist for id: " + id) ;
+        }
+        return cmsUser;
     }
 
     public Long add(CmsUser cmsUser) {
