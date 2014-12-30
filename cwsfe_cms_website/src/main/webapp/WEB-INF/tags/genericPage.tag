@@ -72,9 +72,9 @@
             <li class="name">
                 <%--<spring:url value="/Main" var="mainUrl" htmlEscape="true"/>--%>
                 <%--<figure id="logo"><a href="${mainUrl}" class="logo" tabindex="-1"></a></figure>--%>
-                <h1><img
-                        src="${pageContext.request.contextPath}/resources-cwsfe-cms/CWSFE_logo_40x39.png" alt="CWSFE logo"/>CWSFE
-                    CMS</h1>
+                <h1><img src="${pageContext.request.contextPath}/resources-cwsfe-cms/CWSFE_logo_40x39.png" alt="CWSFE logo"/>
+                    CWSFE CMS
+                </h1>
             </li>
         </ul>
 
@@ -102,7 +102,6 @@
 
 <div class="large-12 columns">
     <div class="large-2 columns">
-        <spring:url value="/" var="mainUrl" htmlEscape="true"/>
         <spring:url value="/folders" var="foldersUrl" htmlEscape="true"/>
         <spring:url value="/news" var="newsUrl" htmlEscape="true"/>
         <spring:url value="/newsTypes" var="newsTypesUrl" htmlEscape="true"/>
@@ -121,7 +120,6 @@
                     htmlEscape="true"/>
 
         <ul class="side-nav" role=menubar>
-            <li role="menuitem"><a href="${mainUrl}" tabindex="-1"><spring:message code="MainWall"/></a></li>
             <li class="withSubMenu"><a href="#" tabindex="-1"><spring:message code="News"/></a>
                 <ul class="subMenu">
                     <li role="menuitem" <c:if
