@@ -12,7 +12,7 @@ apply plugin: 'base'
 apply plugin: 'sonar-runner'
 apply plugin: 'jacoco'
 
-version = '1.0'
+version = '1.5'
 group = "eu.com.cwsfe.cms"
 compileJava.options.encoding = 'UTF-8'
 
