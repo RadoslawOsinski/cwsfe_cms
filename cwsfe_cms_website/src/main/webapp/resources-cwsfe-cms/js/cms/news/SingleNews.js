@@ -28,7 +28,7 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
                     }
                 }
             });
-        }
+        };
     }
 
     $(document).ready(function () {

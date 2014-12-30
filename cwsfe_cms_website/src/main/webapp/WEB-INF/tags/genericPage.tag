@@ -70,7 +70,7 @@
     <nav class="top-bar hide-for-small">
         <ul class="title-area">
             <li class="name">
-                <%--<spring:url value="/Main" var="mainUrl" htmlEscape="true"/>--%>
+                <spring:url value="/Main" var="mainUrl" htmlEscape="true"/>
                 <%--<figure id="logo"><a href="${mainUrl}" class="logo" tabindex="-1"></a></figure>--%>
                 <h1><img src="${pageContext.request.contextPath}/resources-cwsfe-cms/CWSFE_logo_40x39.png" alt="CWSFE logo"/>
                     CWSFE CMS
