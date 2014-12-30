@@ -16,6 +16,7 @@
 
     <script src="../src/main/webapp/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min.js"></script>
     <script src="../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.js"></script>
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/jquery.dataTables.min.js"></script>
 
     <link rel="stylesheet"
           href="../src/main/webapp/resources-cwsfe-cms/css/cms/shared.css"
@@ -32,6 +33,39 @@
                 $(this).siblings().find("ul").hide();
                 $(this).find("ul").toggle();
             });
+
+            $('#dataTable').dataTable({
+                'iTabIndex': -1,
+                'bAutoWidth': true,
+                'sPaginationType': 'full_numbers',
+                'bFilter': false,
+                'aLengthMenu': [10, 20, 30],
+                'bPaginate': true,
+                'bLengthChange': true,
+                "aaData": [
+                    /* Reduced data set */
+                    [ "Trident", "Internet Explorer 4.0", "Win 95+", 4, "X" ],
+                    [ "Trident", "Internet Explorer 5.0", "Win 95+", 5, "C" ],
+                    [ "Trident", "Internet Explorer 5.5", "Win 95+", 5.5, "A" ],
+                    [ "Trident", "Internet Explorer 6.0", "Win 98+", 6, "A" ],
+                    [ "Trident", "Internet Explorer 7.0", "Win XP SP2+", 7, "A" ],
+                    [ "Gecko", "Firefox 1.5", "Win 98+ / OSX.2+", 1.8, "A" ],
+                    [ "Gecko", "Firefox 2", "Win 98+ / OSX.2+", 1.8, "A" ],
+                    [ "Gecko", "Firefox 3", "Win 2k+ / OSX.3+", 1.9, "A" ],
+                    [ "Webkit", "Safari 1.2", "OSX.3", 125.5, "A" ],
+                    [ "Webkit", "Safari 1.3", "OSX.3", 312.8, "A" ],
+                    [ "Webkit", "Safari 2.0", "OSX.4+", 419.3, "A" ],
+                    [ "Webkit", "Safari 3.0", "OSX.4+", 522.1, "A" ]
+                ],
+                "aoColumns": [
+                    { "sTitle": "Engine" },
+                    { "sTitle": "Browser" },
+                    { "sTitle": "Platform" },
+                    { "sTitle": "Version", "sClass": "center" },
+                    { "sTitle": "Grade", "sClass": "center" }
+                ]
+            });
+
         });
 
     </script>
@@ -142,6 +176,19 @@
         <div class="row">
 
             <h1>DATA TABLE</h1>
+            <table id="dataTable">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">NewsCode</th>
+                    <th scope="col">CreationDate</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
 
         </div>
     </div>

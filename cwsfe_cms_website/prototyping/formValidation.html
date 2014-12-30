@@ -150,12 +150,13 @@
                     <input type="hidden" id="blogPostId" name="blogPost.id" value="${blogPost.id}">
 
                     <div class="row">
-                        <label for="author">Author</label>
+                        <label for="author">Author <small>required</small></label>
                         <input type="hidden" id="postAuthorId" value="${blogPost.postAuthorId}"/>
 
                         <div class="large-4 columns">
                             <input type="text" id="author"
-                                   value="${cmsAuthor.lastName} ${cmsAuthor.firstName}"/>
+                                   value="lastName firstName"/>
+                            <small class="error">lastName firstName is required.</small>
                         </div>
                     </div>
                     <div class="row">
@@ -188,14 +189,6 @@
                                onclick="saveBlogPost();return false;" class="button small radius">
                         <input type="reset" value="Revert" class="button small radius alert"/>
                         <input type="reset" value="primary" class="button small radius primary"/>
-
-                        <a href="#" class="button split">Split Button <span data-dropdown="drop"></span></a><br>
-                        <ul id="drop" class="f-dropdown" data-dropdown-content>
-                            <li><a>This is a link</a></li>
-                            <li><a>This is another</a></li>
-                            <li><a>Yet another</a></li>
-                        </ul>
-
                     </div>
                 </fieldset>
             </form>

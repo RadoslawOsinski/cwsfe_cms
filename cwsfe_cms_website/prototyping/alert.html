@@ -55,14 +55,12 @@
                     <a href="http://foundation.zurb.com/learn/features.html" class="">Settings</a>
                     <ul class="dropdown">
                         <li class="title back js-generated"><h5><a href="#">« Back</a></h5></li>
-                        <li><a class="parent-link js-generated" href="http://foundation.zurb.com/learn/features.html">Learn</a>
-                        </li>
+                        <li><a class="parent-link js-generated" href="http://foundation.zurb.com/learn/features.html">Learn</a></li>
                         <li><a href="http://foundation.zurb.com/learn/features.html">Users</a></li>
                         <li><a href="http://foundation.zurb.com/learn/faq.html">FAQ</a></li>
                         <li><a href="http://foundation.zurb.com/learn/case-jacquelinewest.html">Case Studies</a></li>
                         <li><a href="http://foundation.zurb.com/learn/website-examples.html">Website Examples</a></li>
-                        <li><a href="http://foundation.zurb.com/learn/video-started-with-foundation.html">Videos</a>
-                        </li>
+                        <li><a href="http://foundation.zurb.com/learn/video-started-with-foundation.html">Videos</a></li>
                         <li><a href="http://foundation.zurb.com/learn/training.html">Users</a></li>
                         <li><a href="http://foundation.zurb.com/learn/about.html">About</a></li>
                     </ul>
@@ -98,8 +96,8 @@
                     <li role="menuitem"><a href="#" tabindex="-1">Keywords</a></li>
                 </ul>
             </li>
-            <li class="withSubMenu">
-                <a href="#" tabindex="-1"> Newsletter </a>
+            <li class="withSubMenu" >
+                <a href="#" tabindex="-1">  Newsletter </a>
                 <ul class="subMenu">
                     <li role="menuitem"><a href="#" tabindex="-1"> NewsletterMailGroupsManagement </a></li>
                     <li role="menuitem"><a href="#" tabindex="-1">NewsletterTemplatesManagement</a></li>
@@ -142,65 +140,8 @@
         </div>
         <div class="row">
 
-            <h1>FORM</h1>
-
-            <form id="blogPostBasicInfoForm">
-                <fieldset>
-                    <legend>Personalia:</legend>
-                    <input type="hidden" id="blogPostId" name="blogPost.id" value="${blogPost.id}">
-
-                    <div class="row">
-                        <label for="author">Author</label>
-                        <input type="hidden" id="postAuthorId" value="${blogPost.postAuthorId}"/>
-
-                        <div class="large-4 columns">
-                            <input type="text" id="author"
-                                   value="${cmsAuthor.lastName} ${cmsAuthor.firstName}"/>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label for="postTextCode">PostTextCode</label>
-
-                        <input type="text" id="postTextCode"
-
-                               value="${blogPost.postTextCode}"/>
-                    </div>
-                    <div class="row">
-                        <label for="status">Status</label>
-
-                        <select id="status">
-                            <option value="H" selected>Hidden</option>
-                            <option value="P">Published</option>
-                        </select>
-                    </div>
-                    <div class="row">
-                        <label for="postCreationDate">CreationDate</label>
-
-                        <input type="text" id="postCreationDate"
-                               maxlength="16"
-                               value="2014-03-25 13:45"
-                               pattern="yyyy-MM-dd HH:mm"/>
-                    </div>
-                    <div class="row">
-                        <input type="submit" value="secondary"
-                               onclick="saveBlogPost();return false;" class="button small radius secondary">
-                        <input type="submit" value="Save"
-                               onclick="saveBlogPost();return false;" class="button small radius">
-                        <input type="reset" value="Revert" class="button small radius alert"/>
-                        <input type="reset" value="primary" class="button small radius primary"/>
-
-                        <a href="#" class="button split">Split Button <span data-dropdown="drop"></span></a><br>
-                        <ul id="drop" class="f-dropdown" data-dropdown-content>
-                            <li><a>This is a link</a></li>
-                            <li><a>This is another</a></li>
-                            <li><a>Yet another</a></li>
-                        </ul>
-
-                    </div>
-                </fieldset>
-            </form>
-
-
+            <h1>Alert</h1>
+            <h4>http://foundation.zurb.com/docs/components/alert_boxes.html</h4>
         </div>
     </div>
 
