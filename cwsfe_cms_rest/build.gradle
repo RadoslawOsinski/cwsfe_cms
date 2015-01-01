@@ -1,0 +1,114 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+apply plugin: 'maven'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'base'
+apply plugin: 'sonar-runner'
+apply plugin: 'jacoco'
+
+version = '1.5'
+group = "eu.com.cwsfe.cms"
+compileJava.options.encoding = 'UTF-8'
+
+idea {
+    module {
+        sourceDirs += file('src/main/java')
+        sourceDirs += file('src/main/resources')
+        testSourceDirs += file('src/test/java')
+        testSourceDirs += file('src/test/resources')
+        excludeDirs += file('target')
+        excludeDirs += file('build')
+        excludeDirs += file('out')
+        excludeDirs += file('.gradle')
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-release" }
+    maven { url "http://repo.springsource.org/plugins-release" }
+    maven { url "http://repo.spring.io/milestone" }  // for AspectJ 1.8.0.M1
+    maven { url "https://repository.apache.org/content/repositories/releases" }  // tomcat 8
+    maven { url "https://maven.java.net/content/repositories/releases" }  // javax.websocket, tyrus
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }  // javax.cache
+}
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+    options.encoding = 'UTF-8'
+    options.compilerArgs = ['-Xlint', '-Xlint:-serial', '-Xlint:-path']
+}
+
+dependencies {
+    compile project(':cwsfe_cms_dao')
+    compile group: 'org.springframework', name: 'spring-webmvc', version: '4.1.0.RC1'
+    compile group: 'org.springframework', name: 'spring-tx', version: '4.1.0.RC1'
+    compile group: 'org.springframework', name: 'spring-jdbc', version: '4.1.0.RC1'
+    compile group: 'org.springframework', name: 'spring-core', version: '4.1.0.RC1'
+    compile group: 'org.springframework', name: 'spring-beans', version: '4.1.0.RC1'
+    compile group: 'org.springframework', name: 'spring-context', version: '4.1.0.RC1'
+    compile group: 'org.springframework', name: 'spring-context-support', version: '4.1.0.RC1'
+    compile group: 'org.springframework', name: 'spring-web', version: '4.1.0.RC1'  //dla CommonsMultipartFile
+    compile group: 'javax.ejb', name: 'ejb-api', version: '3.0'
+    compile group: 'javax.annotation', name: 'javax.annotation-api', version: '1.2'
+    compile group: 'net.sf.ehcache', name: 'ehcache', version: '2.8.1'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.0.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.0.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-web', version: '2.0.2'
+    compile group: 'org.postgresql', name: 'postgresql', version: '9.3-1102-jdbc4'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.4.2'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.4.2'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.4.2'
+    testCompile project(path: ':cwsfe_cms_dao', configuration: 'tests')
+    testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1' //3.1.0 -newer version has problems with tests
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: 'org.springframework', name: 'spring-test', version: '4.1.0.RC1'
+    testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: '0.8.1'
+}
+
+jar.archiveName = "CWSFE_CMS_REST-" + version + ".jar";
+
+sonarRunner {
+    def props = new Properties()
+    try {
+        def propertiesFile = new File("sensitive_data.properties")
+        if (propertiesFile != null) {
+            propertiesFile.withInputStream {
+                stream -> props.load(stream)
+            }
+        }
+    } catch (FileNotFoundException ignored) {
+        //file not exists in repo
+    }
+    sonarProperties {
+        property 'toolVersion', '2.4'
+        property "sonar.host.url", props["sonar.host.url"]
+        property "sonar.jdbc.url", props["sonar.jdbc.url"]
+        property "sonar.jdbc.username", props["sonar.jdbc.username"]
+        property "sonar.jdbc.password", props["sonar.jdbc.password"]
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.login", props["sonar.login"]
+        property "sonar.password", props["sonar.password"]
+
+        property "sonar.projectKey", 'cwsfe_cms_rest'
+        property "sonar.projectName", 'CWSFE cms rest'
+//        property "sonar.projectVersion", '1.0'
+        property "sonar.sources", 'src/main'
+        property "sonar.tests", 'src/test'
+        property "sonar.sourceEncoding", 'UTF-8'
+    }
+}
+
+jacocoTestReport {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports after running tests."
+    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+}
