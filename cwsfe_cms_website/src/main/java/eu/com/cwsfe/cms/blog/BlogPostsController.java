@@ -1,5 +1,6 @@
-package eu.com.cwsfe.cms.controllers;
+package eu.com.cwsfe.cms.blog;
 
+import eu.com.cwsfe.cms.mvc.JsonController;
 import eu.com.cwsfe.cms.dao.*;
 import eu.com.cwsfe.cms.model.*;
 import net.sf.json.JSONArray;

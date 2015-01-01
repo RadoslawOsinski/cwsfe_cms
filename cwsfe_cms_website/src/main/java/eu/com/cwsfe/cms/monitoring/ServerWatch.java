@@ -1,4 +1,4 @@
-package eu.com.cwsfe.cms.application.monitoring;
+package eu.com.cwsfe.cms.monitoring;
 
 import org.springframework.stereotype.Component;
 

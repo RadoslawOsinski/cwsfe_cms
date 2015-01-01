@@ -1,4 +1,4 @@
-package eu.com.cwsfe.cms.controllers;
+package eu.com.cwsfe.cms.main;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

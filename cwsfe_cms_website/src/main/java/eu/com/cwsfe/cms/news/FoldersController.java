@@ -1,8 +1,9 @@
-package eu.com.cwsfe.cms.controllers;
+package eu.com.cwsfe.cms.news;
 
-import eu.com.cwsfe.cms.dao.NewsTypesDAO;
+import eu.com.cwsfe.cms.mvc.JsonController;
+import eu.com.cwsfe.cms.dao.CmsFoldersDAO;
 import eu.com.cwsfe.cms.model.Breadcrumb;
-import eu.com.cwsfe.cms.model.NewsType;
+import eu.com.cwsfe.cms.model.CmsFolder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,84 +24,85 @@ import java.util.ResourceBundle;
  * @author Radoslaw Osinski
  */
 @Controller
-class NewsTypesController extends JsonController {
+public class FoldersController extends JsonController {
 
     @Autowired
-    private NewsTypesDAO newsTypesDAO;
+    private CmsFoldersDAO cmsFoldersDAO;
 
-    @RequestMapping(value = "/newsTypes", method = RequestMethod.GET)
+    @RequestMapping(value = "/folders", method = RequestMethod.GET)
     public String defaultView(ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {
         model.addAttribute("mainJavaScript", getPageJS(httpServletRequest.getContextPath()));
         model.addAttribute("breadcrumbs", getBreadcrumbs(locale));
-        return "cms/newsTypes/NewsTypes";
+        return "cms/folders/Folders";
     }
 
     private String getPageJS(String contextPath) {
-        return contextPath + "/resources-cwsfe-cms/js/cms/newsTypes/NewsTypes.js";
+        return contextPath + "/resources-cwsfe-cms/js/cms/folders/Folders.js";
     }
 
     private List<Breadcrumb> getBreadcrumbs(Locale locale) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsTypes").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypesManagement")));
+                ServletUriComponentsBuilder.fromCurrentContextPath().path("/folders").build().toUriString(),
+                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FoldersManagement")));
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/newsTypesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/foldersList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
     @ResponseBody
-    public String listNewsTypes(
+    public String listFolders(
             @RequestParam int iDisplayStart,
             @RequestParam int iDisplayLength,
             @RequestParam String sEcho
     ) {
-        final List<NewsType> cmsNewsTypes = newsTypesDAO.listAjax(iDisplayStart, iDisplayLength);
+        final List<CmsFolder> cmsFolders = cmsFoldersDAO.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < cmsNewsTypes.size(); i++) {
+        for (int i = 0; i < cmsFolders.size(); i++) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("#", iDisplayStart + i + 1);
-            formDetailsJson.put("type", cmsNewsTypes.get(i).getType());
-            formDetailsJson.put("id", cmsNewsTypes.get(i).getId());
+            formDetailsJson.put("folderName", cmsFolders.get(i).getFolderName());
+            formDetailsJson.put("orderNumber", cmsFolders.get(i).getOrderNumber());
+            formDetailsJson.put("id", cmsFolders.get(i).getId());
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfNewsTypes = newsTypesDAO.countForAjax();
-        responseDetailsJson.put("iTotalRecords", numberOfNewsTypes);
-        responseDetailsJson.put("iTotalDisplayRecords", numberOfNewsTypes);
+        final int numberOfFolders = cmsFoldersDAO.countForAjax();
+        responseDetailsJson.put("iTotalRecords", numberOfFolders);
+        responseDetailsJson.put("iTotalDisplayRecords", numberOfFolders);
         responseDetailsJson.put("aaData", jsonArray);
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/news/newsTypesDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/news/foldersDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
     @ResponseBody
-    public String listNewsTypesForDropList(
+    public String listFoldersForDropList(
             @RequestParam String term,
             @RequestParam Integer limit
     ) {
-        final List<NewsType> results = newsTypesDAO.listNewsTypesForDropList(term, limit);
+        final List<CmsFolder> results = cmsFoldersDAO.listFoldersForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
-        for (NewsType newsType : results) {
+        for (CmsFolder cmsFolder : results) {
             JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("id", newsType.getId());
-            formDetailsJson.put("type", newsType.getType());
+            formDetailsJson.put("id", cmsFolder.getId());
+            formDetailsJson.put("folderName", cmsFolder.getFolderName());
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("data", jsonArray);
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addNewsType", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/addFolder", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
     @ResponseBody
-    public String addNewsType(
-            @ModelAttribute(value = "newsType") NewsType newsType,
+    public String addFolder(
+            @ModelAttribute(value = "cmsFolder") CmsFolder cmsFolder,
             BindingResult result, Locale locale
     ) {
-        ValidationUtils.rejectIfEmpty(result, "type", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeMustBeSet"));
+        ValidationUtils.rejectIfEmpty(result, "folderName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderNameMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            newsTypesDAO.add(newsType);
+            cmsFoldersDAO.add(cmsFolder);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -108,16 +110,16 @@ class NewsTypesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteNewsType", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/deleteFolder", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
     @ResponseBody
-    public String deleteNewsType(
-            @ModelAttribute(value = "cmsNewsType") NewsType cmsNewsType,
+    public String deleteFolder(
+            @ModelAttribute(value = "cmsFolder") CmsFolder cmsFolder,
             BindingResult result, Locale locale
     ) {
-        ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeMustBeSet"));
+        ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            newsTypesDAO.delete(cmsNewsType);
+            cmsFoldersDAO.delete(cmsFolder);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

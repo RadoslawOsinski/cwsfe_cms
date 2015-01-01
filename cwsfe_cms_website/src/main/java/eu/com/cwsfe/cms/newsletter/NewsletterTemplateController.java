@@ -1,6 +1,7 @@
-package eu.com.cwsfe.cms.controllers;
+package eu.com.cwsfe.cms.newsletter;
 
 import eu.com.cwsfe.cms.EmailValidator;
+import eu.com.cwsfe.cms.mvc.JsonController;
 import eu.com.cwsfe.cms.dao.CmsLanguagesDAO;
 import eu.com.cwsfe.cms.dao.NewsletterTemplateDAO;
 import eu.com.cwsfe.cms.model.Breadcrumb;

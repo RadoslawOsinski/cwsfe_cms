@@ -1,4 +1,4 @@
-package eu.com.cwsfe.cms.controllers;
+package eu.com.cwsfe.cms.login;
 
 import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
 import org.springframework.beans.factory.annotation.Autowired;

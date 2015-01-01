@@ -1,5 +1,6 @@
-package eu.com.cwsfe.cms.controllers;
+package eu.com.cwsfe.cms.configuration;
 
+import eu.com.cwsfe.cms.mvc.JsonController;
 import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
 import eu.com.cwsfe.cms.dao.CmsRolesDAO;
 import eu.com.cwsfe.cms.dao.CmsUserRolesDAO;

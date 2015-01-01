@@ -1,5 +1,6 @@
-package eu.com.cwsfe.cms.controllers;
+package eu.com.cwsfe.cms.news;
 
+import eu.com.cwsfe.cms.mvc.JsonController;
 import eu.com.cwsfe.cms.dao.CmsNewsImagesDAO;
 import eu.com.cwsfe.cms.model.CmsNewsImage;
 import net.sf.json.JSONArray;

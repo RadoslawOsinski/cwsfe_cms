@@ -1,4 +1,4 @@
-package eu.com.cwsfe.cms.controllers;
+package eu.com.cwsfe.cms.mvc;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;

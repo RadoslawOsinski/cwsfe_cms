@@ -1,6 +1,6 @@
-package eu.com.cwsfe.cms.controllers;
+package eu.com.cwsfe.cms.monitoring;
 
-import eu.com.cwsfe.cms.application.monitoring.ServerWatch;
+import eu.com.cwsfe.cms.mvc.JsonController;
 import eu.com.cwsfe.cms.model.Breadcrumb;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

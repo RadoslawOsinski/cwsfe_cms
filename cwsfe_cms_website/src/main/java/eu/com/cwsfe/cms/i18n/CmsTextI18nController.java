@@ -1,5 +1,6 @@
-package eu.com.cwsfe.cms.controllers;
+package eu.com.cwsfe.cms.i18n;
 
+import eu.com.cwsfe.cms.mvc.JsonController;
 import eu.com.cwsfe.cms.dao.CmsLanguagesDAO;
 import eu.com.cwsfe.cms.dao.CmsTextI18nCategoryDAO;
 import eu.com.cwsfe.cms.dao.CmsTextI18nDAO;

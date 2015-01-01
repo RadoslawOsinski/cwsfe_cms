@@ -1,6 +1,7 @@
-package eu.com.cwsfe.cms.controllers;
+package eu.com.cwsfe.cms.newsletter;
 
 import eu.com.cwsfe.cms.EmailValidator;
+import eu.com.cwsfe.cms.mvc.JsonController;
 import eu.com.cwsfe.cms.dao.NewsletterMailAddressDAO;
 import eu.com.cwsfe.cms.dao.NewsletterMailDAO;
 import eu.com.cwsfe.cms.dao.NewsletterMailGroupDAO;
