@@ -52,7 +52,7 @@
                 <%--</label>--%>
 
                 <button type="submit"><spring:message code="SignIn"/> &raquo;</button>
-                <p><a href="#"><spring:message code="ForgotYourPassword"/></a></p>
+                <%--<p><a href="#"><spring:message code="ForgotYourPassword"/></a></p>--%>
 
                 <p><spring:message code="TroubleLoggingIn"/>
                     <a href="mailto:info@cwsfe.pl"><spring:message code="ContactSupport"/> &rarr;</a><br/>

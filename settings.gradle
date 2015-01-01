@@ -1,1 +1,1 @@
-include "cwsfe_cms_dao", "cwsfe_cms_common", "cwsfe_cms_website"
+include "cwsfe_cms_dao", "cwsfe_cms_common", "cwsfe_cms_rest", "cwsfe_cms_website"
