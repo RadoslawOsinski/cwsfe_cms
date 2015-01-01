@@ -3,6 +3,7 @@ package eu.com.cwsfe.cms.rest;
 import eu.com.cwsfe.cms.dao.CmsNewsDAO;
 import eu.com.cwsfe.cms.model.CmsNews;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +18,7 @@ public class NewsRestController {
     @Autowired
     private CmsNewsDAO cmsNewsDAO;
 
-    @RequestMapping(value = "/rest/news", method = RequestMethod.GET)
+    @RequestMapping(value = "/rest/news", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public CmsNews getNewsByNewsTypeFolderAndNewsCode(
             @RequestParam(value="newsTypeId") long newsTypeId,
             @RequestParam(value="folderId") long folderId,

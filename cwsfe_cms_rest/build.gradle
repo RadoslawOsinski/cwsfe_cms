@@ -72,6 +72,8 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'org.springframework', name: 'spring-test', version: '4.1.0.RC1'
     testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: '0.8.1'
+    testCompile group: 'com.jayway.jsonpath', name: 'json-path-assert', version: '0.8.1'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '1.9.5'
 }
 
 jar.archiveName = "CWSFE_CMS_REST-" + version + ".jar";
