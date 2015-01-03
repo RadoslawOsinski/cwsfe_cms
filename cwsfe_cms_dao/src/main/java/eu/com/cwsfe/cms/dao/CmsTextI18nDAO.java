@@ -64,7 +64,7 @@ public class CmsTextI18nDAO {
     }
 
     @Cacheable(value = "cmsTextI18nById")
-    public CmsTextI18n get(Long id) {
+    public CmsTextI18n get(Long id) throws EmptyResultDataAccessException {
         String query =
                 "SELECT " +
                         " id, lang_id, i18n_category, i18n_key, i18n_text" +
@@ -72,16 +72,8 @@ public class CmsTextI18nDAO {
                         "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
-        CmsTextI18n cmsTextI18n = null;
-        try {
-            cmsTextI18n = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
+        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
                     mapCmsTextI18n(resultSet));
-        } catch (EmptyResultDataAccessException ignored) {
-            LOGGER.error("No internationalization for id= " + id);
-        } catch (DataAccessException e) {
-            LOGGER.error("Problem with query: " + query + ", and id=" + id);
-        }
-        return cmsTextI18n;
     }
 
     public String findTranslation(String language2LetterCode, String category, String key) {

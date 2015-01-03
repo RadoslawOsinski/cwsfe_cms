@@ -68,7 +68,7 @@ public class CmsUserAllowedNetAddressDAO {
                 mapCmsUserAllowedNetAddress(resultSet));
     }
 
-    public CmsUserAllowedNetAddress get(Long id) {
+    public CmsUserAllowedNetAddress get(Long id) throws EmptyResultDataAccessException {
         String query =
                 "SELECT " +
                         "id, user_id, INET_ADDRESS " +
@@ -76,14 +76,8 @@ public class CmsUserAllowedNetAddressDAO {
                         "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
-        CmsUserAllowedNetAddress cmsUserAllowedNetAddress = null;
-        try {
-            cmsUserAllowedNetAddress = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
+        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
                     mapCmsUserAllowedNetAddress(resultSet));
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.error("No address for id= " + id);
-        }
-        return cmsUserAllowedNetAddress;
     }
 
     public Long add(CmsUserAllowedNetAddress cmsUserAllowedNetAddress) {

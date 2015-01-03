@@ -4,6 +4,7 @@ import eu.com.cwsfe.cms.model.CmsGlobalParam;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -219,7 +220,12 @@ public class CmsGlobalParamsDAOTest extends AbstractTransactionalJUnit4SpringCon
         dao.delete(cmsGlobalParam);
 
         //then
-        CmsGlobalParam cmsGlobalParamResult = dao.get(cmsGlobalParam.getId());
+        CmsGlobalParam cmsGlobalParamResult = null;
+        try {
+            cmsGlobalParamResult = dao.get(cmsGlobalParam.getId());
+        } catch (EmptyResultDataAccessException e) {
+            assertNotNull("Global param should not exist after deletion", e);
+        }
         assertNull("Global param should not exist after deletion", cmsGlobalParamResult);
     }
 }

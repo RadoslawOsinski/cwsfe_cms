@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -198,7 +199,12 @@ public class BlogPostCodesDAOTest extends AbstractTransactionalJUnit4SpringConte
         dao.delete(blogPostCode);
 
         //then
-        BlogPostCode codeForPost = dao.getCodeForPostByCodeId(BLOG_POST.getId(), codeId);
+        BlogPostCode codeForPost = null;
+        try {
+            codeForPost = dao.getCodeForPostByCodeId(BLOG_POST.getId(), codeId);
+        } catch (EmptyResultDataAccessException e) {
+            assertNotNull("Code for post should not exists", e);
+        }
         assertNull("Code for post should not exists", codeForPost);
     }
 }

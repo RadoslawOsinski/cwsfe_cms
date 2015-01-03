@@ -73,7 +73,7 @@ public class BlogPostCodesDAO {
     }
 
     @Cacheable(value="blogPostCodeByPostIdAndCodeId")
-    public BlogPostCode getCodeForPostByCodeId(Long postId, String codeId) {
+    public BlogPostCode getCodeForPostByCodeId(Long postId, String codeId) throws EmptyResultDataAccessException {
         Object[] dbParams = new Object[2];
         dbParams[0] = postId;
         dbParams[1] = codeId;
@@ -83,14 +83,7 @@ public class BlogPostCodesDAO {
                         " FROM BLOG_POST_CODE " +
                         "WHERE blog_post_id = ? AND code_id = ?";
         BlogPostCode blogPostCode = null;
-        try {
-            blogPostCode = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPostCode(resultSet));
-        } catch (EmptyResultDataAccessException ignored) {
-            blogPostCode = null;
-        } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
-        }
-        return blogPostCode;
+        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPostCode(resultSet));
     }
 
     public String add(BlogPostCode blogPostCode) {

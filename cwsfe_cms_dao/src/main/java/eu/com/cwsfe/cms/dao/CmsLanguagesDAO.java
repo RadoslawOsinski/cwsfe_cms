@@ -80,19 +80,13 @@ public class CmsLanguagesDAO {
     }
 
     @Cacheable(value = "cmsLanguagesById")
-    public Language getById(Long id) {
+    public Language getById(Long id) throws EmptyResultDataAccessException {
         String query =
                 "SELECT " + COLUMNS + "FROM CMS_LANGUAGES WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
-        Language lang = null;
-        try {
-            lang = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
+        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
                     mapLang(resultSet));
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.error("Language with id=" + id + " does not exists.");
-        }
-        return lang;
     }
 
     @Cacheable(value = "cmsLanguagesByCode")

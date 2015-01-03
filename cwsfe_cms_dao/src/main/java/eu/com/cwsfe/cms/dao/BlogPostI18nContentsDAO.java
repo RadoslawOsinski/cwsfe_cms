@@ -44,7 +44,7 @@ public class BlogPostI18nContentsDAO {
         return blogPostI18nContent;
     }
 
-    public BlogPostI18nContent getByLanguageForPost(Long postId, Long languageId) {
+    public BlogPostI18nContent getByLanguageForPost(Long postId, Long languageId) throws EmptyResultDataAccessException {
         Object[] dbParams = new Object[2];
         dbParams[0] = postId;
         dbParams[1] = languageId;
@@ -53,16 +53,7 @@ public class BlogPostI18nContentsDAO {
                         " id, post_id, language_id, post_title, post_shortcut, post_description, status" +
                         " FROM BLOG_POST_I18N_CONTENTS " +
                         "WHERE post_id = ? and language_id = ?";
-        BlogPostI18nContent blogPostI18nContent = null;
-        try {
-            blogPostI18nContent = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                    mapBlogPostI18nContent(resultSet));
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.error("No post internationalization for postId: " + postId + " and languageId: " + languageId);
-        } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
-        }
-        return blogPostI18nContent;
+        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPostI18nContent(resultSet));
     }
 
     public Long add(BlogPostI18nContent blogPostI18nContent) {

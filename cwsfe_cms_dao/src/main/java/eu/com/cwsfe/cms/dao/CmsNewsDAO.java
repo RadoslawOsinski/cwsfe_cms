@@ -1,9 +1,12 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.model.CmsNews;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +17,8 @@ import java.util.List;
 
 @Repository
 public class CmsNewsDAO {
+
+    private static final Logger LOGGER = LogManager.getLogger(CmsNewsDAO.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -124,7 +129,7 @@ public class CmsNewsDAO {
     }
 
     @Cacheable(value="cmsNewsById")
-    public CmsNews get(Long id) {
+    public CmsNews get(Long id) throws EmptyResultDataAccessException {
         String query =
                 "SELECT " +
                         " id, author_id, news_type_id, folder_id, creation_date, news_code, status" +
@@ -135,19 +140,8 @@ public class CmsNewsDAO {
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapCmsNews(resultSet));
     }
 
-    public CmsNews getByFolderName(String folderName) {
-        String query =
-                "SELECT " +
-                        " id, author_id, news_type_id, folder_id, creation_date, news_code, status" +
-                        " FROM CMS_NEWS " +
-                        "WHERE news_code = ?";
-        Object[] dbParams = new Object[1];
-        dbParams[0] = folderName;
-        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapCmsNews(resultSet));
-    }
-
     @Cacheable(value="cmsNewsByNewsTypeIdNewsFolderIdNewsCode")
-    public CmsNews getByNewsTypeFolderAndNewsCode(Long newsTypeId, Long newsFolderId, String newsCode) {
+    public CmsNews getByNewsTypeFolderAndNewsCode(Long newsTypeId, Long newsFolderId, String newsCode) throws EmptyResultDataAccessException {
         String query =
                 "SELECT " +
                         " id, author_id, news_type_id, folder_id, creation_date, news_code, status" +

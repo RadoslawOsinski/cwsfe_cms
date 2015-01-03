@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -149,7 +150,12 @@ public class CmsUserAllowedNetAddressDAOTest extends AbstractTransactionalJUnit4
         dao.delete(cmsUserAllowedNetAddress);
 
         //then
-        CmsUserAllowedNetAddress cmsUserAllowedNetAddressResult = dao.get(cmsUserAllowedNetAddress.getId());
+        CmsUserAllowedNetAddress cmsUserAllowedNetAddressResult = null;
+        try {
+            cmsUserAllowedNetAddressResult = dao.get(cmsUserAllowedNetAddress.getId());
+        } catch (EmptyResultDataAccessException e) {
+            assertNotNull("User IP address should not exist", e);
+        }
         assertNull("User IP address should not exist", cmsUserAllowedNetAddressResult);
     }
 

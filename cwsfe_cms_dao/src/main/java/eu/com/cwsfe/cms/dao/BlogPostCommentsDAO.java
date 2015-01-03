@@ -83,7 +83,7 @@ public class BlogPostCommentsDAO {
         return jdbcTemplate.queryForObject(query, Integer.class);
     }
 
-    public BlogPostComment get(Long id) {
+    public BlogPostComment get(Long id) throws EmptyResultDataAccessException {
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         String query =
@@ -91,13 +91,7 @@ public class BlogPostCommentsDAO {
                         " id, parent_comment_id, blog_post_i18n_content_id, comment, user_name, email, status, created" +
                         " FROM CMS_BLOG_POST_COMMENTS " +
                         "WHERE id = ?";
-        BlogPostComment blogPostComment = null;
-        try {
-            blogPostComment = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPostComment(resultSet));
-        } catch (EmptyResultDataAccessException ignored) {
-            blogPostComment = null;
-        }
-        return blogPostComment;
+        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPostComment(resultSet));
     }
 
     public Long add(BlogPostComment blogPostComment) {

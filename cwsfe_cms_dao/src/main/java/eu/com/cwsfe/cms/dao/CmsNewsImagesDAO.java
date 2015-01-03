@@ -92,7 +92,7 @@ public class CmsNewsImagesDAO {
     }
 
     @Cacheable(value="cmsNewsImageWithContentById")
-    public CmsNewsImage getWithContent(Long id) {
+    public CmsNewsImage getWithContent(Long id) throws EmptyResultDataAccessException {
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         String query =
@@ -101,14 +101,8 @@ public class CmsNewsImagesDAO {
                         " mime_type, content, created, status " +
                         " FROM CMS_NEWS_IMAGES " +
                         " WHERE id = ? ";
-        CmsNewsImage cmsNewsImage = null;
-        try {
-            cmsNewsImage = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
+        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
                     mapCmsNewsImage(resultSet, true));
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.info("No results for id: " + id);
-        }
-        return cmsNewsImage;
     }
 
     public Long add(CmsNewsImage cmsNewsImage) {

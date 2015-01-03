@@ -78,7 +78,7 @@ public class CmsGlobalParamsDAO {
     }
 
     @Cacheable(value="cmsGlobalParamById")
-    public CmsGlobalParam get(Long id) {
+    public CmsGlobalParam get(Long id) throws EmptyResultDataAccessException {
         String query =
                 "SELECT " +
                         "id, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION " +
@@ -86,16 +86,8 @@ public class CmsGlobalParamsDAO {
                         "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
-        CmsGlobalParam cmsGlobalParam = null;
-        try {
-            cmsGlobalParam = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
+        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
                     mapCmsGlobalParam(resultSet));
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.error("No global param for id= " + id);
-        } catch (DataAccessException e) {
-            LOGGER.error("Problem with query: " + query + ", and id=" + id);
-        }
-        return cmsGlobalParam;
     }
 
     @Cacheable(value="cmsGlobalParamByCode")
