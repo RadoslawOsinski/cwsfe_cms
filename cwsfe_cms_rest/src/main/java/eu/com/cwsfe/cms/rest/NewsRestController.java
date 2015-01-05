@@ -94,6 +94,13 @@ public class NewsRestController {
         return cmsNewsI18nContentsDAO.getByLanguageForNews(newsId, currentPLang.getId());
     }
 
+    @RequestMapping(value = "/rest/singleNewsI18nContent", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+    public CmsNewsI18nContent get(
+            @RequestParam(value = "id") Long id
+    ) {
+        return cmsNewsI18nContentsDAO.get(id);
+    }
+
     @RequestMapping(value = "/rest/newsI18nContentByNews", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public CmsNewsI18nContent getNewsI18nContentByNews(
             @RequestParam(value = "languageCode") String languageCode,

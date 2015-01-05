@@ -259,7 +259,7 @@ public class CmsNewsDAO {
     }
 
     //todo probably for deletion
-    public List<Object[]> listI18nProjects(Long languageId) {
+    public List<Object[]> listI18nProjectslistI18nProjects(Long languageId) {
         Object[] dbParams = new Object[1];
         dbParams[0] = languageId;
         String query =

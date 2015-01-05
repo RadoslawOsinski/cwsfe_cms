@@ -220,6 +220,41 @@ public class NewsRestControllerTest {
     }
 
     @Test
+    public void testGet() throws Exception {
+        CmsNewsI18nContent cmsNewsI18nContent = new CmsNewsI18nContent();
+        Long id = 1l;
+        Long newsId = 2l;
+        String description = "description";
+        Long languageId = 3l;
+        String shortcut = "shortcut";
+        String title = "title";
+        String status = "status";
+        cmsNewsI18nContent.setId(id);
+        cmsNewsI18nContent.setNewsId(newsId);
+        cmsNewsI18nContent.setNewsDescription(description);
+        cmsNewsI18nContent.setLanguageId(languageId);
+        cmsNewsI18nContent.setNewsShortcut(shortcut);
+        cmsNewsI18nContent.setNewsTitle(title);
+        cmsNewsI18nContent.setStatus(status);
+        when(cmsNewsI18nContentsDAO.get(anyLong())).thenReturn(cmsNewsI18nContent);
+
+        ResultActions resultActions = mockMvc.perform(get("/rest/singleNewsI18nContent")
+                .param("id", "1")
+                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+                .andExpect(jsonPath("$.id").value(id.intValue()))
+                .andExpect(jsonPath("$.newsId").value(newsId.intValue()))
+                .andExpect(jsonPath("$.languageId").value(languageId.intValue()))
+                .andExpect(jsonPath("$.newsDescription").value(description))
+                .andExpect(jsonPath("$.newsShortcut").value(shortcut))
+                .andExpect(jsonPath("$.newsTitle").value(title))
+                .andExpect(jsonPath("$.status").value(status));
+    }
+
+    @Test
     public void testGetNewsI18nContentByNews() throws Exception {
         long id = 1l;
         long authorId = 2l;
