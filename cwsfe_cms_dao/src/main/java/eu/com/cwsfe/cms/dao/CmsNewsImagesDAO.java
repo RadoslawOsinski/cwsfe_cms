@@ -177,7 +177,7 @@ public class CmsNewsImagesDAO {
         return cmsNewsImages;
     }
 
-    public CmsNewsImage getThumbnailForNews(Long newsId) {
+    public CmsNewsImage getThumbnailForNews(Long newsId) throws EmptyResultDataAccessException {
         String query =
                 "SELECT " +
                         " id, news_id, title, file_name, file_size, width, height," +
@@ -186,17 +186,8 @@ public class CmsNewsImagesDAO {
                         "WHERE news_id = ? AND status = 'N' AND title LIKE 'thumbnail_%'";
         Object[] dbParams = new Object[1];
         dbParams[0] = newsId;
-
-        CmsNewsImage cmsNewsImage = null;
-        try {
-            cmsNewsImage = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                    mapCmsNewsImage(resultSet, true));
-        } catch (EmptyResultDataAccessException e) {
-            LOGGER.info("No results for newsId: " + newsId);
-        } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
-        }
-        return cmsNewsImage;
+        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
+                mapCmsNewsImage(resultSet, true));
     }
 
     @Cacheable(value="cmsNewsImageById")

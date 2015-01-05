@@ -212,13 +212,14 @@ public class CmsNewsDAO {
         jdbcTemplate.update("update CMS_NEWS set status = 'P' where id = ?", dbParams);
     }
 
-    public List<Object[]> listByFolderLangWithPagingForProjects(Integer newsFolderId, Long languageId, int newsPerPage, int offset) {
-        Object[] dbParams = new Object[5];
+    public List<Object[]> listByFolderLangAndNewsWithPaging(Integer newsFolderId, Long languageId, String newsType, int newsPerPage, int offset) {
+        Object[] dbParams = new Object[6];
         dbParams[0] = newsFolderId;
         dbParams[1] = newsFolderId;
         dbParams[2] = languageId;
-        dbParams[3] = newsPerPage;
-        dbParams[4] = offset;
+        dbParams[3] = newsType;
+        dbParams[4] = newsPerPage;
+        dbParams[5] = offset;
         String query =
                 "SELECT" +
                         " cn.id, cni18n.id " +
@@ -227,7 +228,7 @@ public class CmsNewsDAO {
                         "  cn.id = cni18n.news_id AND " +
                         "  cn.folder_id IN (SELECT cf2.id FROM CMS_FOLDERS cf2 WHERE (cf2.id = ? OR cf2.parent_id = ?) AND cf2.status = 'N') AND " +
                         "  cni18n.language_id = ? AND " +
-                        "  cn.news_type_id = (SELECT id FROM CMS_NEWS_TYPES WHERE status = 'N' AND type = 'Projects') AND " +
+                        "  cn.news_type_id = (SELECT id FROM CMS_NEWS_TYPES WHERE status = 'N' AND type = ?) AND " +
                         "  cn.status = 'P' AND cni18n.status = 'P' " +
                         "ORDER BY cn.creation_date DESC " +
                         "LIMIT ? OFFSET ? ";
@@ -235,11 +236,12 @@ public class CmsNewsDAO {
                 (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
     }
 
-    public Integer countListByFolderLangWithPagingForProjects(Integer newsFolderId, Long languageId) {
-        Object[] dbParams = new Object[3];
+    public Integer countListByFolderLangAndNewsWithPaging(Integer newsFolderId, Long languageId, String newsType) {
+        Object[] dbParams = new Object[4];
         dbParams[0] = newsFolderId;
         dbParams[1] = newsFolderId;
         dbParams[2] = languageId;
+        dbParams[3] = newsType;
         String query =
                 "SELECT count(*) FROM (" +
                         " SELECT " +
@@ -249,133 +251,14 @@ public class CmsNewsDAO {
                         " cn.id = cni18n.news_id AND" +
                         " cn.folder_id IN (SELECT cf2.id FROM CMS_FOLDERS cf2 WHERE (cf2.id = ? OR cf2.parent_id = ?) AND cf2.status = 'N') AND" +
                         " cni18n.language_id = ? AND" +
-                        " cn.news_type_id = (SELECT id FROM CMS_NEWS_TYPES WHERE status = 'N' AND type = 'Projects') AND" +
+                        " cn.news_type_id = (SELECT id FROM CMS_NEWS_TYPES WHERE status = 'N' AND type = ?) AND" +
                         " cn.status = 'P' AND cni18n.status = 'P'" +
                         " ORDER BY cn.creation_date DESC" +
                         ") AS results";
         return jdbcTemplate.queryForObject(query, dbParams, Integer.class);
     }
 
-    public List<Object[]> listByFolderLangWithPagingForProducts(Integer newsFolderId, Long languageId, int newsPerPage, int offset) {
-        Object[] dbParams = new Object[5];
-        dbParams[0] = newsFolderId;
-        dbParams[1] = newsFolderId;
-        dbParams[2] = languageId;
-        dbParams[3] = newsPerPage;
-        dbParams[4] = offset;
-        String query =
-                "SELECT" +
-                        " cn.id, cni18n.id " +
-                        " FROM CMS_NEWS cn, CMS_NEWS_I18N_CONTENTS cni18n " +
-                        " WHERE " +
-                        "  cn.id = cni18n.news_id AND " +
-                        "  cn.folder_id IN (SELECT cf2.id FROM CMS_FOLDERS cf2 WHERE (cf2.id = ? OR cf2.parent_id = ?) AND cf2.status = 'N') AND " +
-                        "  cni18n.language_id = ? AND " +
-                        "  cn.news_type_id = (SELECT id FROM CMS_NEWS_TYPES WHERE status = 'N' AND type = 'Products') AND " +
-                        "  cn.status = 'P' AND cni18n.status = 'P' " +
-                        "ORDER BY cn.creation_date DESC " +
-                        "LIMIT ? OFFSET ? ";
-        return jdbcTemplate.query(query, dbParams,
-                (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
-    }
-
-    public Integer countListByFolderLangWithPagingForProducts(Integer newsFolderId, Long languageId) {
-        Object[] dbParams = new Object[3];
-        dbParams[0] = newsFolderId;
-        dbParams[1] = newsFolderId;
-        dbParams[2] = languageId;
-        String query =
-                "SELECT count(*) FROM (" +
-                        " SELECT " +
-                        " cn.id, cni18n.id" +
-                        " FROM CMS_NEWS cn, CMS_NEWS_I18N_CONTENTS cni18n" +
-                        " WHERE" +
-                        " cn.id = cni18n.news_id AND" +
-                        " cn.folder_id IN (SELECT cf2.id FROM CMS_FOLDERS cf2 WHERE (cf2.id = ? OR cf2.parent_id = ?) AND cf2.status = 'N') AND" +
-                        " cni18n.language_id = ? AND" +
-                        " cn.news_type_id = (SELECT id FROM CMS_NEWS_TYPES WHERE status = 'N' AND type = 'Products') AND" +
-                        " cn.status = 'P' AND cni18n.status = 'P'" +
-                        " ORDER BY cn.creation_date DESC" +
-                        ") AS results";
-        return jdbcTemplate.queryForObject(query, dbParams, Integer.class);
-    }
-
-    public List<Object[]> listLangWithPagingForProjects(Long languageId, int newsPerPage, int offset) {
-        Object[] dbParams = new Object[3];
-        dbParams[0] = languageId;
-        dbParams[1] = newsPerPage;
-        dbParams[2] = offset;
-        String query =
-                "SELECT" +
-                        "    cn.id, cni18n.id" +
-                        "    FROM CMS_NEWS cn, CMS_NEWS_I18N_CONTENTS cni18n" +
-                        "    WHERE" +
-                        "        cn.id = cni18n.news_id AND" +
-                        "        cni18n.language_id = ? AND" +
-                        "        cn.news_type_id = (SELECT id FROM CMS_NEWS_TYPES WHERE status = 'N' AND type = 'Projects') AND" +
-                        "        cn.status = 'P' AND cni18n.status = 'P'" +
-                        " ORDER BY cn.creation_date DESC " +
-                        " LIMIT ? OFFSET ?";
-        return jdbcTemplate.query(query, dbParams,
-                (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
-    }
-
-    public Integer countListLangWithPagingForProjects(Long languageId) {
-        Object[] dbParams = new Object[1];
-        dbParams[0] = languageId;
-        String query =
-                "SELECT count(*) FROM (" +
-                        "   SELECT" +
-                        "       cn.id, cni18n.id" +
-                        "   FROM CMS_NEWS cn, CMS_NEWS_I18N_CONTENTS cni18n" +
-                        "   WHERE" +
-                        "       cn.id = cni18n.news_id AND" +
-                        "       cni18n.language_id = ? AND" +
-                        "       cn.news_type_id = (SELECT id FROM CMS_NEWS_TYPES WHERE status = 'N' AND type = 'Projects') AND" +
-                        "       cn.status = 'P' AND cni18n.status = 'P'" +
-                        "   ORDER BY cn.creation_date DESC" +
-                        ") AS results";
-        return jdbcTemplate.queryForObject(query, dbParams, Integer.class);
-    }
-
-    public List<Object[]> listLangWithPagingForProducts(Long languageId, int newsPerPage, int offset) {
-        Object[] dbParams = new Object[3];
-        dbParams[0] = languageId;
-        dbParams[1] = newsPerPage;
-        dbParams[2] = offset;
-        String query =
-                "SELECT" +
-                        "    cn.id, cni18n.id" +
-                        "    FROM CMS_NEWS cn, CMS_NEWS_I18N_CONTENTS cni18n" +
-                        "    WHERE" +
-                        "        cn.id = cni18n.news_id AND" +
-                        "        cni18n.language_id = ? AND" +
-                        "        cn.news_type_id = (SELECT id FROM CMS_NEWS_TYPES WHERE status = 'N' AND type = 'Products') AND" +
-                        "        cn.status = 'P' AND cni18n.status = 'P'" +
-                        " ORDER BY cn.creation_date DESC " +
-                        " LIMIT ? OFFSET ?";
-        return jdbcTemplate.query(query, dbParams,
-                (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
-    }
-
-    public Integer countListLangWithPagingForProducts(Long languageId) {
-        Object[] dbParams = new Object[1];
-        dbParams[0] = languageId;
-        String query =
-                "SELECT count(*) FROM (" +
-                        "   SELECT" +
-                        "       cn.id, cni18n.id" +
-                        "   FROM CMS_NEWS cn, CMS_NEWS_I18N_CONTENTS cni18n" +
-                        "   WHERE" +
-                        "       cn.id = cni18n.news_id AND" +
-                        "       cni18n.language_id = ? AND" +
-                        "       cn.news_type_id = (SELECT id FROM CMS_NEWS_TYPES WHERE status = 'N' AND type = 'Products') AND" +
-                        "       cn.status = 'P' AND cni18n.status = 'P'" +
-                        "   ORDER BY cn.creation_date DESC" +
-                        ") AS results";
-        return jdbcTemplate.queryForObject(query, dbParams, Integer.class);
-    }
-
+    //todo probably for deletion
     public List<Object[]> listI18nProjects(Long languageId) {
         Object[] dbParams = new Object[1];
         dbParams[0] = languageId;
@@ -392,6 +275,7 @@ public class CmsNewsDAO {
                 (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
     }
 
+    //todo probably for deletion
     public List<Object[]> listI18nProducts(Long languageId) {
         Object[] dbParams = new Object[1];
         dbParams[0] = languageId;

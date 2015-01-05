@@ -15,7 +15,7 @@ import java.io.Serializable;
 @RestController
 public class CwsfeCmsRestController {
 
-    @RequestMapping(value = "/rest/version", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/rest/version", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public Version getCmsVersion() {
         return new Version("1.5");
     }
