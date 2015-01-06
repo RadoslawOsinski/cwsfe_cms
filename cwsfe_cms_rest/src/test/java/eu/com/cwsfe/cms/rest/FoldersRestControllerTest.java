@@ -43,7 +43,6 @@ public class FoldersRestControllerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(foldersRestController).build();
-
     }
 
     @Test
