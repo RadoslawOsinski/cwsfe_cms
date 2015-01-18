@@ -85,7 +85,7 @@ class MainCmsController extends JsonController {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("#", iDisplayStart + i + 1);
             final BlogPostComment objects = dbList.get(i);
-            formDetailsJson.put("userName", objects.getUsername() + "[" + objects.getEmail() + "]");
+            formDetailsJson.put("userName", objects.getUserName() + "[" + objects.getEmail() + "]");
             formDetailsJson.put("comment", objects.getComment());
             formDetailsJson.put("created", DATE_FORMAT.format(objects.getCreated().toInstant()));
             formDetailsJson.put("status", objects.getStatus());
