@@ -48,11 +48,11 @@ public class BlogPostsDAO {
                 (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2), resultSet.getLong(3)});
     }
 
-    public List<Object[]> listForPageWithPaging(Long languageId, Integer articlesPerPage, Integer currentPage) {
+    public List<Object[]> listForPageWithPaging(Long languageId, Integer limit, Integer offset) {
         Object[] dbParams = new Object[3];
         dbParams[0] = languageId;
-        dbParams[1] = articlesPerPage;
-        dbParams[2] = currentPage * articlesPerPage;
+        dbParams[1] = limit;
+        dbParams[2] = offset;
         String query =
                 "SELECT" +
                         " bp.id, bpi18n.id" +
@@ -84,12 +84,12 @@ public class BlogPostsDAO {
         return jdbcTemplate.queryForObject(query, dbParams, Long.class);
     }
 
-    public List<Object[]> listForPageWithCategoryAndPaging(Long categoryId, Long languageId, Integer articlesPerPage, Integer currentPage) {
+    public List<Object[]> listForPageWithCategoryAndPaging(Long categoryId, Long languageId, Integer limit, Integer offset) {
         Object[] dbParams = new Object[4];
         dbParams[0] = categoryId;
         dbParams[1] = languageId;
-        dbParams[2] = articlesPerPage;
-        dbParams[3] = currentPage * articlesPerPage;
+        dbParams[2] = limit;
+        dbParams[3] = offset;
         String query =
                 "SELECT" +
                         " bp.id, bpi18n.id" +
@@ -126,14 +126,14 @@ public class BlogPostsDAO {
         return jdbcTemplate.queryForObject(query, dbParams, Long.class);
     }
 
-    public List<Object[]> listForPageWithSearchTextAndPaging(String searchText, Long languageId, Integer articlesPerPage, Integer currentPage) {
+    public List<Object[]> listForPageWithSearchTextAndPaging(String searchText, Long languageId, Integer limit, Integer offset) {
         Object[] dbParams = new Object[6];
         dbParams[0] = languageId;
         dbParams[1] = '%' + searchText + '%';
         dbParams[2] = '%' + searchText + '%';
         dbParams[3] = '%' + searchText + '%';
-        dbParams[4] = articlesPerPage;
-        dbParams[5] = currentPage * articlesPerPage;
+        dbParams[4] = limit;
+        dbParams[5] = offset;
         String query =
                 "SELECT" +
                         " bp.id, bpi18n.id" +
@@ -178,13 +178,13 @@ public class BlogPostsDAO {
         return jdbcTemplate.queryForObject(query, dbParams, Long.class);
     }
 
-    public List<Object[]> listForPageWithArchiveDateAndPaging(Date startDate, Date endDate, Long languageId, Integer articlesPerPage, Integer currentPage) {
+    public List<Object[]> listForPageWithArchiveDateAndPaging(Date startDate, Date endDate, Long languageId, Integer limit, Integer offset) {
         Object[] dbParams = new Object[5];
         dbParams[0] = languageId;
         dbParams[1] = startDate;
         dbParams[2] = endDate;
-        dbParams[3] = articlesPerPage;
-        dbParams[4] = currentPage * articlesPerPage;
+        dbParams[3] = limit;
+        dbParams[4] = offset;
         String query =
                 "SELECT" +
                         " bp.id, bpi18n.id" +

@@ -1,6 +1,7 @@
 package eu.com.cwsfe.cms.rest;
 
 import eu.com.cwsfe.cms.dao.BlogKeywordsDAO;
+import eu.com.cwsfe.cms.dao.BlogPostKeywordsDAO;
 import eu.com.cwsfe.cms.dao.CmsTextI18nDAO;
 import eu.com.cwsfe.cms.model.BlogKeyword;
 import org.junit.Before;
@@ -21,9 +22,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -35,6 +38,8 @@ public class BlogKeywordsRestControllerTest {
 
     @Mock
     private BlogKeywordsDAO blogKeywordsDAO;
+    @Mock
+    private BlogPostKeywordsDAO blogPostKeywordsDAO;
     @Mock
     private CmsTextI18nDAO cmsTextI18nDAO;
 
@@ -98,4 +103,32 @@ public class BlogKeywordsRestControllerTest {
                 .andExpect(jsonPath("$[0].keywordName").value(keyword))
                 .andExpect(jsonPath("$[0].status").value(status));
     }
+
+    @Test
+    public void testBlogKeywordsListForPost() throws Exception {
+        String blogKeywordI18n = "blogKeywordI18n";
+        long id = 1l;
+        String status = "N";
+        List<BlogKeyword> blogKeywords = new ArrayList<>();
+        BlogKeyword blogKeyword = new BlogKeyword();
+        blogKeyword.setId(id);
+        blogKeyword.setKeywordName("keyword");
+        blogKeyword.setStatus(status);
+        blogKeywords.add(blogKeyword);
+        when(blogPostKeywordsDAO.listForPost(anyLong())).thenReturn(blogKeywords);
+        when(cmsTextI18nDAO.findTranslation(anyString(), anyString(), anyString())).thenReturn(blogKeywordI18n);
+
+        ResultActions resultActions = mockMvc.perform(get("/rest/postKeywords")
+                .param("blogPostId", "1")
+                .param("languageCode", "en")
+                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+                .andExpect(jsonPath("$[0].id").value((int) id))
+                .andExpect(jsonPath("$[0].keywordName").value(blogKeywordI18n))
+                .andExpect(jsonPath("$[0].status").value(status));
+    }
+
 }

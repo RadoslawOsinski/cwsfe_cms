@@ -151,4 +151,11 @@ public class BlogPostCommentsDAO {
         jdbcTemplate.update("update CMS_BLOG_POST_COMMENTS set status = 'S' where id = ?", dbParams);
     }
 
+    public int countCommentsForPostI18n(long blogPostI18nContentId) {
+        Object[] params = new Object[1];
+        params[0] = blogPostI18nContentId;
+        String query = "select count(id) from CMS_BLOG_POST_COMMENTS where blog_post_i18n_content_id = ? and status = 'P'";
+        return jdbcTemplate.queryForObject(query, params, Integer.class);
+    }
+
 }

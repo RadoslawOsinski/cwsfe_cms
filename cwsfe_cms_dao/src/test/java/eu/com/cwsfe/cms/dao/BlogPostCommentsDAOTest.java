@@ -343,4 +343,14 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         assertNotNull("Post comment should exists", result);
         assertEquals("Post status should be marked as spam", "S", result.getStatus());
     }
+
+    @Test
+    public void testCountCommentsForPostI18n() throws Exception {
+        //given
+        //when
+        int count = dao.countCommentsForPostI18n(BLOG_POST_I18N_CONTENT.getId());
+
+        //then
+        assertNotNull(count);
+    }
 }
