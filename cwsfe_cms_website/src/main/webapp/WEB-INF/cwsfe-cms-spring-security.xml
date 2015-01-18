@@ -13,6 +13,10 @@
     <http pattern="favicon.ico" security="none"/>
     <http pattern="/rest/*" security="none"/>
 
+    <!--todo introduce public and private images in cms-->
+    <http pattern="/newsImages/*" security="none"/>
+    <http pattern="/blogPostImages/*" security="none"/>
+
     <http auto-config="false" authentication-manager-ref="cmsAuthorization" pattern="/*"
           entry-point-ref="cmsAuthenticationEntryPoint">
         <intercept-url pattern="/*" access="ROLE_CWSFE_CMS_ADMIN"/>
