@@ -84,7 +84,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
         blogPostComment.setStatus(status);
-        blogPostComment.setUsername(userName);
+        blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         blogPostComment.setId(dao.add(blogPostComment));
         dao.publish(blogPostComment);
@@ -135,7 +135,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
         blogPostComment.setStatus(status);
-        blogPostComment.setUsername(userName);
+        blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         Long addedId = dao.add(blogPostComment);
 
@@ -148,7 +148,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         assertEquals(created, result.getCreated());
         assertEquals(email, result.getEmail());
         assertEquals(status, result.getStatus());
-        assertEquals(userName, result.getUsername());
+        assertEquals(userName, result.getUserName());
         assertEquals(BLOG_POST_I18N_CONTENT.getId(), result.getBlogPostI18nContentId());
     }
 
@@ -165,7 +165,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
         blogPostComment.setStatus(status);
-        blogPostComment.setUsername(userName);
+        blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
 
         //when
@@ -178,7 +178,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         assertEquals(created, result.getCreated());
         assertEquals(email, result.getEmail());
         assertEquals(status, result.getStatus());
-        assertEquals(userName, result.getUsername());
+        assertEquals(userName, result.getUserName());
         assertEquals(BLOG_POST_I18N_CONTENT.getId(), result.getBlogPostI18nContentId());
     }
 
@@ -196,7 +196,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
         blogPostComment.setStatus(status);
-        blogPostComment.setUsername(userName);
+        blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         blogPostComment.setId(dao.add(blogPostComment));
         blogPostComment.setComment(newComment);
@@ -210,7 +210,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         assertEquals(created, result.getCreated());
         assertEquals(email, result.getEmail());
         assertEquals(status, result.getStatus());
-        assertEquals(userName, result.getUsername());
+        assertEquals(userName, result.getUserName());
         assertEquals(BLOG_POST_I18N_CONTENT.getId(), result.getBlogPostI18nContentId());
     }
 
@@ -227,7 +227,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
         blogPostComment.setStatus(status);
-        blogPostComment.setUsername(userName);
+        blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         blogPostComment.setId(dao.add(blogPostComment));
 
@@ -253,7 +253,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
         blogPostComment.setStatus(status);
-        blogPostComment.setUsername(userName);
+        blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         blogPostComment.setId(dao.add(blogPostComment));
 
@@ -279,7 +279,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
         blogPostComment.setStatus(status);
-        blogPostComment.setUsername(userName);
+        blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         blogPostComment.setId(dao.add(blogPostComment));
 
@@ -305,7 +305,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
         blogPostComment.setStatus(status);
-        blogPostComment.setUsername(userName);
+        blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         blogPostComment.setId(dao.add(blogPostComment));
 
@@ -331,7 +331,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
         blogPostComment.setStatus(status);
-        blogPostComment.setUsername(userName);
+        blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         blogPostComment.setId(dao.add(blogPostComment));
 

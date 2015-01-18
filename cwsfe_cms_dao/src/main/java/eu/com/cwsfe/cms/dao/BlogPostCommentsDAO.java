@@ -43,7 +43,7 @@ public class BlogPostCommentsDAO {
         blogPostComment.setParentCommentId(resultSet.getLong("parent_comment_id"));
         blogPostComment.setBlogPostI18nContentId(resultSet.getLong("blog_post_i18n_content_id"));
         blogPostComment.setComment(resultSet.getString("comment"));
-        blogPostComment.setUsername(resultSet.getString("user_name"));
+        blogPostComment.setUserName(resultSet.getString("user_name"));
         blogPostComment.setEmail(resultSet.getString("email"));
         blogPostComment.setStatus(resultSet.getString("status"));
         blogPostComment.setCreated(resultSet.getTimestamp("created"));
@@ -104,7 +104,7 @@ public class BlogPostCommentsDAO {
         dbParams[1] = blogPostComment.getParentCommentId();
         dbParams[2] = blogPostComment.getBlogPostI18nContentId();
         dbParams[3] = blogPostComment.getComment();
-        dbParams[4] = blogPostComment.getUsername();
+        dbParams[4] = blogPostComment.getUserName();
         dbParams[5] = blogPostComment.getEmail();
         dbParams[6] = "N";
         dbParams[7] = blogPostComment.getCreated();

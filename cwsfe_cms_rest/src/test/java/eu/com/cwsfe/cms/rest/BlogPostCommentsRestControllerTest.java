@@ -16,8 +16,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -52,5 +54,35 @@ public class BlogPostCommentsRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
                 .andExpect(jsonPath("$.count").value(count));
+    }
+
+    @Test
+    public void testAddCommentSuccessful() throws Exception {
+        when(blogPostCommentsDAO.add(anyObject())).thenReturn(1l);
+
+        ResultActions resultActions = mockMvc.perform(post("/blog/comments")
+                .param("blogPostId", "1")
+                .param("blogPostI18nContentId", "2")
+                .param("comment", "aaa")
+                .param("userName", "bbb")
+                .param("email", "Radoslaw.Osinski@cwsfe.pl")
+                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+    }
+
+    @Test
+    public void testAddCommentValidationError() throws Exception {
+        ResultActions resultActions = mockMvc.perform(post("/blog/comments")
+                .param("blogPostId", "1")
+                .param("blogPostI18nContentId", "2")
+                .param("comment", "aaa")
+                .param("userName", "bbb")
+                .param("email", "incorrectEmail")
+                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+
+        resultActions.andExpect(status().isBadRequest());
     }
 }

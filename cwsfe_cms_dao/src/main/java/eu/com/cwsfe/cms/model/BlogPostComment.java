@@ -11,7 +11,7 @@ public class BlogPostComment implements Serializable {
     private Long parentCommentId;
     private Long blogPostI18nContentId;
     private String comment;
-    private String username;
+    private String userName;
     private String email;
     private String status;	//'N'ew, 'P'ublished, 'B'locked
     private Date created;
@@ -48,12 +48,12 @@ public class BlogPostComment implements Serializable {
         this.comment = comment;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getEmail() {
