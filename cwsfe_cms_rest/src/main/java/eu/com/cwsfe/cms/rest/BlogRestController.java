@@ -4,16 +4,20 @@ import eu.com.cwsfe.cms.dao.BlogPostI18nContentsDAO;
 import eu.com.cwsfe.cms.dao.BlogPostsDAO;
 import eu.com.cwsfe.cms.dao.CmsLanguagesDAO;
 import eu.com.cwsfe.cms.model.BlogI18nPair;
+import eu.com.cwsfe.cms.model.BlogPost;
+import eu.com.cwsfe.cms.model.BlogPostI18nContent;
 import eu.com.cwsfe.cms.model.Language;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Radosław Osiński
@@ -76,6 +80,15 @@ public class BlogRestController {
         HashMap<String, Long> result = new HashMap<>(1);
         result.put("total", total);
         return result;
+    }
+
+    @RequestMapping(value = "/rest/blog/singlePost/{blogPostId}/{blogPostI18nContentId}", method = RequestMethod.GET)
+    public BlogI18nPair singlePostView(ModelMap model, Locale locale,
+                                       @PathVariable("blogPostId") Long blogPostId,
+                                       @PathVariable("blogPostI18nContentId") Long blogPostI18nContentId) {
+        BlogPost blogPost = blogPostsDAO.get(blogPostId);
+        BlogPostI18nContent blogPostI18nContent = blogPostI18nContentsDAO.get(blogPostI18nContentId);
+        return new BlogI18nPair(blogPost, blogPostI18nContent);
     }
 
     @ExceptionHandler(value = EmptyResultDataAccessException.class)

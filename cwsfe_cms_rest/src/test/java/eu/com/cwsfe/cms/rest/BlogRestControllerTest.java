@@ -27,7 +27,6 @@ import java.util.List;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -79,7 +78,7 @@ public class BlogRestControllerTest {
         blogPostI18nContent.setPostTitle(postTitle);
         when(cmsLanguagesDAO.getByCode(anyString())).thenReturn(language);
         List<Object[]> ids = new ArrayList<>();
-        ids.add(new Object[] {blogPostId, blogPostI18nContentId});
+        ids.add(new Object[]{blogPostId, blogPostI18nContentId});
         when(blogPostsDAO.listForPageWithCategoryAndPaging(anyLong(), anyLong(), anyInt(), anyInt())).thenReturn(ids);
         when(blogPostsDAO.get(anyLong())).thenReturn(blogPost);
         when(blogPostI18nContentsDAO.get(anyLong())).thenReturn(blogPostI18nContent);
@@ -94,7 +93,6 @@ public class BlogRestControllerTest {
         resultActions
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andDo(print())
                 .andExpect(jsonPath("$[0].blogPost.id").value((int) blogPostId))
                 .andExpect(jsonPath("$[0].blogPost.postAuthorId").value((int) authorId))
                 .andExpect(jsonPath("$[0].blogPost.postCreationDate").value((int) postCreationDate.getTime()))
@@ -106,7 +104,7 @@ public class BlogRestControllerTest {
                 .andExpect(jsonPath("$[0].blogPostI18nContent.postTitle").value(postTitle));
     }
 
-@Test
+    @Test
     public void testListBlogPostsWithCategory() throws Exception {
         long blogPostId = 1l;
         long authorId = 2l;
@@ -132,7 +130,7 @@ public class BlogRestControllerTest {
         blogPostI18nContent.setPostTitle(postTitle);
         when(cmsLanguagesDAO.getByCode(anyString())).thenReturn(language);
         List<Object[]> ids = new ArrayList<>();
-        ids.add(new Object[] {blogPostId, blogPostI18nContentId});
+        ids.add(new Object[]{blogPostId, blogPostI18nContentId});
         when(blogPostsDAO.listForPageWithPaging(anyLong(), anyInt(), anyInt())).thenReturn(ids);
         when(blogPostsDAO.get(anyLong())).thenReturn(blogPost);
         when(blogPostI18nContentsDAO.get(anyLong())).thenReturn(blogPostI18nContent);
@@ -147,7 +145,6 @@ public class BlogRestControllerTest {
         resultActions
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andDo(print())
                 .andExpect(jsonPath("$[0].blogPost.id").value((int) blogPostId))
                 .andExpect(jsonPath("$[0].blogPost.postAuthorId").value((int) authorId))
                 .andExpect(jsonPath("$[0].blogPost.postCreationDate").value((int) postCreationDate.getTime()))
@@ -197,5 +194,47 @@ public class BlogRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
                 .andExpect(jsonPath("$total").value((int) total));
+    }
+
+    @Test
+    public void testSinglePostView() throws Exception {
+        long blogPostId = 1l;
+        long authorId = 2l;
+        Date postCreationDate = new Date(1);
+        String postTextCode = "postTextCode";
+        long blogPostI18nContentId = 4l;
+        String description = "description";
+        String shortcut = "shortcut";
+        long languageId = 7l;
+        String postTitle = "postTitle";
+        BlogPost blogPost = new BlogPost();
+        blogPost.setId(blogPostId);
+        blogPost.setPostAuthorId(authorId);
+        blogPost.setPostCreationDate(postCreationDate);
+        blogPost.setPostTextCode(postTextCode);
+        BlogPostI18nContent blogPostI18nContent = new BlogPostI18nContent();
+        blogPostI18nContent.setId(blogPostI18nContentId);
+        blogPostI18nContent.setPostDescription(description);
+        blogPostI18nContent.setPostShortcut(shortcut);
+        blogPostI18nContent.setLanguageId(languageId);
+        blogPostI18nContent.setPostTitle(postTitle);
+        when(blogPostsDAO.get(anyLong())).thenReturn(blogPost);
+        when(blogPostI18nContentsDAO.get(anyLong())).thenReturn(blogPostI18nContent);
+
+        ResultActions resultActions = mockMvc.perform(get("/rest/blog/singlePost/1/1")
+                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+                .andExpect(jsonPath("$.blogPost.id").value((int) blogPostId))
+                .andExpect(jsonPath("$.blogPost.postAuthorId").value((int) authorId))
+                .andExpect(jsonPath("$.blogPost.postCreationDate").value((int) postCreationDate.getTime()))
+                .andExpect(jsonPath("$.blogPost.postTextCode").value(postTextCode))
+                .andExpect(jsonPath("$.blogPostI18nContent.id").value((int) blogPostI18nContentId))
+                .andExpect(jsonPath("$.blogPostI18nContent.postDescription").value(description))
+                .andExpect(jsonPath("$.blogPostI18nContent.postShortcut").value(shortcut))
+                .andExpect(jsonPath("$.blogPostI18nContent.languageId").value((int) languageId))
+                .andExpect(jsonPath("$.blogPostI18nContent.postTitle").value(postTitle));
     }
 }
