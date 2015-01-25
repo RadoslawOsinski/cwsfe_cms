@@ -7,7 +7,6 @@ buildscript {
 
 apply plugin: 'maven'
 apply plugin: 'java'
-apply plugin: 'idea'
 apply plugin: 'base'
 apply plugin: 'sonar-runner'
 apply plugin: 'jacoco'
@@ -15,19 +14,6 @@ apply plugin: 'jacoco'
 version = '1.5'
 group = "eu.com.cwsfe.cms"
 compileJava.options.encoding = 'UTF-8'
-
-idea {
-    module {
-        sourceDirs += file('src/main/java')
-        sourceDirs += file('src/main/resources')
-        testSourceDirs += file('src/test/java')
-        testSourceDirs += file('src/test/resources')
-        excludeDirs += file('target')
-        excludeDirs += file('build')
-        excludeDirs += file('out')
-        excludeDirs += file('.gradle')
-    }
-}
 
 repositories {
     mavenLocal()
