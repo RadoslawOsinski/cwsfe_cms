@@ -144,7 +144,7 @@ public class NewsletterMailDAO {
             return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
                     mapNewsletterMail(resultSet));
         } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
+            LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
         }
         return null;
     }

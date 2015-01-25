@@ -49,7 +49,7 @@ public class BlogPostImagesController extends JsonController {
         try {
             blogPostId = Long.parseLong(webRequest.getParameter("blogPostId"));
         } catch (NumberFormatException e) {
-            LOGGER.error("Blog post id is not a number: " + webRequest.getParameter("blogPostId"), e);
+            LOGGER.error("Blog post id is not a number {}", webRequest.getParameter("blogPostId"));
         }
         List<BlogPostImage> dbList = blogPostImagesDAO.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, blogPostId);
         Integer dbListDisplayRecordsSize = blogPostImagesDAO.searchByAjaxCountWithoutContent(blogPostId);

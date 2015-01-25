@@ -108,7 +108,7 @@ public class CmsUsersDAO {
             cmsUser = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
                     mapCmsUser(resultSet));
         } catch (DataAccessException e) {
-            LOGGER.error("User does not exist for id: " + id) ;
+            LOGGER.error("User does not exist for id: {}", id) ;
         }
         return cmsUser;
     }

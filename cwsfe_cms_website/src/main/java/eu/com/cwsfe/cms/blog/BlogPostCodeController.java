@@ -41,7 +41,7 @@ public class BlogPostCodeController extends JsonController {
         try {
             blogPostId = Long.parseLong(webRequest.getParameter("blogPostId"));
         } catch (NumberFormatException e) {
-            LOGGER.error("Blog post id is not a number: " + webRequest.getParameter("blogPostId"));
+            LOGGER.error("Blog post id is not a number: {}", webRequest.getParameter("blogPostId"));
         }
         List<BlogPostCode> dbList = blogPostCodesDAO.searchByAjax(iDisplayStart, iDisplayLength, blogPostId);
         Integer dbListDisplayRecordsSize = blogPostCodesDAO.searchByAjaxCount(blogPostId);

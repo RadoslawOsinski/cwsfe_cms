@@ -96,7 +96,7 @@ public class CmsNewsController extends JsonController {
             try {
                 searchAuthorId = Integer.parseInt(searchAuthorIdText);
             } catch (NumberFormatException e) {
-                LOGGER.error("Search author id is not a number: " + searchAuthorIdText, e);
+                LOGGER.error("Search author id is not a number: {}", searchAuthorIdText);
             }
         }
         List<Object[]> dbList = cmsNewsDAO.searchByAjax(iDisplayStart, iDisplayLength, searchAuthorId, searchNewsCode);

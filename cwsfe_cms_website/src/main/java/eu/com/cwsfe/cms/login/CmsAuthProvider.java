@@ -45,7 +45,7 @@ public class CmsAuthProvider implements AuthenticationProvider {
         final Object login = auth.getPrincipal();
         WebAuthenticationDetails webAuthenticationDetails = (WebAuthenticationDetails) auth.getDetails();
         String userIPAddress = webAuthenticationDetails.getRemoteAddress();
-        LOGGER.debug("User login: " + login + ", IP Address: " + userIPAddress);
+        LOGGER.debug("User login: {}, IP Address: {}", login, userIPAddress);
 
         if (cmsUsersDAO.isActiveUsernameInDatabase(String.valueOf(login))) {
             final Object password = auth.getCredentials();
@@ -58,18 +58,18 @@ public class CmsAuthProvider implements AuthenticationProvider {
                     for (CmsRole cmsRole : cmsRoles) {
                         authorities.add(new SimpleGrantedAuthority(cmsRole.getRoleCode()));
                     }
-                    LOGGER.info("User " + login + " has granted access with roles: " + cmsRoles.stream().map(CmsRole::getRoleName).collect(Collectors.toList()));
+                    LOGGER.info("User {} has granted access with roles: {}", login, cmsRoles.stream().map(CmsRole::getRoleName).collect(Collectors.toList()));
                     return new CmsUsernamePasswordAuthenticationToken(auth.getName(), password, authorities);
                 } else {
-                    LOGGER.error("User " + login + " password is incorrect");
+                    LOGGER.error("User {} password is incorrect", login);
                 }
             } else {
-                LOGGER.error("User " + login + " was trying to login from not allowed address " + userIPAddress);
+                LOGGER.error("User {} was trying to login from not allowed address {}", login, userIPAddress);
             }
         } else {
-            LOGGER.error("User " + login + " is not active");
+            LOGGER.error("User {} is not active", login);
         }
-        throw new BadCredentialsException("Username/Password does not match for " + login);
+        throw new BadCredentialsException("Username/Password does not match for {}", login);
     }
 
     /**

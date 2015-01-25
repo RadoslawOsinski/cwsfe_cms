@@ -29,7 +29,7 @@ public class NewsImageServlet extends CachingImageServlet {
             imageId = Long.parseLong(imageIdString);
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            LOGGER.error("Number format problem: " + imageIdString, e);
+            LOGGER.error("Number format problem: {}", imageIdString);
             return null;
         }
         return imageId;

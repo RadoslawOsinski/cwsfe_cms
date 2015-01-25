@@ -53,7 +53,7 @@ public class CmsNewsImagesDAO {
             blogPostImages = jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
                     mapCmsNewsImage(resultSet, false));
         } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
+            LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
         }
         return blogPostImages;
     }
@@ -172,7 +172,7 @@ public class CmsNewsImagesDAO {
             cmsNewsImages = jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
                     mapCmsNewsImage(resultSet, true));
         } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
+            LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
         }
         return cmsNewsImages;
     }
@@ -205,7 +205,7 @@ public class CmsNewsImagesDAO {
             cmsNewsImage = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
                     mapCmsNewsImage(resultSet, true));
         } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
+            LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
         }
         return cmsNewsImage;
     }

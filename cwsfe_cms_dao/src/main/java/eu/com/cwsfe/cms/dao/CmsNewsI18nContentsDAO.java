@@ -99,9 +99,9 @@ public class CmsNewsI18nContentsDAO {
         try {
             cmsNewsI18nContent = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapCmsNewsI18nContent(resultSet));
         } catch (EmptyResultDataAccessException ignored) {
-            LOGGER.info("No elements found for newsId: " + newsId + " and languageId: " + languageId);
+            LOGGER.info("No elements found for newsId: {} and languageId: {}", newsId, languageId);
         } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
+            LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
         }
         return cmsNewsI18nContent;
     }

@@ -51,7 +51,7 @@ public class BlogPostImagesDAO {
         try {
             blogPostImages = jdbcTemplate.query(query, dbParams, (resultSet, rowNum) -> mapBlogPostImage(resultSet, false));
         } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
+            LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
         }
         return blogPostImages;
     }
@@ -104,7 +104,7 @@ public class BlogPostImagesDAO {
             blogPostImages = jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
                     mapBlogPostImage(resultSet, false));
         } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
+            LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
         }
         return blogPostImages;
     }
@@ -124,7 +124,7 @@ public class BlogPostImagesDAO {
             blogPostImages = jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
                     mapBlogPostImage(resultSet, true));
         } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [" + query + "] with params: " + Arrays.toString(dbParams), e);
+            LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
         }
         return blogPostImages;
     }
@@ -142,7 +142,7 @@ public class BlogPostImagesDAO {
             blogPostImages = jdbcTemplate.query(query, (resultSet, rowNum) ->
                     mapBlogPostImage(resultSet, true));
         } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [" + query + "]", e);
+            LOGGER.error("Problem query: [{}]", query, e);
         }
         return blogPostImages;
     }

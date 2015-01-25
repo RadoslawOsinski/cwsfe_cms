@@ -91,7 +91,7 @@ public class BlogPostsController extends JsonController {
             try {
                 searchAuthorId = Integer.parseInt(searchAuthorIdText);
             } catch (NumberFormatException e) {
-                LOGGER.error("Search author id is not a number: " + searchAuthorIdText);
+                LOGGER.error("Search author id is not a number: {}", searchAuthorIdText);
             }
         }
         List<Object[]> dbList = blogPostsDAO.searchByAjax(iDisplayStart, iDisplayLength, searchAuthorId, searchPostTextCode);

@@ -49,7 +49,7 @@ public class CmsNewsImagesController extends JsonController {
         try {
             newsId = Long.parseLong(webRequest.getParameter("cmsNewsId"));
         } catch (NumberFormatException e) {
-            LOGGER.error("Cms news id is not a number: " + webRequest.getParameter("cmsNewsId"), e);
+            LOGGER.error("Cms news id is not a number: {}", webRequest.getParameter("cmsNewsId"));
         }
         List<CmsNewsImage> dbList = cmsNewsImagesDAO.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, newsId);
         Integer dbListDisplayRecordsSize = cmsNewsImagesDAO.searchByAjaxCountWithoutContent(newsId);
