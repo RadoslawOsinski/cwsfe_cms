@@ -1,8 +1,8 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.model.CmsNewsImage;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,7 +20,7 @@ import java.util.List;
 @Repository
 public class CmsNewsImagesDAO {
 
-    private static final Logger LOGGER = LogManager.getLogger(CmsNewsImagesDAO.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CmsNewsImagesDAO.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

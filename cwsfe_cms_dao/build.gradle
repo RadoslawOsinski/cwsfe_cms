@@ -1,7 +1,9 @@
 buildscript {
     repositories {
         mavenLocal()
-        mavenCentral()
+        maven {
+            url "http://repo1.maven.org/maven2/"
+        }
     }
     dependencies {
         classpath "org.flywaydb:flyway-gradle-plugin:3.0"
@@ -21,7 +23,9 @@ compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenLocal()
-    mavenCentral()
+    maven {
+        url "http://repo1.maven.org/maven2/"
+    }
     maven { url "http://repo.spring.io/libs-release" }
     maven { url "http://repo.springsource.org/plugins-release" }
     maven { url "http://repo.spring.io/milestone" }  // for AspectJ 1.8.0.M1
@@ -46,9 +50,7 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-context-support', version: '4.1.0.RC1'
     compile group: 'org.springframework', name: 'spring-web', version: '4.1.0.RC1'  //dla CommonsMultipartFile
     compile group: 'net.sf.ehcache', name: 'ehcache', version: '2.8.3'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.0.2'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.0.2'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-web', version: '2.0.2'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.2'
     compile group: 'org.postgresql', name: 'postgresql', version: '9.3-1102-jdbc4'
     compile group: 'org.flywaydb', name: 'flyway-core', version: '3.0'
     testCompile group: 'junit', name: 'junit', version: '4.11'

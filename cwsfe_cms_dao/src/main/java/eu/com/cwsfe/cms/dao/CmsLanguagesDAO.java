@@ -1,8 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.model.Language;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,8 +14,6 @@ import java.util.List;
 
 @Repository
 public class CmsLanguagesDAO {
-
-    private static final Logger LOGGER = LogManager.getLogger(CmsLanguagesDAO.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

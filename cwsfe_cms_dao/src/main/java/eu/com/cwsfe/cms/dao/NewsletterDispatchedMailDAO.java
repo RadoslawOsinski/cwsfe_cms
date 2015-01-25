@@ -1,8 +1,8 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.model.NewsletterDispatchedMail;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,7 +20,7 @@ import java.util.List;
 @Repository
 class NewsletterDispatchedMailDAO {
 
-    private static final Logger LOGGER = LogManager.getLogger(NewsletterDispatchedMailDAO.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NewsletterDispatchedMailDAO.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

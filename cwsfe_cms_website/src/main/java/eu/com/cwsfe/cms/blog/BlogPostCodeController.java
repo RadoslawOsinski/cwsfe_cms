@@ -1,12 +1,12 @@
 package eu.com.cwsfe.cms.blog;
 
-import eu.com.cwsfe.cms.mvc.JsonController;
 import eu.com.cwsfe.cms.dao.BlogPostCodesDAO;
 import eu.com.cwsfe.cms.model.BlogPostCode;
+import eu.com.cwsfe.cms.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 @Controller
 public class BlogPostCodeController extends JsonController {
 
-    private static final Logger LOGGER = LogManager.getLogger(BlogPostCodeController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BlogPostCodeController.class);
 
     @Autowired
     private BlogPostCodesDAO blogPostCodesDAO;

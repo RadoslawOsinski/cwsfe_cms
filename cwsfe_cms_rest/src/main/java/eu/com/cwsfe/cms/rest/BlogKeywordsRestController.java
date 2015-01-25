@@ -4,8 +4,8 @@ import eu.com.cwsfe.cms.dao.BlogKeywordsDAO;
 import eu.com.cwsfe.cms.dao.BlogPostKeywordsDAO;
 import eu.com.cwsfe.cms.dao.CmsTextI18nDAO;
 import eu.com.cwsfe.cms.model.BlogKeyword;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 public class BlogKeywordsRestController {
 
-    private static final Logger LOGGER = LogManager.getLogger(BlogKeywordsRestController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BlogKeywordsRestController.class);
 
     @Autowired
     private BlogKeywordsDAO blogKeywordsDAO;

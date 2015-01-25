@@ -2,8 +2,8 @@ package eu.com.cwsfe.cms.login;
 
 import eu.com.cwsfe.cms.dao.CmsUserAllowedNetAddressDAO;
 import eu.com.cwsfe.cms.model.CmsUserAllowedNetAddress;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 public class CmsAuthProvider implements AuthenticationProvider {
 
-    private static final Logger LOGGER = LogManager.getLogger(CmsAuthProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CmsAuthProvider.class);
 
     @Autowired
     private CmsUsersDAO cmsUsersDAO;

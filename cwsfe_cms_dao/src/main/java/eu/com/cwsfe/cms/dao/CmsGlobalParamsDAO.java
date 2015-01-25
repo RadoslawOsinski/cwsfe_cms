@@ -1,12 +1,9 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.model.CmsGlobalParam;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -17,8 +14,6 @@ import java.util.List;
 
 @Repository
 public class CmsGlobalParamsDAO {
-
-    private static final Logger LOGGER = LogManager.getLogger(CmsGlobalParamsDAO.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

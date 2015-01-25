@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <jmxConfigurator/>
+
+    <property name="log-path" value="/var/log/wildfly/logs"/>
+    <!--<property name="log-path" value="./"/>-->
+
+    <appender name="CWSFE_CMS_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log-path}/cwsfe_cms.log</file>
+        <encoder>
+            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>${log-path}/cwsfe_cms.%i.log.zip</FileNamePattern>
+            <MinIndex>1</MinIndex>
+            <MaxIndex>10</MaxIndex>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log-path}/cwsfe.%d{yyyy-MM-dd}.%i.log.gz</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+            <!-- Limit all logs size to 300MB -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 10MB -->
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </triggeringPolicy>
+    </appender>
+
+
+    <logger name="eu.com.cwsfe" level="debug"/>
+    <logger name="org.springframework" level="info"/>
+
+    <root level="warn">
+        <appender-ref ref="CWSFE_CMS_LOG"/>
+    </root>
+
+</configuration>

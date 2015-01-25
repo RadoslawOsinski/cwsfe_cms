@@ -11,8 +11,8 @@ import eu.com.cwsfe.cms.model.NewsletterMailAddress;
 import eu.com.cwsfe.cms.model.NewsletterMailGroup;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -37,7 +37,7 @@ import java.util.ResourceBundle;
 @Controller
 public class NewsletterMailController extends JsonController {
 
-    private static final Logger LOGGER = LogManager.getLogger(NewsletterMailController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NewsletterMailController.class);
 
     @Autowired
     private NewsletterMailDAO newsletterMailDAO;

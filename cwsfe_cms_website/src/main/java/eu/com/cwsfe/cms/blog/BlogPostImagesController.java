@@ -1,11 +1,12 @@
 package eu.com.cwsfe.cms.blog;
 
-import eu.com.cwsfe.cms.mvc.JsonController;
 import eu.com.cwsfe.cms.dao.BlogPostImagesDAO;
 import eu.com.cwsfe.cms.model.BlogPostImage;
+import eu.com.cwsfe.cms.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,7 +17,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -32,7 +32,7 @@ import java.util.ResourceBundle;
 @Controller
 public class BlogPostImagesController extends JsonController {
 
-    private static final Logger LOGGER = LogManager.getLogger(BlogPostImagesController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BlogPostImagesController.class);
 
     @Autowired
     private BlogPostImagesDAO blogPostImagesDAO;

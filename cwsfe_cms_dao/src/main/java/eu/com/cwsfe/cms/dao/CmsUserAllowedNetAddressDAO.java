@@ -1,8 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.model.CmsUserAllowedNetAddress;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,8 +12,6 @@ import java.util.List;
 
 @Repository
 public class CmsUserAllowedNetAddressDAO {
-
-    private static final Logger LOGGER = LogManager.getLogger(CmsUserAllowedNetAddressDAO.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -82,7 +78,8 @@ public class CmsUserAllowedNetAddressDAO {
 
     public Long add(CmsUserAllowedNetAddress cmsUserAllowedNetAddress) {
         Object[] dbParams = new Object[3];
-        Long id = jdbcTemplate.queryForObject("SELECT nextval('CMS_USER_ALLOWED_NET_ADDRESS_S')", Long.class);
+        Long id = jdbcTemplate.queryForObject("SELECT nextval(" +
+                "'CMS_USER_ALLOWED_NET_ADDRESS_S')", Long.class);
         dbParams[0] = id;
         dbParams[1] = cmsUserAllowedNetAddress.getUserId();
         dbParams[2] = cmsUserAllowedNetAddress.getInetAddress();

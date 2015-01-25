@@ -5,8 +5,8 @@ import eu.com.cwsfe.cms.dao.CmsNewsImagesDAO;
 import eu.com.cwsfe.cms.model.CmsNewsImage;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -32,7 +32,7 @@ import java.util.ResourceBundle;
 @Controller
 public class CmsNewsImagesController extends JsonController {
 
-    private static final Logger LOGGER = LogManager.getLogger(CmsNewsImagesController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CmsNewsImagesController.class);
 
     @Autowired
     private CmsNewsImagesDAO cmsNewsImagesDAO;

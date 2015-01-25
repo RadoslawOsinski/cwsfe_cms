@@ -9,8 +9,8 @@ import eu.com.cwsfe.cms.model.CmsGlobalParam;
 import eu.com.cwsfe.cms.model.CmsRole;
 import eu.com.cwsfe.cms.model.CmsUser;
 import eu.com.cwsfe.cms.model.CmsUserRole;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -32,7 +32,7 @@ import java.util.ResourceBundle;
 @Controller
 class InitialConfigurationController extends JsonController {
 
-    private static final Logger LOGGER = LogManager.getLogger(InitialConfigurationController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InitialConfigurationController.class);
 
     @Autowired
     private CmsGlobalParamsDAO cmsGlobalParamsDAO;

@@ -1,8 +1,8 @@
 package eu.com.cwsfe.cms.images;
 
 import eu.com.cwsfe.cms.dao.BlogPostImagesDAO;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +16,7 @@ public class BlogPostImageServlet extends CachingImageServlet {
 
     private static final long serialVersionUID = -7746211225693172326L;
 
-    private static final Logger LOGGER = LogManager.getLogger(BlogPostImageServlet.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BlogPostImageServlet.class);
 
     @Autowired
     private BlogPostImagesDAO blogPostImagesDAO;
