@@ -2,7 +2,6 @@ package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.model.BlogPostComment;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -83,7 +82,7 @@ public class BlogPostCommentsDAO {
         return jdbcTemplate.queryForObject(query, Integer.class);
     }
 
-    public BlogPostComment get(Long id) throws EmptyResultDataAccessException {
+    public BlogPostComment get(Long id) {
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         String query =

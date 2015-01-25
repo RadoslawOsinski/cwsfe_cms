@@ -1,10 +1,7 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.model.BlogPostI18nContent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -40,7 +37,7 @@ public class BlogPostI18nContentsDAO {
         return blogPostI18nContent;
     }
 
-    public BlogPostI18nContent getByLanguageForPost(Long postId, Long languageId) throws EmptyResultDataAccessException {
+    public BlogPostI18nContent getByLanguageForPost(Long postId, Long languageId) {
         Object[] dbParams = new Object[2];
         dbParams[0] = postId;
         dbParams[1] = languageId;

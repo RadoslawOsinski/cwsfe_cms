@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -92,7 +91,7 @@ public class CmsNewsImagesDAO {
     }
 
     @Cacheable(value="cmsNewsImageWithContentById")
-    public CmsNewsImage getWithContent(Long id) throws EmptyResultDataAccessException {
+    public CmsNewsImage getWithContent(Long id) {
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         String query =
@@ -177,7 +176,7 @@ public class CmsNewsImagesDAO {
         return cmsNewsImages;
     }
 
-    public CmsNewsImage getThumbnailForNews(Long newsId) throws EmptyResultDataAccessException {
+    public CmsNewsImage getThumbnailForNews(Long newsId) {
         String query =
                 "SELECT " +
                         " id, news_id, title, file_name, file_size, width, height," +

@@ -2,7 +2,6 @@ package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.model.CmsUserAllowedNetAddress;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -64,7 +63,7 @@ public class CmsUserAllowedNetAddressDAO {
                 mapCmsUserAllowedNetAddress(resultSet));
     }
 
-    public CmsUserAllowedNetAddress get(Long id) throws EmptyResultDataAccessException {
+    public CmsUserAllowedNetAddress get(Long id) {
         String query =
                 "SELECT " +
                         "id, user_id, INET_ADDRESS " +

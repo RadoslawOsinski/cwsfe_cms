@@ -4,7 +4,6 @@ import eu.com.cwsfe.cms.model.Language;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -76,7 +75,7 @@ public class CmsLanguagesDAO {
     }
 
     @Cacheable(value = "cmsLanguagesById")
-    public Language getById(Long id) throws EmptyResultDataAccessException {
+    public Language getById(Long id) {
         String query =
                 "SELECT " + COLUMNS + "FROM CMS_LANGUAGES WHERE id = ?";
         Object[] dbParams = new Object[1];

@@ -4,7 +4,6 @@ import eu.com.cwsfe.cms.model.CmsTextI18n;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -58,7 +57,7 @@ public class CmsTextI18nDAO {
     }
 
     @Cacheable(value = "cmsTextI18nById")
-    public CmsTextI18n get(Long id) throws EmptyResultDataAccessException {
+    public CmsTextI18n get(Long id) {
         String query =
                 "SELECT " +
                         " id, lang_id, i18n_category, i18n_key, i18n_text" +
@@ -70,7 +69,7 @@ public class CmsTextI18nDAO {
                     mapCmsTextI18n(resultSet));
     }
 
-    public String findTranslation(String language2LetterCode, String category, String key) throws EmptyResultDataAccessException {
+    public String findTranslation(String language2LetterCode, String category, String key) {
         String query =
                 "SELECT " +
                         " i18n_text" +

@@ -4,7 +4,6 @@ import eu.com.cwsfe.cms.model.CmsNews;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -125,7 +124,7 @@ public class CmsNewsDAO {
     }
 
     @Cacheable(value="cmsNewsById")
-    public CmsNews get(Long id) throws EmptyResultDataAccessException {
+    public CmsNews get(Long id) {
         String query =
                 "SELECT " +
                         " id, author_id, news_type_id, folder_id, creation_date, news_code, status" +
@@ -137,7 +136,7 @@ public class CmsNewsDAO {
     }
 
     @Cacheable(value="cmsNewsByNewsTypeIdNewsFolderIdNewsCode")
-    public CmsNews getByNewsTypeFolderAndNewsCode(Long newsTypeId, Long newsFolderId, String newsCode) throws EmptyResultDataAccessException {
+    public CmsNews getByNewsTypeFolderAndNewsCode(Long newsTypeId, Long newsFolderId, String newsCode) {
         String query =
                 "SELECT " +
                         " id, author_id, news_type_id, folder_id, creation_date, news_code, status" +

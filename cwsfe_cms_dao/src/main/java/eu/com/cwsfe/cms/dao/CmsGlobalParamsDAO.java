@@ -4,7 +4,6 @@ import eu.com.cwsfe.cms.model.CmsGlobalParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -73,7 +72,7 @@ public class CmsGlobalParamsDAO {
     }
 
     @Cacheable(value="cmsGlobalParamById")
-    public CmsGlobalParam get(Long id) throws EmptyResultDataAccessException {
+    public CmsGlobalParam get(Long id) {
         String query =
                 "SELECT " +
                         "id, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION " +

@@ -4,7 +4,6 @@ import eu.com.cwsfe.cms.model.BlogPostCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -67,7 +66,7 @@ public class BlogPostCodesDAO {
     }
 
     @Cacheable(value="blogPostCodeByPostIdAndCodeId")
-    public BlogPostCode getCodeForPostByCodeId(Long postId, String codeId) throws EmptyResultDataAccessException {
+    public BlogPostCode getCodeForPostByCodeId(Long postId, String codeId) {
         Object[] dbParams = new Object[2];
         dbParams[0] = postId;
         dbParams[1] = codeId;
