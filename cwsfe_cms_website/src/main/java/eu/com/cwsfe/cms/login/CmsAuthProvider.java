@@ -69,7 +69,7 @@ public class CmsAuthProvider implements AuthenticationProvider {
         } else {
             LOGGER.error("User {} is not active", login);
         }
-        throw new BadCredentialsException("Username/Password does not match for {}", login);
+        throw new BadCredentialsException("Username/Password does not match for " + login);
     }
 
     /**
