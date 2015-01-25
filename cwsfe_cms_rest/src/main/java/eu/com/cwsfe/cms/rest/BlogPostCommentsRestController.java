@@ -36,10 +36,9 @@ public class BlogPostCommentsRestController {
         return result;
     }
 
-    @RequestMapping(value = "/blog/comments", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+    @RequestMapping(value = "/rest/comments", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public HashMap<String, String> addComment(
             @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
-            @RequestParam(value = "blogPostId") Long blogPostId,
             ModelMap modelMap, BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "blogPostI18nContentId", "Blog post must be set");

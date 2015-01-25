@@ -60,8 +60,7 @@ public class BlogPostCommentsRestControllerTest {
     public void testAddCommentSuccessful() throws Exception {
         when(blogPostCommentsDAO.add(anyObject())).thenReturn(1l);
 
-        ResultActions resultActions = mockMvc.perform(post("/blog/comments")
-                .param("blogPostId", "1")
+        ResultActions resultActions = mockMvc.perform(post("/rest/comments")
                 .param("blogPostI18nContentId", "2")
                 .param("comment", "aaa")
                 .param("userName", "bbb")
@@ -75,8 +74,7 @@ public class BlogPostCommentsRestControllerTest {
 
     @Test
     public void testAddCommentValidationError() throws Exception {
-        ResultActions resultActions = mockMvc.perform(post("/blog/comments")
-                .param("blogPostId", "1")
+        ResultActions resultActions = mockMvc.perform(post("/rest/comments")
                 .param("blogPostI18nContentId", "2")
                 .param("comment", "aaa")
                 .param("userName", "bbb")

@@ -1,25 +1,19 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.model.BlogPostCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 
 @Repository
 public class BlogPostCodesDAO {
-
-    private static final Logger LOGGER = LogManager.getLogger(BlogPostCodesDAO.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -82,7 +76,6 @@ public class BlogPostCodesDAO {
                         " code_id, blog_post_id, code, status" +
                         " FROM BLOG_POST_CODE " +
                         "WHERE blog_post_id = ? AND code_id = ?";
-        BlogPostCode blogPostCode = null;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPostCode(resultSet));
     }
 
