@@ -14,17 +14,38 @@ import java.util.List;
 @Repository
 public class BlogPostCodesDAO {
 
+    public static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "SELECT count(*) FROM BLOG_POST_CODE WHERE status <> 'D'";
+    public static final String COUNT_FOR_AJAX_QUERY = "SELECT count(*) FROM BLOG_POST_CODE WHERE status <> 'D'";
+    public static final String SEARCH_BY_AJAX_QUERY = "SELECT " +
+            " code_id, blog_post_id, code, status" +
+            " FROM BLOG_POST_CODE" +
+            " WHERE status <> 'D' AND blog_post_id = ?" +
+            " ORDER BY code_id DESC" +
+            " LIMIT ? OFFSET ?";
+    public static final String SEARCH_BY_AJAX_COUNT_QUERY = "SELECT count(*) FROM (" +
+            "SELECT " +
+            " code_id, blog_post_id, code, status" +
+            " FROM BLOG_POST_CODE" +
+            " WHERE status <> 'D' AND blog_post_id = ?" +
+            " ORDER BY code_id DESC" +
+            ") AS results";
+    public static final String CODE_FOR_POST_BY_CODE_ID_QUERY = "SELECT " +
+            " code_id, blog_post_id, code, status" +
+            " FROM BLOG_POST_CODE " +
+            "WHERE blog_post_id = ? AND code_id = ?";
+    public static final String ADD_QUERY = "INSERT INTO BLOG_POST_CODE(code_id, blog_post_id, code, status) VALUES (?, ?, ?, 'N')";
+    public static final String UPDATE_QUERY = "UPDATE BLOG_POST_CODE SET blog_post_id = ?, code = ? WHERE code_id = ?";
+    public static final String DELETE_QUERY = "DELETE FROM BLOG_POST_CODE WHERE blog_post_id = ? AND code_id = ?";
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     public int getTotalNumberNotDeleted() {
-        String query = "SELECT count(*) FROM BLOG_POST_CODE WHERE status <> 'D'";
-        return jdbcTemplate.queryForObject(query, Integer.class);
+        return jdbcTemplate.queryForObject(TOTAL_NUMBER_NOT_DELETED_QUERY, Integer.class);
     }
 
     public int countForAjax() {
-        String query = "SELECT count(*) FROM BLOG_POST_CODE WHERE status <> 'D'";
-        return jdbcTemplate.queryForObject(query, Integer.class);
+        return jdbcTemplate.queryForObject(COUNT_FOR_AJAX_QUERY, Integer.class);
     }
 
     public List<BlogPostCode> searchByAjax(int iDisplayStart, int iDisplayLength, Long postId) {
@@ -32,14 +53,7 @@ public class BlogPostCodesDAO {
         dbParams[0] = postId;
         dbParams[1] = iDisplayLength;
         dbParams[2] = iDisplayStart;
-        String query =
-                "SELECT " +
-                        " code_id, blog_post_id, code, status" +
-                        " FROM BLOG_POST_CODE" +
-                        " WHERE status <> 'D' AND blog_post_id = ?" +
-                        " ORDER BY code_id DESC" +
-                        " LIMIT ? OFFSET ?";
-        return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) -> mapBlogPostCode(resultSet));
+        return jdbcTemplate.query(SEARCH_BY_AJAX_QUERY, dbParams, (resultSet, rowNum) -> mapBlogPostCode(resultSet));
     }
 
     private BlogPostCode mapBlogPostCode(ResultSet resultSet) throws SQLException {
@@ -54,15 +68,7 @@ public class BlogPostCodesDAO {
     public int searchByAjaxCount(Long postId) {
         Object[] dbParams = new Object[1];
         dbParams[0] = postId;
-        String query =
-                "SELECT count(*) FROM (" +
-                        "SELECT " +
-                        " code_id, blog_post_id, code, status" +
-                        " FROM BLOG_POST_CODE" +
-                        " WHERE status <> 'D' AND blog_post_id = ?" +
-                        " ORDER BY code_id DESC" +
-                        ") AS results";
-        return jdbcTemplate.queryForObject(query, dbParams, Integer.class);
+        return jdbcTemplate.queryForObject(SEARCH_BY_AJAX_COUNT_QUERY, dbParams, Integer.class);
     }
 
     @Cacheable(value="blogPostCodeByPostIdAndCodeId")
@@ -70,12 +76,7 @@ public class BlogPostCodesDAO {
         Object[] dbParams = new Object[2];
         dbParams[0] = postId;
         dbParams[1] = codeId;
-        String query =
-                "SELECT " +
-                        " code_id, blog_post_id, code, status" +
-                        " FROM BLOG_POST_CODE " +
-                        "WHERE blog_post_id = ? AND code_id = ?";
-        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPostCode(resultSet));
+        return jdbcTemplate.queryForObject(CODE_FOR_POST_BY_CODE_ID_QUERY, dbParams, (resultSet, rowNum) -> mapBlogPostCode(resultSet));
     }
 
     public String add(BlogPostCode blogPostCode) {
@@ -83,7 +84,7 @@ public class BlogPostCodesDAO {
         dbParams[0] = blogPostCode.getCodeId();
         dbParams[1] = blogPostCode.getBlogPostId();
         dbParams[2] = blogPostCode.getCode();
-        jdbcTemplate.update("INSERT INTO BLOG_POST_CODE(code_id, blog_post_id, code, status) VALUES (?, ?, ?, 'N')", dbParams);
+        jdbcTemplate.update(ADD_QUERY, dbParams);
         return blogPostCode.getCodeId();
     }
 
@@ -93,7 +94,7 @@ public class BlogPostCodesDAO {
         dbParams[0] = blogPostCode.getBlogPostId();
         dbParams[1] = blogPostCode.getCode();
         dbParams[2] = blogPostCode.getCodeId();
-        jdbcTemplate.update("UPDATE BLOG_POST_CODE SET blog_post_id = ?, code = ? WHERE code_id = ?", dbParams);
+        jdbcTemplate.update(UPDATE_QUERY, dbParams);
     }
 
     @CacheEvict(value = {"blogPostCodeByPostIdAndCodeId"})
@@ -101,7 +102,7 @@ public class BlogPostCodesDAO {
         Object[] dbParams = new Object[2];
         dbParams[0] = blogPostCode.getBlogPostId();
         dbParams[1] = blogPostCode.getCodeId();
-        jdbcTemplate.update("DELETE FROM BLOG_POST_CODE WHERE blog_post_id = ? AND code_id = ?", dbParams);
+        jdbcTemplate.update(DELETE_QUERY, dbParams);
     }
 
 }
