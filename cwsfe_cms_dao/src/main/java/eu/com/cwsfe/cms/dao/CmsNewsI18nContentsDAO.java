@@ -60,18 +60,6 @@ public class CmsNewsI18nContentsDAO {
                 mapCmsNewsI18nContent(resultSet));
     }
 
-    private Object rowSetToObject(ResultSet resultSet) throws SQLException {
-        CmsNewsI18nContent cmsNewsI18nContent = new CmsNewsI18nContent();
-        cmsNewsI18nContent.setId(resultSet.getLong("ID"));
-        cmsNewsI18nContent.setNewsId(resultSet.getLong("NEWS_ID"));
-        cmsNewsI18nContent.setLanguageId(resultSet.getLong("LANGUAGE_ID"));
-        cmsNewsI18nContent.setNewsTitle(resultSet.getString("NEWS_TITLE"));
-        cmsNewsI18nContent.setNewsShortcut(resultSet.getString("NEWS_SHORTCUT"));
-        cmsNewsI18nContent.setNewsDescription(resultSet.getString("NEWS_DESCRIPTION"));
-        cmsNewsI18nContent.setStatus(resultSet.getString("STATUS"));
-        return cmsNewsI18nContent;
-    }
-
     @Cacheable(value="cmsNewsI18nContentById")
     public CmsNewsI18nContent get(Long id) {
         String query =
