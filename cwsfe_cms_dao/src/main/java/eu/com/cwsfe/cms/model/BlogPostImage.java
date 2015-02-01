@@ -20,7 +20,7 @@ public class BlogPostImage implements Serializable {
     private String mimeType;
     private byte[] content;
     private Date created;
-    private BlogPostImageStatus status;	//'D'eleted, 'N'ew
+    private BlogPostImageStatus status;
     private CommonsMultipartFile file;
 
     public Long getId() {

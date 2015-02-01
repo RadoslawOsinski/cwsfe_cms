@@ -16,7 +16,7 @@ public class NewsletterMail implements Serializable {
     private String name;
     private String subject;
     private String mailContent;
-    private NewsletterMailStatus status;  //'N'ew, 'P'reparing to send, 'S'ended, 'D'eleted
+    private NewsletterMailStatus status;
 
     public Long getId() {
         return id;

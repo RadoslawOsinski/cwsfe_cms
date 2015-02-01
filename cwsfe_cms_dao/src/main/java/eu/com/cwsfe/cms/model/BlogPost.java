@@ -18,7 +18,7 @@ public class BlogPost implements Serializable {
     private CmsAuthor cmsAuthor;
     private List<BlogKeyword> blogKeywords;
     private Map<String, BlogPostI18nContent> blogPostI18nContent;
-    private BlogPostStatus status;	//'D'eleted, 'H'idden, 'P'ublished
+    private BlogPostStatus status;
 
     public Long getId() {
         return id;

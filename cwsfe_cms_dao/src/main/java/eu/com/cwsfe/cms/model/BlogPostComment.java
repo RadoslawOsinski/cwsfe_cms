@@ -15,7 +15,7 @@ public class BlogPostComment implements Serializable {
     private String comment;
     private String userName;
     private String email;
-    private BlogPostCommentStatus status;	//'N'ew, 'P'ublished, 'B'locked
+    private BlogPostCommentStatus status;
     private Date created;
 
     public Long getId() {
