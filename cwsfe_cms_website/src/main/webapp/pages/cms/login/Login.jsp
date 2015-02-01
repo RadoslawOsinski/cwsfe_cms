@@ -18,7 +18,16 @@
           type="image/x-icon"/>
 
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/resources-cwsfe-cms/css/foundation/foundation.min.css"
+          href="${pageContext.request.contextPath}/resources-cwsfe-cms/css/foundation/normalize.css"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/resources-cwsfe-cms/css/foundation/foundation.css"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/resources-cwsfe-cms/css/cms/shared.css"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/resources-cwsfe-cms/css/cms/colors.css"
           type="text/css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources-cwsfe-cms/css/login/login.css"
           type="text/css"/>
@@ -37,8 +46,7 @@
     <spring:url value="/cwsfe_cms_security_check" var="loginCheckUrl" htmlEscape="true"/>
     <form accept-charset="UTF-8" action="${loginCheckUrl}" method="post">
         <div class="passport-left">
-            <h1>CMS</h1>
-            <img src="${pageContext.request.contextPath}/resources-cwsfe-cms/CWSFE_logo.png" alt="CWSFE logo">
+            <img src="${pageContext.request.contextPath}/resources-cwsfe-cms/CWSFE_logo.png" alt="CWSFE logo" height="294" width="300"/>
         </div>
         <div class="passport-right">
             <div id="emailLogin">

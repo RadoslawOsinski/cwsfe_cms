@@ -20,7 +20,7 @@
           href="${pageContext.request.contextPath}/resources-cwsfe-cms/css/foundation/normalize.css"
           type="text/css"/>
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/resources-cwsfe-cms/css/foundation/foundation.min.css"
+          href="${pageContext.request.contextPath}/resources-cwsfe-cms/css/foundation/foundation.css"
           type="text/css"/>
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/resources-cwsfe-cms/css/cms/shared.css"
@@ -28,10 +28,6 @@
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/resources-cwsfe-cms/css/cms/colors.css"
           type="text/css"/>
-
-    <%--<c:forEach var="cssUrl" items="${additionalCssCode}">--%>
-    <%--<link href="${cssUrl}" rel="stylesheet" type="text/css" media="all"/>--%>
-    <%--</c:forEach>--%>
 
     <script data-main="${mainJavaScript}"
             src="${pageContext.request.contextPath}/resources-cwsfe-cms/js/requirejs/require.js"
