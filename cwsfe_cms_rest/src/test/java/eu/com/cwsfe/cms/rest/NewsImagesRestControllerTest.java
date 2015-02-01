@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -60,16 +61,18 @@ public class NewsImagesRestControllerTest {
         thumbnail.setHeight(thumbnailHeight);
         thumbnail.setWidth(thumbnailWidth);
         thumbnail.setTitle(thumbnailTitle);
+        thumbnail.setContent(null);
         CmsNewsImage image = new CmsNewsImage();
         image.setId(imageId);
         image.setFileName(imageFileName);
         image.setHeight(imageHeight);
         image.setWidth(imageWidth);
         image.setTitle(imageTitle);
+        image.setContent(null);
         ArrayList<CmsNewsImage> images = new ArrayList<>();
         images.add(image);
-        when(cmsNewsImagesDAO.getThumbnailForNews(anyLong())).thenReturn(thumbnail);
-        when(cmsNewsImagesDAO.listImagesForNewsWithoutThumbnails(anyLong())).thenReturn(images);
+        when(cmsNewsImagesDAO.getThumbnailForNewsWithoutContent(anyLong())).thenReturn(thumbnail);
+        when(cmsNewsImagesDAO.listImagesForNewsWithoutThumbnailsAndContent(anyLong())).thenReturn(images);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/newsImages")
                 .param("newsId", "1")
@@ -78,15 +81,18 @@ public class NewsImagesRestControllerTest {
         resultActions
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andDo(print())
                 .andExpect(jsonPath("$.thumbnailImage.id").value((int) thumbnailId))
                 .andExpect(jsonPath("$.thumbnailImage.fileName").value(thumbnailFileName))
                 .andExpect(jsonPath("$.thumbnailImage.height").value(thumbnailHeight))
                 .andExpect(jsonPath("$.thumbnailImage.width").value(thumbnailWidth))
                 .andExpect(jsonPath("$.thumbnailImage.title").value(thumbnailTitle))
+                .andExpect(jsonPath("$.thumbnailImage.content").value((String) null))
                 .andExpect(jsonPath("$.newsImages[0].id").value((int) imageId))
                 .andExpect(jsonPath("$.newsImages[0].fileName").value(imageFileName))
                 .andExpect(jsonPath("$.newsImages[0].height").value(imageHeight))
                 .andExpect(jsonPath("$.newsImages[0].width").value(imageWidth))
-                .andExpect(jsonPath("$.newsImages[0].title").value(imageTitle));
+                .andExpect(jsonPath("$.newsImages[0].title").value(imageTitle))
+                .andExpect(jsonPath("$.newsImages[0].content").value((String) null));
     }
 }

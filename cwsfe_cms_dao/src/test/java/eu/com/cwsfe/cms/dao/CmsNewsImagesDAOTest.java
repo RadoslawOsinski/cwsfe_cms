@@ -410,4 +410,60 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         assertEquals(height, (int) result.getHeight());
         assertEquals(mimeType, result.getMimeType());
     }
+
+    @Test
+    public void testListImagesForNewsWithoutThumbnailsAndContent() throws Exception {
+        //given
+        //when
+        List<CmsNewsImage> cmsNewsImagesWithoutThumbnails = dao.listImagesForNewsWithoutThumbnailsAndContent(1l);
+
+        //then
+        assertNotNull(cmsNewsImagesWithoutThumbnails);
+        for (CmsNewsImage cmsNewsImage : cmsNewsImagesWithoutThumbnails) {
+            assertFalse(cmsNewsImage.getTitle().startsWith("thumbnail_"));
+            assertNull(cmsNewsImage.getContent());
+        }
+    }
+
+    @Test
+    public void testGetThumbnailForNewsWithoutContent() throws Exception {
+        //given
+        String title = "thumbnail_title";
+        byte[] content = new BigInteger("1111000011110001", 2).toByteArray();
+        Date created = new Date();
+        String fileName = "fileName";
+        long fileSize = 1l;
+        int width = 2;
+        int height = 3;
+        String mimeType = "img/png";
+        CmsNewsImage newsImage = new CmsNewsImage();
+        newsImage.setNewsId(NEWS.getId());
+        newsImage.setTitle(title);
+        newsImage.setStatus(CmsNewsImageStatus.NEW);
+        newsImage.setContent(content);
+        newsImage.setCreated(created);
+        newsImage.setFileName(fileName);
+        newsImage.setFileSize(fileSize);
+        newsImage.setWidth(width);
+        newsImage.setHeight(height);
+        newsImage.setMimeType(mimeType);
+        dao.add(newsImage);
+
+        //when
+        CmsNewsImage result = dao.getThumbnailForNewsWithoutContent(NEWS.getId());
+
+        //then
+        assertNotNull(result);
+        assertEquals(NEWS.getId(), result.getNewsId());
+        assertEquals(title, result.getTitle());
+        assertTrue("title is not starting from thumbnail_ text", result.getTitle().startsWith("thumbnail_"));
+        assertEquals(CmsNewsImageStatus.NEW, result.getStatus());
+        assertNull(result.getContent());
+        assertEquals(created, result.getCreated());
+        assertEquals(fileName, result.getFileName());
+        assertEquals(fileSize, (long) result.getFileSize());
+        assertEquals(width, (int) result.getWidth());
+        assertEquals(height, (int) result.getHeight());
+        assertEquals(mimeType, result.getMimeType());
+    }
 }

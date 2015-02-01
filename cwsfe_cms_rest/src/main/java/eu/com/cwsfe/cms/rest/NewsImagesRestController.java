@@ -22,11 +22,11 @@ public class NewsImagesRestController {
     private CmsNewsImagesDAO cmsNewsImagesDAO;
 
     @RequestMapping(value = "/rest/newsImages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public Map<String, Object> getImagesForNews(
+    public Map<String, Object> getImagesForNewsWithoutContent(
             @RequestParam(value = "newsId") long newsId
     ) {
-        CmsNewsImage thumbnailForNews = cmsNewsImagesDAO.getThumbnailForNews(newsId);
-        List<CmsNewsImage> cmsNewsImages = cmsNewsImagesDAO.listImagesForNewsWithoutThumbnails(newsId);
+        CmsNewsImage thumbnailForNews = cmsNewsImagesDAO.getThumbnailForNewsWithoutContent(newsId);
+        List<CmsNewsImage> cmsNewsImages = cmsNewsImagesDAO.listImagesForNewsWithoutThumbnailsAndContent(newsId);
         Map<String, Object> result = new HashMap<>(1);
         result.put("thumbnailImage", thumbnailForNews);
         result.put("newsImages", cmsNewsImages);
