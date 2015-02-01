@@ -16,12 +16,16 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            scripts: {
+            options: {
+                livereload: true
+            },
+            js: {
                 files: ['src/main/webapp/resources-cwsfe-cms/js/cms/**/*.js'],
-                tasks: ['jshint', 'uglify:production', 'cssmin:production'],
-                options: {
-                    spawn: false
-                }
+                tasks: ['jshint', 'uglify:production']
+            },
+            css: {
+                files: ['src/main/webapp/resources-cwsfe-cms/css/**/*.css'],
+                tasks: ['cssmin']
             }
         },
         uglify: {
