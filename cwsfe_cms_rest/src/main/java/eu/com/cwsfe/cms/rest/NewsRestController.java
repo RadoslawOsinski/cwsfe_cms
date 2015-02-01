@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Radosław Osiński
@@ -66,7 +67,7 @@ public class NewsRestController {
     }
 
     @RequestMapping(value = "/rest/newsI18nPairsTotal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public HashMap<String, Integer> countListByFolderLangAndNewsWithPaging(
+    public Map<String, Integer> countListByFolderLangAndNewsWithPaging(
             @RequestParam(value = "folderName") String folderName,
             @RequestParam(value = "languageCode") String languageCode,
             @RequestParam(value = "newsType") String newsType
@@ -77,7 +78,7 @@ public class NewsRestController {
             language = cmsLanguagesDAO.getByCode("en");
         }
         Integer total = cmsNewsDAO.countListByFolderLangAndNewsWithPaging(cmsFolder.getId().intValue(), language.getId(), newsType);
-        HashMap<String, Integer> result = new HashMap<>(1);
+        Map<String, Integer> result = new HashMap<>(1);
         result.put("total", total);
         return result;
     }

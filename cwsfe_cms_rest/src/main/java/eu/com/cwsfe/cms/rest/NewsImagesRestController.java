@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Radosław Osiński
@@ -21,12 +22,12 @@ public class NewsImagesRestController {
     private CmsNewsImagesDAO cmsNewsImagesDAO;
 
     @RequestMapping(value = "/rest/newsImages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public HashMap<String, Object> getImagesForNews(
+    public Map<String, Object> getImagesForNews(
             @RequestParam(value = "newsId") long newsId
     ) {
         CmsNewsImage thumbnailForNews = cmsNewsImagesDAO.getThumbnailForNews(newsId);
         List<CmsNewsImage> cmsNewsImages = cmsNewsImagesDAO.listImagesForNewsWithoutThumbnails(newsId);
-        HashMap<String, Object> result = new HashMap<>(1);
+        Map<String, Object> result = new HashMap<>(1);
         result.put("thumbnailImage", thumbnailForNews);
         result.put("newsImages", cmsNewsImages);
         return result;
