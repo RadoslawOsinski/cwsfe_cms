@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.model;
 
+import eu.com.cwsfe.cms.domains.CmsFolderStatus;
+
 import java.io.Serializable;
 
 public class CmsFolder implements Serializable {
@@ -10,7 +12,7 @@ public class CmsFolder implements Serializable {
     private Long parentId;
     private String folderName;
     private Long orderNumber;
-    private String status;
+    private CmsFolderStatus status;
 
     public Long getId() {
         return id;
@@ -44,11 +46,11 @@ public class CmsFolder implements Serializable {
         this.orderNumber = orderNumber;
     }
 
-    public String getStatus() {
+    public CmsFolderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(CmsFolderStatus status) {
         this.status = status;
     }
 }

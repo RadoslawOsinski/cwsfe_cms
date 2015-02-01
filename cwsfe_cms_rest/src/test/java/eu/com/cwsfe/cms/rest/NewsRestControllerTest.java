@@ -1,6 +1,8 @@
 package eu.com.cwsfe.cms.rest;
 
 import eu.com.cwsfe.cms.dao.*;
+import eu.com.cwsfe.cms.domains.CmsNewsI18nContentStatus;
+import eu.com.cwsfe.cms.domains.CmsNewsStatus;
 import eu.com.cwsfe.cms.model.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,14 +68,13 @@ public class NewsRestControllerTest {
         NewsType newsType = new NewsType();
         newsType.setId(2l);
         String testCode = "testCode";
-        String status = "P";
         CmsNews cmsNews = new CmsNews();
         cmsNews.setId(id);
         cmsNews.setAuthorId(authorId);
         cmsNews.setNewsTypeId(newsTypeId);
         cmsNews.setNewsFolderId(newsFolderId);
         cmsNews.setNewsCode(testCode);
-        cmsNews.setStatus(status);
+        cmsNews.setStatus(CmsNewsStatus.PUBLISHED);
         when(cmsFoldersDAO.getByFolderName(anyString())).thenReturn(cmsFolder);
         when(newsTypesDAO.getByType(anyString())).thenReturn(newsType);
         when(cmsNewsDAO.getByNewsTypeFolderAndNewsCode(anyLong(), anyLong(), anyString())).thenReturn(cmsNews);
@@ -91,8 +92,7 @@ public class NewsRestControllerTest {
                 .andExpect(jsonPath("$.authorId").value((int) authorId))
                 .andExpect(jsonPath("$.newsTypeId").value((int) newsTypeId))
                 .andExpect(jsonPath("$.newsFolderId").value((int) newsFolderId))
-                .andExpect(jsonPath("$.newsCode").value(testCode))
-                .andExpect(jsonPath("$.status").value(status));
+                .andExpect(jsonPath("$.newsCode").value(testCode));
     }
 
     @Test
@@ -107,14 +107,13 @@ public class NewsRestControllerTest {
         String title = "title";
         String shortcut = "shortcut";
         String description = "description";
-        String status = "P";
         CmsNews cmsNews = new CmsNews();
         cmsNews.setId(id);
         cmsNews.setAuthorId(authorId);
         cmsNews.setNewsTypeId(newsTypeId);
         cmsNews.setNewsFolderId(newsFolderId);
         cmsNews.setNewsCode(newsCode);
-        cmsNews.setStatus(status);
+        cmsNews.setStatus(CmsNewsStatus.PUBLISHED);
         ArrayList<Object[]> values = new ArrayList<>();
         Object[] value = {1l, 1l};
         values.add(value);
@@ -149,7 +148,6 @@ public class NewsRestControllerTest {
                 .andExpect(jsonPath("$[0].cmsNews.newsTypeId").value((int) newsTypeId))
                 .andExpect(jsonPath("$[0].cmsNews.newsFolderId").value((int) newsFolderId))
                 .andExpect(jsonPath("$[0].cmsNews.newsCode").value(newsCode))
-                .andExpect(jsonPath("$[0].cmsNews.status").value(status))
                 .andExpect(jsonPath("$[0].cmsNewsI18nContent.id").value((int) id2))
                 .andExpect(jsonPath("$[0].cmsNewsI18nContent.newsTitle").value(title))
                 .andExpect(jsonPath("$[0].cmsNewsI18nContent.newsShortcut").value(shortcut))
@@ -190,7 +188,6 @@ public class NewsRestControllerTest {
         long languageId = 3l;
         String shortcut = "shortcut";
         String title = "title";
-        String status = "P";
         CmsNewsI18nContent cmsNewsI18nContent = new CmsNewsI18nContent();
         cmsNewsI18nContent.setId(id);
         cmsNewsI18nContent.setNewsId(newsId);
@@ -198,7 +195,7 @@ public class NewsRestControllerTest {
         cmsNewsI18nContent.setLanguageId(languageId);
         cmsNewsI18nContent.setNewsShortcut(shortcut);
         cmsNewsI18nContent.setNewsTitle(title);
-        cmsNewsI18nContent.setStatus(status);
+        cmsNewsI18nContent.setStatus(CmsNewsI18nContentStatus.NEW);
         when(cmsLanguagesDAO.getByCode(anyString())).thenReturn(language);
         when(cmsNewsI18nContentsDAO.getByLanguageForNews(anyLong(), anyLong())).thenReturn(cmsNewsI18nContent);
 
@@ -215,8 +212,7 @@ public class NewsRestControllerTest {
                 .andExpect(jsonPath("$.languageId").value((int) languageId))
                 .andExpect(jsonPath("$.newsDescription").value(description))
                 .andExpect(jsonPath("$.newsShortcut").value(shortcut))
-                .andExpect(jsonPath("$.newsTitle").value(title))
-                .andExpect(jsonPath("$.status").value(status));
+                .andExpect(jsonPath("$.newsTitle").value(title));
     }
 
     @Test
@@ -228,14 +224,13 @@ public class NewsRestControllerTest {
         Long languageId = 3l;
         String shortcut = "shortcut";
         String title = "title";
-        String status = "status";
         cmsNewsI18nContent.setId(id);
         cmsNewsI18nContent.setNewsId(newsId);
         cmsNewsI18nContent.setNewsDescription(description);
         cmsNewsI18nContent.setLanguageId(languageId);
         cmsNewsI18nContent.setNewsShortcut(shortcut);
         cmsNewsI18nContent.setNewsTitle(title);
-        cmsNewsI18nContent.setStatus(status);
+        cmsNewsI18nContent.setStatus(CmsNewsI18nContentStatus.NEW);
         when(cmsNewsI18nContentsDAO.get(anyLong())).thenReturn(cmsNewsI18nContent);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/singleNewsI18nContent")
@@ -250,8 +245,7 @@ public class NewsRestControllerTest {
                 .andExpect(jsonPath("$.languageId").value(languageId.intValue()))
                 .andExpect(jsonPath("$.newsDescription").value(description))
                 .andExpect(jsonPath("$.newsShortcut").value(shortcut))
-                .andExpect(jsonPath("$.newsTitle").value(title))
-                .andExpect(jsonPath("$.status").value(status));
+                .andExpect(jsonPath("$.newsTitle").value(title));
     }
 
     @Test
@@ -265,14 +259,13 @@ public class NewsRestControllerTest {
         NewsType newsType = new NewsType();
         newsType.setId(2l);
         String testCode = "testCode";
-        String status = "P";
         CmsNews cmsNews = new CmsNews();
         cmsNews.setId(id);
         cmsNews.setAuthorId(authorId);
         cmsNews.setNewsTypeId(newsTypeId);
         cmsNews.setNewsFolderId(newsFolderId);
         cmsNews.setNewsCode(testCode);
-        cmsNews.setStatus(status);
+        cmsNews.setStatus(CmsNewsStatus.NEW);
         Language language = new Language();
         language.setId(1l);
         long newsId = 2l;
@@ -287,7 +280,7 @@ public class NewsRestControllerTest {
         cmsNewsI18nContent.setLanguageId(languageId);
         cmsNewsI18nContent.setNewsShortcut(shortcut);
         cmsNewsI18nContent.setNewsTitle(title);
-        cmsNewsI18nContent.setStatus(status);
+        cmsNewsI18nContent.setStatus(CmsNewsI18nContentStatus.PUBLISHED);
         when(cmsFoldersDAO.getByFolderName(anyString())).thenReturn(cmsFolder);
         when(newsTypesDAO.getByType(anyString())).thenReturn(newsType);
         when(cmsNewsDAO.getByNewsTypeFolderAndNewsCode(anyLong(), anyLong(), anyString())).thenReturn(cmsNews);
@@ -309,8 +302,7 @@ public class NewsRestControllerTest {
                 .andExpect(jsonPath("$.languageId").value((int) languageId))
                 .andExpect(jsonPath("$.newsDescription").value(description))
                 .andExpect(jsonPath("$.newsShortcut").value(shortcut))
-                .andExpect(jsonPath("$.newsTitle").value(title))
-                .andExpect(jsonPath("$.status").value(status));
+                .andExpect(jsonPath("$.newsTitle").value(title));
     }
 
     @Test

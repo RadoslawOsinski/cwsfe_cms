@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.BlogPostStatus;
 import eu.com.cwsfe.cms.model.BlogPost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -328,7 +329,7 @@ public class BlogPostsDAO {
         blogPost.setPostAuthorId(resultSet.getLong("POST_AUTHOR_ID"));
         blogPost.setPostTextCode(resultSet.getString("POST_TEXT_CODE"));
         blogPost.setPostCreationDate(resultSet.getDate("POST_CREATION_DATE"));
-        blogPost.setStatus(resultSet.getString("STATUS"));
+        blogPost.setStatus(BlogPostStatus.fromCode(resultSet.getString("STATUS")));
         return blogPost;
     }
 
@@ -339,7 +340,7 @@ public class BlogPostsDAO {
         dbParams[1] = blogPost.getPostAuthorId();
         dbParams[2] = blogPost.getPostTextCode();
         dbParams[3] = blogPost.getPostCreationDate();
-        dbParams[4] = blogPost.getStatus();
+        dbParams[4] = blogPost.getStatus().getCode();
         jdbcTemplate.update("INSERT INTO BLOG_POSTS(id, post_author_id, post_text_code, post_creation_date, status)" +
                 "VALUES (?, ?, ?, ?, ?)", dbParams);
         return id;
@@ -348,7 +349,7 @@ public class BlogPostsDAO {
     public void update(BlogPost blogPost) {
         Object[] dbParams = new Object[3];
         dbParams[0] = blogPost.getPostTextCode();
-        dbParams[1] = blogPost.getStatus();
+        dbParams[1] = blogPost.getStatus().getCode();
         dbParams[2] = blogPost.getId();
         jdbcTemplate.update("UPDATE BLOG_POSTS SET post_text_code = ?, status = ? WHERE id = ?", dbParams);
     }
@@ -356,7 +357,7 @@ public class BlogPostsDAO {
     public void updatePostBasicInfo(BlogPost blogPost) {
         Object[] dbParams = new Object[3];
         dbParams[0] = blogPost.getPostTextCode();
-        dbParams[1] = blogPost.getStatus();
+        dbParams[1] = blogPost.getStatus().getCode();
         dbParams[2] = blogPost.getId();
         jdbcTemplate.update("UPDATE BLOG_POSTS SET post_text_code = ?, status = ? WHERE id = ?", dbParams);
     }

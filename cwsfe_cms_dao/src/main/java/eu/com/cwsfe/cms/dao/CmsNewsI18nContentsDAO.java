@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.CmsNewsI18nContentStatus;
 import eu.com.cwsfe.cms.model.CmsNewsI18nContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,7 @@ public class CmsNewsI18nContentsDAO {
         cmsNewsI18nContent.setNewsTitle(resultSet.getString("NEWS_TITLE"));
         cmsNewsI18nContent.setNewsShortcut(resultSet.getString("NEWS_SHORTCUT"));
         cmsNewsI18nContent.setNewsDescription(resultSet.getString("NEWS_DESCRIPTION"));
-        cmsNewsI18nContent.setStatus(resultSet.getString("STATUS"));
+        cmsNewsI18nContent.setStatus(CmsNewsI18nContentStatus.fromCode(resultSet.getString("STATUS")));
         return cmsNewsI18nContent;
     }
 
@@ -115,7 +116,7 @@ public class CmsNewsI18nContentsDAO {
         dbParams[0] = cmsNewsI18nContent.getNewsTitle();
         dbParams[1] = cmsNewsI18nContent.getNewsShortcut();
         dbParams[2] = cmsNewsI18nContent.getNewsDescription();
-        dbParams[3] = cmsNewsI18nContent.getStatus();
+        dbParams[3] = cmsNewsI18nContent.getStatus().getCode();
         dbParams[4] = cmsNewsI18nContent.getId();
         jdbcTemplate.update("UPDATE CMS_NEWS_I18N_CONTENTS SET news_title = ?, news_shortcut = ?, news_description = ?, status = ? WHERE id = ?", dbParams);
     }

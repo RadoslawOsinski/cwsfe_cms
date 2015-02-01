@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.BlogPostStatus;
 import eu.com.cwsfe.cms.model.BlogKeyword;
 import eu.com.cwsfe.cms.model.BlogPost;
 import eu.com.cwsfe.cms.model.BlogPostKeyword;
@@ -47,7 +48,7 @@ public class BlogPostKeywordsDAOTest extends AbstractTransactionalJUnit4SpringCo
 
         BLOG_POST.setPostAuthorId(CMS_AUTHOR.getId());
         BLOG_POST.setPostTextCode("post text code");
-        BLOG_POST.setStatus("N");
+        BLOG_POST.setStatus(BlogPostStatus.NEW);
         BLOG_POST.setId(postsDao.add(BLOG_POST));
 
         BLOG_KEYWORD.setKeywordName("test keyword");

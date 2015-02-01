@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.model;
 
+import eu.com.cwsfe.cms.domains.BlogPostI18nContentStatus;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,7 +16,7 @@ public class BlogPostI18nContent implements Serializable {
     private String postShortcut;
     private String postDescription;
     private List<BlogPostComment> blogPostComments;
-    private String status;	//'D'eleted, 'H'idden, 'P'ublished
+    private BlogPostI18nContentStatus status;
 
     public Long getId() {
         return id;
@@ -64,11 +66,11 @@ public class BlogPostI18nContent implements Serializable {
         this.postDescription = postDescription;
     }
 
-    public String getStatus() {
+    public BlogPostI18nContentStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(BlogPostI18nContentStatus status) {
         this.status = status;
     }
 

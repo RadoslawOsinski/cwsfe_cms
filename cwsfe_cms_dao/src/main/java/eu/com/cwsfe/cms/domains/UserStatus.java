@@ -5,21 +5,26 @@ package eu.com.cwsfe.cms.domains;
  */
 public enum UserStatus {
 
-    NEW("N", "New"), LOCKED("L", "Locked"), DELETED("D", "Deleted");
+    NEW("N"), LOCKED("L"), DELETED("D");
 
     private final String code;
-    private final String label;
 
-    UserStatus(String code, String label) {
+    UserStatus(String code) {
         this.code = code;
-        this.label = label;
     }
 
     public String getCode() {
         return code;
     }
 
-    public String getLabel() {
-        return label;
+    public static UserStatus fromCode(String text) {
+        if (text != null) {
+            for (UserStatus enumValue : UserStatus.values()) {
+                if (enumValue.code.equals(text)) {
+                    return enumValue;
+                }
+            }
+        }
+        return null;
     }
 }

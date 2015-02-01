@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.BlogPostImageStatus;
 import eu.com.cwsfe.cms.model.BlogPostImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +68,7 @@ public class BlogPostImagesDAO {
         blogPostImage.setHeight(resultSet.getInt("height"));
         blogPostImage.setMimeType(resultSet.getString("mime_type"));
         blogPostImage.setCreated(resultSet.getTimestamp("created"));
-        blogPostImage.setStatus(resultSet.getString("STATUS"));
+        blogPostImage.setStatus(BlogPostImageStatus.fromCode(resultSet.getString("STATUS")));
         if (withContent) {
             blogPostImage.setContent(resultSet.getBytes("CONTENT"));
         }

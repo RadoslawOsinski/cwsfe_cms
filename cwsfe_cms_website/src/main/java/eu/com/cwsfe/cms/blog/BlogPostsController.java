@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.blog;
 
+import eu.com.cwsfe.cms.domains.BlogPostI18nContentStatus;
+import eu.com.cwsfe.cms.domains.BlogPostStatus;
 import eu.com.cwsfe.cms.mvc.JsonController;
 import eu.com.cwsfe.cms.dao.*;
 import eu.com.cwsfe.cms.model.*;
@@ -132,7 +134,7 @@ public class BlogPostsController extends JsonController {
         if (!result.hasErrors()) {
             //todo reconsider time management
             blogPost.setPostCreationDate(new Date());
-            blogPost.setStatus("H");
+            blogPost.setStatus(BlogPostStatus.HIDDEN);
             blogPostsDAO.add(blogPost);
             addJsonSuccess(responseDetailsJson);
         } else {
@@ -195,7 +197,7 @@ public class BlogPostsController extends JsonController {
                 cmsBlogPostI18nContent.setPostTitle("");
                 cmsBlogPostI18nContent.setPostShortcut("");
                 cmsBlogPostI18nContent.setPostDescription("");
-                cmsBlogPostI18nContent.setStatus("H");
+                cmsBlogPostI18nContent.setStatus(BlogPostI18nContentStatus.HIDDEN);
             }
             addJsonSuccess(responseDetailsJson);
             JSONObject data = new JSONObject();

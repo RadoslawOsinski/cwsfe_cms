@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.NewsletterMailAddressStatus;
 import eu.com.cwsfe.cms.model.NewsletterMailAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ public class NewsletterMailAddressDAO {
         newsletterMailAddress.setConfirmString(resultSet.getString("CONFIRM_STRING"));
         newsletterMailAddress.setUnSubscribeString(resultSet.getString("UN_SUBSCRIBE_STRING"));
         newsletterMailAddress.setEmail(resultSet.getString("EMAIL"));
-        newsletterMailAddress.setStatus(resultSet.getString("STATUS"));
+        newsletterMailAddress.setStatus(NewsletterMailAddressStatus.fromCode(resultSet.getString("STATUS")));
         return newsletterMailAddress;
     }
 
@@ -215,7 +216,7 @@ public class NewsletterMailAddressDAO {
         dbParams[2] = newsletterMailAddress.getConfirmString();
         dbParams[3] = newsletterMailAddress.getUnSubscribeString();
         dbParams[4] = newsletterMailAddress.getEmail();
-        dbParams[5] = NewsletterMailAddress.STATUS_INACTIVE;
+        dbParams[5] = NewsletterMailAddressStatus.INACTIVE.getCode();
         jdbcTemplate.update(
                 "INSERT INTO NEWSLETTER_MAIL_ADDRESSES(id, mail_group_id, confirm_string, un_subscribe_string, email, status) VALUES (?, ?, ?, ?, ?, ?)",
                 dbParams

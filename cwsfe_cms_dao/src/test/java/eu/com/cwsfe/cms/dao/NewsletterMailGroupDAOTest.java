@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.NewsletterMailGroupStatus;
 import eu.com.cwsfe.cms.model.Language;
 import eu.com.cwsfe.cms.model.NewsletterMailGroup;
 import org.junit.Before;
@@ -106,7 +107,7 @@ public class NewsletterMailGroupDAOTest extends AbstractTransactionalJUnit4Sprin
         dao.add(newsletterMailGroup);
         NewsletterMailGroup newsletterMailGroup2 = new NewsletterMailGroup();
         newsletterMailGroup2.setName(otherName);
-        newsletterMailGroup2.setStatus("N");
+        newsletterMailGroup2.setStatus(NewsletterMailGroupStatus.NEW);
         newsletterMailGroup2.setLanguageId(LANGUAGE_EN.getId());
         dao.add(newsletterMailGroup2);
 
@@ -240,7 +241,7 @@ public class NewsletterMailGroupDAOTest extends AbstractTransactionalJUnit4Sprin
         NewsletterMailGroup newsletterMailGroupResult = dao.get(addedId);
         assertNotNull(newsletterMailGroupResult);
         assertEquals((long) addedId, (long) newsletterMailGroupResult.getId());
-        assertEquals("Unexpected status value for deleted object", "D", newsletterMailGroupResult.getStatus());
+        assertEquals("Unexpected status value for deleted object", NewsletterMailGroupStatus.DELETED, newsletterMailGroupResult.getStatus());
     }
 
     @Test
@@ -259,6 +260,6 @@ public class NewsletterMailGroupDAOTest extends AbstractTransactionalJUnit4Sprin
         NewsletterMailGroup newsletterMailGroupResult = dao.get(addedId);
         assertNotNull(newsletterMailGroupResult);
         assertEquals((long) addedId, (long) newsletterMailGroupResult.getId());
-        assertEquals("Unexpected status for undeleted object", "N", newsletterMailGroupResult.getStatus());
+        assertEquals("Unexpected status for undeleted object", NewsletterMailGroupStatus.NEW, newsletterMailGroupResult.getStatus());
     }
 }

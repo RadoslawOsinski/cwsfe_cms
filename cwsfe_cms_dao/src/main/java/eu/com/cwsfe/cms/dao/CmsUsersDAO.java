@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.CmsUserStatus;
 import eu.com.cwsfe.cms.model.CmsUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +46,7 @@ public class CmsUsersDAO {
         cmsUser.setId(resultSet.getLong("ID"));
         cmsUser.setUserName(resultSet.getString("USERNAME"));
         cmsUser.setPasswordHash(resultSet.getString("PASSWORD_HASH"));
-        cmsUser.setStatus(resultSet.getString("STATUS"));
+        cmsUser.setStatus(CmsUserStatus.fromCode(resultSet.getString("STATUS")));
         return cmsUser;
     }
 
@@ -142,7 +143,7 @@ public class CmsUsersDAO {
     public void updatePostBasicInfo(CmsUser cmsUser) {
         Object[] dbParams = new Object[3];
         dbParams[0] = cmsUser.getUserName();
-        dbParams[1] = cmsUser.getStatus();
+        dbParams[1] = cmsUser.getStatus().getCode();
         dbParams[2] = cmsUser.getId();
         jdbcTemplate.update(
                 "UPDATE CMS_USERS SET username = ?, status = ? WHERE id = ?",

@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.CmsUserStatus;
 import eu.com.cwsfe.cms.model.CmsUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,12 +27,11 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         //given
         String username = "test";
         String password = "password";
-        String status = "N";
         String hash = "hash";
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName(username);
         cmsUser.setPassword(password);
-        cmsUser.setStatus(status);
+        cmsUser.setStatus(CmsUserStatus.NEW);
         cmsUser.setPasswordHash(hash);
         dao.add(cmsUser);
 
@@ -59,13 +59,12 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         //given
         String username = "test";
         String password = "password";
-        String status = "N";
         String hash = "hash";
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName(username);
         cmsUser.setPassword(password);
         cmsUser.setPasswordHash(hash);
-        cmsUser.setStatus(status);
+        cmsUser.setStatus(CmsUserStatus.NEW);
         Long addedId = dao.add(cmsUser);
 
         //when
@@ -75,7 +74,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         assertNotNull(cmsUserResult);
         assertEquals((long) addedId, (long) cmsUserResult.getId());
         assertEquals(username, cmsUserResult.getUserName());
-        assertEquals(status, cmsUserResult.getStatus());
+        assertEquals(CmsUserStatus.NEW, cmsUserResult.getStatus());
         assertEquals(hash, cmsUserResult.getPasswordHash());
     }
 
@@ -107,12 +106,12 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         String hash = "hash";
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName("test1");
-        cmsUser.setStatus("N");
+        cmsUser.setStatus(CmsUserStatus.NEW);
         cmsUser.setPasswordHash(hash);
         dao.add(cmsUser);
         CmsUser cmsUser2 = new CmsUser();
         cmsUser2.setUserName("test2");
-        cmsUser2.setStatus("N");
+        cmsUser2.setStatus(CmsUserStatus.NEW);
         cmsUser2.setPasswordHash(hash);
         dao.add(cmsUser2);
 
@@ -130,11 +129,10 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         //given
         String username = "test";
         String username2 = "test2";
-        String status = "N";
         String hash = "hash";
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName(username);
-        cmsUser.setStatus(status);
+        cmsUser.setStatus(CmsUserStatus.NEW);
         cmsUser.setPasswordHash(hash);
         dao.add(cmsUser);
         cmsUser.setUserName(username2);
@@ -152,11 +150,10 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
     public void testGet() throws Exception {
         //given
         String username = "test";
-        String status = "N";
         String hash = "hash";
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName(username);
-        cmsUser.setStatus(status);
+        cmsUser.setStatus(CmsUserStatus.NEW);
         cmsUser.setPasswordHash(hash);
         Long addedId = dao.add(cmsUser);
 
@@ -167,7 +164,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         assertNotNull(cmsUserResult);
         assertEquals((long) addedId, (long) cmsUserResult.getId());
         assertEquals(username, cmsUserResult.getUserName());
-        assertEquals(status, cmsUserResult.getStatus());
+        assertEquals(CmsUserStatus.NEW, cmsUserResult.getStatus());
         assertEquals(hash, cmsUserResult.getPasswordHash());
     }
 
@@ -175,11 +172,10 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
     public void testAdd() throws Exception {
         //given
         String username = "test";
-        String status = "N";
         String hash = "hash";
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName(username);
-        cmsUser.setStatus(status);
+        cmsUser.setStatus(CmsUserStatus.NEW);
         cmsUser.setPasswordHash(hash);
 
         //when
@@ -190,7 +186,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         assertNotNull(cmsUserResult);
         assertEquals((long) addedId, (long) cmsUserResult.getId());
         assertEquals(username, cmsUserResult.getUserName());
-        assertEquals(status, cmsUserResult.getStatus());
+        assertEquals(CmsUserStatus.NEW, cmsUserResult.getStatus());
         assertEquals(hash, cmsUserResult.getPasswordHash());
     }
 
@@ -202,7 +198,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         String hash = "hash";
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName(username1);
-        cmsUser.setStatus("N");
+        cmsUser.setStatus(CmsUserStatus.NEW);
         cmsUser.setPasswordHash(hash);
         Long addedId = dao.add(cmsUser);
         cmsUser.setId(addedId);
@@ -224,17 +220,15 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         //given
         String username1 = "test";
         String username2 = "test2";
-        String status = "N";
-        String newStatus = "D";
         String hash = "hash";
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName(username1);
-        cmsUser.setStatus(status);
+        cmsUser.setStatus(CmsUserStatus.NEW);
         cmsUser.setPasswordHash(hash);
         Long addedId = dao.add(cmsUser);
         cmsUser.setId(addedId);
         cmsUser.setUserName(username2);
-        cmsUser.setStatus(newStatus);
+        cmsUser.setStatus(CmsUserStatus.DELETED);
 
         //when
         dao.updatePostBasicInfo(cmsUser);
@@ -244,7 +238,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         assertNotNull(cmsUserResult);
         assertEquals((long) addedId, (long) cmsUserResult.getId());
         assertEquals(username2, cmsUserResult.getUserName());
-        assertEquals(newStatus, cmsUserResult.getStatus());
+        assertEquals(CmsUserStatus.DELETED, cmsUserResult.getStatus());
         assertEquals(hash, cmsUserResult.getPasswordHash());
     }
 
@@ -259,7 +253,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName(username1);
         cmsUser.setPassword(password);
-        cmsUser.setStatus("N");
+        cmsUser.setStatus(CmsUserStatus.NEW);
         cmsUser.setPasswordHash(hash);
         Long addedId = dao.add(cmsUser);
         cmsUser.setId(addedId);
@@ -284,7 +278,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         String hash = "hash";
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName(username1);
-        cmsUser.setStatus("N");
+        cmsUser.setStatus(CmsUserStatus.NEW);
         cmsUser.setPasswordHash(hash);
         Long addedId = dao.add(cmsUser);
         cmsUser.setId(addedId);
@@ -297,7 +291,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         assertNotNull(cmsUserResult);
         assertEquals((long) addedId, (long) cmsUserResult.getId());
         assertEquals(username1, cmsUserResult.getUserName());
-        assertEquals("Unexpected status value for deleted object", "D", cmsUserResult.getStatus());
+        assertEquals("Unexpected status value for deleted object", CmsUserStatus.DELETED, cmsUserResult.getStatus());
         assertEquals(hash, cmsUserResult.getPasswordHash());
     }
 
@@ -308,7 +302,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         String hash = "hash";
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName(username1);
-        cmsUser.setStatus("N");
+        cmsUser.setStatus(CmsUserStatus.NEW);
         cmsUser.setPasswordHash(hash);
         Long addedId = dao.add(cmsUser);
         cmsUser.setId(addedId);
@@ -322,7 +316,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         assertNotNull(cmsUserResult);
         assertEquals((long) addedId, (long) cmsUserResult.getId());
         assertEquals(username1, cmsUserResult.getUserName());
-        assertEquals("Unexpected status for undeleted object", "N", cmsUserResult.getStatus());
+        assertEquals("Unexpected status for undeleted object", CmsUserStatus.NEW, cmsUserResult.getStatus());
         assertEquals(hash, cmsUserResult.getPasswordHash());
     }
 
@@ -333,7 +327,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         String hash = "hash";
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName(username1);
-        cmsUser.setStatus("N");
+        cmsUser.setStatus(CmsUserStatus.NEW);
         cmsUser.setPasswordHash(hash);
         Long addedId = dao.add(cmsUser);
         cmsUser.setId(addedId);
@@ -346,7 +340,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         assertNotNull(cmsUserResult);
         assertEquals((long) addedId, (long) cmsUserResult.getId());
         assertEquals(username1, cmsUserResult.getUserName());
-        assertEquals("Unexpected status for locked object", "L", cmsUserResult.getStatus());
+        assertEquals("Unexpected status for locked object", CmsUserStatus.LOCKED, cmsUserResult.getStatus());
         assertEquals(hash, cmsUserResult.getPasswordHash());
     }
 
@@ -357,7 +351,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         String hash = "hash";
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName(username1);
-        cmsUser.setStatus("N");
+        cmsUser.setStatus(CmsUserStatus.NEW);
         cmsUser.setPasswordHash(hash);
         Long addedId = dao.add(cmsUser);
         cmsUser.setId(addedId);
@@ -371,7 +365,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         assertNotNull(cmsUserResult);
         assertEquals((long) addedId, (long) cmsUserResult.getId());
         assertEquals(username1, cmsUserResult.getUserName());
-        assertEquals("Unexpected status for locked object", "N", cmsUserResult.getStatus());
+        assertEquals("Unexpected status for unlocked object", CmsUserStatus.NEW, cmsUserResult.getStatus());
         assertEquals(hash, cmsUserResult.getPasswordHash());
     }
 }

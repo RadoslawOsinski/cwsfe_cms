@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.BlogKeywordStatus;
 import eu.com.cwsfe.cms.model.BlogKeyword;
 import eu.com.cwsfe.cms.model.BlogPostKeyword;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class BlogPostKeywordsDAO {
         BlogKeyword blogKeyword = new BlogKeyword();
         blogKeyword.setId(resultSet.getLong("id"));
         blogKeyword.setKeywordName(resultSet.getString("keyword_name"));
-        blogKeyword.setStatus(resultSet.getString("status"));
+        blogKeyword.setStatus(BlogKeywordStatus.fromCode(resultSet.getString("status")));
         return blogKeyword;
     }
 

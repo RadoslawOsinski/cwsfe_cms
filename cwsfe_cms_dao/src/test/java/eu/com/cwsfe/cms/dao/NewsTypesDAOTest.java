@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.NewsTypeStatus;
 import eu.com.cwsfe.cms.model.NewsType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,11 +49,11 @@ public class NewsTypesDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         //given
         NewsType newsType = new NewsType();
         newsType.setType("test1");
-        newsType.setStatus("N");
+        newsType.setStatus(NewsTypeStatus.NEW);
         dao.add(newsType);
         NewsType newsType2 = new NewsType();
         newsType2.setType("test2");
-        newsType2.setStatus("N");
+        newsType2.setStatus(NewsTypeStatus.NEW);
         dao.add(newsType2);
 
         //when
@@ -69,10 +70,9 @@ public class NewsTypesDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         //given
         String type = "test";
         String type2 = "test2";
-        String status = "N";
         NewsType newsType = new NewsType();
         newsType.setType(type);
-        newsType.setStatus(status);
+        newsType.setStatus(NewsTypeStatus.NEW);
         dao.add(newsType);
         newsType.setType(type2);
         dao.add(newsType);
@@ -89,10 +89,9 @@ public class NewsTypesDAOTest extends AbstractTransactionalJUnit4SpringContextTe
     public void testGet() throws Exception {
         //given
         String type = "test";
-        String status = "N";
         NewsType newsType = new NewsType();
         newsType.setType(type);
-        newsType.setStatus(status);
+        newsType.setStatus(NewsTypeStatus.NEW);
         Long addedId = dao.add(newsType);
 
         //when
@@ -102,17 +101,16 @@ public class NewsTypesDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         assertNotNull(newsTypeResult);
         assertEquals((long) addedId, (long) newsTypeResult.getId());
         assertEquals(type, newsTypeResult.getType());
-        assertEquals(status, newsTypeResult.getStatus());
+        assertEquals(NewsTypeStatus.NEW, newsTypeResult.getStatus());
     }
 
     @Test
     public void testGetByFolderName() throws Exception {
         //given
         String type = "test";
-        String status = "N";
         NewsType newsType = new NewsType();
         newsType.setType(type);
-        newsType.setStatus(status);
+        newsType.setStatus(NewsTypeStatus.NEW);
         Long addedId = dao.add(newsType);
 
         //when
@@ -122,17 +120,16 @@ public class NewsTypesDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         assertNotNull(newsTypeResult);
         assertEquals((long) addedId, (long) newsTypeResult.getId());
         assertEquals(type, newsTypeResult.getType());
-        assertEquals(status, newsTypeResult.getStatus());
+        assertEquals(NewsTypeStatus.NEW, newsTypeResult.getStatus());
     }
 
     @Test
     public void testAdd() throws Exception {
         //given
         String type = "test";
-        String status = "N";
         NewsType newsType = new NewsType();
         newsType.setType(type);
-        newsType.setStatus(status);
+        newsType.setStatus(NewsTypeStatus.NEW);
 
         //when
         Long addedId = dao.add(newsType);
@@ -142,7 +139,7 @@ public class NewsTypesDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         assertNotNull(newsTypeResult);
         assertEquals((long) addedId, (long) newsTypeResult.getId());
         assertEquals(type, newsTypeResult.getType());
-        assertEquals(status, newsTypeResult.getStatus());
+        assertEquals(NewsTypeStatus.NEW, newsTypeResult.getStatus());
     }
 
     @Test
@@ -152,7 +149,7 @@ public class NewsTypesDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         String type2 = "test2";
         NewsType newsType = new NewsType();
         newsType.setType(type1);
-        newsType.setStatus("N");
+        newsType.setStatus(NewsTypeStatus.NEW);
         Long addedId = dao.add(newsType);
         newsType.setId(addedId);
         newsType.setType(type2);
@@ -173,7 +170,7 @@ public class NewsTypesDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         String type1 = "test";
         NewsType newsType = new NewsType();
         newsType.setType(type1);
-        newsType.setStatus("N");
+        newsType.setStatus(NewsTypeStatus.NEW);
         Long addedId = dao.add(newsType);
         newsType.setId(addedId);
 
@@ -185,7 +182,7 @@ public class NewsTypesDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         assertNotNull(newsTypeResult);
         assertEquals((long) addedId, (long) newsTypeResult.getId());
         assertEquals(type1, newsTypeResult.getType());
-        assertEquals("Unexpected status value for deleted object", "D", newsTypeResult.getStatus());
+        assertEquals("Unexpected status value for deleted object", NewsTypeStatus.DELETED, newsTypeResult.getStatus());
     }
 
     @Test
@@ -194,7 +191,7 @@ public class NewsTypesDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         String type1 = "test";
         NewsType newsType = new NewsType();
         newsType.setType(type1);
-        newsType.setStatus("N");
+        newsType.setStatus(NewsTypeStatus.NEW);
         Long addedId = dao.add(newsType);
         newsType.setId(addedId);
         dao.delete(newsType);
@@ -207,6 +204,6 @@ public class NewsTypesDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         assertNotNull(newsTypeResult);
         assertEquals((long) addedId, (long) newsTypeResult.getId());
         assertEquals(type1, newsTypeResult.getType());
-        assertEquals("Unexpected status for undeleted object", "N", newsTypeResult.getStatus());
+        assertEquals("Unexpected status for undeleted object", NewsTypeStatus.NEW, newsTypeResult.getStatus());
     }
 }

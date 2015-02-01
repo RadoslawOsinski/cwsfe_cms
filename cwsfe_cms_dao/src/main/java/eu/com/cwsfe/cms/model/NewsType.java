@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.model;
 
+import eu.com.cwsfe.cms.domains.NewsTypeStatus;
+
 import java.io.Serializable;
 
 public class NewsType implements Serializable {
@@ -8,7 +10,7 @@ public class NewsType implements Serializable {
 
     private Long id;
     private String type;
-    private String status;
+    private NewsTypeStatus status;
 
     public Long getId() {
         return id;
@@ -26,11 +28,11 @@ public class NewsType implements Serializable {
         this.type = type;
     }
 
-    public String getStatus() {
+    public NewsTypeStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(NewsTypeStatus status) {
         this.status = status;
     }
 }

@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.model;
 
+import eu.com.cwsfe.cms.domains.NewsletterDispatchedMailStatus;
+
 import java.io.Serializable;
 
 /**
@@ -13,7 +15,7 @@ public class NewsletterDispatchedMail implements Serializable {
     private Long newsletterMailId;
     private String email;
     private String error;
-    private String status;  //'S'ended, 'E'rror
+    private NewsletterDispatchedMailStatus status;
 
     public Long getId() {
         return id;
@@ -47,11 +49,11 @@ public class NewsletterDispatchedMail implements Serializable {
         this.error = error;
     }
 
-    public String getStatus() {
+    public NewsletterDispatchedMailStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(NewsletterDispatchedMailStatus status) {
         this.status = status;
     }
 }

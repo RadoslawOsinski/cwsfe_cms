@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.BlogPostCommentStatus;
 import eu.com.cwsfe.cms.model.BlogPostComment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -44,7 +45,7 @@ public class BlogPostCommentsDAO {
         blogPostComment.setComment(resultSet.getString("comment"));
         blogPostComment.setUserName(resultSet.getString("user_name"));
         blogPostComment.setEmail(resultSet.getString("email"));
-        blogPostComment.setStatus(resultSet.getString("status"));
+        blogPostComment.setStatus(BlogPostCommentStatus.fromCode(resultSet.getString("status")));
         blogPostComment.setCreated(resultSet.getTimestamp("created"));
         return blogPostComment;
     }

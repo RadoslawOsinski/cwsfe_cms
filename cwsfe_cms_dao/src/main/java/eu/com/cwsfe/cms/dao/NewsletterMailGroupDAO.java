@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.NewsletterMailGroupStatus;
 import eu.com.cwsfe.cms.model.NewsletterMailGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -37,7 +38,7 @@ public class NewsletterMailGroupDAO {
         newsletterMailGroup.setId(resultSet.getLong("ID"));
         newsletterMailGroup.setLanguageId(resultSet.getLong("LANGUAGE_ID"));
         newsletterMailGroup.setName(resultSet.getString("NAME"));
-        newsletterMailGroup.setStatus(resultSet.getString("STATUS"));
+        newsletterMailGroup.setStatus(NewsletterMailGroupStatus.fromCode(resultSet.getString("STATUS")));
         return newsletterMailGroup;
     }
 

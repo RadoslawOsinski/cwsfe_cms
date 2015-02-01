@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.CmsTextI18nCategoryStatus;
 import eu.com.cwsfe.cms.model.CmsTextI18nCategory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -113,12 +114,11 @@ public class CmsTextI18nCategoryDAOTest extends AbstractTransactionalJUnit4Sprin
         //given
         String category = "test";
         String newCategory = "test2";
-        String status = "N";
         CmsTextI18nCategory cmsTextI18nCategory = new CmsTextI18nCategory();
         cmsTextI18nCategory.setCategory(category);
         cmsTextI18nCategory.setId(dao.add(cmsTextI18nCategory));
         cmsTextI18nCategory.setCategory(newCategory);
-        cmsTextI18nCategory.setStatus(status);
+        cmsTextI18nCategory.setStatus(CmsTextI18nCategoryStatus.NEW);
 
         //when
         dao.update(cmsTextI18nCategory);
@@ -128,7 +128,7 @@ public class CmsTextI18nCategoryDAOTest extends AbstractTransactionalJUnit4Sprin
         assertNotNull(cmsRoleResult);
         assertEquals((long) cmsTextI18nCategory.getId(), (long) cmsRoleResult.getId());
         assertEquals(newCategory, cmsRoleResult.getCategory());
-        assertEquals(status, cmsRoleResult.getStatus());
+        assertEquals(CmsTextI18nCategoryStatus.NEW, cmsRoleResult.getStatus());
     }
 
     @Test
@@ -146,7 +146,7 @@ public class CmsTextI18nCategoryDAOTest extends AbstractTransactionalJUnit4Sprin
         CmsTextI18nCategory cmsTextI18nCategoryResult = dao.get(cmsTextI18nCategory.getId());
         assertNotNull(cmsTextI18nCategoryResult);
         assertEquals((long) cmsTextI18nCategory.getId(), (long) cmsTextI18nCategoryResult.getId());
-        assertEquals("Unexpected status value for deleted object", "D", cmsTextI18nCategoryResult.getStatus());
+        assertEquals("Unexpected status value for deleted object", CmsTextI18nCategoryStatus.DELETED, cmsTextI18nCategoryResult.getStatus());
     }
 
     @Test
@@ -165,6 +165,6 @@ public class CmsTextI18nCategoryDAOTest extends AbstractTransactionalJUnit4Sprin
         CmsTextI18nCategory cmsTextI18nCategoryResult = dao.get(cmsTextI18nCategory.getId());
         assertNotNull(cmsTextI18nCategoryResult);
         assertEquals((long) cmsTextI18nCategory.getId(), (long) cmsTextI18nCategoryResult.getId());
-        assertEquals("Unexpected status value for undeleted object", "N", cmsTextI18nCategoryResult.getStatus());
+        assertEquals("Unexpected status value for undeleted object", CmsTextI18nCategoryStatus.NEW, cmsTextI18nCategoryResult.getStatus());
     }
 }

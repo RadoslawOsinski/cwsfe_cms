@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.CmsNewsImageStatus;
 import eu.com.cwsfe.cms.model.CmsNewsImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +69,7 @@ public class CmsNewsImagesDAO {
         cmsNewsImage.setHeight(resultSet.getInt("HEIGHT"));
         cmsNewsImage.setMimeType(resultSet.getString("MIME_TYPE"));
         cmsNewsImage.setCreated(resultSet.getTimestamp("CREATED"));
-        cmsNewsImage.setStatus(resultSet.getString("STATUS"));
+        cmsNewsImage.setStatus(CmsNewsImageStatus.fromCode(resultSet.getString("STATUS")));
         if (withContent) {
             cmsNewsImage.setContent(resultSet.getBytes("CONTENT"));
         }

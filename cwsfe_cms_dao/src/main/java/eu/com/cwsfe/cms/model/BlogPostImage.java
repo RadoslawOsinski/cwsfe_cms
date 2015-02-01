@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.model;
 
+import eu.com.cwsfe.cms.domains.BlogPostImageStatus;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.Serializable;
@@ -19,7 +20,7 @@ public class BlogPostImage implements Serializable {
     private String mimeType;
     private byte[] content;
     private Date created;
-    private String status;	//'D'eleted, 'N'ew
+    private BlogPostImageStatus status;	//'D'eleted, 'N'ew
     private CommonsMultipartFile file;
 
     public Long getId() {
@@ -102,11 +103,11 @@ public class BlogPostImage implements Serializable {
         this.created = created;
     }
 
-    public String getStatus() {
+    public BlogPostImageStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(BlogPostImageStatus status) {
         this.status = status;
     }
 

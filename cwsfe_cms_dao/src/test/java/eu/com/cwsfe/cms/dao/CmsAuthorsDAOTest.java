@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.CmsAuthorStatus;
 import eu.com.cwsfe.cms.model.CmsAuthor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -177,7 +178,7 @@ public class CmsAuthorsDAOTest extends AbstractTransactionalJUnit4SpringContextT
         CmsAuthor cmsAuthorResult = dao.get(cmsAuthor.getId());
         assertNotNull(cmsAuthorResult);
         assertEquals((long) cmsAuthor.getId(), (long) cmsAuthorResult.getId());
-        assertEquals("Unexpected status value for deleted object", "D", cmsAuthorResult.getStatus());
+        assertEquals("Unexpected status value for deleted object", CmsAuthorStatus.DELETED, cmsAuthorResult.getStatus());
     }
 
     @Test
@@ -200,6 +201,6 @@ public class CmsAuthorsDAOTest extends AbstractTransactionalJUnit4SpringContextT
         CmsAuthor cmsAuthorResult = dao.get(cmsAuthor.getId());
         assertNotNull(cmsAuthorResult);
         assertEquals((long) cmsAuthor.getId(), (long) cmsAuthorResult.getId());
-        assertEquals("Unexpected status value for undeleted object", "N", cmsAuthorResult.getStatus());
+        assertEquals("Unexpected status value for undeleted object", CmsAuthorStatus.NEW, cmsAuthorResult.getStatus());
     }
 }

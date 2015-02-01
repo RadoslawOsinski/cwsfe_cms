@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.CmsNewsStatus;
 import eu.com.cwsfe.cms.model.CmsNews;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -119,7 +120,7 @@ public class CmsNewsDAO {
         cmsNews.setNewsFolderId(resultSet.getLong("FOLDER_ID"));
         cmsNews.setCreationDate(resultSet.getDate("CREATION_DATE"));
         cmsNews.setNewsCode(resultSet.getString("NEWS_CODE"));
-        cmsNews.setStatus(resultSet.getString("STATUS"));
+        cmsNews.setStatus(CmsNewsStatus.fromCode(resultSet.getString("STATUS")));
         return cmsNews;
     }
 

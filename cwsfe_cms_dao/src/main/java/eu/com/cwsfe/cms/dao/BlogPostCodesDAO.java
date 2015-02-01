@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.BlogPostCodeStatus;
 import eu.com.cwsfe.cms.model.BlogPostCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -61,7 +62,7 @@ public class BlogPostCodesDAO {
         blogPostCode.setCodeId(resultSet.getString("code_id"));
         blogPostCode.setBlogPostId(resultSet.getLong("blog_post_id"));
         blogPostCode.setCode(resultSet.getString("code"));
-        blogPostCode.setStatus(resultSet.getString("status"));
+        blogPostCode.setStatus(BlogPostCodeStatus.fromCode(resultSet.getString("status")));
         return blogPostCode;
     }
 

@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.model;
 
+import eu.com.cwsfe.cms.domains.NewsletterMailGroupStatus;
+
 import java.io.Serializable;
 
 /**
@@ -12,7 +14,7 @@ public class NewsletterMailGroup implements Serializable {
     private Long id;
     private Long languageId;
     private String name;
-    private String status;
+    private NewsletterMailGroupStatus status;
 
     public Long getId() {
         return id;
@@ -38,11 +40,11 @@ public class NewsletterMailGroup implements Serializable {
         this.name = name;
     }
 
-    public String getStatus() {
+    public NewsletterMailGroupStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(NewsletterMailGroupStatus status) {
         this.status = status;
     }
 }

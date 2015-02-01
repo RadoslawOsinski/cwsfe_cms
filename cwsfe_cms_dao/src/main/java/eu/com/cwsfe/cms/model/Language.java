@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.model;
 
+import eu.com.cwsfe.cms.domains.LanguageStatus;
+
 import java.io.Serializable;
 
 public class Language implements Serializable {
@@ -9,7 +11,7 @@ public class Language implements Serializable {
     private Long id;
     private String code;
     private String name;
-    private String status;
+    private LanguageStatus status;
 
     public Long getId() {
         return id;
@@ -35,11 +37,11 @@ public class Language implements Serializable {
         this.name = name;
     }
 
-    public String getStatus() {
+    public LanguageStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(LanguageStatus status) {
         this.status = status;
     }
 }

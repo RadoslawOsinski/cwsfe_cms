@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.NewsletterMailAddressStatus;
 import eu.com.cwsfe.cms.model.Language;
 import eu.com.cwsfe.cms.model.NewsletterMailAddress;
 import eu.com.cwsfe.cms.model.NewsletterMailGroup;
@@ -85,14 +86,14 @@ public class NewsletterMailAddressDAOTest extends AbstractTransactionalJUnit4Spr
         //given
         NewsletterMailAddress newsletterMailAddress = new NewsletterMailAddress();
         newsletterMailAddress.setEmail("test1@test.pl");
-        newsletterMailAddress.setStatus("N");
+        newsletterMailAddress.setStatus(NewsletterMailAddressStatus.NEW);
         newsletterMailAddress.setMailGroupId(MAIL_GROUP.getId());
         newsletterMailAddress.setConfirmString("confirmString1");
         newsletterMailAddress.setUnSubscribeString("unSubscribeString1");
         dao.add(newsletterMailAddress);
         NewsletterMailAddress newsletterMailAddress2 = new NewsletterMailAddress();
         newsletterMailAddress2.setEmail("test2@test.pl");
-        newsletterMailAddress2.setStatus("N");
+        newsletterMailAddress2.setStatus(NewsletterMailAddressStatus.NEW);
         newsletterMailAddress2.setMailGroupId(MAIL_GROUP2.getId());
         newsletterMailAddress2.setConfirmString("confirmString2");
         newsletterMailAddress2.setUnSubscribeString("unSubscribeString2");
@@ -112,14 +113,14 @@ public class NewsletterMailAddressDAOTest extends AbstractTransactionalJUnit4Spr
         //given
         NewsletterMailAddress newsletterMailAddress = new NewsletterMailAddress();
         newsletterMailAddress.setEmail("test1@test.pl");
-        newsletterMailAddress.setStatus("N");
+        newsletterMailAddress.setStatus(NewsletterMailAddressStatus.NEW);
         newsletterMailAddress.setMailGroupId(MAIL_GROUP.getId());
         newsletterMailAddress.setConfirmString("confirmString1");
         newsletterMailAddress.setUnSubscribeString("unSubscribeString1");
         dao.add(newsletterMailAddress);
         NewsletterMailAddress newsletterMailAddress2 = new NewsletterMailAddress();
         newsletterMailAddress2.setEmail("test2@test.pl");
-        newsletterMailAddress2.setStatus("N");
+        newsletterMailAddress2.setStatus(NewsletterMailAddressStatus.NEW);
         newsletterMailAddress2.setMailGroupId(MAIL_GROUP2.getId());
         newsletterMailAddress2.setConfirmString("confirmString2");
         newsletterMailAddress2.setUnSubscribeString("unSubscribeString2");
@@ -139,14 +140,14 @@ public class NewsletterMailAddressDAOTest extends AbstractTransactionalJUnit4Spr
         //given
         NewsletterMailAddress newsletterMailAddress = new NewsletterMailAddress();
         newsletterMailAddress.setEmail("test1@test.pl");
-        newsletterMailAddress.setStatus("N");
+        newsletterMailAddress.setStatus(NewsletterMailAddressStatus.NEW);
         newsletterMailAddress.setMailGroupId(MAIL_GROUP.getId());
         newsletterMailAddress.setConfirmString("confirmString1");
         newsletterMailAddress.setUnSubscribeString("unSubscribeString1");
         dao.add(newsletterMailAddress);
         NewsletterMailAddress newsletterMailAddress2 = new NewsletterMailAddress();
         newsletterMailAddress2.setEmail("test2@test.pl");
-        newsletterMailAddress2.setStatus("N");
+        newsletterMailAddress2.setStatus(NewsletterMailAddressStatus.NEW);
         newsletterMailAddress2.setMailGroupId(MAIL_GROUP2.getId());
         newsletterMailAddress2.setConfirmString("confirmString2");
         newsletterMailAddress2.setUnSubscribeString("unSubscribeString2");
@@ -327,7 +328,7 @@ public class NewsletterMailAddressDAOTest extends AbstractTransactionalJUnit4Spr
         NewsletterMailAddress newsletterMailAddressResult = dao.get(addedId);
         assertNotNull(newsletterMailAddressResult);
         assertEquals((long) addedId, (long) newsletterMailAddressResult.getId());
-        assertEquals("Unexpected status value for deleted object", "D", newsletterMailAddressResult.getStatus());
+        assertEquals("Unexpected status value for deleted object", NewsletterMailAddressStatus.DELETED, newsletterMailAddressResult.getStatus());
     }
 
     @Test
@@ -351,7 +352,7 @@ public class NewsletterMailAddressDAOTest extends AbstractTransactionalJUnit4Spr
         NewsletterMailAddress newsletterMailAddressResult = dao.get(addedId);
         assertNotNull(newsletterMailAddressResult);
         assertEquals((long) addedId, (long) newsletterMailAddressResult.getId());
-        assertEquals("Unexpected status for undeleted object", "N", newsletterMailAddressResult.getStatus());
+        assertEquals("Unexpected status for undeleted object", NewsletterMailAddressStatus.NEW, newsletterMailAddressResult.getStatus());
     }
 
     @Test
@@ -374,7 +375,7 @@ public class NewsletterMailAddressDAOTest extends AbstractTransactionalJUnit4Spr
         NewsletterMailAddress newsletterMailAddressResult = dao.get(addedId);
         assertNotNull(newsletterMailAddressResult);
         assertEquals((long) addedId, (long) newsletterMailAddressResult.getId());
-        assertEquals("Unexpected status for active object", "A", newsletterMailAddressResult.getStatus());
+        assertEquals("Unexpected status for active object", NewsletterMailAddressStatus.ACTIVE, newsletterMailAddressResult.getStatus());
     }
 
     @Test
@@ -397,6 +398,6 @@ public class NewsletterMailAddressDAOTest extends AbstractTransactionalJUnit4Spr
         NewsletterMailAddress newsletterMailAddressResult = dao.get(addedId);
         assertNotNull(newsletterMailAddressResult);
         assertEquals((long) addedId, (long) newsletterMailAddressResult.getId());
-        assertEquals("Unexpected status for deactivated object", "I", newsletterMailAddressResult.getStatus());
+        assertEquals("Unexpected status for deactivated object", NewsletterMailAddressStatus.INACTIVE, newsletterMailAddressResult.getStatus());
     }
 }

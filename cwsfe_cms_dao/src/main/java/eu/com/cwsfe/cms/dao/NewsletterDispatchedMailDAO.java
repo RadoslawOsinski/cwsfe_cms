@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.NewsletterDispatchedMailStatus;
 import eu.com.cwsfe.cms.model.NewsletterDispatchedMail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +51,7 @@ class NewsletterDispatchedMailDAO {
         newsletterDispatchedMail.setNewsletterMailId(resultSet.getLong("NEWSLETTER_MAIL_ID"));
         newsletterDispatchedMail.setEmail(resultSet.getString("EMAIL"));
         newsletterDispatchedMail.setError(resultSet.getString("ERROR"));
-        newsletterDispatchedMail.setStatus(resultSet.getString("STATUS"));
+        newsletterDispatchedMail.setStatus(NewsletterDispatchedMailStatus.fromCode(resultSet.getString("STATUS")));
         return newsletterDispatchedMail;
     }
 

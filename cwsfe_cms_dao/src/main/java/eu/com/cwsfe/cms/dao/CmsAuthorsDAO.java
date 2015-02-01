@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.CmsAuthorStatus;
 import eu.com.cwsfe.cms.model.CmsAuthor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -39,7 +40,7 @@ public class CmsAuthorsDAO {
         cmsAuthor.setFirstName(resultSet.getString("FIRST_NAME"));
         cmsAuthor.setLastName(resultSet.getString("LAST_NAME"));
         cmsAuthor.setGooglePlusAuthorLink(resultSet.getString("GOOGLE_PLUS_AUTHOR_LINK"));
-        cmsAuthor.setStatus(resultSet.getString("STATUS"));
+        cmsAuthor.setStatus(CmsAuthorStatus.fromCode(resultSet.getString("STATUS")));
         return cmsAuthor;
     }
 

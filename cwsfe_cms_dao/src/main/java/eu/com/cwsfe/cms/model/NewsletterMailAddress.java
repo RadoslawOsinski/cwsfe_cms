@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.model;
 
+import eu.com.cwsfe.cms.domains.NewsletterMailAddressStatus;
+
 import java.io.Serializable;
 
 /**
@@ -9,15 +11,10 @@ public class NewsletterMailAddress implements Serializable {
 
     private static final long serialVersionUID = 7652725822161692802L;
 
-    public static final String STATUS_ACTIVE = "A";
-    public static final String STATUS_INACTIVE = "I";
-    public static final String STATUS_DELETED = "D";
-    public static final String STATUS_ERROR = "E";
-
     private Long id;
     private Long mailGroupId;
     private String email;
-    private String status;  //'N'ew, 'I'nactive, 'A'ctive, 'D'eleted, 'E'rror
+    private NewsletterMailAddressStatus status;
     private String confirmString;    //random text for confirming email
     private String unSubscribeString;    //random text for un subscribing email
 
@@ -45,11 +42,11 @@ public class NewsletterMailAddress implements Serializable {
         this.email = email;
     }
 
-    public String getStatus() {
+    public NewsletterMailAddressStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(NewsletterMailAddressStatus status) {
         this.status = status;
     }
 

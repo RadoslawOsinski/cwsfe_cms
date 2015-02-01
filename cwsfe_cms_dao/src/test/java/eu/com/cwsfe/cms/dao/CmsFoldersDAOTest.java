@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.CmsFolderStatus;
 import eu.com.cwsfe.cms.model.CmsFolder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -180,7 +181,7 @@ public class CmsFoldersDAOTest extends AbstractTransactionalJUnit4SpringContextT
         CmsFolder cmsFolderResult = dao.get(cmsFolder.getId());
         assertNotNull(cmsFolderResult);
         assertEquals((long) cmsFolder.getId(), (long) cmsFolderResult.getId());
-        assertEquals("Unexpected status value for deleted object", "D", cmsFolderResult.getStatus());
+        assertEquals("Unexpected status value for deleted object", CmsFolderStatus.DELETED, cmsFolderResult.getStatus());
     }
 
     @Test
@@ -201,6 +202,6 @@ public class CmsFoldersDAOTest extends AbstractTransactionalJUnit4SpringContextT
         CmsFolder cmsFolderResult = dao.get(cmsFolder.getId());
         assertNotNull(cmsFolderResult);
         assertEquals((long) cmsFolder.getId(), (long) cmsFolderResult.getId());
-        assertEquals("Unexpected status value for undeleted object", "N", cmsFolderResult.getStatus());
+        assertEquals("Unexpected status value for undeleted object", CmsFolderStatus.NEW, cmsFolderResult.getStatus());
     }
 }

@@ -1,9 +1,8 @@
 package eu.com.cwsfe.cms.dao;
 
-import eu.com.cwsfe.cms.model.BlogPost;
-import eu.com.cwsfe.cms.model.BlogPostI18nContent;
-import eu.com.cwsfe.cms.model.CmsAuthor;
-import eu.com.cwsfe.cms.model.Language;
+import eu.com.cwsfe.cms.domains.BlogPostI18nContentStatus;
+import eu.com.cwsfe.cms.domains.BlogPostStatus;
+import eu.com.cwsfe.cms.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +43,7 @@ public class BlogPostI18nContentsDAOTest extends AbstractTransactionalJUnit4Spri
 
         BLOG_POST.setPostAuthorId(CMS_AUTHOR.getId());
         BLOG_POST.setPostTextCode("post text code");
-        BLOG_POST.setStatus("N");
+        BLOG_POST.setStatus(BlogPostStatus.NEW);
         BLOG_POST.setId(postsDao.add(BLOG_POST));
 
         LANGUAGE_EN.setId(cmsLanguagesDAO.getByCode("en").getId());
@@ -137,7 +136,6 @@ public class BlogPostI18nContentsDAOTest extends AbstractTransactionalJUnit4Spri
         String newShortcut = "new shortcut";
         String description = "description";
         String newDescription = "new description";
-        String newStatus = "D";
         BlogPostI18nContent blogPostI18nContent = new BlogPostI18nContent();
         blogPostI18nContent.setPostId(BLOG_POST.getId());
         blogPostI18nContent.setLanguageId(LANGUAGE_EN.getId());
@@ -148,7 +146,7 @@ public class BlogPostI18nContentsDAOTest extends AbstractTransactionalJUnit4Spri
         blogPostI18nContent.setPostTitle(newTitle);
         blogPostI18nContent.setPostShortcut(newShortcut);
         blogPostI18nContent.setPostDescription(newDescription);
-        blogPostI18nContent.setStatus(newStatus);
+        blogPostI18nContent.setStatus(BlogPostI18nContentStatus.DELETED);
 
         //when
         dao.updateContentWithStatus(blogPostI18nContent);
@@ -161,7 +159,7 @@ public class BlogPostI18nContentsDAOTest extends AbstractTransactionalJUnit4Spri
         assertEquals(newTitle, result.getPostTitle());
         assertEquals(newShortcut, result.getPostShortcut());
         assertEquals(newDescription, result.getPostDescription());
-        assertEquals(newStatus, result.getStatus());
+        assertEquals(BlogPostI18nContentStatus.DELETED, result.getStatus());
     }
 
     @Test
@@ -184,7 +182,7 @@ public class BlogPostI18nContentsDAOTest extends AbstractTransactionalJUnit4Spri
         //then
         BlogPostI18nContent result = dao.get(blogPostI18nContent.getId());
         assertNotNull("Post i18n should exists", result);
-        assertEquals("Post i18n should be deleted", "D", result.getStatus());
+        assertEquals("Post i18n should be deleted", BlogPostI18nContentStatus.DELETED, result.getStatus());
     }
 
     @Test
@@ -207,7 +205,7 @@ public class BlogPostI18nContentsDAOTest extends AbstractTransactionalJUnit4Spri
         //then
         BlogPostI18nContent result = dao.get(blogPostI18nContent.getId());
         assertNotNull("Post i18n should exists", result);
-        assertEquals("Post i18n should be hidden", "H", result.getStatus());
+        assertEquals("Post i18n should be hidden", BlogPostI18nContentStatus.HIDDEN, result.getStatus());
     }
 
     @Test
@@ -230,6 +228,6 @@ public class BlogPostI18nContentsDAOTest extends AbstractTransactionalJUnit4Spri
         //then
         BlogPostI18nContent result = dao.get(blogPostI18nContent.getId());
         assertNotNull("Post i18n should exists", result);
-        assertEquals("Post i18n should be published", "P", result.getStatus());
+        assertEquals("Post i18n should be published", BlogPostI18nContentStatus.PUBLISHED, result.getStatus());
     }
 }

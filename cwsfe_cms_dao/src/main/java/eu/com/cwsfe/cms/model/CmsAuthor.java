@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.model;
 
+import eu.com.cwsfe.cms.domains.CmsAuthorStatus;
+
 import java.io.Serializable;
 
 public class CmsAuthor implements Serializable {
@@ -10,7 +12,7 @@ public class CmsAuthor implements Serializable {
     private String firstName;
     private String lastName;
     private String googlePlusAuthorLink;
-    private String status;
+    private CmsAuthorStatus status;
 
     public Long getId() {
         return id;
@@ -44,11 +46,11 @@ public class CmsAuthor implements Serializable {
         this.googlePlusAuthorLink = googlePlusAuthorLink;
     }
 
-    public String getStatus() {
+    public CmsAuthorStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(CmsAuthorStatus status) {
         this.status = status;
     }
 }

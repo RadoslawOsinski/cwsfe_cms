@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.model;
 
+import eu.com.cwsfe.cms.domains.CmsNewsStatus;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +18,7 @@ public class CmsNews implements Serializable {
     private String newsCode;
     private List<CmsNewsImage> cmsNewsImages;
     private CmsNewsImage thumbnailImage;
-    private String status;	//'D'eleted, 'H'idden, 'P'ublished
+    private CmsNewsStatus status;
 
     public Long getId() {
         return id;
@@ -82,11 +84,11 @@ public class CmsNews implements Serializable {
         this.thumbnailImage = thumbnailImage;
     }
 
-    public String getStatus() {
+    public CmsNewsStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(CmsNewsStatus status) {
         this.status = status;
     }
 }

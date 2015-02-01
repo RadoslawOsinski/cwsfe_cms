@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.CmsFolderStatus;
 import eu.com.cwsfe.cms.model.CmsFolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -39,7 +40,7 @@ public class CmsFoldersDAO {
         cmsFolder.setParentId(resultSet.getLong("PARENT_ID"));
         cmsFolder.setFolderName(resultSet.getString("FOLDER_NAME"));
         cmsFolder.setOrderNumber(resultSet.getLong("ORDER_NUMBER"));
-        cmsFolder.setStatus(resultSet.getString("STATUS"));
+        cmsFolder.setStatus(CmsFolderStatus.fromCode(resultSet.getString("STATUS")));
         return cmsFolder;
     }
 

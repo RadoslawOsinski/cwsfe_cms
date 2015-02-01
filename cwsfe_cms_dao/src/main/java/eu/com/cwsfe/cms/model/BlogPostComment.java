@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.model;
 
+import eu.com.cwsfe.cms.domains.BlogPostCommentStatus;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,7 +15,7 @@ public class BlogPostComment implements Serializable {
     private String comment;
     private String userName;
     private String email;
-    private String status;	//'N'ew, 'P'ublished, 'B'locked
+    private BlogPostCommentStatus status;	//'N'ew, 'P'ublished, 'B'locked
     private Date created;
 
     public Long getId() {
@@ -64,11 +66,11 @@ public class BlogPostComment implements Serializable {
         this.email = email;
     }
 
-    public String getStatus() {
+    public BlogPostCommentStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(BlogPostCommentStatus status) {
         this.status = status;
     }
 

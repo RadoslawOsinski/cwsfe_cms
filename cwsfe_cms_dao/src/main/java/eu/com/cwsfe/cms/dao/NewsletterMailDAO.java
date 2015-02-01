@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.NewsletterMailStatus;
 import eu.com.cwsfe.cms.model.NewsletterMail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,7 @@ public class NewsletterMailDAO {
         newsletterMail.setName(resultSet.getString("NAME"));
         newsletterMail.setSubject(resultSet.getString("SUBJECT"));
         newsletterMail.setMailContent(resultSet.getString("MAIL_CONTENT"));
-        newsletterMail.setStatus(resultSet.getString("STATUS"));
+        newsletterMail.setStatus(NewsletterMailStatus.fromCode(resultSet.getString("STATUS")));
         return newsletterMail;
     }
 

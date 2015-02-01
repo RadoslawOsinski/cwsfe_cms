@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.CmsUserStatus;
 import eu.com.cwsfe.cms.model.CmsRole;
 import eu.com.cwsfe.cms.model.CmsUser;
 import eu.com.cwsfe.cms.model.CmsUserRole;
@@ -47,11 +48,10 @@ public class CmsUserRolesDAOTest  extends AbstractTransactionalJUnit4SpringConte
     public void testAdd() throws Exception {
         //given
         String username = "test";
-        String status = "N";
         String hash = "hash";
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName(username);
-        cmsUser.setStatus(status);
+        cmsUser.setStatus(CmsUserStatus.NEW);
         cmsUser.setPasswordHash(hash);
         Long userId = usersDao.add(cmsUser);
         CmsRole role = rolesDao.getByCode("ROLE_CWSFE_CMS_ADMIN");
@@ -70,11 +70,10 @@ public class CmsUserRolesDAOTest  extends AbstractTransactionalJUnit4SpringConte
     public void testDeleteForUser() throws Exception {
         //given
         String username = "test";
-        String status = "N";
         String hash = "hash";
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName(username);
-        cmsUser.setStatus(status);
+        cmsUser.setStatus(CmsUserStatus.NEW);
         cmsUser.setPasswordHash(hash);
         Long userId = usersDao.add(cmsUser);
         CmsRole role = rolesDao.getByCode("ROLE_CWSFE_CMS_ADMIN");
@@ -94,11 +93,10 @@ public class CmsUserRolesDAOTest  extends AbstractTransactionalJUnit4SpringConte
     public void testDeleteForUserByUserRole() throws Exception {
         //given
         String username = "test";
-        String status = "N";
         String hash = "hash";
         CmsUser cmsUser = new CmsUser();
         cmsUser.setUserName(username);
-        cmsUser.setStatus(status);
+        cmsUser.setStatus(CmsUserStatus.NEW);
         cmsUser.setPasswordHash(hash);
         Long userId = usersDao.add(cmsUser);
         CmsRole role = rolesDao.getByCode("ROLE_CWSFE_CMS_ADMIN");

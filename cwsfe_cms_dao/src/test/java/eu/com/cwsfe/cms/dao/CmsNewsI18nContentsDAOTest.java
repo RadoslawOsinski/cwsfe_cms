@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.CmsNewsI18nContentStatus;
+import eu.com.cwsfe.cms.domains.CmsNewsStatus;
 import eu.com.cwsfe.cms.model.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +61,7 @@ public class CmsNewsI18nContentsDAOTest extends AbstractTransactionalJUnit4Sprin
 
         NEWS.setAuthorId(CMS_AUTHOR.getId());
         NEWS.setNewsCode("news text code");
-        NEWS.setStatus("N");
+        NEWS.setStatus(CmsNewsStatus.NEW);
         NEWS.setNewsTypeId(NEWS_TYPE.getId());
         NEWS.setNewsFolderId(FOLDER.getId());
         NEWS.setCreationDate(new Date(4));
@@ -188,7 +190,6 @@ public class CmsNewsI18nContentsDAOTest extends AbstractTransactionalJUnit4Sprin
         String newShortcut = "new shortcut";
         String description = "description";
         String newDescription = "new description";
-        String newStatus = "D";
         CmsNewsI18nContent cmsNewsI18nContent = new CmsNewsI18nContent();
         cmsNewsI18nContent.setNewsId(NEWS.getId());
         cmsNewsI18nContent.setLanguageId(LANGUAGE_EN.getId());
@@ -199,7 +200,7 @@ public class CmsNewsI18nContentsDAOTest extends AbstractTransactionalJUnit4Sprin
         cmsNewsI18nContent.setNewsTitle(newTitle);
         cmsNewsI18nContent.setNewsShortcut(newShortcut);
         cmsNewsI18nContent.setNewsDescription(newDescription);
-        cmsNewsI18nContent.setStatus(newStatus);
+        cmsNewsI18nContent.setStatus(CmsNewsI18nContentStatus.DELETED);
 
         //when
         dao.updateContentWithStatus(cmsNewsI18nContent);
@@ -211,7 +212,7 @@ public class CmsNewsI18nContentsDAOTest extends AbstractTransactionalJUnit4Sprin
         assertEquals(newTitle, result.getNewsTitle());
         assertEquals(newShortcut, result.getNewsShortcut());
         assertEquals(newDescription, result.getNewsDescription());
-        assertEquals(newStatus, result.getStatus());
+        assertEquals(CmsNewsI18nContentStatus.DELETED, result.getStatus());
     }
 
     @Test
@@ -234,7 +235,7 @@ public class CmsNewsI18nContentsDAOTest extends AbstractTransactionalJUnit4Sprin
         //then
         CmsNewsI18nContent result = dao.get(cmsNewsI18nContent.getId());
         assertNotNull("News i18n should exists", result);
-        assertEquals("News i18n should be deleted", "D", result.getStatus());
+        assertEquals("News i18n should be deleted", CmsNewsI18nContentStatus.DELETED, result.getStatus());
     }
 
     @Test
@@ -257,7 +258,7 @@ public class CmsNewsI18nContentsDAOTest extends AbstractTransactionalJUnit4Sprin
         //then
         CmsNewsI18nContent result = dao.get(cmsNewsI18nContent.getId());
         assertNotNull("News i18n should exists", result);
-        assertEquals("News i18n should be hidden", "H", result.getStatus());
+        assertEquals("News i18n should be hidden", CmsNewsI18nContentStatus.HIDDEN, result.getStatus());
     }
 
     @Test
@@ -280,6 +281,6 @@ public class CmsNewsI18nContentsDAOTest extends AbstractTransactionalJUnit4Sprin
         //then
         CmsNewsI18nContent result = dao.get(cmsNewsI18nContent.getId());
         assertNotNull("News i18n should exists", result);
-        assertEquals("News i18n should be published", "P", result.getStatus());
+        assertEquals("News i18n should be published", CmsNewsI18nContentStatus.PUBLISHED, result.getStatus());
     }
 }

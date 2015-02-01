@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.model;
 
+import eu.com.cwsfe.cms.domains.BlogKeywordStatus;
+
 import java.io.Serializable;
 
 public class BlogKeyword implements Serializable {
@@ -8,7 +10,7 @@ public class BlogKeyword implements Serializable {
 
     private Long id;
     private String keywordName;
-    private String status;
+    private BlogKeywordStatus status;
 
     public Long getId() {
         return id;
@@ -26,11 +28,11 @@ public class BlogKeyword implements Serializable {
         this.keywordName = keywordName;
     }
 
-    public String getStatus() {
+    public BlogKeywordStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(BlogKeywordStatus status) {
         this.status = status;
     }
 }

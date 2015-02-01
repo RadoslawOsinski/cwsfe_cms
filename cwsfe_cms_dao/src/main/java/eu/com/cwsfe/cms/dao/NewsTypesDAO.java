@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.NewsTypeStatus;
 import eu.com.cwsfe.cms.model.NewsType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -34,7 +35,7 @@ public class NewsTypesDAO {
         NewsType newsType = new NewsType();
         newsType.setId(resultSet.getLong("ID"));
         newsType.setType(resultSet.getString("TYPE"));
-        newsType.setStatus(resultSet.getString("STATUS"));
+        newsType.setStatus(NewsTypeStatus.fromCode(resultSet.getString("STATUS")));
         return newsType;
     }
 

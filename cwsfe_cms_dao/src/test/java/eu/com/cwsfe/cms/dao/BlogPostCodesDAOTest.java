@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.BlogPostCodeStatus;
+import eu.com.cwsfe.cms.domains.BlogPostStatus;
 import eu.com.cwsfe.cms.model.BlogPost;
 import eu.com.cwsfe.cms.model.BlogPostCode;
 import eu.com.cwsfe.cms.model.CmsAuthor;
@@ -42,7 +44,7 @@ public class BlogPostCodesDAOTest extends AbstractTransactionalJUnit4SpringConte
 
         BLOG_POST.setPostAuthorId(CMS_AUTHOR.getId());
         BLOG_POST.setPostTextCode("post text code");
-        BLOG_POST.setStatus("N");
+        BLOG_POST.setStatus(BlogPostStatus.NEW);
         BLOG_POST.setId(postsDao.add(BLOG_POST));
     }
 
@@ -112,7 +114,7 @@ public class BlogPostCodesDAOTest extends AbstractTransactionalJUnit4SpringConte
         //then
         assertNotNull(result);
         assertNotNull(result.getCodeId());
-        assertEquals("N", result.getStatus());
+        assertEquals(BlogPostCodeStatus.NEW, result.getStatus());
         assertEquals(code, result.getCode());
         assertEquals(BLOG_POST.getId(), result.getBlogPostId());
     }
@@ -134,7 +136,7 @@ public class BlogPostCodesDAOTest extends AbstractTransactionalJUnit4SpringConte
         //then
         assertNotNull(result);
         assertNotNull(result.getCodeId());
-        assertEquals("N", result.getStatus());
+        assertEquals(BlogPostCodeStatus.NEW, result.getStatus());
         assertEquals(code, result.getCode());
     }
 
@@ -155,7 +157,7 @@ public class BlogPostCodesDAOTest extends AbstractTransactionalJUnit4SpringConte
         BlogPostCode result = dao.getCodeForPostByCodeId(BLOG_POST.getId(), codeId);
         assertNotNull(result);
         assertNotNull(result.getCodeId());
-        assertEquals("N", result.getStatus());
+        assertEquals(BlogPostCodeStatus.NEW, result.getStatus());
         assertEquals(code, result.getCode());
         assertEquals(BLOG_POST.getId(), result.getBlogPostId());
     }
@@ -180,7 +182,7 @@ public class BlogPostCodesDAOTest extends AbstractTransactionalJUnit4SpringConte
         BlogPostCode result = dao.getCodeForPostByCodeId(BLOG_POST.getId(), codeId);
         assertNotNull(result);
         assertNotNull(result.getCodeId());
-        assertEquals("N", result.getStatus());
+        assertEquals(BlogPostCodeStatus.NEW, result.getStatus());
         assertEquals(newCode, result.getCode());
     }
 

@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.model;
 
+import eu.com.cwsfe.cms.domains.CmsTextI18nCategoryStatus;
+
 import java.io.Serializable;
 
 /**
@@ -11,7 +13,7 @@ public class CmsTextI18nCategory implements Serializable {
 
     private Long id;
     private String category;
-    private String status;
+    private CmsTextI18nCategoryStatus status;
 
     public Long getId() {
         return id;
@@ -29,11 +31,11 @@ public class CmsTextI18nCategory implements Serializable {
         this.category = category;
     }
 
-    public String getStatus() {
+    public CmsTextI18nCategoryStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(CmsTextI18nCategoryStatus status) {
         this.status = status;
     }
 }

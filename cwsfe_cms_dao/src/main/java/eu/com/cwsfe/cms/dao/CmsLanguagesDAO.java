@@ -1,9 +1,8 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.LanguageStatus;
 import eu.com.cwsfe.cms.model.Language;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -39,7 +38,7 @@ public class CmsLanguagesDAO {
         lang.setId(resultSet.getLong("ID"));
         lang.setCode(resultSet.getString("CODE"));
         lang.setName(resultSet.getString("NAME"));
-        lang.setStatus(resultSet.getString("STATUS"));
+        lang.setStatus(LanguageStatus.fromCode(resultSet.getString("STATUS")));
         return lang;
     }
 
@@ -74,7 +73,6 @@ public class CmsLanguagesDAO {
                 mapLang(resultSet));
     }
 
-    @Cacheable(value = "cmsLanguagesById")
     public Language getById(Long id) {
         String query =
                 "SELECT " + COLUMNS + "FROM CMS_LANGUAGES WHERE id = ?";
@@ -84,7 +82,6 @@ public class CmsLanguagesDAO {
                     mapLang(resultSet));
     }
 
-    @Cacheable(value = "cmsLanguagesByCode")
     public Language getByCode(String code) {
         String query =
                 "SELECT " + COLUMNS + "FROM CMS_LANGUAGES WHERE code = ?";
@@ -94,7 +91,6 @@ public class CmsLanguagesDAO {
                 mapLang(resultSet));
     }
 
-    @Cacheable(value = "cmsLanguagesByCodeIgnoreCase")
     public Language getByCodeIgnoreCase(String code) {
         String query =
                 "SELECT " + COLUMNS + "FROM CMS_LANGUAGES WHERE lower(code) = lower(?)";
@@ -117,7 +113,6 @@ public class CmsLanguagesDAO {
         return id;
     }
 
-    @CacheEvict(value = {"cmsLanguagesById", "cmsLanguagesByCode", "cmsLanguagesByCodeIgnoreCase"})
     public void update(Language lang) {
         Object[] dbParams = new Object[3];
         dbParams[0] = lang.getCode();
@@ -129,7 +124,6 @@ public class CmsLanguagesDAO {
         );
     }
 
-    @CacheEvict(value = {"cmsLanguagesById", "cmsLanguagesByCode", "cmsLanguagesByCodeIgnoreCase"})
     public void delete(Language lang) {
         Object[] dbParams = new Object[1];
         dbParams[0] = lang.getId();
@@ -139,7 +133,6 @@ public class CmsLanguagesDAO {
         );
     }
 
-    @CacheEvict(value = {"cmsLanguagesById", "cmsLanguagesByCode", "cmsLanguagesByCodeIgnoreCase"})
     public void undelete(Language lang) {
         Object[] dbParams = new Object[1];
         dbParams[0] = lang.getId();

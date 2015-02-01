@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.CmsNewsImageStatus;
+import eu.com.cwsfe.cms.domains.CmsNewsStatus;
 import eu.com.cwsfe.cms.model.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +59,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
 
         NEWS.setAuthorId(CMS_AUTHOR.getId());
         NEWS.setNewsCode("news text code");
-        NEWS.setStatus("N");
+        NEWS.setStatus(CmsNewsStatus.NEW);
         NEWS.setNewsTypeId(NEWS_TYPE.getId());
         NEWS.setNewsFolderId(FOLDER.getId());
         NEWS.setCreationDate(new Date(4));
@@ -111,7 +113,6 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
     public void testGetWithContent() throws Exception {
         //given
         String title = "title";
-        String status = "N";
         byte[] content = new BigInteger("1111000011110001", 2).toByteArray();
         Date created = new Date();
         String fileName = "fileName";
@@ -122,7 +123,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         CmsNewsImage newsImage = new CmsNewsImage();
         newsImage.setNewsId(NEWS.getId());
         newsImage.setTitle(title);
-        newsImage.setStatus(status);
+        newsImage.setStatus(CmsNewsImageStatus.NEW);
         newsImage.setContent(content);
         newsImage.setCreated(created);
         newsImage.setFileName(fileName);
@@ -139,7 +140,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         assertNotNull(result);
         assertEquals(NEWS.getId(), result.getNewsId());
         assertEquals(title, result.getTitle());
-        assertEquals(status, result.getStatus());
+        assertEquals(CmsNewsImageStatus.NEW, result.getStatus());
         assertTrue(Arrays.equals(content, result.getContent()));
         assertEquals(created, result.getCreated());
         assertEquals(fileName, result.getFileName());
@@ -153,7 +154,6 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
     public void testAdd() throws Exception {
         //given
         String title = "title";
-        String status = "N";
         byte[] content = new BigInteger("1111000011110001", 2).toByteArray();
         Date created = new Date();
         String fileName = "fileName";
@@ -164,7 +164,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         CmsNewsImage newsImage = new CmsNewsImage();
         newsImage.setNewsId(NEWS.getId());
         newsImage.setTitle(title);
-        newsImage.setStatus(status);
+        newsImage.setStatus(CmsNewsImageStatus.NEW);
         newsImage.setContent(content);
         newsImage.setCreated(created);
         newsImage.setFileName(fileName);
@@ -181,7 +181,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         assertNotNull(result);
         assertEquals(NEWS.getId(), result.getNewsId());
         assertEquals(title, result.getTitle());
-        assertEquals(status, result.getStatus());
+        assertEquals(CmsNewsImageStatus.NEW, result.getStatus());
         assertTrue(Arrays.equals(content, result.getContent()));
         assertEquals(created, result.getCreated());
         assertEquals(fileName, result.getFileName());
@@ -195,7 +195,6 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
     public void testUpdate() throws Exception {
         //given
         String title = "title";
-        String status = "N";
         byte[] content = new BigInteger("1111000011110001", 2).toByteArray();
         Date created = new Date(1);
         String fileName = "fileName";
@@ -204,7 +203,6 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         int height = 3;
         String mimeType = "img/png";
         String newTitle = "title2";
-        String newStatus = "P";
         byte[] newContent = new BigInteger("1000011110001", 2).toByteArray();
         Date newCreated = new Date(2);
         String newFileName = "fileName2";
@@ -215,7 +213,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         CmsNewsImage newsImage = new CmsNewsImage();
         newsImage.setNewsId(NEWS.getId());
         newsImage.setTitle(title);
-        newsImage.setStatus(status);
+        newsImage.setStatus(CmsNewsImageStatus.NEW);
         newsImage.setContent(content);
         newsImage.setCreated(created);
         newsImage.setFileName(fileName);
@@ -225,7 +223,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         newsImage.setMimeType(mimeType);
         newsImage.setId(dao.add(newsImage));
         newsImage.setTitle(newTitle);
-        newsImage.setStatus(newStatus);
+        newsImage.setStatus(CmsNewsImageStatus.PUBLISHED);
         newsImage.setContent(newContent);
         newsImage.setCreated(newCreated);
         newsImage.setFileName(newFileName);
@@ -255,7 +253,6 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
     public void testDelete() throws Exception {
         //given
         String title = "title";
-        String status = "N";
         byte[] content = new byte[100];
         Date created = new Date();
         String fileName = "fileName";
@@ -266,7 +263,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         CmsNewsImage newsImage = new CmsNewsImage();
         newsImage.setNewsId(NEWS.getId());
         newsImage.setTitle(title);
-        newsImage.setStatus(status);
+        newsImage.setStatus(CmsNewsImageStatus.NEW);
         newsImage.setContent(content);
         newsImage.setCreated(created);
         newsImage.setFileName(fileName);
@@ -282,14 +279,13 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         //then
         CmsNewsImage result = dao.getWithContent(newsImage.getId());
         assertNotNull("News image should exists", result);
-        assertEquals("News image should be deleted", "D", result.getStatus());
+        assertEquals("News image should be deleted", CmsNewsImageStatus.DELETED, result.getStatus());
     }
 
     @Test
     public void testUndelete() throws Exception {
         //given
         String title = "title";
-        String status = "N";
         byte[] content = new byte[100];
         Date created = new Date();
         String fileName = "fileName";
@@ -300,7 +296,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         CmsNewsImage newsImage = new CmsNewsImage();
         newsImage.setNewsId(NEWS.getId());
         newsImage.setTitle(title);
-        newsImage.setStatus(status);
+        newsImage.setStatus(CmsNewsImageStatus.NEW);
         newsImage.setContent(content);
         newsImage.setCreated(created);
         newsImage.setFileName(fileName);
@@ -316,7 +312,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         //then
         CmsNewsImage result = dao.getWithContent(newsImage.getId());
         assertNotNull("News image should exists", result);
-        assertEquals("News image should undeleted", "N", result.getStatus());
+        assertEquals("News image should undeleted", CmsNewsImageStatus.NEW, result.getStatus());
     }
 
     @Test
@@ -336,7 +332,6 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
     public void testGetThumbnailForNews() throws Exception {
         //given
         String title = "thumbnail_title";
-        String status = "N";
         byte[] content = new BigInteger("1111000011110001", 2).toByteArray();
         Date created = new Date();
         String fileName = "fileName";
@@ -347,7 +342,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         CmsNewsImage newsImage = new CmsNewsImage();
         newsImage.setNewsId(NEWS.getId());
         newsImage.setTitle(title);
-        newsImage.setStatus(status);
+        newsImage.setStatus(CmsNewsImageStatus.NEW);
         newsImage.setContent(content);
         newsImage.setCreated(created);
         newsImage.setFileName(fileName);
@@ -365,7 +360,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         assertEquals(NEWS.getId(), result.getNewsId());
         assertEquals(title, result.getTitle());
         assertTrue("title is not starting from thumbnail_ text", result.getTitle().startsWith("thumbnail_"));
-        assertEquals(status, result.getStatus());
+        assertEquals(CmsNewsImageStatus.NEW, result.getStatus());
         assertTrue(Arrays.equals(content, result.getContent()));
         assertEquals(created, result.getCreated());
         assertEquals(fileName, result.getFileName());
@@ -379,7 +374,6 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
     public void testGet() throws Exception {
         //given
         String title = "title";
-        String status = "N";
         byte[] content = new BigInteger("1111000011110001", 2).toByteArray();
         Date created = new Date();
         String fileName = "fileName";
@@ -390,7 +384,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         CmsNewsImage newsImage = new CmsNewsImage();
         newsImage.setNewsId(NEWS.getId());
         newsImage.setTitle(title);
-        newsImage.setStatus(status);
+        newsImage.setStatus(CmsNewsImageStatus.NEW);
         newsImage.setContent(content);
         newsImage.setCreated(created);
         newsImage.setFileName(fileName);
@@ -407,7 +401,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         assertNotNull(result);
         assertEquals(NEWS.getId(), result.getNewsId());
         assertEquals(title, result.getTitle());
-        assertEquals(status, result.getStatus());
+        assertEquals(CmsNewsImageStatus.NEW, result.getStatus());
         assertTrue(Arrays.equals(content, result.getContent()));
         assertEquals(created, result.getCreated());
         assertEquals(fileName, result.getFileName());

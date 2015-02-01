@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.CmsTextI18nCategoryStatus;
 import eu.com.cwsfe.cms.model.CmsTextI18nCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -36,7 +37,7 @@ public class CmsTextI18nCategoryDAO {
         CmsTextI18nCategory cmsTextI18nCategory = new CmsTextI18nCategory();
         cmsTextI18nCategory.setId(resultSet.getLong("ID"));
         cmsTextI18nCategory.setCategory(resultSet.getString("CATEGORY"));
-        cmsTextI18nCategory.setStatus(resultSet.getString("STATUS"));
+        cmsTextI18nCategory.setStatus(CmsTextI18nCategoryStatus.fromCode(resultSet.getString("STATUS")));
         return cmsTextI18nCategory;
     }
 
@@ -99,7 +100,7 @@ public class CmsTextI18nCategoryDAO {
     public void update(CmsTextI18nCategory cmsTextI18nCategory) {
         Object[] dbParams = new Object[3];
         dbParams[0] = cmsTextI18nCategory.getCategory();
-        dbParams[1] = cmsTextI18nCategory.getStatus();
+        dbParams[1] = cmsTextI18nCategory.getStatus().getCode();
         dbParams[2] = cmsTextI18nCategory.getId();
         jdbcTemplate.update(
                 "UPDATE CMS_TEXT_I18N_CATEGORIES SET category = ?, status = ? WHERE id = ?",

@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.BlogPostImageStatus;
+import eu.com.cwsfe.cms.domains.BlogPostStatus;
 import eu.com.cwsfe.cms.model.BlogPost;
 import eu.com.cwsfe.cms.model.BlogPostImage;
 import eu.com.cwsfe.cms.model.CmsAuthor;
@@ -44,7 +46,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
 
         BLOG_POST.setPostAuthorId(CMS_AUTHOR.getId());
         BLOG_POST.setPostTextCode("post text code");
-        BLOG_POST.setStatus("N");
+        BLOG_POST.setStatus(BlogPostStatus.NEW);
         BLOG_POST.setId(postsDao.add(BLOG_POST));
     }
 
@@ -125,7 +127,6 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
     public void testGetWithContent() throws Exception {
         //given
         String title = "title";
-        String status = "N";
         byte[] content = new BigInteger("1111000011110001", 2).toByteArray();
         Date created = new Date();
         String fileName = "fileName";
@@ -136,7 +137,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         BlogPostImage blogPostImage = new BlogPostImage();
         blogPostImage.setBlogPostId(BLOG_POST.getId());
         blogPostImage.setTitle(title);
-        blogPostImage.setStatus(status);
+        blogPostImage.setStatus(BlogPostImageStatus.NEW);
         blogPostImage.setContent(content);
         blogPostImage.setCreated(created);
         blogPostImage.setFileName(fileName);
@@ -153,7 +154,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         assertNotNull(result);
         assertEquals(BLOG_POST.getId(), result.getBlogPostId());
         assertEquals(title, result.getTitle());
-        assertEquals(status, result.getStatus());
+        assertEquals(BlogPostImageStatus.NEW, result.getStatus());
         assertTrue(Arrays.equals(content, result.getContent()));
         assertEquals(created, result.getCreated());
         assertEquals(fileName, result.getFileName());
@@ -167,7 +168,6 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
     public void testAdd() throws Exception {
         //given
         String title = "title";
-        String status = "N";
         byte[] content = new BigInteger("1111000011110001", 2).toByteArray();
         Date created = new Date();
         String fileName = "fileName";
@@ -178,7 +178,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         BlogPostImage blogPostImage = new BlogPostImage();
         blogPostImage.setBlogPostId(BLOG_POST.getId());
         blogPostImage.setTitle(title);
-        blogPostImage.setStatus(status);
+        blogPostImage.setStatus(BlogPostImageStatus.NEW);
         blogPostImage.setContent(content);
         blogPostImage.setCreated(created);
         blogPostImage.setFileName(fileName);
@@ -195,7 +195,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         assertNotNull(result);
         assertEquals(BLOG_POST.getId(), result.getBlogPostId());
         assertEquals(title, result.getTitle());
-        assertEquals(status, result.getStatus());
+        assertEquals(BlogPostImageStatus.NEW, result.getStatus());
         assertTrue(Arrays.equals(content, result.getContent()));
         assertEquals(created, result.getCreated());
         assertEquals(fileName, result.getFileName());
@@ -209,7 +209,6 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
     public void testUpdate() throws Exception {
         //given
         String title = "title";
-        String status = "N";
         byte[] content = new BigInteger("1111000011110001", 2).toByteArray();
         Date created = new Date(1);
         String fileName = "fileName";
@@ -218,7 +217,6 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         int height = 3;
         String mimeType = "img/png";
         String newTitle = "title2";
-        String newStatus = "P";
         byte[] newContent = new BigInteger("1000011110001", 2).toByteArray();
         Date newCreated = new Date(2);
         String newFileName = "fileName2";
@@ -229,7 +227,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         BlogPostImage blogPostImage = new BlogPostImage();
         blogPostImage.setBlogPostId(BLOG_POST.getId());
         blogPostImage.setTitle(title);
-        blogPostImage.setStatus(status);
+        blogPostImage.setStatus(BlogPostImageStatus.NEW);
         blogPostImage.setContent(content);
         blogPostImage.setCreated(created);
         blogPostImage.setFileName(fileName);
@@ -239,7 +237,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         blogPostImage.setMimeType(mimeType);
         blogPostImage.setId(dao.add(blogPostImage));
         blogPostImage.setTitle(newTitle);
-        blogPostImage.setStatus(newStatus);
+        blogPostImage.setStatus(BlogPostImageStatus.PUBLISHED);
         blogPostImage.setContent(newContent);
         blogPostImage.setCreated(newCreated);
         blogPostImage.setFileName(newFileName);
@@ -269,7 +267,6 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
     public void testDelete() throws Exception {
         //given
         String title = "title";
-        String status = "N";
         byte[] content = new byte[100];
         Date created = new Date();
         String fileName = "fileName";
@@ -280,7 +277,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         BlogPostImage blogPostImage = new BlogPostImage();
         blogPostImage.setBlogPostId(BLOG_POST.getId());
         blogPostImage.setTitle(title);
-        blogPostImage.setStatus(status);
+        blogPostImage.setStatus(BlogPostImageStatus.NEW);
         blogPostImage.setContent(content);
         blogPostImage.setCreated(created);
         blogPostImage.setFileName(fileName);
@@ -296,14 +293,13 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         //then
         BlogPostImage result = dao.getWithContent(blogPostImage.getId());
         assertNotNull("Post image should exists", result);
-        assertEquals("Post image should be deleted", "D", result.getStatus());
+        assertEquals("Post image should be deleted", BlogPostImageStatus.DELETED, result.getStatus());
     }
 
     @Test
     public void testUndelete() throws Exception {
         //given
         String title = "title";
-        String status = "N";
         byte[] content = new byte[100];
         Date created = new Date();
         String fileName = "fileName";
@@ -314,7 +310,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         BlogPostImage blogPostImage = new BlogPostImage();
         blogPostImage.setBlogPostId(BLOG_POST.getId());
         blogPostImage.setTitle(title);
-        blogPostImage.setStatus(status);
+        blogPostImage.setStatus(BlogPostImageStatus.NEW);
         blogPostImage.setContent(content);
         blogPostImage.setCreated(created);
         blogPostImage.setFileName(fileName);
@@ -330,6 +326,6 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         //then
         BlogPostImage result = dao.getWithContent(blogPostImage.getId());
         assertNotNull("Post image should exists", result);
-        assertEquals("Post image should undeleted", "N", result.getStatus());
+        assertEquals("Post image should undeleted", BlogPostImageStatus.NEW, result.getStatus());
     }
 }

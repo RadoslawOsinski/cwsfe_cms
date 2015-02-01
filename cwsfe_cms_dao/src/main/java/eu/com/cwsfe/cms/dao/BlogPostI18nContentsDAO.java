@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.BlogPostI18nContentStatus;
 import eu.com.cwsfe.cms.model.BlogPostI18nContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,7 +34,7 @@ public class BlogPostI18nContentsDAO {
         blogPostI18nContent.setPostTitle(resultSet.getString("POST_TITLE"));
         blogPostI18nContent.setPostShortcut(resultSet.getString("POST_SHORTCUT"));
         blogPostI18nContent.setPostDescription(resultSet.getString("POST_DESCRIPTION"));
-        blogPostI18nContent.setStatus(resultSet.getString("STATUS"));
+        blogPostI18nContent.setStatus(BlogPostI18nContentStatus.fromCode(resultSet.getString("STATUS")));
         return blogPostI18nContent;
     }
 
@@ -68,7 +69,7 @@ public class BlogPostI18nContentsDAO {
         dbParams[0] = blogPostI18nContent.getPostTitle();
         dbParams[1] = blogPostI18nContent.getPostShortcut();
         dbParams[2] = blogPostI18nContent.getPostDescription();
-        dbParams[3] = blogPostI18nContent.getStatus();
+        dbParams[3] = blogPostI18nContent.getStatus().getCode();
         dbParams[4] = blogPostI18nContent.getId();
         jdbcTemplate.update("UPDATE BLOG_POST_I18N_CONTENTS SET post_title = ?, post_shortcut = ?, post_description = ?, status = ? WHERE id = ?", dbParams);
     }

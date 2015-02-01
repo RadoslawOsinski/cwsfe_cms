@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.BlogPostStatus;
 import eu.com.cwsfe.cms.model.BlogPost;
 import eu.com.cwsfe.cms.model.CmsAuthor;
 import eu.com.cwsfe.cms.model.Language;
@@ -183,11 +184,10 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
     public void testGet() throws Exception {
         //given
         String postTextCode = "post text code";
-        String status = "N";
         BlogPost blogPost = new BlogPost();
         blogPost.setPostAuthorId(CMS_AUTHOR.getId());
         blogPost.setPostTextCode(postTextCode);
-        blogPost.setStatus(status);
+        blogPost.setStatus(BlogPostStatus.NEW);
         blogPost.setId(dao.add(blogPost));
 
         //when
@@ -198,18 +198,17 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         assertEquals((long) blogPost.getId(), (long) blogPostResult.getId());
         assertEquals(CMS_AUTHOR.getId(), blogPostResult.getPostAuthorId());
         assertEquals(postTextCode, blogPostResult.getPostTextCode());
-        assertEquals(status, blogPostResult.getStatus());
+        assertEquals(BlogPostStatus.NEW, blogPostResult.getStatus());
     }
 
     @Test
     public void testGetByCode() throws Exception {
         //given
         String postTextCode = "post text code";
-        String status = "N";
         BlogPost blogPost = new BlogPost();
         blogPost.setPostAuthorId(CMS_AUTHOR.getId());
         blogPost.setPostTextCode(postTextCode);
-        blogPost.setStatus(status);
+        blogPost.setStatus(BlogPostStatus.NEW);
         blogPost.setId(dao.add(blogPost));
 
         //when
@@ -220,18 +219,17 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         assertEquals((long) blogPost.getId(), (long) blogPostResult.getId());
         assertEquals(CMS_AUTHOR.getId(), blogPostResult.getPostAuthorId());
         assertEquals(postTextCode, blogPostResult.getPostTextCode());
-        assertEquals(status, blogPostResult.getStatus());
+        assertEquals(BlogPostStatus.NEW, blogPostResult.getStatus());
     }
 
     @Test
     public void testAdd() throws Exception {
         //given
         String postTextCode = "post text code";
-        String status = "N";
         BlogPost blogPost = new BlogPost();
         blogPost.setPostAuthorId(CMS_AUTHOR.getId());
         blogPost.setPostTextCode(postTextCode);
-        blogPost.setStatus(status);
+        blogPost.setStatus(BlogPostStatus.NEW);
 
         //when
         blogPost.setId(dao.add(blogPost));
@@ -242,7 +240,7 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         assertEquals((long) blogPost.getId(), (long) blogPostResult.getId());
         assertEquals(CMS_AUTHOR.getId(), blogPostResult.getPostAuthorId());
         assertEquals(postTextCode, blogPostResult.getPostTextCode());
-        assertEquals(status, blogPostResult.getStatus());
+        assertEquals(BlogPostStatus.NEW, blogPostResult.getStatus());
     }
 
     @Test
@@ -250,15 +248,13 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         //given
         String postTextCode = "post text code";
         String newPostTextCode = "post text code";
-        String status = "N";
-        String newStatus = "N";
         BlogPost blogPost = new BlogPost();
         blogPost.setPostAuthorId(CMS_AUTHOR.getId());
         blogPost.setPostTextCode(postTextCode);
-        blogPost.setStatus(status);
+        blogPost.setStatus(BlogPostStatus.NEW);
         blogPost.setId(dao.add(blogPost));
         blogPost.setPostTextCode(newPostTextCode);
-        blogPost.setStatus(newStatus);
+        blogPost.setStatus(BlogPostStatus.PUBLISHED);
 
         //when
         dao.update(blogPost);
@@ -269,7 +265,7 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         assertEquals((long) blogPost.getId(), (long) blogPostResult.getId());
         assertEquals(CMS_AUTHOR.getId(), blogPostResult.getPostAuthorId());
         assertEquals(newPostTextCode, blogPostResult.getPostTextCode());
-        assertEquals(newStatus, blogPostResult.getStatus());
+        assertEquals(BlogPostStatus.PUBLISHED, blogPostResult.getStatus());
     }
 
     @Test
@@ -277,15 +273,13 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         //given
         String postTextCode = "post text code";
         String newPostTextCode = "post text code";
-        String status = "N";
-        String newStatus = "N";
         BlogPost blogPost = new BlogPost();
         blogPost.setPostAuthorId(CMS_AUTHOR.getId());
         blogPost.setPostTextCode(postTextCode);
-        blogPost.setStatus(status);
+        blogPost.setStatus(BlogPostStatus.NEW);
         blogPost.setId(dao.add(blogPost));
         blogPost.setPostTextCode(newPostTextCode);
-        blogPost.setStatus(newStatus);
+        blogPost.setStatus(BlogPostStatus.PUBLISHED);
 
         //when
         dao.updatePostBasicInfo(blogPost);
@@ -296,18 +290,17 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         assertEquals((long) blogPost.getId(), (long) blogPostResult.getId());
         assertEquals(CMS_AUTHOR.getId(), blogPostResult.getPostAuthorId());
         assertEquals(newPostTextCode, blogPostResult.getPostTextCode());
-        assertEquals(newStatus, blogPostResult.getStatus());
+        assertEquals(BlogPostStatus.PUBLISHED, blogPostResult.getStatus());
     }
 
     @Test
     public void testDelete() throws Exception {
         //given
         String postTextCode = "post text code";
-        String status = "N";
         BlogPost blogPost = new BlogPost();
         blogPost.setPostAuthorId(CMS_AUTHOR.getId());
         blogPost.setPostTextCode(postTextCode);
-        blogPost.setStatus(status);
+        blogPost.setStatus(BlogPostStatus.NEW);
         blogPost.setId(dao.add(blogPost));
 
         //when
@@ -317,18 +310,17 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         BlogPost blogPostResult = dao.get(blogPost.getId());
         assertNotNull(blogPostResult);
         assertEquals((long) blogPost.getId(), (long) blogPostResult.getId());
-        assertEquals("Unexpected status value for deleted object", "D", blogPostResult.getStatus());
+        assertEquals("Unexpected status value for deleted object", BlogPostStatus.DELETED, blogPostResult.getStatus());
     }
 
     @Test
     public void testUndelete() throws Exception {
         //given
         String postTextCode = "post text code";
-        String status = "N";
         BlogPost blogPost = new BlogPost();
         blogPost.setPostAuthorId(CMS_AUTHOR.getId());
         blogPost.setPostTextCode(postTextCode);
-        blogPost.setStatus(status);
+        blogPost.setStatus(BlogPostStatus.NEW);
         blogPost.setId(dao.add(blogPost));
         dao.delete(blogPost);
 
@@ -339,18 +331,17 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         BlogPost blogPostResult = dao.get(blogPost.getId());
         assertNotNull(blogPostResult);
         assertEquals((long) blogPost.getId(), (long) blogPostResult.getId());
-        assertEquals("Unexpected status value for undeleted object", "H", blogPostResult.getStatus());
+        assertEquals("Unexpected status value for undeleted object", BlogPostStatus.HIDDEN, blogPostResult.getStatus());
     }
 
     @Test
     public void testPublish() throws Exception {
         //given
         String postTextCode = "post text code";
-        String status = "N";
         BlogPost blogPost = new BlogPost();
         blogPost.setPostAuthorId(CMS_AUTHOR.getId());
         blogPost.setPostTextCode(postTextCode);
-        blogPost.setStatus(status);
+        blogPost.setStatus(BlogPostStatus.NEW);
         blogPost.setId(dao.add(blogPost));
         dao.delete(blogPost);
 
@@ -361,7 +352,7 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
         BlogPost blogPostResult = dao.get(blogPost.getId());
         assertNotNull(blogPostResult);
         assertEquals((long) blogPost.getId(), (long) blogPostResult.getId());
-        assertEquals("Unexpected status value for undeleted object", "P", blogPostResult.getStatus());
+        assertEquals("Unexpected status value for undeleted object", BlogPostStatus.PUBLISHED, blogPostResult.getStatus());
     }
 
     @Test

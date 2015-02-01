@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.model;
 
+import eu.com.cwsfe.cms.domains.CmsUserStatus;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,7 +16,7 @@ public class CmsUser implements Serializable {
     private String userName;
     private String password;
     private String passwordHash;
-    private String status;
+    private CmsUserStatus status;
     private List<CmsRole> userRoles;
 
     public Long getId() {
@@ -49,11 +51,11 @@ public class CmsUser implements Serializable {
         this.passwordHash = passwordHash;
     }
 
-    public String getStatus() {
+    public CmsUserStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(CmsUserStatus status) {
         this.status = status;
     }
 

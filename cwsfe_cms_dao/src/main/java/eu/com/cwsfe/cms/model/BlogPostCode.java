@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.model;
 
+import eu.com.cwsfe.cms.domains.BlogPostCodeStatus;
+
 import java.io.Serializable;
 
 public class BlogPostCode implements Serializable {
@@ -9,7 +11,7 @@ public class BlogPostCode implements Serializable {
     private String codeId;
     private Long blogPostId;
     private String code;
-    private String status;	//'D'eleted, 'N'ew
+    private BlogPostCodeStatus status;
 
     public String getCodeId() {
         return codeId;
@@ -35,11 +37,11 @@ public class BlogPostCode implements Serializable {
         this.code = code;
     }
 
-    public String getStatus() {
+    public BlogPostCodeStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(BlogPostCodeStatus status) {
         this.status = status;
     }
 }

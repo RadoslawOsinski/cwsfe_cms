@@ -1,5 +1,8 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.BlogPostCommentStatus;
+import eu.com.cwsfe.cms.domains.BlogPostI18nContentStatus;
+import eu.com.cwsfe.cms.domains.BlogPostStatus;
 import eu.com.cwsfe.cms.model.*;
 import eu.com.cwsfe.cms.model.BlogPostComment;
 import org.junit.Before;
@@ -48,11 +51,11 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
 
         BLOG_POST.setPostAuthorId(CMS_AUTHOR.getId());
         BLOG_POST.setPostTextCode("post text code");
-        BLOG_POST.setStatus("N");
+        BLOG_POST.setStatus(BlogPostStatus.NEW);
         BLOG_POST.setId(postsDao.add(BLOG_POST));
 
         BLOG_POST_I18N_CONTENT.setPostId(BLOG_POST.getId());
-        BLOG_POST_I18N_CONTENT.setStatus("N");
+        BLOG_POST_I18N_CONTENT.setStatus(BlogPostI18nContentStatus.NEW);
         BLOG_POST_I18N_CONTENT.setPostDescription("description");
         BLOG_POST_I18N_CONTENT.setPostShortcut("shortcut");
         BLOG_POST_I18N_CONTENT.setPostTitle("title");
@@ -77,13 +80,12 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         String comment = "comment text";
         Date created = new Date();
         String email = "test@test.eu";
-        String status = "N";
         String userName = "testUser";
         BlogPostComment blogPostComment = new BlogPostComment();
         blogPostComment.setComment(comment);
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
-        blogPostComment.setStatus(status);
+        blogPostComment.setStatus(BlogPostCommentStatus.NEW);
         blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         blogPostComment.setId(dao.add(blogPostComment));
@@ -128,13 +130,12 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         String comment = "comment text";
         Date created = new Date();
         String email = "test@test.eu";
-        String status = "N";
         String userName = "testUser";
         BlogPostComment blogPostComment = new BlogPostComment();
         blogPostComment.setComment(comment);
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
-        blogPostComment.setStatus(status);
+        blogPostComment.setStatus(BlogPostCommentStatus.NEW);
         blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         Long addedId = dao.add(blogPostComment);
@@ -147,7 +148,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         assertEquals(comment, result.getComment());
         assertEquals(created, result.getCreated());
         assertEquals(email, result.getEmail());
-        assertEquals(status, result.getStatus());
+        assertEquals(BlogPostCommentStatus.NEW, result.getStatus());
         assertEquals(userName, result.getUserName());
         assertEquals(BLOG_POST_I18N_CONTENT.getId(), result.getBlogPostI18nContentId());
     }
@@ -158,13 +159,12 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         String comment = "comment text";
         Date created = new Date();
         String email = "test@test.eu";
-        String status = "N";
         String userName = "testUser";
         BlogPostComment blogPostComment = new BlogPostComment();
         blogPostComment.setComment(comment);
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
-        blogPostComment.setStatus(status);
+        blogPostComment.setStatus(BlogPostCommentStatus.NEW);
         blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
 
@@ -177,7 +177,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         assertEquals(comment, result.getComment());
         assertEquals(created, result.getCreated());
         assertEquals(email, result.getEmail());
-        assertEquals(status, result.getStatus());
+        assertEquals(BlogPostCommentStatus.NEW, result.getStatus());
         assertEquals(userName, result.getUserName());
         assertEquals(BLOG_POST_I18N_CONTENT.getId(), result.getBlogPostI18nContentId());
     }
@@ -189,13 +189,12 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         String newComment = "comment text";
         Date created = new Date();
         String email = "test@test.eu";
-        String status = "N";
         String userName = "testUser";
         BlogPostComment blogPostComment = new BlogPostComment();
         blogPostComment.setComment(comment);
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
-        blogPostComment.setStatus(status);
+        blogPostComment.setStatus(BlogPostCommentStatus.NEW);
         blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         blogPostComment.setId(dao.add(blogPostComment));
@@ -209,7 +208,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         assertEquals(newComment, result.getComment());
         assertEquals(created, result.getCreated());
         assertEquals(email, result.getEmail());
-        assertEquals(status, result.getStatus());
+        assertEquals(BlogPostCommentStatus.NEW, result.getStatus());
         assertEquals(userName, result.getUserName());
         assertEquals(BLOG_POST_I18N_CONTENT.getId(), result.getBlogPostI18nContentId());
     }
@@ -220,13 +219,12 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         String comment = "comment text";
         Date created = new Date();
         String email = "test@test.eu";
-        String status = "N";
         String userName = "testUser";
         BlogPostComment blogPostComment = new BlogPostComment();
         blogPostComment.setComment(comment);
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
-        blogPostComment.setStatus(status);
+        blogPostComment.setStatus(BlogPostCommentStatus.NEW);
         blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         blogPostComment.setId(dao.add(blogPostComment));
@@ -237,7 +235,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         //then
         BlogPostComment result = dao.get(blogPostComment.getId());
         assertNotNull("Post comment should exists", result);
-        assertEquals("Post status should be deleted", "D", result.getStatus());
+        assertEquals("Post status should be deleted", BlogPostCommentStatus.DELETED, result.getStatus());
     }
 
     @Test
@@ -246,13 +244,12 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         String comment = "comment text";
         Date created = new Date();
         String email = "test@test.eu";
-        String status = "N";
         String userName = "testUser";
         BlogPostComment blogPostComment = new BlogPostComment();
         blogPostComment.setComment(comment);
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
-        blogPostComment.setStatus(status);
+        blogPostComment.setStatus(BlogPostCommentStatus.NEW);
         blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         blogPostComment.setId(dao.add(blogPostComment));
@@ -263,7 +260,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         //then
         BlogPostComment result = dao.get(blogPostComment.getId());
         assertNotNull("Post comment should exists", result);
-        assertEquals("Post status should be new", "N", result.getStatus());
+        assertEquals("Post status should be new", BlogPostCommentStatus.NEW, result.getStatus());
     }
 
     @Test
@@ -272,13 +269,12 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         String comment = "comment text";
         Date created = new Date();
         String email = "test@test.eu";
-        String status = "N";
         String userName = "testUser";
         BlogPostComment blogPostComment = new BlogPostComment();
         blogPostComment.setComment(comment);
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
-        blogPostComment.setStatus(status);
+        blogPostComment.setStatus(BlogPostCommentStatus.NEW);
         blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         blogPostComment.setId(dao.add(blogPostComment));
@@ -289,7 +285,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         //then
         BlogPostComment result = dao.get(blogPostComment.getId());
         assertNotNull("Post comment should exists", result);
-        assertEquals("Post status should be published", "P", result.getStatus());
+        assertEquals("Post status should be published", BlogPostCommentStatus.PUBLISHED, result.getStatus());
     }
 
     @Test
@@ -298,13 +294,12 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         String comment = "comment text";
         Date created = new Date();
         String email = "test@test.eu";
-        String status = "N";
         String userName = "testUser";
         BlogPostComment blogPostComment = new BlogPostComment();
         blogPostComment.setComment(comment);
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
-        blogPostComment.setStatus(status);
+        blogPostComment.setStatus(BlogPostCommentStatus.NEW);
         blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         blogPostComment.setId(dao.add(blogPostComment));
@@ -315,7 +310,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         //then
         BlogPostComment result = dao.get(blogPostComment.getId());
         assertNotNull("Post comment should exists", result);
-        assertEquals("Post status should be blocked", "B", result.getStatus());
+        assertEquals("Post status should be blocked", BlogPostCommentStatus.BLOCKED, result.getStatus());
     }
 
     @Test
@@ -324,13 +319,12 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         String comment = "comment text";
         Date created = new Date();
         String email = "test@test.eu";
-        String status = "N";
         String userName = "testUser";
         BlogPostComment blogPostComment = new BlogPostComment();
         blogPostComment.setComment(comment);
         blogPostComment.setCreated(created);
         blogPostComment.setEmail(email);
-        blogPostComment.setStatus(status);
+        blogPostComment.setStatus(BlogPostCommentStatus.NEW);
         blogPostComment.setUserName(userName);
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         blogPostComment.setId(dao.add(blogPostComment));
@@ -341,7 +335,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         //then
         BlogPostComment result = dao.get(blogPostComment.getId());
         assertNotNull("Post comment should exists", result);
-        assertEquals("Post status should be marked as spam", "S", result.getStatus());
+        assertEquals("Post status should be marked as spam", BlogPostCommentStatus.SPAM, result.getStatus());
     }
 
     @Test

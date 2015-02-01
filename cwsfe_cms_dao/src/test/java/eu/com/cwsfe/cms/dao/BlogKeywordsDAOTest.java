@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.BlogKeywordStatus;
 import eu.com.cwsfe.cms.model.BlogKeyword;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +49,7 @@ public class BlogKeywordsDAOTest extends AbstractTransactionalJUnit4SpringContex
         //given
         BlogKeyword blogKeyword = new BlogKeyword();
         blogKeyword.setKeywordName("test1");
-        blogKeyword.setStatus("N");
+        blogKeyword.setStatus(BlogKeywordStatus.NEW);
         dao.add(blogKeyword);
 
         //when
@@ -64,11 +65,9 @@ public class BlogKeywordsDAOTest extends AbstractTransactionalJUnit4SpringContex
         //given
         BlogKeyword blogKeyword = new BlogKeyword();
         blogKeyword.setKeywordName("test1");
-        blogKeyword.setStatus("N");
         dao.add(blogKeyword);
         BlogKeyword blogKeyword2 = new BlogKeyword();
         blogKeyword2.setKeywordName("test2");
-        blogKeyword2.setStatus("N");
         dao.add(blogKeyword2);
 
         //when
@@ -84,10 +83,9 @@ public class BlogKeywordsDAOTest extends AbstractTransactionalJUnit4SpringContex
     public void testGet() throws Exception {
         //given
         String keywordName = "test";
-        String status = "N";
         BlogKeyword blogKeyword = new BlogKeyword();
         blogKeyword.setKeywordName(keywordName);
-        blogKeyword.setStatus(status);
+        blogKeyword.setStatus(BlogKeywordStatus.NEW);
         Long addedId = dao.add(blogKeyword);
 
         //when
@@ -97,17 +95,15 @@ public class BlogKeywordsDAOTest extends AbstractTransactionalJUnit4SpringContex
         assertNotNull(blogKeywordResult);
         assertEquals((long) addedId, (long) blogKeywordResult.getId());
         assertEquals(keywordName, blogKeywordResult.getKeywordName());
-        assertEquals(status, blogKeywordResult.getStatus());
+        assertEquals(BlogKeywordStatus.NEW, blogKeywordResult.getStatus());
     }
 
     @Test
     public void testAdd() throws Exception {
         //given
         String keywordName = "test";
-        String status = "N";
         BlogKeyword blogKeyword = new BlogKeyword();
         blogKeyword.setKeywordName(keywordName);
-        blogKeyword.setStatus(status);
 
         //when
         Long addedId = dao.add(blogKeyword);
@@ -117,7 +113,7 @@ public class BlogKeywordsDAOTest extends AbstractTransactionalJUnit4SpringContex
         assertNotNull(blogKeywordResult);
         assertEquals((long) addedId, (long) blogKeywordResult.getId());
         assertEquals(keywordName, blogKeywordResult.getKeywordName());
-        assertEquals(status, blogKeywordResult.getStatus());
+        assertEquals(BlogKeywordStatus.NEW, blogKeywordResult.getStatus());
     }
 
     @Test
@@ -127,7 +123,7 @@ public class BlogKeywordsDAOTest extends AbstractTransactionalJUnit4SpringContex
         String keywordName2 = "test2";
         BlogKeyword blogKeyword = new BlogKeyword();
         blogKeyword.setKeywordName(keywordName1);
-        blogKeyword.setStatus("N");
+        blogKeyword.setStatus(BlogKeywordStatus.NEW);
         Long addedId = dao.add(blogKeyword);
         blogKeyword.setId(addedId);
         blogKeyword.setKeywordName(keywordName2);
@@ -148,7 +144,7 @@ public class BlogKeywordsDAOTest extends AbstractTransactionalJUnit4SpringContex
         String keywordName1 = "test";
         BlogKeyword blogKeyword = new BlogKeyword();
         blogKeyword.setKeywordName(keywordName1);
-        blogKeyword.setStatus("N");
+        blogKeyword.setStatus(BlogKeywordStatus.NEW);
         Long addedId = dao.add(blogKeyword);
         blogKeyword.setId(addedId);
 
@@ -160,7 +156,7 @@ public class BlogKeywordsDAOTest extends AbstractTransactionalJUnit4SpringContex
         assertNotNull(blogKeywordResult);
         assertEquals((long) addedId, (long) blogKeywordResult.getId());
         assertEquals(keywordName1, blogKeywordResult.getKeywordName());
-        assertEquals("Unexpected status value for deleted object", "D", blogKeywordResult.getStatus());
+        assertEquals("Unexpected status value for deleted object", BlogKeywordStatus.DELETED, blogKeywordResult.getStatus());
     }
 
     @Test
@@ -169,7 +165,7 @@ public class BlogKeywordsDAOTest extends AbstractTransactionalJUnit4SpringContex
         String keywordName1 = "test";
         BlogKeyword blogKeyword = new BlogKeyword();
         blogKeyword.setKeywordName(keywordName1);
-        blogKeyword.setStatus("N");
+        blogKeyword.setStatus(BlogKeywordStatus.NEW);
         Long addedId = dao.add(blogKeyword);
         blogKeyword.setId(addedId);
         dao.delete(blogKeyword);
@@ -182,6 +178,6 @@ public class BlogKeywordsDAOTest extends AbstractTransactionalJUnit4SpringContex
         assertNotNull(blogKeywordResult);
         assertEquals((long) addedId, (long) blogKeywordResult.getId());
         assertEquals(keywordName1, blogKeywordResult.getKeywordName());
-        assertEquals("Unexpected status for undeleted object", "N", blogKeywordResult.getStatus());
+        assertEquals("Unexpected status for undeleted object", BlogKeywordStatus.NEW, blogKeywordResult.getStatus());
     }
 }

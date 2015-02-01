@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.news;
 
+import eu.com.cwsfe.cms.domains.CmsNewsI18nContentStatus;
 import eu.com.cwsfe.cms.mvc.JsonController;
 import eu.com.cwsfe.cms.dao.*;
 import eu.com.cwsfe.cms.model.Breadcrumb;
@@ -218,7 +219,7 @@ public class CmsNewsController extends JsonController {
                 cmsNewsI18nContent.setNewsTitle("");
                 cmsNewsI18nContent.setNewsShortcut("");
                 cmsNewsI18nContent.setNewsDescription("");
-                cmsNewsI18nContent.setStatus("H");
+                cmsNewsI18nContent.setStatus(CmsNewsI18nContentStatus.HIDDEN);
             }
             addJsonSuccess(responseDetailsJson);
             JSONObject data = new JSONObject();

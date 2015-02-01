@@ -1,150 +1,229 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.LanguageStatus;
 import eu.com.cwsfe.cms.model.Language;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(defaultRollback=true)
-@ContextConfiguration(locations={"classpath:cwsfe-cms-dao-test.xml", "classpath:cwsfe-cms-cache-test.xml"})
+@TransactionConfiguration(defaultRollback = true)
+@ContextConfiguration(locations = {"classpath:cwsfe-cms-dao-test.xml", "classpath:cwsfe-cms-cache-test.xml"})
 public class CmsLanguagesDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private CmsLanguagesDAO cmsLanguagesDAO;
-    @Autowired
-    private EhCacheCacheManager cacheManager;
+    private CmsLanguagesDAO dao;
 
     @Test
-    public void testGetByIdOnExistingLang() throws Exception {
+    public void testCountForAjax() throws Exception {
         //given
-        Language lang = new Language();
-        lang.setCode("pl");
-        lang.setName("PL");
-        cmsLanguagesDAO.add(lang);
-
         //when
-        lang = cmsLanguagesDAO.getById(1l);
+        int result = dao.countForAjax();
 
         //then
-        assertNotNull(lang);
-        assertNotNull(lang.getCode());
+        assertNotNull("query should return non negative value", result);
+        assertTrue("query should return non negative value", result >= 0);
     }
 
-//    @Test
-//    public void testGetByIdWithCache() throws Exception {
-//        long elementId = 1l;
-//        Lang lang = cmsLanguagesDAO.getById(elementId);
-//        assertNotNull(lang);
-//        assertNotNull(lang.getCode());
-//        Cache cache = cacheManager.getCache("cmsLanguagesById");
-//        Cache.ValueWrapper valueWrapper = cache.get(elementId);
-//        assertNotNull(valueWrapper);
-//        assertNotNull(valueWrapper.get());
-//        assertEquals(lang, valueWrapper.get());
-//    }
-//
-//    @Test
-//    public void testGetByCode() throws Exception {
-//        Lang lang = cmsLanguagesDAO.getByCode("pl");
-//        assertNotNull(lang);
-//        assertEquals(lang.getCode(), "pl");
-//    }
-//
-//    @Test
-//    public void testGetByCodeWithCache() throws Exception {
-//        String code = "pl";
-//        Lang lang = cmsLanguagesDAO.getByCode(code);
-//        assertNotNull(lang);
-//        assertNotNull(lang.getId());
-//        Cache cache = cacheManager.getCache("cmsLanguagesByCode");
-//        Cache.ValueWrapper valueWrapper = cache.get(code);
-//        assertNotNull(valueWrapper);
-//        assertNotNull(valueWrapper.get());
-//        assertEquals(lang, valueWrapper.get());
-//    }
-//
-//    @Test
-//    public void testGetByCodeIgnoreCase() throws Exception {
-//        Lang lang = cmsLanguagesDAO.getByCode("pl");
-//        assertNotNull(lang);
-//        assertEquals(lang.getCode(), "pl");
-//    }
-//
-//    @Test
-//    public void testGetByCodeIgnoreCaseWithCache() throws Exception {
-//        String code = "pl";
-//        Lang lang = cmsLanguagesDAO.getByCodeIgnoreCase(code);
-//        assertNotNull(lang);
-//        assertNotNull(lang.getId());
-//        Cache cache = cacheManager.getCache("cmsLanguagesByCodeIgnoreCase");
-//        Cache.ValueWrapper valueWrapper = cache.get(code);
-//        assertNotNull(valueWrapper);
-//        assertNotNull(valueWrapper.get());
-//        assertEquals(lang, valueWrapper.get());
-//    }
-//
-//    @Test
-//    public void testAdd() throws Exception {
-//        String code = "xx";
-//        Lang lang = new Lang();
-//        lang.setCode(code);
-//        lang.setName("XXXX");
-//        lang.setId(cmsLanguagesDAO.add(lang));
-//        assertNotNull(lang);
-//        assertNotNull(lang.getId());
-//        assertEquals(code, lang.getCode());
-//    }
-//
-//    @Test
-//    public void testAddWithCache() throws Exception {
-//        String code = "xx";
-//        Lang lang = new Lang();
-//        lang.setCode(code);
-//        lang.setName("XXXX");
-//        lang.setId(cmsLanguagesDAO.add(lang));
-//        assertNotNull(lang);
-//        assertNotNull(lang.getId());
-//        assertEquals(code, lang.getCode());
-//
-//        Lang langAfterAdd = cmsLanguagesDAO.getByCode(code);
-//        assertNotNull(langAfterAdd);
-//        assertNotNull(langAfterAdd.getId());
-//
-//        Cache cache = cacheManager.getCache("cmsLanguagesByCode");
-//        Cache.ValueWrapper valueWrapper = cache.get(code);
-//        assertNotNull(valueWrapper);
-//        assertNotNull(valueWrapper.get());
-//        assertEquals(langAfterAdd, valueWrapper.get());
-//        assertEquals(code, langAfterAdd.getCode());
-//    }
-//
-//    @Test
-//    public void testDeleteWithCache() throws Exception {
-//        String code = "yy";
-//        Lang lang = new Lang();
-//        lang.setCode(code);
-//        lang.setName("YYYY");
-//        lang.setId(cmsLanguagesDAO.add(lang));
-//
-//        cmsLanguagesDAO.delete(lang);
-//
-//        Lang langAfterDelete = cmsLanguagesDAO.getByCode(lang.getCode());
-//        assertNotNull(langAfterDelete);
-//        assertEquals("D", langAfterDelete.getStatus());
-//        Cache cache = cacheManager.getCache("cmsLanguagesByCode");
-//        Cache.ValueWrapper valueWrapper = cache.get(code);
-//        assertNotNull(valueWrapper);
-//        assertEquals(langAfterDelete, valueWrapper.get());
-//    }
+    @Test
+    public void testListAll() throws Exception {
+        //given
+        //when
+        List<Language> list = dao.listAll();
 
+        //then
+        assertNotNull("Empty results should not return null", list);
+    }
+
+    @Test
+    public void testListAjax() throws Exception {
+        //given
+        Language language = new Language();
+        language.setId(1l);
+        language.setCode("pl");
+        language.setName("Polish");
+        dao.add(language);
+
+        //when
+        List<Language> list = dao.listAjax(0, 1);
+
+        //then
+        assertNotNull("Empty results should not return null", list);
+        assertEquals("Page limit was set to 1", 1, list.size());
+    }
+
+    @Test
+    public void testListForDropList() throws Exception {
+        //given
+        Language language = new Language();
+        language.setId(1l);
+        language.setCode("pl");
+        String name = "Polish";
+        language.setName(name);
+        dao.add(language);
+
+        //when
+        List<Language> results = dao.listForDropList(name, 1);
+
+        //then
+        assertNotNull(results);
+        assertEquals("Page limit was set to 1", 1, results.size());
+    }
+
+    @Test
+    public void testGetById() throws Exception {
+        //given
+        Language language = new Language();
+        String code = "pl";
+        String name = "Polish";
+        language.setCode(code);
+        language.setName(name);
+        language.setId(dao.add(language));
+
+        //when
+        Language languageResult = dao.getById(language.getId());
+
+        //then
+        assertNotNull(languageResult);
+        assertEquals((long) language.getId(), (long) languageResult.getId());
+        assertEquals(code, languageResult.getCode());
+        assertEquals(name, languageResult.getName());
+    }
+
+    @Test
+    public void testGetByCode() throws Exception {
+        //given
+        Language language = new Language();
+        language.setId(1l);
+        String code = "pl";
+        String name = "Polish";
+        language.setCode(code);
+        language.setName(name);
+        dao.add(language);
+
+        //when
+        Language languageResult = dao.getByCode(language.getCode());
+
+        //then
+        assertNotNull(languageResult);
+        assertEquals(code, languageResult.getCode());
+        assertEquals(name, languageResult.getName());
+    }
+
+    @Test
+    public void testGetByCodeIgnoreCase() throws Exception {
+        //given
+        Language language = new Language();
+        language.setId(1l);
+        String code = "pl";
+        String name = "Polish";
+        language.setCode(code);
+        language.setName(name);
+        dao.add(language);
+
+        //when
+        Language languageResult = dao.getByCodeIgnoreCase(language.getCode().toUpperCase());
+
+        //then
+        assertNotNull(languageResult);
+        assertEquals(code, languageResult.getCode());
+        assertEquals(name, languageResult.getName());
+    }
+
+    @Test
+    public void testAdd() throws Exception {
+        //given
+        Language language = new Language();
+        language.setId(1l);
+        String code = "pl";
+        String name = "Polish";
+        language.setCode(code);
+        language.setName(name);
+
+        //when
+        dao.add(language);
+
+        //then
+        Language languageResult = dao.getByCodeIgnoreCase(language.getCode().toUpperCase());
+        assertNotNull(languageResult);
+        assertEquals(code, languageResult.getCode());
+        assertEquals(name, languageResult.getName());
+    }
+
+    @Test
+    public void testUpdate() throws Exception {
+        //given
+        Language language = new Language();
+        language.setId(1l);
+        String code = "pl";
+        String name = "Polish";
+        language.setCode(code);
+        language.setName(name);
+        language.setId(dao.add(language));
+        String newCode = "fr";
+        String newName = "French";
+        language.setCode(newCode);
+        language.setName(newName);
+
+        //when
+        dao.update(language);
+
+        //then
+        Language languageResult = dao.getById(language.getId());
+        assertNotNull(languageResult);
+        assertEquals((long) language.getId(), (long) languageResult.getId());
+        assertEquals(newCode, languageResult.getCode());
+        assertEquals(newName, languageResult.getName());
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+        //given
+        Language language = new Language();
+        language.setId(1l);
+        String code = "pl";
+        String name = "Polish";
+        language.setCode(code);
+        language.setName(name);
+        language.setId(dao.add(language));
+
+        //when
+        dao.delete(language);
+
+        //then
+        Language languageResult = dao.getById(language.getId());
+        assertNotNull(languageResult);
+        assertEquals((long) language.getId(), (long) languageResult.getId());
+        assertEquals("Unexpected status value for deleted object", LanguageStatus.DELETED, languageResult.getStatus());
+    }
+
+    @Test
+    public void testUndelete() throws Exception {
+        //given
+        Language language = new Language();
+        language.setId(1l);
+        String code = "pl";
+        String name = "Polish";
+        language.setCode(code);
+        language.setName(name);
+        language.setId(dao.add(language));
+        dao.delete(language);
+
+        //when
+        dao.undelete(language);
+
+        //then
+        Language languageResult = dao.getById(language.getId());
+        assertNotNull(languageResult);
+        assertEquals((long) language.getId(), (long) languageResult.getId());
+        assertEquals("Unexpected status value for undeleted object", LanguageStatus.NEW, languageResult.getStatus());
+    }
 }
