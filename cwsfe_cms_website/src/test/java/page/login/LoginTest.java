@@ -2,6 +2,7 @@ package page.login;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -17,6 +18,7 @@ public class LoginTest {
 
     private static WebDriver driver;
 
+    @Ignore
     @Test
     public void shouldLogIntoApplication() {
         LoginPage loginPage = new LoginPage(driver);
