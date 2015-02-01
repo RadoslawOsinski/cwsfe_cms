@@ -15,8 +15,14 @@ public class NewsletterMailAddress implements Serializable {
     private Long mailGroupId;
     private String email;
     private NewsletterMailAddressStatus status;
-    private String confirmString;    //random text for confirming email
-    private String unSubscribeString;    //random text for un subscribing email
+    /**
+     * random text for confirming email
+     */
+    private String confirmString;
+    /**
+     * random text for un subscribing email
+     */
+    private String unSubscribeString;
 
     public Long getId() {
         return id;

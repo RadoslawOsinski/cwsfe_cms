@@ -28,16 +28,16 @@ public class BlogPostCommentsRestController {
      * @return internationalized blog keywords list
      */
     @RequestMapping(value = "/rest/comments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public HashMap<String, Integer> countCommentsForPostI18n(
+    public Map<String, Integer> countCommentsForPostI18n(
             @RequestParam(value = "blogPostI18nContentId") long blogPostI18nContentId
     ) {
-        HashMap<String, Integer> result = new HashMap<>(1);
+        Map<String, Integer> result = new HashMap<>(1);
         result.put("count", blogPostCommentsDAO.countCommentsForPostI18n(blogPostI18nContentId));
         return result;
     }
 
     @RequestMapping(value = "/rest/comments", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public HashMap<String, String> addComment(
+    public Map<String, String> addComment(
             @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
             ModelMap modelMap, BindingResult result, Locale locale
     ) {
