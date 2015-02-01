@@ -5,16 +5,24 @@
     <meta name="description" content="CWSFE CMS"/>
     <meta name="author" content="Radosław Osiński">
     <meta name="robots" content="none"/>
-    <title>CWSFE CMS</title>
+    <title>CWSFE CMS</title> 
     <link rel="stylesheet"
           href="../src/main/webapp/resources-cwsfe-cms/css/foundation/normalize.css"
           type="text/css"/>
     <link rel="stylesheet"
           href="../src/main/webapp/resources-cwsfe-cms/css/foundation/foundation.min.css"
           type="text/css"/>
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/foundation/foundation-datepicker.css"
+          type="text/css"/> 
+    
+    <!-- Use this method to get the default Font Awesome CSS Icons-->      
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
 
     <script src="../src/main/webapp/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min.js"></script>
     <script src="../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.js"></script>
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation-datepicker.js"></script>
 
     <link rel="stylesheet"
           href="../src/main/webapp/resources-cwsfe-cms/css/cms/shared.css"
@@ -43,7 +51,7 @@
             <li class="name">
                 <!--<figure id="logo"><a href="#" class="logo" tabindex="-1"></a></figure>-->
                 <h1><img
-                        src="../src/main/webapp/resources-cwsfe-cms/CWSFE_logo_40x39.png"/>CWSFE
+                        src="../src/main/webapp/resources-cwsfe-cms/CWSFE_logo_40x39.png"/><span>CWSFE</span>
                     CMS</h1>
             </li>
         </ul>
@@ -55,12 +63,14 @@
                     <a href="http://foundation.zurb.com/learn/features.html" class="">Settings</a>
                     <ul class="dropdown">
                         <li class="title back js-generated"><h5><a href="#">« Back</a></h5></li>
-                        <li><a class="parent-link js-generated" href="http://foundation.zurb.com/learn/features.html">Learn</a></li>
+                        <li><a class="parent-link js-generated" href="http://foundation.zurb.com/learn/features.html">Learn</a>
+                        </li>
                         <li><a href="http://foundation.zurb.com/learn/features.html">Users</a></li>
                         <li><a href="http://foundation.zurb.com/learn/faq.html">FAQ</a></li>
                         <li><a href="http://foundation.zurb.com/learn/case-jacquelinewest.html">Case Studies</a></li>
                         <li><a href="http://foundation.zurb.com/learn/website-examples.html">Website Examples</a></li>
-                        <li><a href="http://foundation.zurb.com/learn/video-started-with-foundation.html">Videos</a></li>
+                        <li><a href="http://foundation.zurb.com/learn/video-started-with-foundation.html">Videos</a>
+                        </li>
                         <li><a href="http://foundation.zurb.com/learn/training.html">Users</a></li>
                         <li><a href="http://foundation.zurb.com/learn/about.html">About</a></li>
                     </ul>
@@ -75,7 +85,7 @@
                 </li>
                 <li class="divider"></li>
                 <li>
-                    <a href="http://foundation.zurb.com/docs/" class="blue button">Logout</a>
+                    <a href="http://foundation.zurb.com/docs/" class="tiny radius button">Logout</a>
                 </li>
                 <li class="divider"></li>
                 <li class="has-dropdown username not-click">
@@ -86,9 +96,9 @@
     </nav>
 </header>
 
-<div class="large-12 columns">
+<div class="large-12">
 
-    <div class="large-2 columns">
+    <div class="large-2 columns background-nav">
         <ul class="side-nav">
             <li class="withSubMenu"><a href="#" tabindex="-1">Blog</a>
                 <ul class="subMenu">
@@ -96,17 +106,17 @@
                     <li role="menuitem"><a href="#" tabindex="-1">Keywords</a></li>
                 </ul>
             </li>
-            <li class="withSubMenu" >
-                <a href="#" tabindex="-1">  Newsletter </a>
+            <li class="withSubMenu">
+                <a href="#" tabindex="-1"> Newsletter </a>
                 <ul class="subMenu">
-                    <li role="menuitem"><a href="#" tabindex="-1"> NewsletterMailGroupsManagement </a></li>
-                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterTemplatesManagement</a></li>
-                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterMailsManagement</a>
+                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterMailGroups </a></li>
+                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterTemplates</a></li>
+                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterMails</a>
                     </li>
                 </ul>
             </li>
             <li><a href="#" tabindex="-1">Languages </a></li>
-            <li class="withSubMenu"><a href="#" tabindex="-1">&#x2192; Translations </a>
+            <li class="withSubMenu"><a href="#" tabindex="-1">Translations </a>
                 <ul class="subMenu">
                     <li role="menuitem">
                         <a href="#" tabindex="-1">
@@ -127,7 +137,7 @@
         </ul>
     </div>
 
-    <div class="large-10 columns">
+    <div class="large-10 columns background-content">
         <div class="row">
             <ul class="breadcrumbs">
                 <li><a href="#">Home</a></li>
@@ -141,21 +151,84 @@
         <div class="row">
 
             <h1>DATEPICKER</h1>
-            <h4>http://foundation-datepicker.peterbeno.com/example.html ????</h4>
-            <input type="date" placeholder="datetime"/>
+            <h4>http://foundation-datepicker.peterbeno.com/example.htm</h4>
+
+			<input type="text" class="span2" value="02-16-2012" id="dp1">
+            <!--<input type="date" placeholder="datetime"/>
             <input type="datetime-local" placeholder="datetime"/>
-            <input type="datetime" placeholder="datetime"/>
+            <input type="datetime" placeholder="datetime"/>-->
         </div>
     </div>
-
+		<script>
+			$(function () {
+				window.prettyPrint && prettyPrint();
+				$('#dp1').fdatepicker({
+					format: 'mm-dd-yyyy',
+					language: 'pl'
+				});
+				$('#dp2').fdatepicker({
+					closeButton: true
+				});
+				$('#dp3').fdatepicker();
+				$('#dp3').fdatepicker();
+				$('#dp-margin').fdatepicker();
+				$('#dpMonths').fdatepicker();
+				var startDate = new Date(2012, 1, 20);
+				var endDate = new Date(2012, 1, 25);
+				$('#dp4').fdatepicker()
+					.on('changeDate', function (ev) {
+					if (ev.date.valueOf() > endDate.valueOf()) {
+						$('#alert').show().find('strong').text('The start date can not be greater then the end date');
+					} else {
+						$('#alert').hide();
+						startDate = new Date(ev.date);
+						$('#startDate').text($('#dp4').data('date'));
+					}
+					$('#dp4').fdatepicker('hide');
+				});
+				$('#dp5').fdatepicker()
+					.on('changeDate', function (ev) {
+					if (ev.date.valueOf() < startDate.valueOf()) {
+						$('#alert').show().find('strong').text('The end date can not be less then the start date');
+					} else {
+						$('#alert').hide();
+						endDate = new Date(ev.date);
+						$('#endDate').text($('#dp5').data('date'));
+					}
+					$('#dp5').fdatepicker('hide');
+				});
+				// implementation of disabled form fields
+				var nowTemp = new Date();
+				var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+				var checkin = $('#dpd1').fdatepicker({
+					onRender: function (date) {
+						return date.valueOf() < now.valueOf() ? 'disabled' : '';
+					}
+				}).on('changeDate', function (ev) {
+					if (ev.date.valueOf() > checkout.date.valueOf()) {
+						var newDate = new Date(ev.date)
+						newDate.setDate(newDate.getDate() + 1);
+						checkout.update(newDate);
+					}
+					checkin.hide();
+					$('#dpd2')[0].focus();
+				}).data('datepicker');
+				var checkout = $('#dpd2').fdatepicker({
+					onRender: function (date) {
+						return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
+					}
+				}).on('changeDate', function (ev) {
+					checkout.hide();
+				}).data('datepicker');
+			});
+		</script>
 </div>
 
-<footer id="pageFooter" class="large-12 columns">
-    <hr/>
+<footer id="pageFooter" class="large-12 columns wrap-footer">
     <div class="row">
         PageLoadedIn
         <span id="loadTimeValue"></span>ms
-        <p>&copy; Powered by <a href="http://cwsfe.eu" target="_blank" tabindex="-1">CWSFE</a>.</p>
+        <p>&copy; Powered by <a href="http://cwsfe.eu" target="_blank" tabindex="-1">CWSFE</a></p>
     </div>
 </footer>
 

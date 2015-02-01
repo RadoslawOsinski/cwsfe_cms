@@ -78,7 +78,7 @@
             <li class="name">
                 <!--<figure id="logo"><a href="#" class="logo" tabindex="-1"></a></figure>-->
                 <h1><img
-                        src="../src/main/webapp/resources-cwsfe-cms/CWSFE_logo_40x39.png"/>CWSFE
+                        src="../src/main/webapp/resources-cwsfe-cms/CWSFE_logo_40x39.png"/><span>CWSFE</span>
                     CMS</h1>
             </li>
         </ul>
@@ -90,12 +90,14 @@
                     <a href="http://foundation.zurb.com/learn/features.html" class="">Settings</a>
                     <ul class="dropdown">
                         <li class="title back js-generated"><h5><a href="#">« Back</a></h5></li>
-                        <li><a class="parent-link js-generated" href="http://foundation.zurb.com/learn/features.html">Learn</a></li>
+                        <li><a class="parent-link js-generated" href="http://foundation.zurb.com/learn/features.html">Learn</a>
+                        </li>
                         <li><a href="http://foundation.zurb.com/learn/features.html">Users</a></li>
                         <li><a href="http://foundation.zurb.com/learn/faq.html">FAQ</a></li>
                         <li><a href="http://foundation.zurb.com/learn/case-jacquelinewest.html">Case Studies</a></li>
                         <li><a href="http://foundation.zurb.com/learn/website-examples.html">Website Examples</a></li>
-                        <li><a href="http://foundation.zurb.com/learn/video-started-with-foundation.html">Videos</a></li>
+                        <li><a href="http://foundation.zurb.com/learn/video-started-with-foundation.html">Videos</a>
+                        </li>
                         <li><a href="http://foundation.zurb.com/learn/training.html">Users</a></li>
                         <li><a href="http://foundation.zurb.com/learn/about.html">About</a></li>
                     </ul>
@@ -110,7 +112,7 @@
                 </li>
                 <li class="divider"></li>
                 <li>
-                    <a href="http://foundation.zurb.com/docs/" class="blue button">Logout</a>
+                    <a href="http://foundation.zurb.com/docs/" class="tiny radius button">Logout</a>
                 </li>
                 <li class="divider"></li>
                 <li class="has-dropdown username not-click">
@@ -121,9 +123,10 @@
     </nav>
 </header>
 
-<div class="large-12 columns">
 
-    <div class="large-2 columns">
+<div class="large-12">
+
+    <div class="large-2 columns background-nav">
         <ul class="side-nav">
             <li class="withSubMenu"><a href="#" tabindex="-1">Blog</a>
                 <ul class="subMenu">
@@ -131,17 +134,17 @@
                     <li role="menuitem"><a href="#" tabindex="-1">Keywords</a></li>
                 </ul>
             </li>
-            <li class="withSubMenu" >
-                <a href="#" tabindex="-1">  Newsletter </a>
+            <li class="withSubMenu">
+                <a href="#" tabindex="-1"> Newsletter </a>
                 <ul class="subMenu">
-                    <li role="menuitem"><a href="#" tabindex="-1"> NewsletterMailGroupsManagement </a></li>
-                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterTemplatesManagement</a></li>
-                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterMailsManagement</a>
+                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterMailGroups </a></li>
+                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterTemplates</a></li>
+                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterMails</a>
                     </li>
                 </ul>
             </li>
             <li><a href="#" tabindex="-1">Languages </a></li>
-            <li class="withSubMenu"><a href="#" tabindex="-1">&#x2192; Translations </a>
+            <li class="withSubMenu"><a href="#" tabindex="-1">Translations </a>
                 <ul class="subMenu">
                     <li role="menuitem">
                         <a href="#" tabindex="-1">
@@ -162,7 +165,7 @@
         </ul>
     </div>
 
-    <div class="large-10 columns">
+    <div class="large-10 columns background-content">
         <div class="row">
             <ul class="breadcrumbs">
                 <li><a href="#">Home</a></li>
@@ -191,16 +194,30 @@
             </table>
 
         </div>
+        <div class="row">
+        	<div class="large-10" style="margin:40px 0;"> 
+        	<h3>Paginacja zwykła</h3>
+                <div class="pagination">
+                    <ul class="pagination"> 
+                        <li class="arrow unavailable"><a href="">&laquo;</a></li> 
+                        <li class="current"><a href="">1</a></li> 
+                        <li><a href="">2</a></li> <li><a href="">3</a></li> 
+                        <li><a href="">4</a></li> <li class="unavailable"><a href="">&hellip;</a></li> 
+                        <li><a href="">12</a></li> <li><a href="">13</a></li> 
+                        <li class="arrow"><a href="">&raquo;</a></li> 
+                    </ul> 
+                </div>
+             </div>
+        </div>
     </div>
 
 </div>
 
-<footer id="pageFooter" class="large-12 columns">
-    <hr/>
+<footer id="pageFooter" class="large-12 columns wrap-footer">
     <div class="row">
         PageLoadedIn
         <span id="loadTimeValue"></span>ms
-        <p>&copy; Powered by <a href="http://cwsfe.eu" target="_blank" tabindex="-1">CWSFE</a>.</p>
+        <p>&copy; Powered by <a href="http://cwsfe.eu" target="_blank" tabindex="-1">CWSFE</a></p>
     </div>
 </footer>
 

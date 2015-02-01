@@ -43,7 +43,7 @@
             <li class="name">
                 <!--<figure id="logo"><a href="#" class="logo" tabindex="-1"></a></figure>-->
                 <h1><img
-                        src="../src/main/webapp/resources-cwsfe-cms/CWSFE_logo_40x39.png"/>CWSFE
+                        src="../src/main/webapp/resources-cwsfe-cms/CWSFE_logo_40x39.png"/><span>CWSFE</span>
                     CMS</h1>
             </li>
         </ul>
@@ -77,7 +77,7 @@
                 </li>
                 <li class="divider"></li>
                 <li>
-                    <a href="http://foundation.zurb.com/docs/" class="blue button">Logout</a>
+                    <a href="http://foundation.zurb.com/docs/" class="tiny radius button">Logout</a>
                 </li>
                 <li class="divider"></li>
                 <li class="has-dropdown username not-click">
@@ -88,9 +88,9 @@
     </nav>
 </header>
 
-<div class="large-12 columns">
+<div class="large-12"> <!--- CUSTOM delete class "columns" -->
 
-    <div class="large-2 columns">
+    <div class="large-2 columns background-nav">
         <ul class="side-nav">
             <li class="withSubMenu"><a href="#" tabindex="-1">Blog</a>
                 <ul class="subMenu">
@@ -101,14 +101,14 @@
             <li class="withSubMenu">
                 <a href="#" tabindex="-1"> Newsletter </a>
                 <ul class="subMenu">
-                    <li role="menuitem"><a href="#" tabindex="-1"> NewsletterMailGroupsManagement </a></li>
-                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterTemplatesManagement</a></li>
-                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterMailsManagement</a>
+                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterMailGroups </a></li>
+                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterTemplates</a></li>
+                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterMails</a>
                     </li>
                 </ul>
             </li>
             <li><a href="#" tabindex="-1">Languages </a></li>
-            <li class="withSubMenu"><a href="#" tabindex="-1">&#x2192; Translations </a>
+            <li class="withSubMenu"><a href="#" tabindex="-1">Translations </a>
                 <ul class="subMenu">
                     <li role="menuitem">
                         <a href="#" tabindex="-1">
@@ -129,7 +129,7 @@
         </ul>
     </div>
 
-    <div class="large-10 columns">
+    <div class="large-10 columns background-content">
         <div class="row">
             <ul class="breadcrumbs">
                 <li><a href="#">Home</a></li>
@@ -142,7 +142,7 @@
         </div>
         <div class="row">
 
-            <h1>FORM</h1>
+            <h1>Form validation</h1>
 
             <form id="blogPostBasicInfoForm">
                 <fieldset>
@@ -153,7 +153,7 @@
                         <label for="author">Author <small>required</small></label>
                         <input type="hidden" id="postAuthorId" value="${blogPost.postAuthorId}"/>
 
-                        <div class="large-4 columns">
+                        <div class="large-4">
                             <input type="text" id="author"
                                    value="lastName firstName"/>
                             <small class="error">lastName firstName is required.</small>
@@ -183,12 +183,12 @@
                                pattern="yyyy-MM-dd HH:mm"/>
                     </div>
                     <div class="row">
-                        <input type="submit" value="secondary"
+                        <input type="submit" value="Secondary"
                                onclick="saveBlogPost();return false;" class="button small radius secondary">
                         <input type="submit" value="Save"
                                onclick="saveBlogPost();return false;" class="button small radius">
                         <input type="reset" value="Revert" class="button small radius alert"/>
-                        <input type="reset" value="primary" class="button small radius primary"/>
+                        <input type="reset" value="Primary" class="button small radius primary"/>
                     </div>
                 </fieldset>
             </form>
@@ -199,12 +199,11 @@
 
 </div>
 
-<footer id="pageFooter" class="large-12 columns">
-    <hr/>
+<footer id="pageFooter" class="large-12 columns wrap-footer">
     <div class="row">
         PageLoadedIn
         <span id="loadTimeValue"></span>ms
-        <p>&copy; Powered by <a href="http://cwsfe.eu" target="_blank" tabindex="-1">CWSFE</a>.</p>
+        <p>&copy; Powered by <a href="http://cwsfe.eu" target="_blank" tabindex="-1">CWSFE</a></p>
     </div>
 </footer>
 

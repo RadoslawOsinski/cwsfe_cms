@@ -12,3 +12,35 @@
 fieldset {
     display: block;
 }
+
+.subMenu{
+	background-color: #484959;
+	margin:0 !important;
+}
+
+.side-nav li .subMenu a{
+	font-size: 0.715rem; padding-left:1.575rem !important;
+}
+
+ul.subMenu {
+	list-style:none;
+}
+
+.dataTables_info{
+	font-size:0.75rem;
+	font-weight:600;
+	margin-bottom:1rem;
+}
+
+.dataTables_paginate{
+	font-size:0.75rem;
+}
+
+.dataTables_paginate a.paginate_button, .dataTables_paginate a.paginate_active{
+	padding:0.4rem 0.75rem;
+	margin-right:0.2rem;
+	color:#fff;
+	border-radius:3px;
+	-moz-border-radius:3px;;
+	-webkit-border-radius:3px;
+}

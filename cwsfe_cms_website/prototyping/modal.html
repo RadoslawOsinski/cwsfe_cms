@@ -15,7 +15,17 @@
 
     <script src="../src/main/webapp/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min.js"></script>
     <script src="../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.js"></script>
+  	<script src="../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.reveal.js"></script>
+  	<!-- Other JS plugins can be included here -->
 
+  	<script>
+    	$(document).foundation();
+		// trigger by event
+		$('a.reveal-link').trigger('click');
+		$('a.close-reveal-modal').trigger('click');
+  	</script>
+  
+  
     <link rel="stylesheet"
           href="../src/main/webapp/resources-cwsfe-cms/css/cms/shared.css"
           type="text/css"/>
@@ -43,7 +53,7 @@
             <li class="name">
                 <!--<figure id="logo"><a href="#" class="logo" tabindex="-1"></a></figure>-->
                 <h1><img
-                        src="../src/main/webapp/resources-cwsfe-cms/CWSFE_logo_40x39.png"/>CWSFE
+                        src="../src/main/webapp/resources-cwsfe-cms/CWSFE_logo_40x39.png"/><span>CWSFE</span>
                     CMS</h1>
             </li>
         </ul>
@@ -55,12 +65,14 @@
                     <a href="http://foundation.zurb.com/learn/features.html" class="">Settings</a>
                     <ul class="dropdown">
                         <li class="title back js-generated"><h5><a href="#">« Back</a></h5></li>
-                        <li><a class="parent-link js-generated" href="http://foundation.zurb.com/learn/features.html">Learn</a></li>
+                        <li><a class="parent-link js-generated" href="http://foundation.zurb.com/learn/features.html">Learn</a>
+                        </li>
                         <li><a href="http://foundation.zurb.com/learn/features.html">Users</a></li>
                         <li><a href="http://foundation.zurb.com/learn/faq.html">FAQ</a></li>
                         <li><a href="http://foundation.zurb.com/learn/case-jacquelinewest.html">Case Studies</a></li>
                         <li><a href="http://foundation.zurb.com/learn/website-examples.html">Website Examples</a></li>
-                        <li><a href="http://foundation.zurb.com/learn/video-started-with-foundation.html">Videos</a></li>
+                        <li><a href="http://foundation.zurb.com/learn/video-started-with-foundation.html">Videos</a>
+                        </li>
                         <li><a href="http://foundation.zurb.com/learn/training.html">Users</a></li>
                         <li><a href="http://foundation.zurb.com/learn/about.html">About</a></li>
                     </ul>
@@ -75,7 +87,7 @@
                 </li>
                 <li class="divider"></li>
                 <li>
-                    <a href="http://foundation.zurb.com/docs/" class="blue button">Logout</a>
+                    <a href="http://foundation.zurb.com/docs/" class="tiny radius button">Logout</a>
                 </li>
                 <li class="divider"></li>
                 <li class="has-dropdown username not-click">
@@ -86,9 +98,9 @@
     </nav>
 </header>
 
-<div class="large-12 columns">
+<div class="large-12">
 
-    <div class="large-2 columns">
+    <div class="large-2 columns background-nav">
         <ul class="side-nav">
             <li class="withSubMenu"><a href="#" tabindex="-1">Blog</a>
                 <ul class="subMenu">
@@ -96,17 +108,17 @@
                     <li role="menuitem"><a href="#" tabindex="-1">Keywords</a></li>
                 </ul>
             </li>
-            <li class="withSubMenu" >
-                <a href="#" tabindex="-1">  Newsletter </a>
+            <li class="withSubMenu">
+                <a href="#" tabindex="-1"> Newsletter </a>
                 <ul class="subMenu">
-                    <li role="menuitem"><a href="#" tabindex="-1"> NewsletterMailGroupsManagement </a></li>
-                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterTemplatesManagement</a></li>
-                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterMailsManagement</a>
+                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterMailGroups </a></li>
+                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterTemplates</a></li>
+                    <li role="menuitem"><a href="#" tabindex="-1">NewsletterMails</a>
                     </li>
                 </ul>
             </li>
             <li><a href="#" tabindex="-1">Languages </a></li>
-            <li class="withSubMenu"><a href="#" tabindex="-1">&#x2192; Translations </a>
+            <li class="withSubMenu"><a href="#" tabindex="-1">Translations </a>
                 <ul class="subMenu">
                     <li role="menuitem">
                         <a href="#" tabindex="-1">
@@ -127,7 +139,7 @@
         </ul>
     </div>
 
-    <div class="large-10 columns">
+    <div class="large-10 columns background-content">
         <div class="row">
             <ul class="breadcrumbs">
                 <li><a href="#">Home</a></li>
@@ -142,17 +154,18 @@
 
             <h1>Modal</h1>
             <h4>http://foundation.zurb.com/docs/components/reveal.html</h4>
+			<a href="#" data-reveal-id="myModal" class="big button primary radius">Click Me For A Modal</a> 
+            <div id="myModal" class="reveal-modal" data-reveal> <h3>To jest okno modal.</h3><p>Ogólnie znana teza głosi, iż użytkownika może rozpraszać zrozumiała zawartość strony, kiedy ten chce zobaczyć sam jej wygląd. Jedną z mocnych stron używania Lorem Ipsum jest to, że ma wiele różnych „kombinacji” zdań, słów i akapitów, w przeciwieństwie do zwykłego: „tekst, tekst, tekst”, sprawiającego, że wygląda to „zbyt czytelnie” po polsku. Wielu webmasterów i designerów używa Lorem Ipsum jako domyślnego modelu tekstu</p> <a class="close-reveal-modal">&#215;</a> </div>
         </div>
     </div>
 
 </div>
 
-<footer id="pageFooter" class="large-12 columns">
-    <hr/>
+<footer id="pageFooter" class="large-12 columns wrap-footer">
     <div class="row">
         PageLoadedIn
         <span id="loadTimeValue"></span>ms
-        <p>&copy; Powered by <a href="http://cwsfe.eu" target="_blank" tabindex="-1">CWSFE</a>.</p>
+        <p>&copy; Powered by <a href="http://cwsfe.eu" target="_blank" tabindex="-1">CWSFE</a></p>
     </div>
 </footer>
 
