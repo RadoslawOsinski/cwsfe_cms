@@ -87,6 +87,7 @@ dependencies {
     testCompile group: 'org.springframework', name: 'spring-test-mvc', version: '1.0.0.M2'
     testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.44.0'
     testCompile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '2.44.0'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '1.9.5'
 }
 
 war {
