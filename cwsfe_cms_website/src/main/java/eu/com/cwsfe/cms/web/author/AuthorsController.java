@@ -48,7 +48,7 @@ public class AuthorsController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/authorsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/authorsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listAuthors(
             @RequestParam int iDisplayStart,
@@ -75,7 +75,7 @@ public class AuthorsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/authorsDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/authorsDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listAuthorsForDropList(
             @RequestParam String term,
@@ -96,7 +96,7 @@ public class AuthorsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addAuthor", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/addAuthor", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addAuthor(
             @ModelAttribute(value = "cmsAuthor") CmsAuthor cmsAuthor,
@@ -114,7 +114,7 @@ public class AuthorsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteAuthor", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/deleteAuthor", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteAuthor(
             @ModelAttribute(value = "cmsAuthor") CmsAuthor cmsAuthor,
