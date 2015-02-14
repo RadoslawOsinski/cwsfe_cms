@@ -28,6 +28,13 @@ public class LoginPage extends Page {
         return new MainPage(driver);
     }
 
+    public MenuPage getMenuPage() {
+        driver.findElement(By.name("userName")).sendKeys("CWSFE_CMS_ADMIN");
+        driver.findElement(By.id("password")).sendKeys("admin");
+        driver.findElement(By.xpath(LOGIN_BUTTON_XPATH)).click();
+        return new MenuPage(driver);
+    }
+
     public LoginPage incorrectLogin() {
         driver.findElement(By.name("userName")).sendKeys("admin");
         driver.findElement(By.id("password")).sendKeys("adminXXXXX");
