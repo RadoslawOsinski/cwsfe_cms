@@ -49,7 +49,7 @@ public class RolesController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/rolesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/rolesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listRoles(
             @RequestParam int iDisplayStart,
@@ -74,7 +74,7 @@ public class RolesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/rolesDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/rolesDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listRolesForDropList(
             @RequestParam String term,

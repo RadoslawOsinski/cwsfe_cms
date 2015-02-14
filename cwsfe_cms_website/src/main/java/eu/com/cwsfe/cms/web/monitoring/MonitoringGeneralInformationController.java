@@ -39,7 +39,7 @@ public class MonitoringGeneralInformationController extends JsonController {
         return "cms/monitoring/GeneralInformation";
     }
 
-    protected String getPageJS(HttpServletRequest httpServletRequest) {
+    private String getPageJS(HttpServletRequest httpServletRequest) {
         return httpServletRequest.getContextPath() + "/resources-cwsfe-cms/js/cms/monitoring/GeneralInformation";
     }
 
@@ -51,7 +51,7 @@ public class MonitoringGeneralInformationController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/monitoring/generalMemoryInfo", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/monitoring/generalMemoryInfo", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;")
     @ResponseBody
     public String getGeneralMemoryInfo() {
         JSONObject responseDetailsJson = new JSONObject();

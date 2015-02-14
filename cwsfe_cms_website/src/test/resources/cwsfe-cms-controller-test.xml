@@ -11,14 +11,19 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <!--<context:component-scan base-package="eu.com.cwsfe.cms.web"/>-->
-    <context:component-scan base-package="eu.com.cwsfe.cms.web.author"/>
-
+    <context:component-scan base-package="eu.com.cwsfe.cms.web"/>
     <context:component-scan base-package="eu.com.cwsfe.cms.dao"/>
     <context:component-scan base-package="eu.com.cwsfe.cms.model"/>
 
     <context:annotation-config/>
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven>
+        <!-- register custom converter that returns UTF-8 encoded response-body by defualt -->
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg index="0" name="defaultCharset" value="UTF-8"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
 
     <bean id="cwsfeCmsBeanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
 
@@ -68,6 +73,11 @@
     <!-- DAO already tested. Mock tests should be fast -->
     <bean id="jdbcTemplate" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="org.springframework.jdbc.core.JdbcTemplate"/>
+    </bean>
+
+    <!--Mail services are mocked-->
+    <bean id="cmsMailSender" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.springframework.mail.javamail.JavaMailSender"/>
     </bean>
 
 </beans>

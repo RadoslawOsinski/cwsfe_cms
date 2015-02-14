@@ -69,14 +69,18 @@
                 <spring:url value="/Main" var="mainUrl" htmlEscape="true"/>
                 <%--<figure id="logo"><a href="${mainUrl}" class="logo" tabindex="-1"></a></figure>--%>
                 <h1><img src="${pageContext.request.contextPath}/resources-cwsfe-cms/CWSFE_logo_40x39.png"
-                         alt="CWSFE logo"/>
-                    CWSFE CMS
+                         alt="CWSFE logo"/><span>CWSFE CMS</span>
                 </h1>
             </li>
         </ul>
 
         <section class="top-bar-section">
             <ul class="right">
+                <li class="divider"></li>
+                <li>
+                    <a href="#" class="">Messages</a>
+                </li>
+                <li class="divider"></li>
                 <%--<li class="has-dropdown not-click">--%>
                 <%--<a href="http://foundation.zurb.com/learn/features.html" class="">Settings</a>--%>
                 <%--<ul class="dropdown">--%>
@@ -98,8 +102,8 @@
     </nav>
 </header>
 
-<div class="large-12 columns">
-    <div class="large-2 columns">
+<div class="large-12">
+    <div class="large-2 columns background-nav">
         <spring:url value="/folders" var="foldersUrl" htmlEscape="true"/>
         <spring:url value="/news" var="newsUrl" htmlEscape="true"/>
         <spring:url value="/newsTypes" var="newsTypesUrl" htmlEscape="true"/>
@@ -224,13 +228,10 @@
 
 </div>
 
-<footer id="pageFooter" class="row fullWidth">
-    <div class="large-12 columns">
-        <hr/>
-        <div class="row">
-            <spring:message code="PageLoadedIn"/>&nbsp;<span id="loadTimeValue"></span>&nbsp;ms
-            <p>&copy; Powered by <a href="http://cwsfe.eu" target="_blank" tabindex="-1">CWSFE</a>.</p>
-        </div>
+<footer id="pageFooter" class="large-12 columns wrap-footer">
+    <div class="row">
+        <spring:message code="PageLoadedIn"/>&nbsp;<span id="loadTimeValue"></span>&nbsp;ms
+        <p>&copy; Powered by <a href="http://cwsfe.eu" target="_blank" tabindex="-1">CWSFE</a>.</p>
     </div>
 </footer>
 
