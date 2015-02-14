@@ -22,7 +22,7 @@ public class LoginPage extends Page {
     }
 
     public MainPage correctLogin() {
-        driver.findElement(By.name("userName")).sendKeys("admin");
+        driver.findElement(By.name("userName")).sendKeys("CWSFE_CMS_ADMIN");
         driver.findElement(By.id("password")).sendKeys("admin");
         driver.findElement(By.xpath(LOGIN_BUTTON_XPATH)).click();
         return new MainPage(driver);

@@ -72,7 +72,7 @@ class InitialConfigurationController extends JsonController {
         if (!result.hasErrors()) {
             CmsGlobalParam cwsfeCmsIsConfigured = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_IS_CONFIGURED");
             if ("N".equals(cwsfeCmsIsConfigured.getValue())) {
-                cmsUser.setPasswordHash(BCrypt.hashpw(cmsUser.getPassword(), BCrypt.gensalt(13)));
+                cmsUser.setPasswordHash(BCrypt.hashpw(cmsUser.getPassword(), BCrypt.gensalt()));
                 cmsUser.setId(cmsUsersDAO.add(cmsUser));
                 CmsRole cwsfeCmsAdminRole = cmsRolesDAO.getByCode("ROLE_CWSFE_CMS_ADMIN");
                 cmsUserRolesDAO.add(new CmsUserRole(cmsUser.getId(), cwsfeCmsAdminRole.getId()));

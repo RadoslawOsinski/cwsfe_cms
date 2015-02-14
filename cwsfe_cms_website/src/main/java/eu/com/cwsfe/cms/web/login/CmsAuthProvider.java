@@ -37,7 +37,7 @@ public class CmsAuthProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return (CmsUsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
+        return CmsUsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
 
     @Override
