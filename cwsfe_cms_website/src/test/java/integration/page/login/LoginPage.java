@@ -1,7 +1,10 @@
-package page;
+package integration.page.login;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import integration.page.layout.MainPage;
+import integration.page.layout.MenuPage;
+import integration.page.Page;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,7 +20,7 @@ public class LoginPage extends Page {
     }
 
     public LoginPage open() {
-        driver.get("http://localhost:8080/CWSFE_CMS/");
+        driver.get(getCmsBaseUrl());
         return this;
     }
 
@@ -43,7 +46,8 @@ public class LoginPage extends Page {
     }
 
     public boolean isFailedLoginOpened() {
-        assertEquals("http://localhost:8080/CWSFE_CMS/loginFailed", driver.getCurrentUrl());
+        assertEquals(getCmsBaseUrl() + "/loginFailed", driver.getCurrentUrl());
+        //todo add login error message
 //        assertTrue(driver.findElement(By.cssSelector("some error message")).isDisplayed());
         return true;
     }

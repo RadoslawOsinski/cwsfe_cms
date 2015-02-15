@@ -123,90 +123,87 @@
                     htmlEscape="true"/>
 
         <ul class="side-nav" role=menubar>
-            <li class="withSubMenu"><a href="#" tabindex="-1"><spring:message code="News"/></a>
+            <li class="withSubMenu"><a id="menuNewsSubMenu" href="#" tabindex="-1"><spring:message code="News"/></a>
                 <ul class="subMenu">
                     <li role="menuitem" <c:if
                             test="${pageContext.request.requestURI.contains('cms/news/')}"> class="active"</c:if>><a
                             href="${newsUrl}" tabindex="-1"><spring:message code="CmsNewsManagement"/></a></li>
                     <li role="menuitem" <c:if
                             test="${pageContext.request.requestURI.contains('cms/newsTypes/NewsTypes')}"> class="active"</c:if>>
-                        <a href="${newsTypesUrl}" tabindex="-1"><spring:message code="NewsTypes"/></a></li>
+                        <a id="menuNewsTypesLink" href="${newsTypesUrl}" tabindex="-1"><spring:message code="NewsTypes"/></a></li>
                     <li role="menuitem"<c:if
                             test="${pageContext.request.requestURI.contains('cms/folders/Folders')}"> class="active"</c:if>>
-                        <a href="${foldersUrl}" tabindex="-1"><spring:message code="Folders"/></a></li>
+                        <a id="menuFoldersLink" href="${foldersUrl}" tabindex="-1"><spring:message code="Folders"/></a></li>
                 </ul>
             </li>
-            <li class="withSubMenu"><a href="#" tabindex="-1"><spring:message code="Blog"/></a>
+            <li class="withSubMenu"><a id="menuBlogSubMenu" href="#" tabindex="-1"><spring:message code="Blog"/></a>
                 <ul class="subMenu">
                     <li role="menuitem" <c:if
                             test="${pageContext.request.requestURI.contains('cms/blog/')}"> class="active"</c:if>>
-                        <a href="${blogUrl}" tabindex="-1"><spring:message code="BlogPostManagement"/></a>
+                        <a id="menuBlogPostManagementLink" href="${blogUrl}" tabindex="-1"><spring:message code="BlogPostManagement"/></a>
                     </li>
                     <li role="menuitem" <c:if
                             test="${pageContext.request.requestURI.contains('cms/blogkeywords/BlogKeywords')}"> class="active"</c:if>>
-                        <a href="${blogKeywordsUrl}" tabindex="-1"><spring:message code="Keywords"/></a>
+                        <a id="menuKeywordsLink" href="${blogKeywordsUrl}" tabindex="-1"><spring:message code="Keywords"/></a>
                     </li>
                 </ul>
             </li>
-            <li class="withSubMenu"><a href="#" tabindex="-1"><spring:message code="Newsletter"/></a>
+            <li class="withSubMenu"><a id="menuNewsletterSubMenu" href="#" tabindex="-1"><spring:message code="Newsletter"/></a>
                 <ul class="subMenu">
                     <li role="menuitem" <c:if
                             test="${pageContext.request.requestURI.contains('cms/newsletterMailGroups/NewsletterMailGroups')}"> class="active"</c:if>>
-                        <a href="${newsletterMailGroupsManagementUrl}" tabindex="-1"><spring:message
+                        <a id="menuNewsletterMailGroupsManagementLink" href="${newsletterMailGroupsManagementUrl}" tabindex="-1"><spring:message
                                 code="NewsletterMailGroupsManagement"/></a></li>
                     <li role="menuitem" <c:if
                             test="${pageContext.request.requestURI.contains('cms/newsletterTemplates/NewsletterTemplates')}"> class="active"</c:if>>
-                        <a href="${newsletterTemplatesManagementUrl}" tabindex="-1"><spring:message
+                        <a id="menuNewsletterTemplatesManagementLink" href="${newsletterTemplatesManagementUrl}" tabindex="-1"><spring:message
                                 code="NewsletterTemplatesManagement"/></a></li>
                     <li role="menuitem" <c:if
                             test="${pageContext.request.requestURI.contains('cms/newsletterMails/NewsletterMails')}"> class="active"</c:if>>
-                        <a href="${newsletterMailsManagementUrl}" tabindex="-1"><spring:message
+                        <a id="menuNewsletterMailsManagementLink" href="${newsletterMailsManagementUrl}" tabindex="-1"><spring:message
                                 code="NewsletterMailsManagement"/></a></li>
                 </ul>
             </li>
             <li role="menuitem" <c:if
                     test="${pageContext.request.requestURI.contains('cms/languages/Languages')}"> class="active"</c:if>>
-                <a
-                        href="${languagesUrl}" tabindex="-1"><spring:message code="Languages"/></a></li>
-            <li class="withSubMenu"><a href="#" tabindex="-1"><spring:message code="Translations"/></a>
+                <a id="menuLanguagesLink" href="${languagesUrl}" tabindex="-1"><spring:message code="Languages"/></a></li>
+            <li class="withSubMenu"><a id="menuTransaltionsSubMenu" href="#" tabindex="-1"><spring:message code="Translations"/></a>
                 <ul class="subMenu">
                     <li role="menuitem" <c:if
                             test="${pageContext.request.requestURI.contains('cms/textI18n/TextI18n')}"> class="active"</c:if>>
-                        <a
+                        <a id="menuTextTranslationsLink"
                                 href="${cmsTextI18nUrl}" tabindex="-1"><spring:message
                                 code="TextTranslations"/></a>
                     </li>
                     <li role="menuitem" <c:if
                             test="${pageContext.request.requestURI.contains('cms/textI18nCategories/TextI18nCategories')}"> class="active"</c:if>>
-                        <a href="${cmsTextI18nCategoriesUrl}" tabindex="-1"><spring:message
+                        <a id="menuTranslationCategoriesLink" href="${cmsTextI18nCategoriesUrl}" tabindex="-1"><spring:message
                                 code="TranslationCategories"/></a>
                     </li>
                 </ul>
             </li>
             <li role="menuitem" <c:if
                     test="${pageContext.request.requestURI.contains('cms/authors/Authors')}"> class="active"</c:if>>
-                <a
+                <a id="menuAuthorsLink"
                         href="${authorsUrl}" tabindex="-1"><spring:message code="Authors"/></a></li>
-            <li class="withSubMenu"><a href="#" tabindex="-1"><spring:message code="Users"/></a>
+            <li class="withSubMenu"><a id="menuUsersSubMenu" href="#" tabindex="-1"><spring:message code="Users"/></a>
                 <ul class="subMenu">
                     <li role="menuitem" <c:if
                             test="${pageContext.request.requestURI.contains('cms/users/Users')}"> class="active"</c:if>>
-                        <a
-                                href="${usersUrl}" tabindex="-1"><spring:message code="Users"/></a></li>
+                        <a id="menuUsersLink" href="${usersUrl}" tabindex="-1"><spring:message code="Users"/></a></li>
                     <li role="menuitem" <c:if
                             test="${pageContext.request.requestURI.contains('cms/users/UsersNetAddresses')}"> class="active"</c:if>>
-                        <a href="${usersNetAddressesUrl}" tabindex="-1"><spring:message
-                                code="UsersNetAddresses"/></a>
+                        <a id="menuUsersNetAddressesLink" href="${usersNetAddressesUrl}" tabindex="-1"><spring:message code="UsersNetAddresses"/></a>
                     </li>
                 </ul>
             </li>
             <li role="menuitem" <c:if
                     test="${pageContext.request.requestURI.contains('cms/roles/Roles')}"> class="active"</c:if>>
-                <a
+                <a id="menuRolesLink"
                         href="${rolesUrl}" tabindex="-1"><spring:message code="Roles"/></a></li>
             <li role="menuitem" <c:if
                     test="${pageContext.request.requestURI.contains('cms/monitoring/GeneralInformation')}"> class="active"</c:if>>
-                <a href="${monitoringGeneralInformationUrl}" tabindex="-1"><spring:message
+                <a id="menuMonitoringLink" href="${monitoringGeneralInformationUrl}" tabindex="-1"><spring:message
                         code="Monitoring"/></a></li>
         </ul>
     </div>

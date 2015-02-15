@@ -1,6 +1,26 @@
-require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
+require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko) {
+
+    function UsersViewModel() {
+        var self = this;
+        self.userName = ko.observable();
+        self.passwordHash = ko.observable();
+
+        self.userNameIsRequiredStyle= ko.computed(function() {
+            return self.userName() == null || self.userName() === '' ? 'error' : 'invisible';
+        });
+        self.passwordIsRequiredStyle= ko.computed(function() {
+            return self.passwordHash() == null || self.passwordHash() === '' ? 'error' : 'invisible';
+        });
+        self.addUserFormIsValid = ko.computed(function() {
+            return self.userName() != null && self.userName() !== '' &&
+                self.passwordHash() != null && self.passwordHash() !== '';
+        });
+    }
+
+    var usersViewModel = new UsersViewModel();
 
     $(document).ready(function () {
+        ko.applyBindings(usersViewModel);
 
         $('#usersList').dataTable({
             'iTabIndex': -1,
@@ -60,13 +80,10 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#usersList").dataTable().fnDraw();
-                    $('#userName').val('');
+                    usersViewModel.userName(null);
+                    usersViewModel.passwordHash(null);
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
-                    }
-                    $('#formValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
+                    //todo validate alert
                 }
             },
             error: function (response) {

@@ -11,6 +11,7 @@ import eu.com.cwsfe.cms.model.CmsUserRole;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -72,7 +73,7 @@ class UsersController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/usersList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/usersList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listUsers(
             @RequestParam int iDisplayStart,
@@ -98,7 +99,7 @@ class UsersController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/usersDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/usersDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listUsersForDropList(
             @RequestParam String term,
@@ -117,7 +118,7 @@ class UsersController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addUser(
             @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
@@ -128,15 +129,20 @@ class UsersController extends JsonController {
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
             cmsUser.setPasswordHash(BCrypt.hashpw(cmsUser.getPasswordHash(), BCrypt.gensalt(13)));
-            cmsUsersDAO.add(cmsUser);
-            addJsonSuccess(responseDetailsJson);
+            try {
+                cmsUsersDAO.getByUsername(cmsUser.getUserName());
+                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserAlreadyExists"));
+            } catch (EmptyResultDataAccessException e) {
+                cmsUsersDAO.add(cmsUser);
+                addJsonSuccess(responseDetailsJson);
+            }
         } else {
             prepareErrorResponse(result, responseDetailsJson);
         }
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/deleteUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteUser(
             @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
@@ -153,7 +159,7 @@ class UsersController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/lockUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/lockUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String lockUser(
             @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
@@ -170,7 +176,7 @@ class UsersController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/unlockUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/unlockUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String unlockUser(
             @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
@@ -225,7 +231,7 @@ class UsersController extends JsonController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/users/updateUserBasicInfo", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/users/updateUserBasicInfo", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String updateUserBasicInfo(
             @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
@@ -233,7 +239,7 @@ class UsersController extends JsonController {
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "userName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UsernameMustBeSet"));
-        ValidationUtils.rejectIfEmpty(result, JSON_STATUS, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("StatusMustBeSet"));
+        ValidationUtils.rejectIfEmpty(result, "status", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("StatusMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
             cmsUsersDAO.updatePostBasicInfo(cmsUser);

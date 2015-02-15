@@ -1,13 +1,12 @@
-package page.login;
+package integration.page.monitoring;
 
+import integration.page.login.LoginPage;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import page.LoginPage;
-import page.MenuPage;
-import page.MonitoringPage;
+import integration.page.layout.MenuPage;
 
 import static org.junit.Assert.assertTrue;
 

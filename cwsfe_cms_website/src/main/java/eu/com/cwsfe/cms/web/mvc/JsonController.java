@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
  */
 public abstract class JsonController {
 
+    public static final String JSON_ERROR_MESSAGES = "errorMessages";
     public static final String JSON_RESULT = "result";
     public static final String JSON_STATUS = "status";
     public static final String JSON_STATUS_SUCCESS = "SUCCESS";
@@ -30,6 +31,27 @@ public abstract class JsonController {
     protected void addJsonSuccess(JSONObject responseDetailsJson) {
         responseDetailsJson.put(JSON_STATUS, JSON_STATUS_SUCCESS);
         responseDetailsJson.put(JSON_RESULT, "");
+    }
+
+    protected void addErrorMessage(JSONObject responseDetailsJson, String message) {
+        String[] messages = new String[1];
+        messages[0] = message;
+        addErrorMessages(responseDetailsJson, messages);
+    }
+
+    protected void addErrorMessages(JSONObject responseDetailsJson, String[] messages) {
+        JSONArray jsonArray = (JSONArray) responseDetailsJson.get(JSON_ERROR_MESSAGES);
+        if (jsonArray == null) {
+            jsonArray = new JSONArray();
+        }
+        responseDetailsJson.put(JSON_STATUS, JSON_STATUS_SUCCESS);
+        for (String message : messages) {
+            JSONObject formDetailsJson = new JSONObject();
+            formDetailsJson.put("error", message);
+            jsonArray.add(formDetailsJson);
+        }
+        responseDetailsJson.remove(JSON_ERROR_MESSAGES);
+        responseDetailsJson.put(JSON_ERROR_MESSAGES, jsonArray);
     }
 
 }

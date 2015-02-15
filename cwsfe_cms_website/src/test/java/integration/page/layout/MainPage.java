@@ -1,7 +1,8 @@
-package page;
+package integration.page.layout;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import integration.page.Page;
 
 import static org.junit.Assert.assertEquals;
 
@@ -15,7 +16,7 @@ public class MainPage extends Page {
     }
 
     public boolean isOpened() {
-        assertEquals("http://localhost:8080/CWSFE_CMS/Main", driver.getCurrentUrl());
+        assertEquals(getCmsBaseUrl() + "/Main", driver.getCurrentUrl());
         return driver.findElement(By.className("breadcrumbs")).isDisplayed();
     }
 }

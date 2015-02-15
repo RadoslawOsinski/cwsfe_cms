@@ -53,7 +53,7 @@
 
     <!-- spring sucks in definining different id than messageSource :( -->
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
-          p:basename="classpath:cwsfe_cms_i18n" p:defaultEncoding="UTF-8" p:cacheSeconds="10"/>
+          p:basename="classpath:cwsfe_cms_i18n" p:defaultEncoding="UTF-8" p:fileEncodings="UTF-8" p:cacheSeconds="10"/>
 
     <bean id="cwsfeCmsControllerClassNameHandlerMapping"
           class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping">

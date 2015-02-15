@@ -38,14 +38,14 @@
                     <div class="row">
                         <label for="status"><spring:message code="Status"/></label>
                         <select id="status">
-                            <option value="N"
-                                    <c:if test="${cmsUser.status.equals('N')}"> selected</c:if>>
+                            <option value="NEW"
+                                    <c:if test="${cmsUser.status.equals('NEW')}"> selected</c:if>>
                                 <spring:message code="UserStatusNew"/></option>
-                            <option value="L"
-                                    <c:if test="${cmsUser.status.equals('L')}"> selected</c:if>>
+                            <option value="LOCKED"
+                                    <c:if test="${cmsUser.status.equals('LOCKED')}"> selected</c:if>>
                                 <spring:message code="UserStatusLocked"/></option>
-                            <option value="D"
-                                    <c:if test="${cmsUser.status.equals('D')}"> selected</c:if>>
+                            <option value="DELETED"
+                                    <c:if test="${cmsUser.status.equals('DELETED')}"> selected</c:if>>
                                 <spring:message code="UserStatusDeleted"/></option>
                         </select>
                     </div>
