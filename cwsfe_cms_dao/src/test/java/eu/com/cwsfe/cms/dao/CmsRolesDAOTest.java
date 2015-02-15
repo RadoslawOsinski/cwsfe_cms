@@ -30,8 +30,8 @@ public class CmsRolesDAOTest  extends AbstractTransactionalJUnit4SpringContextTe
         List<CmsRole> list = dao.listUserRoles(userId);
 
         //then
-        assertNotNull("Empty results should not return null", list);
-        assertTrue(list.isEmpty());
+        assertNotNull("There should be few predefined roles", list);
+        assertTrue("ROLE_CWSFE_CMS_ADMIN should be predefined", list.stream().filter(w -> "ROLE_CWSFE_CMS_ADMIN".equals(w.getRoleCode())).count() > 0);
     }
 
     @Test
