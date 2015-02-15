@@ -21,18 +21,18 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'status',
                     'fnRender': function (o) {
-                        if (o.aData.status === 'N') {
+                        if (o.aData.status === 'NEW') {
                             return '<span class="highlight yellow">New</span>';
-                        } else if (o.aData.status === 'P') {
+                        } else if (o.aData.status === 'PUBLISHED') {
                             return '<span class="highlight green">Published</span>';
-                        } else if (o.aData.status === 'B') {
+                        } else if (o.aData.status === 'BLOCKED') {
                             return '<span class="highlight red">Blocked</span>';
-                        } else if (o.aData.status === 'S') {
+                        } else if (o.aData.status === 'SPAM') {
                             return '<span class="highlight red">Spam</span>';
-                        } else if (o.aData.status === 'D') {
+                        } else if (o.aData.status === 'DELETED') {
                             return '<span class="highlight red">Deleted</span>';
                         }
-                        return '<span class="highlight red">Deleted</span>';
+                        return '<span class="highlight red">?</span>';
                     }
                 },
                 {

@@ -23,16 +23,16 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'status',
                     'fnRender': function (o) {
-                        if (o.aData.status === 'A') {
+                        if (o.aData.status === 'ACTIVE') {
                             return '<span class="highlight green">Active</span>';
-                        } else if (o.aData.status === 'I') {
+                        } else if (o.aData.status === 'INACTIVE') {
                             return '<span class="highlight yellow">Inactive</span>';
-                        } else if (o.aData.status === 'E') {
+                        } else if (o.aData.status === 'ERROR') {
                             return '<span class="highlight red">Error</span>';
-                        } else if (o.aData.status === 'D') {
+                        } else if (o.aData.status === 'DELETED') {
                             return '<span class="highlight red">Deleted</span>';
                         }
-                        return '<span class="highlight red">Deleted</span>';
+                        return '<span class="highlight red">?</span>';
                     }
                 },
                 {

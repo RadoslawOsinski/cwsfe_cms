@@ -61,10 +61,8 @@ class UsersController extends JsonController {
         return breadcrumbs;
     }
 
-    private Object setSingleUserAdditionalJS(String contextPath) {
-        List<String> jsUrl = new ArrayList<>(3);
-        jsUrl.add(contextPath + "/resources-cwsfe-cms/js/cms/users/SingleUser.js");
-        return jsUrl;
+    private String setSingleUserAdditionalJS(String contextPath) {
+        return contextPath + "/resources-cwsfe-cms/js/cms/users/SingleUser.js";
     }
 
     private List<Breadcrumb> getSingleUserBreadcrumbs(Locale locale, Long id) {
@@ -88,7 +86,7 @@ class UsersController extends JsonController {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("#", iDisplayStart + i + 1);
             formDetailsJson.put("userName", cmsUsers.get(i).getUserName());
-            formDetailsJson.put(JSON_STATUS, cmsUsers.get(i).getStatus());
+            formDetailsJson.put("status", cmsUsers.get(i).getStatus());
             formDetailsJson.put("id", cmsUsers.get(i).getId());
             jsonArray.add(formDetailsJson);
         }
@@ -191,8 +189,7 @@ class UsersController extends JsonController {
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
     public String browseUser(ModelMap model, Locale locale, @PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
-        //todo!
-//        model.addAttribute("mainJavaScript", setSingleUserAdditionalJS(httpServletRequest.getContextPath()));
+        model.addAttribute("mainJavaScript", setSingleUserAdditionalJS(httpServletRequest.getContextPath()));
         model.addAttribute("breadcrumbs", getSingleUserBreadcrumbs(locale, id));
         final CmsUser cmsUser = cmsUsersDAO.get(id);
         model.addAttribute("cmsUser", cmsUser);

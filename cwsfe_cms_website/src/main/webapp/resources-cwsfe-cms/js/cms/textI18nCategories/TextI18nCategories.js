@@ -18,12 +18,12 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'status',
                     'fnRender': function (o) {
-                        if (o.aData.status === 'N') {
+                        if (o.aData.status === 'NEW') {
                             return '<span class="highlight yellow">New</span>';
-                        } else if (o.aData.status === 'D') {
+                        } else if (o.aData.status === 'DELETED') {
                             return '<span class="highlight red">Deleted</span>';
                         }
-                        return '<span class="highlight red">Deleted</span>';
+                        return '<span class="highlight red">?</span>';
                     }
                 },
                 {

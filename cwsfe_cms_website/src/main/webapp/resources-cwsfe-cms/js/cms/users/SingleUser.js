@@ -1,4 +1,4 @@
-require(['jquery', 'cmsLayout'], function ($) {
+require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'foundation', 'foundationTabs'], function ($, ko) {
 
     $('#saveUserButton').click(function() {
         saveUser();
