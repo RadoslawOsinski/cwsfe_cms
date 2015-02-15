@@ -48,7 +48,7 @@ public class BlogKeywordsController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/blogKeywordsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/blogKeywordsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listBlogKeywords(
             @RequestParam int iDisplayStart,
@@ -73,7 +73,7 @@ public class BlogKeywordsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addBlogKeyword", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/addBlogKeyword", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addBlogKeyword(
             @ModelAttribute(value = "blogKeyword") BlogKeyword blogKeyword,
@@ -90,7 +90,7 @@ public class BlogKeywordsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteBlogKeyword", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/deleteBlogKeyword", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteFolder(
             @ModelAttribute(value = "blogKeyword") BlogKeyword blogKeyword,

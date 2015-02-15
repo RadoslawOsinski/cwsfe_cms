@@ -37,7 +37,7 @@ public class BlogPostImagesController extends JsonController {
     @Autowired
     private BlogPostImagesDAO blogPostImagesDAO;
 
-    @RequestMapping(value = "/blogPosts/blogPostImagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/blogPosts/blogPostImagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listBlogKeywords(
             @RequestParam int iDisplayStart,
@@ -99,7 +99,7 @@ public class BlogPostImagesController extends JsonController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/blogPosts/deleteBlogPostImage", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/blogPosts/deleteBlogPostImage", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteBlogPostImage(
             @ModelAttribute(value = "blogPostImage") BlogPostImage blogPostImage,

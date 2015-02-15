@@ -78,7 +78,7 @@ public class BlogPostsController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/blogPostsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/blogPostsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listBlogPosts(
             @RequestParam int iDisplayStart,
@@ -122,7 +122,7 @@ public class BlogPostsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addBlogPost", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/addBlogPost", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addBlogPost(
             @ModelAttribute(value = "blogPost") BlogPost blogPost,
@@ -143,7 +143,7 @@ public class BlogPostsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteBlogPost", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/deleteBlogPost", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String delete(
             @ModelAttribute(value = "blogPost") BlogPost blogPost,
@@ -177,7 +177,7 @@ public class BlogPostsController extends JsonController {
         return "cms/blog/SingleBlogPost";
     }
 
-    @RequestMapping(value = "/blogPosts/{id}/{langId}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/blogPosts/{id}/{langId}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String getBlogPostI18n(ModelMap model, @PathVariable("id") Long blogPostId, @PathVariable("langId") Long langId, Locale locale) {
         BindingResult result = new BeanPropertyBindingResult(null, "getNewsI18n");
@@ -212,7 +212,7 @@ public class BlogPostsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/blogPosts/updatePostBasicInfo", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/blogPosts/updatePostBasicInfo", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String updatePostBasicInfo(
             @ModelAttribute(value = "blogPost") BlogPost blogPost,

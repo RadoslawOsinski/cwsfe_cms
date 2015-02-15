@@ -82,7 +82,7 @@ public class CmsNewsController extends JsonController {
                 ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CmsNewsManagement")));
     }
 
-    @RequestMapping(value = "/newsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/newsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listBlogKeywords(
             @RequestParam int iDisplayStart,
@@ -126,7 +126,7 @@ public class CmsNewsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addNews", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/addNews", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addNews(
             @ModelAttribute(value = "cmsNews") CmsNews cmsNews,
@@ -148,7 +148,7 @@ public class CmsNewsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/news/updateNewsBasicInfo", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/news/updateNewsBasicInfo", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String updateNewsBasicInfo(
             @ModelAttribute(value = "cmsNews") CmsNews cmsNews,
@@ -168,7 +168,7 @@ public class CmsNewsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteNews", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/deleteNews", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteFolder(
             @ModelAttribute(value = "cmsNews") CmsNews cmsNews,
@@ -199,7 +199,7 @@ public class CmsNewsController extends JsonController {
         return "cms/news/SingleNews";
     }
 
-    @RequestMapping(value = "/news/{id}/{langId}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/news/{id}/{langId}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String getNewsI18n(ModelMap model, @PathVariable("id") Long newsId, @PathVariable("langId") Long langId, Locale locale) {
         BindingResult result = new BeanPropertyBindingResult(null, "getNewsI18n");

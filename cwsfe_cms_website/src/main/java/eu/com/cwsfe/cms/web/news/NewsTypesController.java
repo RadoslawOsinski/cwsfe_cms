@@ -48,7 +48,7 @@ class NewsTypesController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/newsTypesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/newsTypesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listNewsTypes(
             @RequestParam int iDisplayStart,
@@ -73,7 +73,7 @@ class NewsTypesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/news/newsTypesDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/news/newsTypesDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listNewsTypesForDropList(
             @RequestParam String term,
@@ -92,7 +92,7 @@ class NewsTypesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addNewsType", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/addNewsType", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addNewsType(
             @ModelAttribute(value = "newsType") NewsType newsType,
@@ -109,7 +109,7 @@ class NewsTypesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteNewsType", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/deleteNewsType", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteNewsType(
             @ModelAttribute(value = "cmsNewsType") NewsType cmsNewsType,

@@ -25,7 +25,7 @@ public class BlogPostCommentsController extends JsonController {
     @Autowired
     private BlogPostCommentsDAO blogPostCommentsDAO;
 
-    @RequestMapping(value = "/publishBlogPostComment", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/publishBlogPostComment", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String blogPostCommentPublish(
             @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
@@ -42,7 +42,7 @@ public class BlogPostCommentsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/blockBlogPostComment", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/blockBlogPostComment", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String blogPostCommentBlock(
             @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
@@ -59,7 +59,7 @@ public class BlogPostCommentsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/markAsSpamBlogPostComment", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/markAsSpamBlogPostComment", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String blogPostCommentMarkAsSpam(
             @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
@@ -76,7 +76,7 @@ public class BlogPostCommentsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteBlogPostComment", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/deleteBlogPostComment", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String blogPostCommentDelete(
             @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,

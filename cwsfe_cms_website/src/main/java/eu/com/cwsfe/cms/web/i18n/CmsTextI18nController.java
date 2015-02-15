@@ -54,7 +54,7 @@ public class CmsTextI18nController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/cmsTextI18nList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/cmsTextI18nList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listCmsTextI18n(
             @RequestParam int iDisplayStart,
@@ -82,7 +82,7 @@ public class CmsTextI18nController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addCmsTextI18n", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/addCmsTextI18n", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addTextI18n(
             @ModelAttribute(value = "cmsTextI18n") CmsTextI18n cmsTextI18n,
@@ -102,7 +102,7 @@ public class CmsTextI18nController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteCmsTextI18n", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/deleteCmsTextI18n", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteTextI18n(
             @ModelAttribute(value = "cmsTextI18n") CmsTextI18n cmsTextI18n,

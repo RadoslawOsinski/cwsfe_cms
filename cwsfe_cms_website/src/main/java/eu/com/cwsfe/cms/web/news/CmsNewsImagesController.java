@@ -37,7 +37,7 @@ public class CmsNewsImagesController extends JsonController {
     @Autowired
     private CmsNewsImagesDAO cmsNewsImagesDAO;
 
-    @RequestMapping(value = "/news/cmsNewsImagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/news/cmsNewsImagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String list(
             @RequestParam int iDisplayStart,
@@ -105,7 +105,7 @@ public class CmsNewsImagesController extends JsonController {
         }
     }
 
-    @RequestMapping(value = "/news/deleteCmsNewsImage", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/news/deleteCmsNewsImage", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteCmsNewsImage(
             @ModelAttribute(value = "cmsNewsImage") CmsNewsImage cmsNewsImage,

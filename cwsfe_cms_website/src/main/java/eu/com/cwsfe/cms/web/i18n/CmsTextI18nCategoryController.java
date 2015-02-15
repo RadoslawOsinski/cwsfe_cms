@@ -48,7 +48,7 @@ public class CmsTextI18nCategoryController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/cmsTextI18nCategoriesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/cmsTextI18nCategoriesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listCmsTextI18nCategories(
             @RequestParam int iDisplayStart,
@@ -74,7 +74,7 @@ public class CmsTextI18nCategoryController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/cmsTextI18nCategoryDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/cmsTextI18nCategoryDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listCmsLanguagesForDropList(
             @RequestParam String term,
@@ -94,7 +94,7 @@ public class CmsTextI18nCategoryController extends JsonController {
     }
 
 
-    @RequestMapping(value = "/addCmsTextI18nCategory", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/addCmsTextI18nCategory", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addTextI18nCategory(
             @ModelAttribute(value = "cmsTextI18nCategory") CmsTextI18nCategory cmsTextI18nCategory,
@@ -111,7 +111,7 @@ public class CmsTextI18nCategoryController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteCmsTextI18nCategory", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/deleteCmsTextI18nCategory", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteTextI18nCategory(
             @ModelAttribute(value = "cmsTextI18nCategory") CmsTextI18nCategory cmsTextI18nCategory,

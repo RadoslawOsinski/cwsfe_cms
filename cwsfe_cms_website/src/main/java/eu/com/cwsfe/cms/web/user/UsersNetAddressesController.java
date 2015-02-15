@@ -34,7 +34,7 @@ class UsersNetAddressesController extends JsonController {
     @Autowired
     private CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO;
 
-    @RequestMapping(value = "usersNetAddresses", method = RequestMethod.GET)
+    @RequestMapping(value = "/usersNetAddresses", method = RequestMethod.GET)
     public String defaultView(ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {
         model.addAttribute("mainJavaScript", getPageJS(httpServletRequest.getContextPath()));
         model.addAttribute("breadcrumbs", getBreadcrumbs(locale));
@@ -53,7 +53,7 @@ class UsersNetAddressesController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/usersNetAddressesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/usersNetAddressesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listUsers(
             @RequestParam int iDisplayStart,
@@ -73,14 +73,14 @@ class UsersNetAddressesController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfUsers = cmsUsersDAO.countForAjax();
-        responseDetailsJson.put("iTotalRecords", numberOfUsers);
-        responseDetailsJson.put("iTotalDisplayRecords", numberOfUsers);
+        final int numberOfAllowedNetAddresses = cmsUserAllowedNetAddressDAO.countForAjax();
+        responseDetailsJson.put("iTotalRecords", numberOfAllowedNetAddresses);
+        responseDetailsJson.put("iTotalDisplayRecords", numberOfAllowedNetAddresses);
         responseDetailsJson.put("aaData", jsonArray);
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addNetAddress", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/addNetAddress", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addNetAddress(
             @ModelAttribute(value = "cmsUserAllowedNetAddress") CmsUserAllowedNetAddress cmsUserAllowedNetAddress,
@@ -98,7 +98,7 @@ class UsersNetAddressesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteNetAddress", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/deleteNetAddress", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteUser(
             @ModelAttribute(value = "cmsUserAllowedNetAddress") CmsUserAllowedNetAddress cmsUserAllowedNetAddress,

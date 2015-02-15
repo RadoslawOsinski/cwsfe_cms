@@ -56,7 +56,6 @@ public class UsersControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(usersController).build();
     }
 
-
     @Test
     public void testDefaultView() throws Exception {
         mockMvc.perform(get("/users"))

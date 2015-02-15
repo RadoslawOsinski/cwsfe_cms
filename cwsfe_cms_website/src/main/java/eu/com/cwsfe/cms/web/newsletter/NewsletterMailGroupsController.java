@@ -74,7 +74,7 @@ class NewsletterMailGroupsController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/newsletterMailGroupsDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/newsletterMailGroupsDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listNewsletterMailGroupsForDropList(
             @RequestParam String term,
@@ -93,7 +93,7 @@ class NewsletterMailGroupsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/newsletterMailGroupsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/newsletterMailGroupsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listNewsletterMailGroups(
             @RequestParam int iDisplayStart,
@@ -122,7 +122,7 @@ class NewsletterMailGroupsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addNewsletterMailGroup", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/addNewsletterMailGroup", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addNewsletterMailGroup(
             @ModelAttribute(value = "newsletterMailGroup") NewsletterMailGroup newsletterMailGroup,
@@ -140,7 +140,7 @@ class NewsletterMailGroupsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteNewsletterMailGroup", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/deleteNewsletterMailGroup", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteNewsletterMailGroup(
             @ModelAttribute(value = "newsletterMailGroup") NewsletterMailGroup newsletterMailGroup,
@@ -168,7 +168,7 @@ class NewsletterMailGroupsController extends JsonController {
         return "cms/newsletterMailGroups/SingleNewsletterMailGroup";
     }
 
-    @RequestMapping(value = "/newsletterMailGroups/newsletterMailAddressesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/newsletterMailGroups/newsletterMailAddressesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String newsletterMailAddressesList(
             @RequestParam int iDisplayStart,
@@ -197,7 +197,7 @@ class NewsletterMailGroupsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/newsletterMailGroups/updateNewsletterMailGroup", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/newsletterMailGroups/updateNewsletterMailGroup", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String updateNewsletterMailGroup(
             @ModelAttribute(value = "newsletterMailGroup") NewsletterMailGroup newsletterMailGroup,
@@ -216,7 +216,7 @@ class NewsletterMailGroupsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/newsletterMailGroups/addNewsletterMailAddresses", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/newsletterMailGroups/addNewsletterMailAddresses", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addNewsletterMailAddresses(
             @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,
@@ -250,7 +250,7 @@ class NewsletterMailGroupsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/newsletterMailGroups/deleteNewsletterMailAddress", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/newsletterMailGroups/deleteNewsletterMailAddress", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteNewsletterMailAddress(
             @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,
@@ -267,7 +267,7 @@ class NewsletterMailGroupsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/newsletterMailGroups/activateNewsletterMailAddress", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/newsletterMailGroups/activateNewsletterMailAddress", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String activateNewsletterMailAddress(
             @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,
@@ -284,7 +284,7 @@ class NewsletterMailGroupsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/newsletterMailGroups/deactivateNewsletterMailAddress", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/newsletterMailGroups/deactivateNewsletterMailAddress", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deactivateNewsletterMailAddress(
             @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,

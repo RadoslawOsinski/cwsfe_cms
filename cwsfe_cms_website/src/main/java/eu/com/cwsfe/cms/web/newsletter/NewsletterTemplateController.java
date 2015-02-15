@@ -80,7 +80,7 @@ class NewsletterTemplateController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/newsletterTemplatesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/newsletterTemplatesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listNewsletterTemplates(
             @RequestParam int iDisplayStart,
@@ -111,7 +111,7 @@ class NewsletterTemplateController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addNewsletterTemplate", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/addNewsletterTemplate", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addNewsletterTemplate(
             @ModelAttribute(value = "newsletterTemplate") NewsletterTemplate newsletterTemplate,
@@ -129,7 +129,7 @@ class NewsletterTemplateController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteNewsletterTemplate", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/deleteNewsletterTemplate", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteNewsletterTemplate(
             @ModelAttribute(value = "newsletterTemplate") NewsletterTemplate newsletterTemplate,
@@ -146,7 +146,7 @@ class NewsletterTemplateController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/unDeleteNewsletterTemplate", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/unDeleteNewsletterTemplate", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String unDeleteNewsletterTemplate(
             @ModelAttribute(value = "newsletterTemplate") NewsletterTemplate newsletterTemplate,
@@ -198,7 +198,7 @@ class NewsletterTemplateController extends JsonController {
         return browseNewsletterTemplate(model, locale, newsletterTemplate.getId(), httpServletRequest);
     }
 
-    @RequestMapping(value = "/newsletterTemplates/newsletterTemplateTestSend", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/newsletterTemplates/newsletterTemplateTestSend", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String newsletterTemplateTestSend(
             @ModelAttribute(value = "newsletterTemplate") NewsletterTemplate newsletterTemplate,

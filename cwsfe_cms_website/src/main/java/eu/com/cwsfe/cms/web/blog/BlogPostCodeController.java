@@ -29,7 +29,7 @@ public class BlogPostCodeController extends JsonController {
     @Autowired
     private BlogPostCodesDAO blogPostCodesDAO;
 
-    @RequestMapping(value = "/blogPosts/blogPostCodesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/blogPosts/blogPostCodesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listBlogKeywords(
             @RequestParam int iDisplayStart,
@@ -67,7 +67,7 @@ public class BlogPostCodeController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/blogPosts/addBlogPostCode", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/blogPosts/addBlogPostCode", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addNews(
             @ModelAttribute(value = "blogPostCode") BlogPostCode blogPostCode,
@@ -90,7 +90,7 @@ public class BlogPostCodeController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/blogPosts/deleteBlogPostCode", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/blogPosts/deleteBlogPostCode", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String blogPostCodeDelete(
             @ModelAttribute(value = "blogPostCode") BlogPostCode blogPostCode,

@@ -48,7 +48,7 @@ class LanguagesController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/languagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/languagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listLanguages(
             @RequestParam int iDisplayStart,
@@ -74,7 +74,7 @@ class LanguagesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/cmsLanguagesDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/cmsLanguagesDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listCmsLanguagesForDropList(
             @RequestParam String term,
@@ -94,7 +94,7 @@ class LanguagesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addLanguage", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/addLanguage", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addLanguage(
             @ModelAttribute(value = "cmsLanguage") Language cmsLanguage,
@@ -115,7 +115,7 @@ class LanguagesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteLanguage", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/deleteLanguage", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteLanguage(
             @ModelAttribute(value = "cmsLanguage") Language cmsLanguage,

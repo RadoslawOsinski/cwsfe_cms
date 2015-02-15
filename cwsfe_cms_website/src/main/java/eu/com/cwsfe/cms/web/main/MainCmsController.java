@@ -50,7 +50,7 @@ class MainCmsController extends JsonController {
         return new ArrayList<>(3);
     }
 
-    @RequestMapping(value = "/blogPostsListForChart", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/blogPostsListForChart", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listBlogPosts() {
         List<Object[]> dbList = blogPostsDAO.listArchiveStatistics();
@@ -70,7 +70,7 @@ class MainCmsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/blogPostCommentsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/blogPostCommentsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listBlogPostComments(
             @RequestParam int iDisplayStart,

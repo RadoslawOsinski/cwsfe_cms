@@ -48,7 +48,7 @@ public class FoldersController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/foldersList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/foldersList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listFolders(
             @RequestParam int iDisplayStart,
@@ -74,7 +74,7 @@ public class FoldersController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/news/foldersDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/news/foldersDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listFoldersForDropList(
             @RequestParam String term,
@@ -93,7 +93,7 @@ public class FoldersController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addFolder", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/addFolder", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addFolder(
             @ModelAttribute(value = "cmsFolder") CmsFolder cmsFolder,
@@ -110,7 +110,7 @@ public class FoldersController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteFolder", method = RequestMethod.POST, produces = "application/json;charset=UTF-8;pageEncoding=UTF-8")
+    @RequestMapping(value = "/deleteFolder", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String deleteFolder(
             @ModelAttribute(value = "cmsFolder") CmsFolder cmsFolder,
