@@ -96,8 +96,8 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         List<CmsUser> list = dao.list();
 
         //then
-        assertNotNull("Empty results should not return null", list);
-        assertTrue(list.isEmpty());
+        assertNotNull("There should be few predefined users", list);
+        assertTrue("CWSFE_CMS_ADMIN should be predefined", list.stream().filter(w -> "CWSFE_CMS_ADMIN".equals(w.getUserName())).count() > 0);
     }
 
     @Test
