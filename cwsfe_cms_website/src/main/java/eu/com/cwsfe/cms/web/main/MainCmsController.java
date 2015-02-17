@@ -34,8 +34,7 @@ class MainCmsController extends JsonController {
 
     @RequestMapping(value = "/Main", method = RequestMethod.GET)
     public String printDashboard(ModelMap model, Principal principal, HttpServletRequest httpServletRequest) {
-        String name = principal.getName();
-        model.addAttribute("userName", name);
+        model.addAttribute("userName", principal == null ? "?" : principal.getName());
         model.addAttribute("additionalCssCode", "");
         model.addAttribute("mainJavaScript", getPageJS(httpServletRequest));
         return "cms/main/Main";
