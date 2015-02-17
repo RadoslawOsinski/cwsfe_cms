@@ -84,7 +84,7 @@ public class CmsNewsController extends JsonController {
 
     @RequestMapping(value = "/newsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String listBlogKeywords(
+    public String list(
             @RequestParam int iDisplayStart,
             @RequestParam int iDisplayLength,
             @RequestParam String sEcho,
@@ -190,8 +190,7 @@ public class CmsNewsController extends JsonController {
         model.addAttribute("mainJavaScript", setSingleNewsAdditionalJS(httpServletRequest.getContextPath()));
         model.addAttribute("breadcrumbs", getSingleNewsBreadcrumbs(locale, id));
         final CmsNews cmsNews = cmsNewsDAO.get(id);
-        final List<Language> languages = cmsLanguagesDAO.listAll();
-        model.addAttribute("cmsLanguages", languages);
+        model.addAttribute("cmsLanguages", cmsLanguagesDAO.listAll());
         model.addAttribute("cmsNews", cmsNews);
         model.addAttribute("cmsAuthor", cmsAuthorsDAO.get(cmsNews.getAuthorId()));
         model.addAttribute("newsType", newsTypesDAO.get(cmsNews.getNewsTypeId()));

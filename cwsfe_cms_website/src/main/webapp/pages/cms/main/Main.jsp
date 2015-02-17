@@ -6,24 +6,23 @@
     <jsp:body>
 
         <h3><spring:message code="Posts"/></h3>
-        <%--<div id="posts_chart_dashboard"></div>--%>
 
-        <h2><spring:message code="NewComments"/></h2>
-        <%--<table id="blogPostCommentsList">--%>
-        <%--<thead>--%>
-        <%--<tr>--%>
-        <%--<th>#</th>--%>
-        <%--<th scope="col"><spring:message code="Username"/></th>--%>
-        <%--<th scope="col"><spring:message code="Comment"/></th>--%>
-        <%--<th scope="col"><spring:message code="CreationDate"/></th>--%>
-        <%--<th scope="col"><spring:message code="Status"/></th>--%>
-        <%--<th scope="col"><spring:message code="Actions"/></th>--%>
-        <%--<th></th>--%>
-        <%--</tr>--%>
-        <%--</thead>--%>
-        <%--<tbody>--%>
-        <%--</tbody>--%>
-        <%--</table>--%>
+        <h3><spring:message code="NewComments"/></h3>
+        <table id="blogPostCommentsList">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th scope="col"><spring:message code="Username"/></th>
+                <th scope="col"><spring:message code="Comment"/></th>
+                <th scope="col"><spring:message code="CreationDate"/></th>
+                <th scope="col"><spring:message code="Status"/></th>
+                <th scope="col"><spring:message code="Actions"/></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
 
     </jsp:body>
 </t:genericPage>
