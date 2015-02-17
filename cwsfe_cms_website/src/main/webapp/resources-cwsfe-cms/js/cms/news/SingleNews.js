@@ -164,7 +164,7 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
                 {
                     'bSortable': false, mData: 'image',
                     "fnRender": function (o) {
-                        return '<img src="../newsImages/?imageId=' + o.aData.image + '" height="200" width="480"/>';
+                        return '<img src="../newsImages/?imageId=' + o.aData.id + '" height="200" width="480"/>';
                     }
                 },
                 {

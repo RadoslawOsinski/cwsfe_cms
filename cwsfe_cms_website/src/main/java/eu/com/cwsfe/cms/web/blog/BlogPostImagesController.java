@@ -39,7 +39,7 @@ public class BlogPostImagesController extends JsonController {
 
     @RequestMapping(value = "/blogPosts/blogPostImagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String listBlogKeywords(
+    public String listBlogPostImages(
             @RequestParam int iDisplayStart,
             @RequestParam int iDisplayLength,
             @RequestParam String sEcho,
@@ -60,7 +60,6 @@ public class BlogPostImagesController extends JsonController {
             formDetailsJson.put("#", iDisplayStart + i + 1);
             final BlogPostImage object = dbList.get(i);
             formDetailsJson.put("title", object.getTitle());
-            formDetailsJson.put("image", object.getId());
             formDetailsJson.put("id", object.getId());
             jsonArray.add(formDetailsJson);
         }

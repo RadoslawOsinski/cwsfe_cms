@@ -7,6 +7,8 @@
 
     <display-name>CWSFE_CMS</display-name>
 
+    <distributable/>
+
     <filter>
         <filter-name>cwsfe-encoding-filter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>

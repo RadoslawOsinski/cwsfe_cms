@@ -60,7 +60,6 @@ public class CmsNewsImagesController extends JsonController {
             formDetailsJson.put("#", iDisplayStart + i + 1);
             final CmsNewsImage object = dbList.get(i);
             formDetailsJson.put("title", object.getTitle());
-            formDetailsJson.put("image", object.getId());
             formDetailsJson.put("id", object.getId());
             jsonArray.add(formDetailsJson);
         }
