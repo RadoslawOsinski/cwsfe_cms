@@ -9,6 +9,9 @@ import java.util.Collection;
  * Created by Radosław Osiński
  */
 public class CmsUsernamePasswordAuthenticationToken extends UsernamePasswordAuthenticationToken {
+
+    private static final long serialVersionUID = -8942611273704893882L;
+
     public CmsUsernamePasswordAuthenticationToken(Object principal, Object credentials) {
         super(principal, credentials);
     }

@@ -31,7 +31,7 @@ public class BlogPostCodeController extends JsonController {
 
     @RequestMapping(value = "/blogPosts/blogPostCodesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String listBlogKeywords(
+    public String listBlogPostCodes(
             @RequestParam int iDisplayStart,
             @RequestParam int iDisplayLength,
             @RequestParam String sEcho,
@@ -69,7 +69,7 @@ public class BlogPostCodeController extends JsonController {
 
     @RequestMapping(value = "/blogPosts/addBlogPostCode", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String addNews(
+    public String addBlogPostCode(
             @ModelAttribute(value = "blogPostCode") BlogPostCode blogPostCode,
             BindingResult result, Locale locale
     ) {
