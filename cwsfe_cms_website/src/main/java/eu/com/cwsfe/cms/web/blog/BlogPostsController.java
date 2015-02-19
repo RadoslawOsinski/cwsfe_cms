@@ -1,10 +1,10 @@
 package eu.com.cwsfe.cms.web.blog;
 
+import eu.com.cwsfe.cms.dao.*;
 import eu.com.cwsfe.cms.domains.BlogPostI18nContentStatus;
 import eu.com.cwsfe.cms.domains.BlogPostStatus;
-import eu.com.cwsfe.cms.web.mvc.JsonController;
-import eu.com.cwsfe.cms.dao.*;
 import eu.com.cwsfe.cms.model.*;
+import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -165,12 +165,9 @@ public class BlogPostsController extends JsonController {
         model.addAttribute("mainJavaScript", httpServletRequest.getContextPath() + "/resources-cwsfe-cms/js/cms/blog/SinglePost.js");
         model.addAttribute("breadcrumbs", getSingleBlogPostsBreadcrumbs(locale, id));
         BlogPost blogPost = blogPostsDAO.get(id);
-        final List<Language> languages = cmsLanguagesDAO.listAll();
-        model.addAttribute("cmsLanguages", languages);
+        model.addAttribute("cmsLanguages", cmsLanguagesDAO.listAll());
         blogPost.setBlogKeywords(blogPostKeywordsDAO.listForPost(blogPost.getId()));
-        List<Long> blogPostSelectedKeywords = new ArrayList<>(5);
-        blogPostSelectedKeywords.addAll(blogPost.getBlogKeywords().stream().map(BlogKeyword::getId).collect(Collectors.toList()));
-        model.addAttribute("blogPostSelectedKeywords", blogPostSelectedKeywords);
+        model.addAttribute("blogPostSelectedKeywords", blogPost.getBlogKeywords().stream().map(BlogKeyword::getId).collect(Collectors.toList()));
         model.addAttribute("blogKeywords", blogKeywordsDAO.list());
         model.addAttribute("blogPost", blogPost);
         model.addAttribute("cmsAuthor", cmsAuthorsDAO.get(blogPost.getPostAuthorId()));
@@ -229,15 +226,6 @@ public class BlogPostsController extends JsonController {
             prepareErrorResponse(result, responseDetailsJson);
         }
         return responseDetailsJson.toString();
-    }
-
-    @RequestMapping(value = "addBlogPostsI18nContent", method = RequestMethod.POST)
-    public ModelAndView addBlogPostsI18nContent(
-            @ModelAttribute(value = "blogPostI18nContent") BlogPostI18nContent blogPostI18nContent,
-            ModelMap model, Locale locale, HttpServletRequest httpServletRequest
-    ) {
-        blogPostI18nContentsDAO.add(blogPostI18nContent);
-        return redirectToPost(blogPostI18nContent, model, locale, httpServletRequest);
     }
 
     private ModelAndView redirectToPost(BlogPostI18nContent blogPostI18nContent, ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {
