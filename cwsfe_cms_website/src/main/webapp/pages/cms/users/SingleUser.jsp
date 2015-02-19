@@ -22,38 +22,40 @@
         <div class="tabs-content">
 
             <section aria-hidden="false" class="content active" id="tabBasicInfo">
-                <h2><spring:message code="SelectedUser"/></h2>
 
                 <div id="basicInfoFormValidation" class="alert-small">
                     <span class="close"></span>
                 </div>
-                <form id="userForm">
-                    <input type="hidden" id="cmsUserId" name="cmsUser.id" value="${cmsUser.id}">
+                <form id="userForm" class="large-5">
+                    <fieldset>
+                        <legend><spring:message code="SelectedUser"/></legend>
+                        <input type="hidden" id="cmsUserId" name="cmsUser.id" value="${cmsUser.id}">
 
-                    <div class="row">
-                        <label for="userName"><spring:message code="Username"/></label>
-                        <input type="text" id="userName" maxlength="100"
-                               value="${cmsUser.userName}"/>
-                    </div>
-                    <div class="row">
-                        <label for="status"><spring:message code="Status"/></label>
-                        <select id="status">
-                            <option value="NEW"
-                                    <c:if test="${cmsUser.status.equals('NEW')}"> selected</c:if>>
-                                <spring:message code="UserStatusNew"/></option>
-                            <option value="LOCKED"
-                                    <c:if test="${cmsUser.status.equals('LOCKED')}"> selected</c:if>>
-                                <spring:message code="UserStatusLocked"/></option>
-                            <option value="DELETED"
-                                    <c:if test="${cmsUser.status.equals('DELETED')}"> selected</c:if>>
-                                <spring:message code="UserStatusDeleted"/></option>
-                        </select>
-                    </div>
-                    <div class="row">
-                        <input type="button" id="saveUserButton" class="button small radius"
-                               value="<spring:message code="Save"/>">
-                        <input type="reset" value="Revert" class="button small radius alert"/>
-                    </div>
+                        <div class="row">
+                            <label for="userName"><spring:message code="Username"/></label>
+                            <input type="text" id="userName" maxlength="100"
+                                   value="${cmsUser.userName}"/>
+                        </div>
+                        <div class="row">
+                            <label for="status"><spring:message code="Status"/></label>
+                            <select id="status">
+                                <option value="NEW"
+                                        <c:if test="${cmsUser.status.equals('NEW')}"> selected</c:if>>
+                                    <spring:message code="UserStatusNew"/></option>
+                                <option value="LOCKED"
+                                        <c:if test="${cmsUser.status.equals('LOCKED')}"> selected</c:if>>
+                                    <spring:message code="UserStatusLocked"/></option>
+                                <option value="DELETED"
+                                        <c:if test="${cmsUser.status.equals('DELETED')}"> selected</c:if>>
+                                    <spring:message code="UserStatusDeleted"/></option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <input type="button" id="saveUserButton" class="button small radius"
+                                   value="<spring:message code="Save"/>">
+                            <input type="reset" value="Revert" class="button small radius alert"/>
+                        </div>
+                    </fieldset>
                 </form>
             </section>
 
@@ -61,25 +63,27 @@
                 <spring:url value="/userRolesUpdate" var="userRolesUpdateUrl" htmlEscape="true"/>
 
                 <form method="post" action="${userRolesUpdateUrl}" autocomplete="off">
-                    <input type="hidden" name="id" value="${cmsUser.id}"/>
+                    <fieldset>
+                        <input type="hidden" name="id" value="${cmsUser.id}"/>
 
-                    <%--@elvariable id="cmsRoles" type="java.util.List<CmsRole>"--%>
-                    <c:forEach var="role" items="${cmsRoles}">
+                            <%--@elvariable id="cmsRoles" type="java.util.List<CmsRole>"--%>
+                        <c:forEach var="role" items="${cmsRoles}">
 
+                            <div class="row">
+                                <label class="wide">${role.roleName}</label>
+
+                                <input type="checkbox" name="cmsUserRoles"
+                                       value="${role.id}"<c:if
+                                        test="${userSelectedRoles.contains(role.id)}"> checked</c:if>/>
+
+                            </div>
+
+                        </c:forEach>
                         <div class="row">
-                            <label class="wide">${role.roleName}</label>
-
-                            <input type="checkbox" name="cmsUserRoles"
-                                   value="${role.id}"<c:if
-                                    test="${userSelectedRoles.contains(role.id)}"> checked</c:if>/>
-
+                            <input type="submit" value="<spring:message code="Save"/>" class="button small radius"/>
+                            <input type="reset" class="button small radius alert"/>
                         </div>
-
-                    </c:forEach>
-                    <div class="row">
-                        <input type="submit" value="<spring:message code="Save"/>" class="button small radius"/>
-                        <input type="reset" class="button small radius alert"/>
-                    </div>
+                    </fieldset>
                 </form>
             </section>
         </div>

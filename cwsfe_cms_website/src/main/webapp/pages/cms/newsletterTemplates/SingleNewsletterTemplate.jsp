@@ -6,21 +6,21 @@
 <t:genericPage>
     <jsp:body>
 
-            <h3><spring:message code="NewsletterTemplateEdit"/></h3>
-
-            <div id="newsletterTemplateEditFormValidation" class="alert-small">
-                <c:if test="${updateErrors != null}">
-                    <p>${updateErrors}</p>
-                </c:if>
-                <c:if test="${updateSuccessfull != null}">
-                    <p>${updateSuccessfull}</p>
-                </c:if>
-                <span class="close"></span>
-            </div>
-            <spring:url value="/newsletterTemplates/updateNewsletterTemplate" var="updateNewsletterTemplateUrl"
-                        htmlEscape="true"/>
-            <form id="editNewsletterTemplateForm" method="post" action="${updateNewsletterTemplateUrl}"
-                  autocomplete="off">
+        <div id="newsletterTemplateEditFormValidation" class="alert-small">
+            <c:if test="${updateErrors != null}">
+                <p>${updateErrors}</p>
+            </c:if>
+            <c:if test="${updateSuccessfull != null}">
+                <p>${updateSuccessfull}</p>
+            </c:if>
+            <span class="close"></span>
+        </div>
+        <spring:url value="/newsletterTemplates/updateNewsletterTemplate" var="updateNewsletterTemplateUrl"
+                    htmlEscape="true"/>
+        <form id="editNewsletterTemplateForm" method="post" action="${updateNewsletterTemplateUrl}"
+              autocomplete="off">
+            <fieldset>
+                <legend><spring:message code="NewsletterTemplateEdit"/></legend>
                 <input type="hidden" name="id" id="newsletterTemplateId" value="${newsletterTemplate.id}"/>
 
                 <div class="row">
@@ -57,23 +57,25 @@
                            class="button small radius"/>
                     <input type="reset" value="Reset" class="button small radius alert">
                 </div>
-            </form>
-
-        <h3><spring:message code="NewsletterTemplateTestSend"/></h3>
+            </fieldset>
+        </form>
 
         <div id="newsletterTemplateTestSendFormValidation" class="alert-small">
             <span class="close"></span>
         </div>
         <form id="newsletterTemplateTestSendForm">
-            <div class="row">
-                <label for="testEmail"><spring:message code="Email"/></label>
-                <input type="email" id="testEmail" maxlength="350"/>
-            </div>
-            <div class="row">
-                <input type="submit" value="<spring:message code="TestSend"/>"
-                       onclick="newsletterTemplateTestSend();return false;" class="button small radius">
-                <input type="reset" value="Reset" class="button small radius alert">
-            </div>
+            <fieldset>
+                <legend><spring:message code="NewsletterTemplateTestSend"/></legend>
+                <div class="row">
+                    <label for="testEmail"><spring:message code="Email"/></label>
+                    <input type="email" id="testEmail" maxlength="350"/>
+                </div>
+                <div class="row">
+                    <input type="submit" value="<spring:message code="TestSend"/>"
+                           onclick="newsletterTemplateTestSend();return false;" class="button small radius">
+                    <input type="reset" value="Reset" class="button small radius alert">
+                </div>
+            </fieldset>
         </form>
 
     </jsp:body>

@@ -23,26 +23,27 @@
         </div>
 
         <div class="row">
-            <h3><spring:message code="AuthorsAdding"/></h3>
-
-            <form>
-                <div class="row">
-                    <label for="firstName"><spring:message code="FirstName"/></label>
-                    <input type="text" id="firstName"/>
-                </div>
-                <div class="row">
-                    <label for="lastName"><spring:message code="LastName"/></label>
-                    <input type="text" id="lastName"/>
-                </div>
-                <div class="row">
-                    <label for="googlePlusAuthorLink"><spring:message code="GooglePlusAuthorLink"/></label>
-                    <input type="text" id="googlePlusAuthorLink"/>
-                </div>
-                <div class="row">
-                    <input type="button" id="addAuthorButton" class="button small radius"
-                           value="<spring:message code="Add"/>">
-                    <input type="reset" value="Reset" class="button small radius alert">
-                </div>
+            <form class="large-5">
+                <fieldset>
+                    <legend><spring:message code="AuthorsAdding"/></legend>
+                    <div class="row">
+                        <label for="firstName"><spring:message code="FirstName"/></label>
+                        <input type="text" id="firstName"/>
+                    </div>
+                    <div class="row">
+                        <label for="lastName"><spring:message code="LastName"/></label>
+                        <input type="text" id="lastName"/>
+                    </div>
+                    <div class="row">
+                        <label for="googlePlusAuthorLink"><spring:message code="GooglePlusAuthorLink"/></label>
+                        <input type="text" id="googlePlusAuthorLink"/>
+                    </div>
+                    <div class="row">
+                        <input type="button" id="addAuthorButton" class="button small radius"
+                               value="<spring:message code="Add"/>">
+                        <input type="reset" value="Reset" class="button small radius alert">
+                    </div>
+                </fieldset>
             </form>
         </div>
 

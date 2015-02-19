@@ -5,62 +5,70 @@
 <t:genericPage>
     <jsp:body>
 
-        <h3><spring:message code="Search"/></h3>
+        <div class="row">
+            <form class="large-5">
+                <fieldset>
+                    <legend><spring:message code="Search"/></legend>
+                    <div class="row">
+                        <label for="searchAuthor"><spring:message code="Author"/></label>
+                        <input type="hidden" id="searchAuthorId"/>
 
-        <form>
-            <div class="row">
-                <label for="searchAuthor"><spring:message code="Author"/></label>
-                <input type="hidden" id="searchAuthorId"/>
+                        <input type="text" id="searchAuthor"/>
+                    </div>
+                    <div class="row">
+                        <label for="searchPostTextCode"><spring:message code="PostTextCode"/></label>
 
-                <input type="text" id="searchAuthor"/>
-            </div>
-            <div class="row">
-                <label for="searchPostTextCode"><spring:message code="PostTextCode"/></label>
+                        <input type="text" id="searchPostTextCode"/>
+                    </div>
+                    <div class="row">
+                        <input type="submit" value="Submit" onclick="searchBlogPosts();return false;"
+                               class="button small radius">
+                        <input type="reset" value="Reset" class="button small radius alert">
+                    </div>
+                </fieldset>
+            </form>
+        </div>
 
-                <input type="text" id="searchPostTextCode"/>
-            </div>
-            <div class="row">
-                <input type="submit" value="Submit" onclick="searchBlogPosts();return false;"
-                       class="button small radius">
-                <input type="reset" value="Reset" class="button small radius alert">
-            </div>
-        </form>
+        <div class="row">
+            <h3><spring:message code="BlogPostManagement"/></h3>
+            <table id="blogPostsList">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col"><spring:message code="Author"/></th>
+                    <th scope="col"><spring:message code="PostTextCode"/></th>
+                    <th scope="col"><spring:message code="CreationDate"/></th>
+                    <th scope="col"><spring:message code="Actions"/></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
 
-        <h3><spring:message code="BlogPostManagement"/></h3>
-        <table id="blogPostsList">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col"><spring:message code="Author"/></th>
-                <th scope="col"><spring:message code="PostTextCode"/></th>
-                <th scope="col"><spring:message code="CreationDate"/></th>
-                <th scope="col"><spring:message code="Actions"/></th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <div class="row">
+            <form id="addNewBlogPostForm" class="large-5">
+                <fieldset>
+                    <legend><spring:message code="BlogPostAdding"/></legend>
+                    <div class="row">
+                        <label for="author"><spring:message code="Author"/></label>
+                        <input type="hidden" id="authorId"/>
 
-        <h3><spring:message code="BlogPostAdding"/></h3>
+                        <input type="text" id="author"/>
+                    </div>
+                    <div class="row">
+                        <label for="postTextCode"><spring:message code="PostTextCode"/></label>
 
-        <form id="addNewBlogPostForm">
-            <div class="row">
-                <label for="author"><spring:message code="Author"/></label>
-                <input type="hidden" id="authorId"/>
-
-                <input type="text" id="author"/>
-            </div>
-            <div class="row">
-                <label for="postTextCode"><spring:message code="PostTextCode"/></label>
-
-                <input type="text" id="postTextCode" maxlength="100"/>
-            </div>
-            <div class="row">
-                <input type="button" id="addBlogPostButton" class="button small radius"
-                       value="<spring:message code="Add"/>">
-                <input type="reset" value="Reset" class="button small radius alert">
-            </div>
-        </form>
+                        <input type="text" id="postTextCode" maxlength="100"/>
+                    </div>
+                    <div class="row">
+                        <input type="button" id="addBlogPostButton" class="button small radius"
+                               value="<spring:message code="Add"/>">
+                        <input type="reset" value="Reset" class="button small radius alert">
+                    </div>
+                </fieldset>
+            </form>
+        </div>
 
     </jsp:body>
 </t:genericPage>

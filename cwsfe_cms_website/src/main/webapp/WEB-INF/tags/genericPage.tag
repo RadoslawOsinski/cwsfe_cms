@@ -23,6 +23,9 @@
           href="${pageContext.request.contextPath}/resources-cwsfe-cms/css/foundation/foundation.css"
           type="text/css"/>
     <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/resources-cwsfe-cms/css/cms/dataTables.foundation.css"
+          type="text/css"/>
+    <link rel="stylesheet"
           href="${pageContext.request.contextPath}/resources-cwsfe-cms/css/cms/shared.css"
           type="text/css"/>
     <link rel="stylesheet"
@@ -43,14 +46,16 @@
                 foundationOffCanvas: $contextPath + '/resources-cwsfe-cms/js/foundation/foundation.offcanvas',
                 knockout: $contextPath + '/resources-cwsfe-cms/js/knockout/knockout-3.2.0',
                 cmsLayout: $contextPath + '/resources-cwsfe-cms/js/cms/layout/CmsLayout',
-                dataTable: $contextPath + '/resources-cwsfe-cms/js/jquery.dataTables.min'
+                dataTable: $contextPath + '/resources-cwsfe-cms/js/datatables/jquery.dataTables.min',
+                dataTableFoundation: $contextPath + '/resources-cwsfe-cms/js/datatables/dataTables.foundation'
             },
             shim: {
                 'jqueryUi': ['jquery'],
                 'dataTable': ['jquery'],
                 'foundation': ['jquery'],
                 'foundationTabs': ['foundation'],
-                'foundationOffCanvas': ['foundation']
+                'foundationOffCanvas': ['foundation'],
+                'dataTableFoundation': ['dataTable']
             }
         });
     </script>
@@ -148,22 +153,22 @@
                     </li>
                 </ul>
             </li>
-            <li class="withSubMenu"><a id="menuNewsletterSubMenu" href="#" tabindex="-1"><spring:message code="Newsletter"/></a>
-                <ul class="subMenu">
-                    <li role="menuitem" <c:if
-                            test="${pageContext.request.requestURI.contains('cms/newsletterMailGroups/NewsletterMailGroups')}"> class="active"</c:if>>
-                        <a id="menuNewsletterMailGroupsManagementLink" href="${newsletterMailGroupsManagementUrl}" tabindex="-1"><spring:message
-                                code="NewsletterMailGroupsManagement"/></a></li>
-                    <li role="menuitem" <c:if
-                            test="${pageContext.request.requestURI.contains('cms/newsletterTemplates/NewsletterTemplates')}"> class="active"</c:if>>
-                        <a id="menuNewsletterTemplatesManagementLink" href="${newsletterTemplatesManagementUrl}" tabindex="-1"><spring:message
-                                code="NewsletterTemplatesManagement"/></a></li>
-                    <li role="menuitem" <c:if
-                            test="${pageContext.request.requestURI.contains('cms/newsletterMails/NewsletterMails')}"> class="active"</c:if>>
-                        <a id="menuNewsletterMailsManagementLink" href="${newsletterMailsManagementUrl}" tabindex="-1"><spring:message
-                                code="NewsletterMailsManagement"/></a></li>
-                </ul>
-            </li>
+            <%--<li class="withSubMenu"><a id="menuNewsletterSubMenu" href="#" tabindex="-1"><spring:message code="Newsletter"/></a>--%>
+                <%--<ul class="subMenu">--%>
+                    <%--<li role="menuitem" <c:if--%>
+                            <%--test="${pageContext.request.requestURI.contains('cms/newsletterMailGroups/NewsletterMailGroups')}"> class="active"</c:if>>--%>
+                        <%--<a id="menuNewsletterMailGroupsManagementLink" href="${newsletterMailGroupsManagementUrl}" tabindex="-1"><spring:message--%>
+                                <%--code="NewsletterMailGroupsManagement"/></a></li>--%>
+                    <%--<li role="menuitem" <c:if--%>
+                            <%--test="${pageContext.request.requestURI.contains('cms/newsletterTemplates/NewsletterTemplates')}"> class="active"</c:if>>--%>
+                        <%--<a id="menuNewsletterTemplatesManagementLink" href="${newsletterTemplatesManagementUrl}" tabindex="-1"><spring:message--%>
+                                <%--code="NewsletterTemplatesManagement"/></a></li>--%>
+                    <%--<li role="menuitem" <c:if--%>
+                            <%--test="${pageContext.request.requestURI.contains('cms/newsletterMails/NewsletterMails')}"> class="active"</c:if>>--%>
+                        <%--<a id="menuNewsletterMailsManagementLink" href="${newsletterMailsManagementUrl}" tabindex="-1"><spring:message--%>
+                                <%--code="NewsletterMailsManagement"/></a></li>--%>
+                <%--</ul>--%>
+            <%--</li>--%>
             <li role="menuitem" <c:if
                     test="${pageContext.request.requestURI.contains('cms/languages/Languages')}"> class="active"</c:if>>
                 <a id="menuLanguagesLink" href="${languagesUrl}" tabindex="-1"><spring:message code="Languages"/></a></li>
