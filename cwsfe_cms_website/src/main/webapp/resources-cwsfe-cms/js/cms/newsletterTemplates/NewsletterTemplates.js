@@ -29,12 +29,12 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'newsletterTemplateStatus',
                     'fnRender': function (o) {
-                        if (o.aData.newsletterTemplateStatus === 'N') {
+                        if (o.aData.newsletterTemplateStatus === 'NEW') {
                             return '<span class="highlight green">Active</span>';
-                        } else if (o.aData.newsletterTemplateStatus === 'D') {
+                        } else if (o.aData.newsletterTemplateStatus === 'DELETED') {
                             return '<span class="highlight red">Deleted</span>';
                         }
-                        return '<span class="highlight red">Deleted</span>';
+                        return '<span class="highlight red">?</span>';
                     }
                 },
                 {
@@ -43,11 +43,9 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                         return '' +
                             '<form method="GET" action="newsletterTemplates/' + o.aData.id + '">' +
                             '<button class="button green tiny" type="submit" tabindex="-1">Select</button>' +
-                            '<a class="icon awesome thumbs-up" title="Undelete" tabindex="-1" onclick="unDeleteNewsletterTemplate(' + o.aData.id + ');"></a>' +
-                            '<a class="icon awesome icon-remove-sign" title="Delete" tabindex="-1" onclick="removeNewsletterTemplate(' + o.aData.id + ');return false;"></a>' +
-                            '</form>'
-                            ;
-
+                            '<button class="button green tiny" type="button" name="unDeleteNewsletterTemplateButton" value="' + o.aData.id + '" tabindex="-1">Undelete</button>' +
+                            '<button class="button red tiny" type="button" name="removeNewsletterTemplateButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>' +
+                            '</form>';
                     }
                 }
             ]
@@ -110,6 +108,22 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
     function searchNewsletterTemplate() {
         $("#newsletterTemplatesList").dataTable().fnDraw();
     }
+
+    $('#searchNewsletterTemplateButton').click(function() {
+        searchNewsletterTemplate();
+    });
+
+    $('#addNewsletterTemplateButton').click(function() {
+        addNewsletterTemplate();
+    });
+
+    var $body = $('body');
+    $body.on('click', 'button[name="unDeleteNewsletterTemplateButton"]', function() {
+        unDeleteNewsletterTemplate($(this).val());
+    });
+    $body.on('click', 'button[name="removeNewsletterTemplateButton"]', function() {
+        removeNewsletterTemplate($(this).val());
+    });
 
     function addNewsletterTemplate() {
         var newsletterTemplateName = $('#newsletterTemplateName').val();

@@ -63,10 +63,8 @@ class NewsletterTemplateController extends JsonController {
         return breadcrumbs;
     }
 
-    private Object setSingleNewsletterTemplatesAdditionalJS(String contextPath) {
-        List<String> jsUrl = new ArrayList<>(3);
-        jsUrl.add(contextPath + "/resources-cwsfe-cms/js/cms/newsletterTemplates/SingleNewsletterTemplate.js");
-        return jsUrl;
+    private String setSingleNewsletterTemplatesAdditionalJS(String contextPath) {
+        return contextPath + "/resources-cwsfe-cms/js/cms/newsletterTemplates/SingleNewsletterTemplate.js";
     }
 
     private List<Breadcrumb> getSingleNewsletterTemplatesBreadcrumbs(Locale locale, Long id) {
@@ -165,8 +163,7 @@ class NewsletterTemplateController extends JsonController {
 
     @RequestMapping(value = "/newsletterTemplates/{id}", method = RequestMethod.GET)
     public String browseNewsletterTemplate(ModelMap model, Locale locale, @PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
-        //todo!
-//        model.addAttribute("additionalJavaScriptCode", setSingleNewsletterTemplatesAdditionalJS(httpServletRequest.getContextPath()));
+        model.addAttribute("mainJavaScript", setSingleNewsletterTemplatesAdditionalJS(httpServletRequest.getContextPath()));
         model.addAttribute("breadcrumbs", getSingleNewsletterTemplatesBreadcrumbs(locale, id));
         NewsletterTemplate newsletterTemplate = newsletterTemplateDAO.get(id);
         model.addAttribute("newsletterTemplate", newsletterTemplate);
@@ -221,7 +218,7 @@ class NewsletterTemplateController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    private void sendTestTemplateEmail(NewsletterTemplate newsletterTemplate, NewsletterMailAddress newsletterMailAddress) {
+    protected void sendTestTemplateEmail(NewsletterTemplate newsletterTemplate, NewsletterMailAddress newsletterMailAddress) {
         MimeMessage mimeMessage = cmsMailSender.createMimeMessage();
         MimeMessageHelper helper;
         try {

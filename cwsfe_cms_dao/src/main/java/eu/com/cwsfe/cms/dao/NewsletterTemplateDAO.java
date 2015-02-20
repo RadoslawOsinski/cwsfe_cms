@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.domains.NewsletterTemplateStatus;
 import eu.com.cwsfe.cms.model.NewsletterTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +46,7 @@ public class NewsletterTemplateDAO {
         newsletterTemplate.setId(resultSet.getLong("ID"));
         newsletterTemplate.setLanguageId(resultSet.getLong("LANGUAGE_ID"));
         newsletterTemplate.setName(resultSet.getString("NAME"));
-        newsletterTemplate.setStatus(resultSet.getString("STATUS"));
+        newsletterTemplate.setStatus(NewsletterTemplateStatus.fromCode(resultSet.getString("STATUS")));
         newsletterTemplate.setSubject(resultSet.getString("SUBJECT"));
         newsletterTemplate.setContent(resultSet.getString("CONTENT"));
         return newsletterTemplate;

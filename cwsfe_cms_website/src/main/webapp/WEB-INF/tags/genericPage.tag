@@ -160,10 +160,10 @@
                         <a id="menuNewsletterMailGroupsManagementLink" href="${newsletterMailGroupsManagementUrl}" tabindex="-1"><spring:message
                                 code="NewsletterMailGroupsManagement"/></a>
                     </li>
-                    <%--<li role="menuitem" <c:if--%>
-                            <%--test="${pageContext.request.requestURI.contains('cms/newsletterTemplates/NewsletterTemplates')}"> class="active"</c:if>>--%>
-                        <%--<a id="menuNewsletterTemplatesManagementLink" href="${newsletterTemplatesManagementUrl}" tabindex="-1"><spring:message--%>
-                                <%--code="NewsletterTemplatesManagement"/></a></li>--%>
+                    <li role="menuitem" <c:if
+                            test="${pageContext.request.requestURI.contains('cms/newsletterTemplates/NewsletterTemplates')}"> class="active"</c:if>>
+                        <a id="menuNewsletterTemplatesManagementLink" href="${newsletterTemplatesManagementUrl}" tabindex="-1"><spring:message
+                                code="NewsletterTemplatesManagement"/></a></li>
                     <%--<li role="menuitem" <c:if--%>
                             <%--test="${pageContext.request.requestURI.contains('cms/newsletterMails/NewsletterMails')}"> class="active"</c:if>>--%>
                         <%--<a id="menuNewsletterMailsManagementLink" href="${newsletterMailsManagementUrl}" tabindex="-1"><spring:message--%>

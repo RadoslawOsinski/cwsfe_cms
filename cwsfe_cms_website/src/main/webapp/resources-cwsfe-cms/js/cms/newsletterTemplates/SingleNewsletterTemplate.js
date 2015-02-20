@@ -30,6 +30,10 @@ require(['jquery', 'jqueryUi', 'cmsLayout'], function ($) {
 
     });
 
+    $('#newsletterTemplateTestSendButton').click(function() {
+        newsletterTemplateTestSend();
+    });
+
     function newsletterTemplateTestSend() {
         var newsletterTemplateId = $('#newsletterTemplateId').val();
         var testEmail = $('#testEmail').val();
