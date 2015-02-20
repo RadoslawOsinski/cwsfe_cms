@@ -31,7 +31,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                         return '' +
                             '<form method="GET" action="newsletterMailGroups/' + o.aData.id + '">' +
                             '<button class="button green tiny" type="submit" tabindex="-1">Select</button>' +
-                            '<button class="button red tiny" name="removeNewsletterMailGroupButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>' +
+                            '<button class="button red tiny" type="button" name="removeNewsletterMailGroupButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>' +
                             '</form>'
                             ;
                     }
@@ -140,6 +140,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#newsletterMailGroupsList").dataTable().fnDraw();
+                    $("#addNewNewsletterMailGroupForm").trigger('reset');
                 } else {
                     var errorInfo = "";
                     for (var i = 0; i < response.result.length; i++) {

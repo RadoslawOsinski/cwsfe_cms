@@ -39,11 +39,9 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {
                         return '' +
-                            '<form method="GET" action="#">' +
-                            '<a class="icon awesome thumbs-up" title="Activate" tabindex="-1" onclick="activateNewsletterMailAddress(' + o.aData.id + ');"></a>' +
-                            '<a class="icon awesome thumbs-down" title="Deactivate" tabindex="-1" onclick="deactivateNewsletterMailAddress(' + o.aData.id + ');"></a>' +
-                            '<a class="icon awesome icon-remove-sign" title="Delete" tabindex="-1" onclick="removeNewsletterMailAddress(' + o.aData.id + ');"></a>' +
-                            '</form>'
+                            '<button class="button green tiny" name="activateNewsletterMailAddressButton" value="' + o.aData.id + '" tabindex="-1">Activate</button>' +
+                            '<button class="button blue tiny" name="deactivateNewsletterMailAddressButton" value="' + o.aData.id + '" tabindex="-1">Deactivate</button>' +
+                            '<button class="button red tiny" name="removeNewsletterMailAddressButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>'
                             ;
                     }
                 }
@@ -81,6 +79,31 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
     function searchMailInNewsletterMailGroup() {
         $("#newsletterMailAddressesList").dataTable().fnDraw();
     }
+
+    $('#searchMailInNewsletterMailGroupButton').click(function() {
+        searchMailInNewsletterMailGroup();
+    });
+
+    $('#saveNewsletterMailGroupButton').click(function() {
+        updateNewsletterMailGroup();
+    });
+
+    $('#addNewsletterMailAddressButton').click(function() {
+        addNewsletterMailAddress();
+    });
+
+    var $body = $('body');
+    $body.on('click', 'button[name="activateNewsletterMailAddressButton"]', function() {
+        activateNewsletterMailAddress($(this).val());
+    });
+
+    $body.on('click', 'button[name="deactivateNewsletterMailAddressButton"]', function() {
+        deactivateNewsletterMailAddress($(this).val());
+    });
+
+    $body.on('click', 'button[name="removeNewsletterMailAddressButton"]', function() {
+        removeNewsletterMailAddress($(this).val());
+    });
 
     function updateNewsletterMailGroup() {
         var mailGroupId = $('#mailGroupId').val();

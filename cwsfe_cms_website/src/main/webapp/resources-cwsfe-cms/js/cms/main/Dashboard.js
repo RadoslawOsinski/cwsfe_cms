@@ -12,7 +12,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             'aLengthMenu': [10, 20, 30],
             'bPaginate': true,
             'bLengthChange': true,
-            'sAjaxSource': '/blogPostCommentsList',
+            'sAjaxSource': 'blogPostCommentsList',
             aoColumns: [
                 {'bSortable': false, mData: '#'},
                 {'bSortable': false, mData: 'username'},

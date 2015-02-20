@@ -6,7 +6,6 @@ import eu.com.cwsfe.cms.dao.*;
 import eu.com.cwsfe.cms.model.Breadcrumb;
 import eu.com.cwsfe.cms.model.CmsNews;
 import eu.com.cwsfe.cms.model.CmsNewsI18nContent;
-import eu.com.cwsfe.cms.model.Language;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;

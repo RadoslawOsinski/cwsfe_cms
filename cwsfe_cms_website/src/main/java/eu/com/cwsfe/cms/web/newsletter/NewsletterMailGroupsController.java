@@ -50,17 +50,14 @@ class NewsletterMailGroupsController extends JsonController {
     }
 
     private List<Breadcrumb> getBreadcrumbs(Locale locale) {
-        //todo pozmieniać fromCurrentContextPath() aby działało na produkcji
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMailGroups").build().toUriString(),
                 ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailGroupsManagement")));
         return breadcrumbs;
     }
 
-    private Object setSingleNewsletterMailGroupsAdditionalJS(String contextPath) {
-        List<String> jsUrl = new ArrayList<>(3);
-        jsUrl.add(contextPath + "/resources-cwsfe-cms/js/cms/newsletterMailGroups/SingleNewsletterMailGroup.js");
-        return jsUrl;
+    private String setSingleNewsletterMailGroupsAdditionalJS(String contextPath) {
+        return contextPath + "/resources-cwsfe-cms/js/cms/newsletterMailGroups/SingleNewsletterMailGroup.js";
     }
 
     private List<Breadcrumb> getSingleNewsletterMailGroupsBreadcrumbs(Locale locale, Long id) {
@@ -109,10 +106,10 @@ class NewsletterMailGroupsController extends JsonController {
         for (int i = 0; i < dbList.size(); i++) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("#", iDisplayStart + i + 1);
-            final NewsletterMailGroup objects = dbList.get(i);
-            formDetailsJson.put("language2LetterCode", cmsLanguagesDAO.getById(objects.getLanguageId()).getCode());
-            formDetailsJson.put("newsletterMailGroupName", objects.getName());
-            formDetailsJson.put("id", objects.getId());
+            final NewsletterMailGroup newsletterMailGroup = dbList.get(i);
+            formDetailsJson.put("language2LetterCode", cmsLanguagesDAO.getById(newsletterMailGroup.getLanguageId()).getCode());
+            formDetailsJson.put("newsletterMailGroupName", newsletterMailGroup.getName());
+            formDetailsJson.put("id", newsletterMailGroup.getId());
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
@@ -159,8 +156,7 @@ class NewsletterMailGroupsController extends JsonController {
 
     @RequestMapping(value = "/newsletterMailGroups/{id}", method = RequestMethod.GET)
     public String browseNewsletterMailGroup(ModelMap model, Locale locale, @PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
-        //todo
-//        model.addAttribute("mainJavaScript", setSingleNewsletterMailGroupsAdditionalJS(httpServletRequest.getContextPath()));
+        model.addAttribute("mainJavaScript", setSingleNewsletterMailGroupsAdditionalJS(httpServletRequest.getContextPath()));
         model.addAttribute("breadcrumbs", getSingleNewsletterMailGroupsBreadcrumbs(locale, id));
         NewsletterMailGroup newsletterMailGroup = newsletterMailGroupDAO.get(id);
         model.addAttribute("newsletterMailGroup", newsletterMailGroup);

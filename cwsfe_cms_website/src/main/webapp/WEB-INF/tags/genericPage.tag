@@ -153,12 +153,13 @@
                     </li>
                 </ul>
             </li>
-            <%--<li class="withSubMenu"><a id="menuNewsletterSubMenu" href="#" tabindex="-1"><spring:message code="Newsletter"/></a>--%>
-                <%--<ul class="subMenu">--%>
-                    <%--<li role="menuitem" <c:if--%>
-                            <%--test="${pageContext.request.requestURI.contains('cms/newsletterMailGroups/NewsletterMailGroups')}"> class="active"</c:if>>--%>
-                        <%--<a id="menuNewsletterMailGroupsManagementLink" href="${newsletterMailGroupsManagementUrl}" tabindex="-1"><spring:message--%>
-                                <%--code="NewsletterMailGroupsManagement"/></a></li>--%>
+            <li class="withSubMenu"><a id="menuNewsletterSubMenu" href="#" tabindex="-1"><spring:message code="Newsletter"/></a>
+                <ul class="subMenu">
+                    <li role="menuitem" <c:if
+                            test="${pageContext.request.requestURI.contains('cms/newsletterMailGroups/NewsletterMailGroups')}"> class="active"</c:if>>
+                        <a id="menuNewsletterMailGroupsManagementLink" href="${newsletterMailGroupsManagementUrl}" tabindex="-1"><spring:message
+                                code="NewsletterMailGroupsManagement"/></a>
+                    </li>
                     <%--<li role="menuitem" <c:if--%>
                             <%--test="${pageContext.request.requestURI.contains('cms/newsletterTemplates/NewsletterTemplates')}"> class="active"</c:if>>--%>
                         <%--<a id="menuNewsletterTemplatesManagementLink" href="${newsletterTemplatesManagementUrl}" tabindex="-1"><spring:message--%>
@@ -167,8 +168,8 @@
                             <%--test="${pageContext.request.requestURI.contains('cms/newsletterMails/NewsletterMails')}"> class="active"</c:if>>--%>
                         <%--<a id="menuNewsletterMailsManagementLink" href="${newsletterMailsManagementUrl}" tabindex="-1"><spring:message--%>
                                 <%--code="NewsletterMailsManagement"/></a></li>--%>
-                <%--</ul>--%>
-            <%--</li>--%>
+                </ul>
+            </li>
             <li role="menuitem" <c:if
                     test="${pageContext.request.requestURI.contains('cms/languages/Languages')}"> class="active"</c:if>>
                 <a id="menuLanguagesLink" href="${languagesUrl}" tabindex="-1"><spring:message code="Languages"/></a></li>

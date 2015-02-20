@@ -14,10 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Created by Radosław Osiński
@@ -63,7 +60,7 @@ public class BlogRestController {
     }
 
     @RequestMapping(value = "/rest/blogI18nPairsTotal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public HashMap<String, Long> listBlogPostsTotal(
+    public Map<String, Long> listBlogPostsTotal(
         @RequestParam(value = "languageCode") String languageCode,
         @RequestParam(value = "categoryId") Long categoryId
     ) {
@@ -77,7 +74,7 @@ public class BlogRestController {
         } else {
             total = blogPostsDAO.listCountForPageWithPaging(language.getId());
         }
-        HashMap<String, Long> result = new HashMap<>(1);
+        Map<String, Long> result = new HashMap<>(1);
         result.put("total", total);
         return result;
     }
