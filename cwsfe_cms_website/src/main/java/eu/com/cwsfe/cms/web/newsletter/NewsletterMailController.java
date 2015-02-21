@@ -67,19 +67,17 @@ public class NewsletterMailController extends JsonController {
         return breadcrumbs;
     }
 
-    private Object setSingleNewsletterMailsAdditionalCss(String contextPath) {
-        List<String> cssUrl = new ArrayList<>(3);
-        cssUrl.add(contextPath + "/resources-cwsfe-cms/css/apprise/apprise-v2-min.css");
-        return cssUrl;
+    private String setSingleNewsletterMailsAdditionalCss(String contextPath) {
+//        return contextPath + "/resources-cwsfe-cms/css/apprise/apprise-v2-min.css";
+        return "";
+        //todo apprise for removal?
     }
 
-    //todo
-//    private Object setSingleNewsletterMailsAdditionalJS(String contextPath) {
-//        List<String> jsUrl = new ArrayList<>(3);
+    private String setSingleNewsletterMailsAdditionalJS(String contextPath) {
+        //todo apprise for removal?
 //        jsUrl.add(contextPath + "/resources-cwsfe-cms/js/apprise/apprise-v2.js");
-//        jsUrl.add(contextPath + "/resources-cwsfe-cms/js/cms/newsletterMails/SingleNewsletterMail.js");
-//        return jsUrl;
-//    }
+        return contextPath + "/resources-cwsfe-cms/js/cms/newsletterMails/SingleNewsletterMail.js";
+    }
 
     private List<String> getSingleNewsletterMailsBreadcrumbs(Locale locale, Long id) {
         List<String> breadcrumbs = new ArrayList<>(1);
@@ -180,9 +178,7 @@ public class NewsletterMailController extends JsonController {
     @RequestMapping(value = "/newsletterMails/{id}", method = RequestMethod.GET)
     public String browseNewsletterMail(ModelMap model, Locale locale, @PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         model.addAttribute("additionalCssCode", setSingleNewsletterMailsAdditionalCss(httpServletRequest.getContextPath()));
-
-        //todo !
-//        model.addAttribute("mainJavaScript", setSingleNewsletterMailsAdditionalJS(httpServletRequest.getContextPath()));
+        model.addAttribute("mainJavaScript", setSingleNewsletterMailsAdditionalJS(httpServletRequest.getContextPath()));
         model.addAttribute("breadcrumbs", getSingleNewsletterMailsBreadcrumbs(locale, id));
         NewsletterMail newsletterMail = newsletterMailDAO.get(id);
         model.addAttribute("newsletterMail", newsletterMail);
@@ -273,7 +269,6 @@ public class NewsletterMailController extends JsonController {
             LOGGER.error("Message sending problem", e);
         }
     }
-
 
     private void sendTestEmail(NewsletterMail newsletterMail, NewsletterMailAddress newsletterMailAddress) {
         MimeMessage mimeMessage = cmsMailSender.createMimeMessage();

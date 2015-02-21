@@ -29,16 +29,16 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 {
                     'bSortable': false, mData: 'newsletterMailStatus',
                     'fnRender': function (o) {
-                        if (o.aData.newsletterMailStatus === 'N') {
+                        if (o.aData.newsletterMailStatus === 'NEW') {
                             return '<span class="highlight yellow">New</span>';
-                        } else if (o.aData.newsletterMailStatus === 'P') {
+                        } else if (o.aData.newsletterMailStatus === 'PREPARING') {
                             return '<span class="highlight green">Preparing</span>';
-                        } else if (o.aData.newsletterMailStatus === 'S') {
+                        } else if (o.aData.newsletterMailStatus === 'SEND') {
                             return '<span class="highlight blue">Sended</span>';
-                        } else if (o.aData.newsletterMailStatus === 'D') {
+                        } else if (o.aData.newsletterMailStatus === 'DELETED') {
                             return '<span class="highlight red">Deleted</span>';
                         }
-                        return '<span class="highlight red">Deleted</span>';
+                        return '<span class="highlight red">?</span>';
                     }
                 },
                 {
@@ -47,12 +47,24 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                         return '' +
                             '<form method="GET" action="newsletterMails/' + o.aData.id + '">' +
                             '<button class="button green tiny" type="submit" tabindex="-1">Select</button>' +
-                            '<button class="button red tiny" onclick="removeNewsletterMail(' + o.aData.id + ');return false;" tabindex="-1">Delete</button>' +
+                            '<button class="button red tiny" type="button" name="removeNewsletterMailButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>' +
                             '</form>'
                             ;
                     }
                 }
             ]
+        });
+
+        $('#searchNewsletterMailButton').click(function() {
+            searchNewsletterMail();
+        });
+
+        $('#addNewsletterMailButton').click(function() {
+            addNewsletterMail();
+        });
+
+        $('body').on('click', 'button[name="removeNewsletterMailButton"]', function() {
+            removeNewsletterMail($(this).val());
         });
 
         $('#searchRecipientGroup').autocomplete({

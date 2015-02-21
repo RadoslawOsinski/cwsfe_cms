@@ -4,17 +4,7 @@
 
 <t:genericPage>
     <jsp:body>
-
-        <div class="box">
-            <div id="newsletterEditFormValidation" class="alert-small">
-                <c:if test="${updateErrors != null}">
-                    <p>${updateErrors}</p>
-                </c:if>
-                <c:if test="${updateSuccessfull != null}">
-                    <p>${updateSuccessfull}</p>
-                </c:if>
-                <span class="close"></span>
-            </div>
+        <div class="row">
             <spring:url value="/newsletterMails/updateNewsletterMail" var="updateNewsletterMailUrl"
                         htmlEscape="true"/>
             <form id="editNewsletterForm" method="post" action="${updateNewsletterMailUrl}" autocomplete="off">
@@ -62,23 +52,26 @@
             </form>
         </div>
 
-        <h3><spring:message code="NewsletterTestSend"/></h3>
+        <div class="row">
+            <div id="newsletterTestSendFormValidation" class="alert-small">
+                <span class="close"></span>
+            </div>
+            <form id="newsletterTestSendForm">
+                <fieldset>
+                    <legend><spring:message code="NewsletterTestSend"/></legend>
+                    <div class="row">
+                        <label for="testEmail"><spring:message code="Email"/></label>
 
-        <div id="newsletterTestSendFormValidation" class="alert-small">
-            <span class="close"></span>
+                        <input type="email" id="testEmail" maxlength="350"/>
+                    </div>
+                    <div class="row">
+                        <input type="submit" value="<spring:message code="TestSend"/>"
+                               onclick="newsletterTestSend();return false;" class="button small radius">
+                        <input type="reset" value="Reset" class="button small radius alert">
+                    </div>
+                </fieldset>
+            </form>
         </div>
-        <form id="newsletterTestSendForm">
-            <div class="row">
-                <label for="testEmail"><spring:message code="Email"/></label>
-
-                <input type="email" id="testEmail" maxlength="350"/>
-            </div>
-            <div class="row">
-                <input type="submit" value="<spring:message code="TestSend"/>"
-                       onclick="newsletterTestSend();return false;" class="button small radius">
-                <input type="reset" value="Reset" class="button small radius alert">
-            </div>
-        </form>
 
     </jsp:body>
 </t:genericPage>
