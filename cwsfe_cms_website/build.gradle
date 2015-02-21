@@ -118,7 +118,7 @@ sonarRunner {
         //file not exists in repo
     }
     sonarProperties {
-        property 'toolVersion', '2.4'
+        property 'toolVersion', '2.5'
         property "sonar.host.url", props["sonar.host.url"]
         property "sonar.jdbc.url", props["sonar.jdbc.url"]
         property "sonar.jdbc.username", props["sonar.jdbc.username"]
@@ -133,6 +133,7 @@ sonarRunner {
         property "sonar.sources", 'src/main'
         property "sonar.tests", 'src/test'
         property "sonar.sourceEncoding", 'UTF-8'
+        property "sonar.exclusions", '**/apprise/*,**/datatables/*,**/foundation/*,**/jquery/*,**/jqueryui/*,**/knockout/*,**/modernizr/*,**/requirejs/*,**/*.css'
     }
 }
 
