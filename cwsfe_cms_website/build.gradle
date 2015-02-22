@@ -133,7 +133,7 @@ sonarRunner {
         property "sonar.sources", 'src/main'
         property "sonar.tests", 'src/test'
         property "sonar.sourceEncoding", 'UTF-8'
-        property "sonar.exclusions", '**/apprise/*,**/datatables/*,**/foundation/*,**/jquery/*,**/jqueryui/*,**/knockout/*,**/modernizr/*,**/requirejs/*,**/*.css'
+        property "sonar.exclusions", '**/datatables/*,**/foundation/*,**/jquery/*,**/jqueryui/*,**/knockout/*,**/modernizr/*,**/requirejs/*,**/*.css'
     }
 }
 

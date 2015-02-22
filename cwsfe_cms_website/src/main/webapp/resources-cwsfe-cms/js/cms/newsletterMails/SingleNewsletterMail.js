@@ -1,4 +1,4 @@
-require(['jquery', 'jqueryUi', 'cmsLayout'], function ($) {
+require(['jquery', 'jqueryUi', 'cmsLayout', 'foundationReveal'], function ($) {
 
     $(document).ready(function () {
 
@@ -28,6 +28,23 @@ require(['jquery', 'jqueryUi', 'cmsLayout'], function ($) {
             $(this).autocomplete("search", "");
         });
 
+        $('#confirmSendButton').click(function() {
+            confirmNewsletterSend();
+        });
+
+        $('#newsletterTestSendButton').click(function() {
+            newsletterTestSend();
+        });
+
+        $('#confirmSendNewsletterButton').click(function() {
+            newsletterSend();
+            $('#confirmSendNewsletterModal').foundation('reveal', 'close');
+        });
+
+        $('#cancelSendNewsletterButton').click(function() {
+            $('#confirmSendNewsletterModal').foundation('reveal', 'close');
+        });
+
     });
 
     function newsletterTestSend() {
@@ -55,15 +72,9 @@ require(['jquery', 'jqueryUi', 'cmsLayout'], function ($) {
         });
     }
 
+
     function confirmNewsletterSend() {
-        apprise('Do you really want to send newsletter?', {
-            'animate': true,
-            'confirm': true
-        }, function (r) {
-            if (r) {
-                newsletterSend();
-            }
-        });
+        $('#confirmSendNewsletterModal').foundation('reveal','open');
     }
 
     function newsletterSend() {
@@ -73,6 +84,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout'], function ($) {
             dataType: 'json',
             url: 'newsletterSend',
             data: "id=" + newsletterMailId,
+            async: false,
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#newsletterEditFormValidation").html("<p>Success</p>").show('slow');

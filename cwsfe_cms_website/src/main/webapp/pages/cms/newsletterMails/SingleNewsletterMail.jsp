@@ -46,7 +46,7 @@
                                class="button small radius"/>
                         <input type="reset" value="Reset" class="button small radius alert">
                         <input type="button" id="confirmSendButton" value="<spring:message code="Send"/>"
-                               onclick="confirmNewsletterSend();return false;">
+                               class="button small radius secondary"/>
                     </div>
                 </fieldset>
             </form>
@@ -65,12 +65,18 @@
                         <input type="email" id="testEmail" maxlength="350"/>
                     </div>
                     <div class="row">
-                        <input type="submit" value="<spring:message code="TestSend"/>"
-                               onclick="newsletterTestSend();return false;" class="button small radius">
+                        <input type="button" id="newsletterTestSendButton" value="<spring:message code="TestSend"/>" class="button small radius">
                         <input type="reset" value="Reset" class="button small radius alert">
                     </div>
                 </fieldset>
             </form>
+        </div>
+
+        <div id="confirmSendNewsletterModal" class="reveal-modal" data-reveal>
+            <p><spring:message code="DoYouReallyWantToSendNewsletter"/></p>
+            <input type="button" id="confirmSendNewsletterButton" value="<spring:message code="Send"/>" class="button small radius primary">
+            <input type="button" id="cancelSendNewsletterButton" value="<spring:message code="Cancel"/>" class="button small radius alert">
+            <a class="close-reveal-modal">&#215;</a>
         </div>
 
     </jsp:body>

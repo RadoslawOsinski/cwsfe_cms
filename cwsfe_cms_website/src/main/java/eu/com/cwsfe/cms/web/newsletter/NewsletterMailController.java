@@ -67,26 +67,18 @@ public class NewsletterMailController extends JsonController {
         return breadcrumbs;
     }
 
-    private String setSingleNewsletterMailsAdditionalCss(String contextPath) {
-//        return contextPath + "/resources-cwsfe-cms/css/apprise/apprise-v2-min.css";
-        return "";
-        //todo apprise for removal?
-    }
-
     private String setSingleNewsletterMailsAdditionalJS(String contextPath) {
-        //todo apprise for removal?
-//        jsUrl.add(contextPath + "/resources-cwsfe-cms/js/apprise/apprise-v2.js");
         return contextPath + "/resources-cwsfe-cms/js/cms/newsletterMails/SingleNewsletterMail.js";
     }
 
-    private List<String> getSingleNewsletterMailsBreadcrumbs(Locale locale, Long id) {
-        List<String> breadcrumbs = new ArrayList<>(1);
-        breadcrumbs.add("<a href=\"" +
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMails").build().toUriString() +
-                "\" tabindex=\"-1\">" + ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailsManagement") + "</a>");
-        breadcrumbs.add("<a href=\"" +
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMails/" + id).build().toUriString() +
-                "\" tabindex=\"-1\">" + ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CurrentNewsletter") + "</a>");
+    private List<Breadcrumb> getSingleNewsletterMailsBreadcrumbs(Locale locale, Long id) {
+        List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
+        breadcrumbs.add(new Breadcrumb(
+                ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMails").build().toUriString(),
+                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailsManagement")));
+        breadcrumbs.add(new Breadcrumb(
+                ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMails/" + id).build().toUriString(),
+                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CurrentNewsletter")));
         return breadcrumbs;
     }
 
@@ -177,7 +169,6 @@ public class NewsletterMailController extends JsonController {
 
     @RequestMapping(value = "/newsletterMails/{id}", method = RequestMethod.GET)
     public String browseNewsletterMail(ModelMap model, Locale locale, @PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
-        model.addAttribute("additionalCssCode", setSingleNewsletterMailsAdditionalCss(httpServletRequest.getContextPath()));
         model.addAttribute("mainJavaScript", setSingleNewsletterMailsAdditionalJS(httpServletRequest.getContextPath()));
         model.addAttribute("breadcrumbs", getSingleNewsletterMailsBreadcrumbs(locale, id));
         NewsletterMail newsletterMail = newsletterMailDAO.get(id);
