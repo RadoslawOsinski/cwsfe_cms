@@ -1,6 +1,9 @@
 module.exports = function(grunt) {
 
     grunt.initConfig({
+
+        pkg: grunt.file.readJSON('package.json'),
+
         jshint: {
             files: ['Gruntfile.js', 'src/main/webapp/resources-cwsfe-cms/js/cms/**/*.js'],
             options: {
@@ -45,9 +48,24 @@ module.exports = function(grunt) {
                 src: ['**/*.css'],
                 dest: 'build/webapp/resources-cwsfe-cms/css'
             }
+        },
+        karma: {
+            options: {
+                configFile: 'karma-conf.js'
+            },
+            autotest: {
+                singleRun: false,
+                autoWatch: true
+                //,
+                //reporters: ['progress', 'osx']
+            },
+            test: {
+                singleRun: true
+            }
         }
     });
 
+    grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -57,7 +75,8 @@ module.exports = function(grunt) {
         'jshint',
         'watch',
         'uglify',
-        'cssmin'
+        'cssmin',
+        'karma'
     ]);
 
 };

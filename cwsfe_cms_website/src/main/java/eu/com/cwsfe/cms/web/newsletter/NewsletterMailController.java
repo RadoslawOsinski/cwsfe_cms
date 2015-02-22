@@ -244,6 +244,7 @@ public class NewsletterMailController extends JsonController {
     }
 
     private void sendNewsletterEmail(NewsletterMail newsletterMail) {
+        //todo move sending emails to JMS
         MimeMessage mimeMessage = cmsMailSender.createMimeMessage();
         MimeMessageHelper helper;
         try {
