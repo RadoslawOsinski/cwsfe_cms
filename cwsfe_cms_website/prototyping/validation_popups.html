@@ -1,0 +1,171 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="UTF-8">
+    <meta name="description" content="CWSFE CMS"/>
+    <meta name="author" content="Radosław Osiński">
+    <meta name="robots" content="none"/>
+    <title>CWSFE CMS</title>
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/foundation/normalize.css"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/foundation/foundation.css"
+          type="text/css"/>
+
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min.js"></script>
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.js"></script>
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/knockout/knockout-3.3.0.js"></script>
+
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/requirejs/require.js"
+            type="application/javascript"></script>
+
+    <script type="application/javascript">
+        var $contextPath = '/';
+        require.config({
+            paths: {
+                jquery: '../src/main/webapp/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min',
+                jqueryUi: '../src/main/webapp/resources-cwsfe-cms/js/jqueryui/jquery-ui-1.10.3.custom.min',
+                foundation: '../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation',
+                foundationTabs: '../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.tab',
+                foundationOffCanvas: '../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.offcanvas',
+                foundationReveal: '../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.reveal',
+                knockout: '../src/main/webapp/resources-cwsfe-cms/js/knockout/knockout-3.3.0',
+                cmsLayout: '../src/main/webapp/resources-cwsfe-cms/js/cms/layout/CmsLayout',
+                dataTable: '../src/main/webapp/resources-cwsfe-cms/js/datatables/jquery.dataTables.min',
+                dataTableFoundation: '../src/main/webapp/resources-cwsfe-cms/js/datatables/dataTables.foundation',
+                selfHidingPopup: '../src/main/webapp/resources-cwsfe-cms/js/cms/layout/SelfHidingPopup'
+            },
+            shim: {
+                'jqueryUi': ['jquery'],
+                'dataTable': ['jquery'],
+                'foundation': ['jquery'],
+                'foundationTabs': ['foundation'],
+                'foundationOffCanvas': ['foundation'],
+                'foundationReveal': ['foundation'],
+                'dataTableFoundation': ['dataTable']
+            }
+        });
+
+        var FormAlerts = function () {
+            var self = this;
+
+            self.formMessages = ko.observableArray([]);
+
+            self.errorMessages = ko.pureComputed(function () {
+                return ko.utils.arrayFilter(self.formMessages(), function (formMessage) {
+                    return (formMessage.type === 'error');
+                });
+            }, self);
+            self.infoMessages = ko.pureComputed(function () {
+                return ko.utils.arrayFilter(self.formMessages(), function (formMessage) {
+                    return (formMessage.type === 'info');
+                });
+            }, self);
+            self.warningMessages = ko.pureComputed(function () {
+                return ko.utils.arrayFilter(self.formMessages(), function (formMessage) {
+                    return (formMessage.type === 'warning');
+                });
+            }, self);
+
+            self.addMessage = function (msgText, typeType) {
+                self.formMessages.push({
+                    msg: msgText,
+                    type: typeType
+                });
+            };
+            self.cleanMessage = function (typeType) {
+                var itemsForRemove = ko.utils.arrayFilter(self.formMessages(), function (formMessage) {
+                    return formMessage.type === typeType;
+                });
+                self.formMessages.removeAll(itemsForRemove);
+            };
+
+            self.showMessageAnimation = function (elem) {
+                $(elem).hide().slideDown();
+            };
+
+            self.hideMessageAnimation = function (elem) {
+                $(elem).slideUp('slow', function () {
+                    $(elem).remove();
+                });
+            };
+        };
+
+        var formAlerts = new FormAlerts();
+
+        $(document).ready(function () {
+            $(document).foundation();
+
+            $('.side-nav li.withSubMenu').click(function () {
+                $(this).siblings().find("ul").hide();
+                $(this).find("ul").toggle();
+            });
+
+            ko.applyBindings(formAlerts);
+        });
+
+    </script>
+
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/cms/layout/ValidationPopup.js"></script>
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/cms/layout/SelfHidingPopup.js"></script>
+
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/cms/shared.css"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/cms/colors.css"
+          type="text/css"/>
+
+</head>
+<body>
+
+<h1>Popup validation</h1>
+
+<div class="row">
+    <form class="large-5">
+
+        <div data-alert data-bind="visible: formAlerts.errorMessages().length > 0" class="alert-box radius alert">
+            <ul data-bind='template: { foreach: formAlerts.errorMessages, beforeRemove: hideMessageAnimation, afterAdd: showMessageAnimation }'>
+                <li data-bind='text: msg'></li>
+            </ul>
+        </div>
+        <div data-alert data-bind="visible: formAlerts.warningMessages().length > 0" class="alert-box radius warning">
+            <ul data-bind='template: { foreach: formAlerts.warningMessages, beforeRemove: hideMessageAnimation, afterAdd: showMessageAnimation }'>
+                <li data-bind='text: msg'></li>
+            </ul>
+        </div>
+        <div data-alert data-bind="visible: formAlerts.infoMessages().length > 0" class="alert-box radius success">
+            <ul data-bind='template: { foreach: formAlerts.infoMessages, beforeRemove: hideMessageAnimation, afterAdd: showMessageAnimation }'>
+                <li data-bind='text: msg'></li>
+            </ul>
+        </div>
+
+        <fieldset>
+            <legend>UsersAdding</legend>
+            <label for="userName">Username</label>
+            <input type="text" id="userName" required data-bind="textInput: userName"/>
+            <small class="invisible">UsernameIsRequired</small>
+            <label for="passwordHash">Password</label>
+            <input type="password" id="passwordHash" required data-bind="textInput: passwordHash"/>
+            <small class="invisible">PasswordMustBeSet</small>
+            <input type="button" id="addUserButton" class="button small radius primary" value="Add">
+            <input type="reset" id="resetAddUser" value="Reset" class="button small radius alert">
+        </fieldset>
+    </form>
+    <input type="button" class="button small radius secondary" value="Add error"
+           onclick="formAlerts.addMessage('error txt', 'error');">
+    <input type="button" class="button small radius secondary" value="Add warning"
+           onclick="formAlerts.addMessage('warning txt', 'warning');">
+    <input type="button" class="button small radius secondary" value="Add info"
+           onclick="formAlerts.addMessage('info txt', 'info');">
+    <input type="button" class="button small radius primary" value="Clean error"
+           onclick="formAlerts.cleanMessage('error');">
+    <input type="button" class="button small radius primary" value="Clean warning"
+           onclick="formAlerts.cleanMessage('warning');">
+    <input type="button" class="button small radius primary" value="Clean info"
+           onclick="formAlerts.cleanMessage('info');">
+</div>
+
+</body>
+</html>

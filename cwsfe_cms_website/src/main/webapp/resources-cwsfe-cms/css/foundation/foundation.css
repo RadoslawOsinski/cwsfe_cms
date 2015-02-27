@@ -4975,7 +4975,7 @@ code {
 ul, ol, dl {
     font-size: 1rem;
     line-height: 1.6;
-    margin-bottom: 1.25rem;
+    /*margin-bottom: 1.25rem;*/
     list-style-position: outside;
     font-family: inherit
 }
