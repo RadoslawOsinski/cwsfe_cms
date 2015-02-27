@@ -45,7 +45,7 @@
                 foundationTabs: $contextPath + '/resources-cwsfe-cms/js/foundation/foundation.tab',
                 foundationOffCanvas: $contextPath + '/resources-cwsfe-cms/js/foundation/foundation.offcanvas',
                 foundationReveal: $contextPath + '/resources-cwsfe-cms/js/foundation/foundation.reveal',
-                knockout: $contextPath + '/resources-cwsfe-cms/js/knockout/knockout-3.2.0',
+                knockout: $contextPath + '/resources-cwsfe-cms/js/knockout/knockout-3.3.0',
                 cmsLayout: $contextPath + '/resources-cwsfe-cms/js/cms/layout/CmsLayout',
                 dataTable: $contextPath + '/resources-cwsfe-cms/js/datatables/jquery.dataTables.min',
                 dataTableFoundation: $contextPath + '/resources-cwsfe-cms/js/datatables/dataTables.foundation'

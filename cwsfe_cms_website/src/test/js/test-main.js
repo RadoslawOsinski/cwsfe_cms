@@ -13,7 +13,7 @@ requirejs.config({
         foundationTabs: '/resources-cwsfe-cms/js/foundation/foundation.tab',
         foundationOffCanvas: '/resources-cwsfe-cms/js/foundation/foundation.offcanvas',
         foundationReveal: '/resources-cwsfe-cms/js/foundation/foundation.reveal',
-        knockout: '/resources-cwsfe-cms/js/knockout/knockout-3.2.0',
+        knockout: '/resources-cwsfe-cms/js/knockout/knockout-3.3.0',
         cmsLayout: '/resources-cwsfe-cms/js/cms/layout/CmsLayout',
         dataTable: '/resources-cwsfe-cms/js/datatables/jquery.dataTables.min',
         dataTableFoundation: '/resources-cwsfe-cms/js/datatables/dataTables.foundation'
