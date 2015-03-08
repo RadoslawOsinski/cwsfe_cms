@@ -1,0 +1,11 @@
+Prerequisites:
+
+1. JDK8 instalation
+2. wget http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.zip
+3. copy modules folder into wildfly
+4. /modules/system/layers/base/org/postgresql/main/postgresql-9.2-1003-jdbc4.jar
+file should exists
+5. startup script
+.../wildfly-8.0.0.Final-SNAPSHOT/bin/standalone.sh -c standalone-full.xml
+6. wildfly cofiguration:
+./jboss-cli.sh --file=cwsfe.cli
