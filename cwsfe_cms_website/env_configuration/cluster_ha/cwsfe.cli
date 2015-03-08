@@ -1,0 +1,30 @@
+connect
+
+#server name
+/:write-attribute(name=name,value=rafiki_master)
+
+#add mail connection
+if (outcome != success) of /socket-binding-group=full-ha-sockets/remote-destination-outbound-socket-binding=mail-smtp-gmail:read-resource
+    /socket-binding-group=full-ha-sockets/remote-destination-outbound-socket-binding=mail-smtp-gmail/:add(port=465,host=smtp.gmail.com)
+end-if
+
+#add jndi for mail
+if (outcome != success) of /profile=full-ha/subsystem=mail/mail-session=CWSFEMail/:read-resource
+    /profile=full-ha/subsystem=mail/mail-session=CWSFEMail/:add(jndi-name=java:/mail/CWSFEMail,from=Radoslaw.Osinski@cwsfe.pl)
+end-if
+
+#add credentials for mail
+if (outcome != success) of /profile=full-ha/subsystem=mail/mail-session=CWSFEMail/server=smtp/:read-resource
+    /profile=full-ha/subsystem=mail/mail-session=CWSFEMail/server=smtp/:add(outbound-socket-binding-ref=mail-smtp-gmail,username=Radoslaw.Osinski@cwsfe.pl,ssl=true,password=x)
+end-if
+
+#add postgresql driver
+if (outcome != success) of /profile=full-ha/subsystem=datasources/jdbc-driver=org.postgresql/:read-resource(recursive-depth=0)
+    #module add --name=org.postgresql --resources=/tmp/psql-jdbc.jar --dependencies=javax.api,javax.transaction.api
+   /profile=full-ha/subsystem=datasources/jdbc-driver=org.postgresql/:add(driver-module-name=org.postgresql,driver-name=org.postgresql,xa-datasource-class=org.postgresql.xa.PGXADataSource,jdbc-compliant=false)
+end-if
+
+#add cwsfe cms datasource over jndi
+if (outcome != success) of /profile=full-ha/subsystem=datasources/data-source=cwsfe_cms/:read-resource(recursive-depth=0)
+    /profile=full-ha/subsystem=datasources/data-source=cwsfe_cms/:add(jndi-name=java:/jdbc/cwsfe_cms,driver-name=org.postgresql,connection-url=jdbc:postgresql://localhost:5432/cwsfe,prepared-statements-cache-size=100,share-prepared-statements=false,password=cwsfe,max-pool-size=20,jta=false,blocking-timeout-wait-millis=1,track-statements=NOWARN,flush-strategy=FailingConnectionOnly,user-name=cwsfe,min-pool-size=0,initial-pool-size=2,validate-on-match=false,background-validation=false)
+end-if

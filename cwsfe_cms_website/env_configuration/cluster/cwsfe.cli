@@ -21,7 +21,7 @@ end-if
 #add postgresql driver
 if (outcome != success) of /profile=full/subsystem=datasources/jdbc-driver=org.postgresql/:read-resource(recursive-depth=0)
     #module add --name=org.postgresql --resources=/tmp/psql-jdbc.jar --dependencies=javax.api,javax.transaction.api
-   #/profile=full/subsystem=datasources/jdbc-driver=org.postgresql/:add(driver-module-name=org.postgresql,driver-name=org.postgresql,xa-datasource-class=org.postgresql.xa.PGXADataSource,jdbc-compliant=false)
+   /profile=full/subsystem=datasources/jdbc-driver=org.postgresql/:add(driver-module-name=org.postgresql,driver-name=org.postgresql,xa-datasource-class=org.postgresql.xa.PGXADataSource,jdbc-compliant=false)
 end-if
 
 #add cwsfe cms datasource over jndi
