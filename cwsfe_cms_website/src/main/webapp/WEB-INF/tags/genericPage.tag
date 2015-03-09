@@ -48,7 +48,8 @@
                 knockout: $contextPath + '/resources-cwsfe-cms/js/knockout/knockout-3.3.0',
                 cmsLayout: $contextPath + '/resources-cwsfe-cms/js/cms/layout/CmsLayout',
                 dataTable: $contextPath + '/resources-cwsfe-cms/js/datatables/jquery.dataTables.min',
-                dataTableFoundation: $contextPath + '/resources-cwsfe-cms/js/datatables/dataTables.foundation'
+                dataTableFoundation: $contextPath + '/resources-cwsfe-cms/js/datatables/dataTables.foundation',
+                formAlerts: $contextPath + '/resources-cwsfe-cms/js/cms/layout/FormAlerts'
             },
             shim: {
                 'jqueryUi': ['jquery'],

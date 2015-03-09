@@ -33,8 +33,7 @@
                 knockout: '../src/main/webapp/resources-cwsfe-cms/js/knockout/knockout-3.3.0',
                 cmsLayout: '../src/main/webapp/resources-cwsfe-cms/js/cms/layout/CmsLayout',
                 dataTable: '../src/main/webapp/resources-cwsfe-cms/js/datatables/jquery.dataTables.min',
-                dataTableFoundation: '../src/main/webapp/resources-cwsfe-cms/js/datatables/dataTables.foundation',
-                selfHidingPopup: '../src/main/webapp/resources-cwsfe-cms/js/cms/layout/SelfHidingPopup'
+                dataTableFoundation: '../src/main/webapp/resources-cwsfe-cms/js/datatables/dataTables.foundation'
             },
             shim: {
                 'jqueryUi': ['jquery'],
@@ -107,9 +106,6 @@
 
     </script>
 
-    <script src="../src/main/webapp/resources-cwsfe-cms/js/cms/layout/ValidationPopup.js"></script>
-    <script src="../src/main/webapp/resources-cwsfe-cms/js/cms/layout/SelfHidingPopup.js"></script>
-
     <link rel="stylesheet"
           href="../src/main/webapp/resources-cwsfe-cms/css/cms/shared.css"
           type="text/css"/>
@@ -123,23 +119,23 @@
 <h1>Popup validation</h1>
 
 <div class="row">
-    <form class="large-5">
+    <div data-alert data-bind="visible: formAlerts.errorMessages().length > 0" class="alert-box radius alert">
+        <ul data-bind='template: { foreach: formAlerts.errorMessages, beforeRemove: hideMessageAnimation, afterAdd: showMessageAnimation }'>
+            <li data-bind='text: msg'></li>
+        </ul>
+    </div>
+    <div data-alert data-bind="visible: formAlerts.warningMessages().length > 0" class="alert-box radius warning">
+        <ul data-bind='template: { foreach: formAlerts.warningMessages, beforeRemove: hideMessageAnimation, afterAdd: showMessageAnimation }'>
+            <li data-bind='text: msg'></li>
+        </ul>
+    </div>
+    <div data-alert data-bind="visible: formAlerts.infoMessages().length > 0" class="alert-box radius success">
+        <ul data-bind='template: { foreach: formAlerts.infoMessages, beforeRemove: hideMessageAnimation, afterAdd: showMessageAnimation }'>
+            <li data-bind='text: msg'></li>
+        </ul>
+    </div>
 
-        <div data-alert data-bind="visible: formAlerts.errorMessages().length > 0" class="alert-box radius alert">
-            <ul data-bind='template: { foreach: formAlerts.errorMessages, beforeRemove: hideMessageAnimation, afterAdd: showMessageAnimation }'>
-                <li data-bind='text: msg'></li>
-            </ul>
-        </div>
-        <div data-alert data-bind="visible: formAlerts.warningMessages().length > 0" class="alert-box radius warning">
-            <ul data-bind='template: { foreach: formAlerts.warningMessages, beforeRemove: hideMessageAnimation, afterAdd: showMessageAnimation }'>
-                <li data-bind='text: msg'></li>
-            </ul>
-        </div>
-        <div data-alert data-bind="visible: formAlerts.infoMessages().length > 0" class="alert-box radius success">
-            <ul data-bind='template: { foreach: formAlerts.infoMessages, beforeRemove: hideMessageAnimation, afterAdd: showMessageAnimation }'>
-                <li data-bind='text: msg'></li>
-            </ul>
-        </div>
+    <form class="large-5">
 
         <fieldset>
             <legend>UsersAdding</legend>

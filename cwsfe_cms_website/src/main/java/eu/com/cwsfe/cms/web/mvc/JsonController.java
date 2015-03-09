@@ -44,7 +44,7 @@ public abstract class JsonController {
         if (jsonArray == null) {
             jsonArray = new JSONArray();
         }
-        responseDetailsJson.put(JSON_STATUS, JSON_STATUS_SUCCESS);
+        responseDetailsJson.put(JSON_STATUS, JSON_STATUS_FAIL);
         for (String message : messages) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("error", message);

@@ -1,4 +1,4 @@
-require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko) {
+require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
 
     function UsersViewModel() {
         var self = this;
@@ -17,10 +17,13 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable'], function (
         });
     }
 
-    var usersViewModel = new UsersViewModel();
+    var viewModel = {
+        usersViewModel: new UsersViewModel(),
+        formAlerts: new formAlertsModule.formAlerts()
+    };
 
     $(document).ready(function () {
-        ko.applyBindings(usersViewModel);
+        ko.applyBindings(viewModel);
 
         $('#usersList').dataTable({
             'iTabIndex': -1,
@@ -69,7 +72,14 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable'], function (
         addUser();
     });
 
+    $('#resetAddUser').click(function() {
+        viewModel.usersViewModel.userName(null);
+        viewModel.usersViewModel.passwordHash(null);
+        viewModel.formAlerts.cleanAllMessages();
+    });
+
     function addUser() {
+        viewModel.formAlerts.cleanAllMessages();
         var userName = $('#userName').val();
         var passwordHash = $('#passwordHash').val();
         $.ajax({
@@ -80,14 +90,16 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable'], function (
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#usersList").dataTable().fnDraw();
-                    usersViewModel.userName(null);
-                    usersViewModel.passwordHash(null);
+                    viewModel.usersViewModel.userName(null);
+                    viewModel.usersViewModel.passwordHash(null);
                 } else {
-                    //todo validate alert
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
+                    }
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -101,16 +113,9 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable'], function (
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#usersList").dataTable().fnDraw();
-                } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
-                    }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
             }
         });
     }
@@ -124,16 +129,9 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable'], function (
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#usersList").dataTable().fnDraw();
-                } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
-                    }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
             }
         });
     }
@@ -147,16 +145,9 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable'], function (
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#usersList").dataTable().fnDraw();
-                } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
-                    }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
             }
         });
     }
