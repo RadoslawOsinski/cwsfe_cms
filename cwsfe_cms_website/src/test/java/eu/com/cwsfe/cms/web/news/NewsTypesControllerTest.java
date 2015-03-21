@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -120,21 +121,33 @@ public class NewsTypesControllerTest {
 
     @Test
     public void testAddNewsType() throws Exception {
-        NewsType newsType = new NewsType();
         String type = "type";
-        long id = 1l;
-        newsType.setId(id);
-        newsType.setType(type);
         when(newsTypesDAO.add(any(NewsType.class))).thenReturn(1l);
 
         ResultActions resultActions = mockMvc.perform(post("/addNewsType")
-                .param("type", type))
-                .andExpect(status().isOk());
+                .param("type", type));
 
         resultActions
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
                 .andExpect(jsonPath("$." + NewsTypesController.JSON_STATUS).value(NewsTypesController.JSON_STATUS_SUCCESS));
+        verify(newsTypesDAO, times(1)).add(any(NewsType.class));
+        verifyNoMoreInteractions(newsTypesDAO);
+    }
+
+    @Test
+    public void testAddExistingNewsType() throws Exception {
+        String type = "type";
+        when(newsTypesDAO.add(any(NewsType.class))).thenThrow(new DuplicateKeyException("Duplicate"));
+
+        ResultActions resultActions = mockMvc.perform(post("/addNewsType")
+                .param("type", type));
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+                .andExpect(jsonPath("$." + NewsTypesController.JSON_STATUS).value(NewsTypesController.JSON_STATUS_FAIL))
+                .andExpect(jsonPath("$." + NewsTypesController.JSON_ERROR_MESSAGES + "[0]").exists());
         verify(newsTypesDAO, times(1)).add(any(NewsType.class));
         verifyNoMoreInteractions(newsTypesDAO);
     }

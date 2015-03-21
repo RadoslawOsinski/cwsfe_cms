@@ -1,7 +1,25 @@
-require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
+require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
+
+    function NewsTypesViewModel() {
+        var self = this;
+        self.type = ko.observable();
+
+        self.typeIsRequiredStyle= ko.computed(function() {
+            return self.type() == null || self.type() === '' ? 'error' : 'invisible';
+        });
+        self.addNewsTypeFormIsValid = ko.computed(function() {
+            return self.type() != null && self.type() !== '';
+        });
+    }
+
+    var viewModel = {
+        newsTypesViewModel: new NewsTypesViewModel(),
+        formAlerts: new formAlertsModule.formAlerts()
+    };
 
     $(document).ready(function () {
-
+        ko.applyBindings(viewModel);
+        
         $('#newsTypesList').dataTable({
             'iTabIndex': -1,
             'sPaginationType': 'full_numbers',
@@ -34,27 +52,30 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
         removeNewsType($(this).val());
     });
 
+    $('#resetAddNewsType').click(function() {
+        viewModel.newsTypesViewModel.type(null);
+        viewModel.formAlerts.cleanAllMessages();
+    });
+    
     function addNewsType() {
-        var type = $('#type').val();
+        viewModel.formAlerts.cleanAllMessages();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addNewsType',
-            data: "type=" + type,
+            data: "type=" + viewModel.newsTypesViewModel.type(),
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#newsTypesList").dataTable().fnDraw();
-                    $('#type').val('');
+                    viewModel.newsTypesViewModel.type(null);
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#formValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -69,15 +90,13 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 if (response.status === 'SUCCESS') {
                     $("#newsTypesList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }

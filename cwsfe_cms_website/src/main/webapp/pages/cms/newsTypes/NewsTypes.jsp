@@ -21,18 +21,38 @@
         </div>
 
         <div class="row">
+
+            <div data-alert data-bind="visible: formAlerts.errorMessages().length > 0" class="alert-box radius alert">
+                <ul data-bind='template: { foreach: formAlerts.errorMessages, beforeRemove: formAlerts.hideMessageAnimation, afterAdd: formAlerts.showMessageAnimation }'>
+                    <li data-bind='text: msg'></li>
+                </ul>
+            </div>
+            <div data-alert data-bind="visible: formAlerts.warningMessages().length > 0"
+                 class="alert-box radius warning">
+                <ul data-bind='template: { foreach: formAlerts.warningMessages, beforeRemove: formAlerts.hideMessageAnimation, afterAdd: formAlerts.showMessageAnimation }'>
+                    <li data-bind='text: msg'></li>
+                </ul>
+            </div>
+            <div data-alert data-bind="visible: formAlerts.infoMessages().length > 0" class="alert-box radius success">
+                <ul data-bind='template: { foreach: formAlerts.infoMessages, beforeRemove: formAlerts.hideMessageAnimation, afterAdd: formAlerts.showMessageAnimation }'>
+                    <li data-bind='text: msg'></li>
+                </ul>
+            </div>
+
             <form class="large-5">
                 <fieldset>
                     <legend><spring:message code="NewsTypesAdding"/></legend>
                     <div class="row">
                         <label for="type"><spring:message code="NewsType"/></label>
-
-                        <input type="text" id="type"/>
+                        <input type="text" id="type" required data-bind="textInput: newsTypesViewModel.type"/>
+                        <small class="invisible" data-bind="attr: { 'class': newsTypesViewModel.typeIsRequiredStyle}">
+                            <spring:message code="NewsTypeMustBeSet"/>
+                        </small>
                     </div>
                     <div class="row">
                         <input type="button" id="addNewsTypeButton" class="button small radius primary"
-                               value="<spring:message code="Add"/>">
-                        <input type="reset" value="Reset" class="button small radius alert">
+                               value="<spring:message code="Add"/>" data-bind="enable: newsTypesViewModel.addNewsTypeFormIsValid"/>
+                        <input type="reset" id="resetAddNewsType" value="Reset" class="button small radius alert">
                     </div>
                 </fieldset>
             </form>

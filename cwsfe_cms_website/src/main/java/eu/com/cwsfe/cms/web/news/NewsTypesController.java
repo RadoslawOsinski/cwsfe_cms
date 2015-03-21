@@ -7,6 +7,7 @@ import eu.com.cwsfe.cms.model.NewsType;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -101,8 +102,12 @@ class NewsTypesController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "type", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            newsTypesDAO.add(newsType);
-            addJsonSuccess(responseDetailsJson);
+            try {
+                newsTypesDAO.add(newsType);
+                addJsonSuccess(responseDetailsJson);
+            } catch (DuplicateKeyException e) {
+                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeAlreadyAdded"));
+            }
         } else {
             prepareErrorResponse(result, responseDetailsJson);
         }
