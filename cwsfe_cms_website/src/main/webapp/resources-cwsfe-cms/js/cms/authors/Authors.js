@@ -1,6 +1,29 @@
-require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
+require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
+
+    function AuthorsViewModel() {
+        var self = this;
+        self.firstName = ko.observable();
+        self.lastName = ko.observable();
+
+        self.firstNameIsRequiredStyle= ko.computed(function() {
+            return self.firstName() == null || self.firstName() === '' ? 'error' : 'invisible';
+        });
+        self.lastNameIsRequiredStyle= ko.computed(function() {
+            return self.lastName() == null || self.lastName() === '' ? 'error' : 'invisible';
+        });
+        self.addAuthorFormIsValid = ko.computed(function() {
+            return self.firstName() != null && self.firstName() !== '' &&
+                self.lastName() != null && self.lastName() !== '';
+        });
+    }
+
+    var viewModel = {
+        authorsViewModel: new AuthorsViewModel(),
+        formAlerts: new formAlertsModule.formAlerts()
+    };
 
     $(document).ready(function () {
+        ko.applyBindings(viewModel);
 
         $('#authorsList').dataTable({
             'iTabIndex': -1,
@@ -36,31 +59,34 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
         removeAuthor($(this).val());
     });
 
+    $('#resetAuthorButton').click(function() {
+        viewModel.authorsViewModel.firstName(null);
+        viewModel.authorsViewModel.lastName(null);
+        viewModel.formAlerts.cleanAllMessages();
+    });
+
     function addAuthor() {
-        var firstName = $('#firstName').val();
-        var lastName = $('#lastName').val();
+        viewModel.formAlerts.cleanAllMessages();
         var googlePlusAuthorLink = $('#googlePlusAuthorLink').val();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addAuthor',
-            data: "firstName=" + firstName + "&lastName=" + lastName + "&googlePlusAuthorLink=" + googlePlusAuthorLink,
+            data: "firstName=" + viewModel.authorsViewModel.firstName() + "&lastName=" + viewModel.authorsViewModel.lastName() + "&googlePlusAuthorLink=" + googlePlusAuthorLink,
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#authorsList").dataTable().fnDraw();
-                    $('#firstName').val('');
+                    viewModel.authorsViewModel.firstName('');
+                    viewModel.authorsViewModel.lastName('');
                     $('#googlePlusAuthorLink').val('');
-                    $('#lastName').val('');
                 } else {
-                    var errorInfo = "";
-                    for (i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#formValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -75,15 +101,13 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 if (response.status === 'SUCCESS') {
                     $("#authorsList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
