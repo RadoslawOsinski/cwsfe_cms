@@ -9,6 +9,7 @@ import eu.com.cwsfe.cms.model.CmsTextI18n;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -94,8 +95,12 @@ public class CmsTextI18nController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "i18nText", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TextMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsTextI18nDAO.add(cmsTextI18n);
-            addJsonSuccess(responseDetailsJson);
+            try {
+                cmsTextI18nDAO.add(cmsTextI18n);
+                addJsonSuccess(responseDetailsJson);
+            } catch (DuplicateKeyException e) {
+                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TextI18nAlreadyExists"));
+            }
         } else {
             prepareErrorResponse(result, responseDetailsJson);
         }

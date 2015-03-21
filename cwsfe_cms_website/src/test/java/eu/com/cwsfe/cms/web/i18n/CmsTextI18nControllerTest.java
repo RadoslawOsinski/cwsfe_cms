@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -118,11 +119,6 @@ public class CmsTextI18nControllerTest {
 
     @Test
     public void testAddTextI18n() throws Exception {
-        CmsTextI18nCategory cmsTextI18nCategory = new CmsTextI18nCategory();
-        String category = "category";
-        long id = 1l;
-        cmsTextI18nCategory.setId(id);
-        cmsTextI18nCategory.setCategory(category);
         when(cmsTextI18nDAO.add(any(CmsTextI18n.class))).thenReturn(1l);
 
         ResultActions resultActions = mockMvc.perform(post("/addCmsTextI18n")
@@ -136,6 +132,25 @@ public class CmsTextI18nControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
                 .andExpect(jsonPath("$." + CmsTextI18nController.JSON_STATUS).value(CmsTextI18nController.JSON_STATUS_SUCCESS));
+        verify(cmsTextI18nDAO, times(1)).add(any(CmsTextI18n.class));
+        verifyNoMoreInteractions(cmsTextI18nDAO);
+    }
+
+    @Test
+    public void testAddExistingTextI18n() throws Exception {
+        when(cmsTextI18nDAO.add(any(CmsTextI18n.class))).thenThrow(new DuplicateKeyException("Duplicate!"));
+
+        ResultActions resultActions = mockMvc.perform(post("/addCmsTextI18n")
+                .param("langId", "1")
+                .param("i18nCategory", "2")
+                .param("i18nKey", "i18nKey")
+                .param("i18nText", "i18nText"))
+                .andExpect(status().isOk());
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+                .andExpect(jsonPath("$." + CmsTextI18nController.JSON_STATUS).value(CmsTextI18nController.JSON_STATUS_FAIL));
         verify(cmsTextI18nDAO, times(1)).add(any(CmsTextI18n.class));
         verifyNoMoreInteractions(cmsTextI18nDAO);
     }
