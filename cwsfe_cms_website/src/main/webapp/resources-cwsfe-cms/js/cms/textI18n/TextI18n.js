@@ -1,6 +1,41 @@
-require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
+require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
+
+    function TranslationViewModel() {
+        var self = this;
+        self.searchLanguageId = null;
+        self.searchLanguage = ko.observable();
+        self.searchCategoryId = null;
+        self.searchCategory = ko.observable();
+        self.key = ko.observable();
+        self.text = ko.observable();
+
+        self.searchLanguageIsRequiredStyle= ko.computed(function() {
+            return self.searchLanguage() == null || self.searchLanguage() === '' ? 'error' : 'invisible';
+        });
+        self.searchCategoryIsRequiredStyle= ko.computed(function() {
+            return self.searchCategory() == null || self.searchCategory() === '' ? 'error' : 'invisible';
+        });
+        self.keyIsRequiredStyle= ko.computed(function() {
+            return self.key() == null || self.key() === '' ? 'error' : 'invisible';
+        });
+        self.textIsRequiredStyle= ko.computed(function() {
+            return self.text() == null || self.text() === '' ? 'error' : 'invisible';
+        });
+        self.addTranslationFormIsValid = ko.computed(function() {
+            return self.searchLanguage() != null && self.searchLanguage() !== '' &&
+                self.searchCategory() != null && self.searchCategory() !== '' &&
+                self.key() != null && self.key() !== '' &&
+                self.text() != null && self.text() !== '';
+        });
+    }
+
+    var viewModel = {
+        translationViewModel: new TranslationViewModel(),
+        formAlerts: new formAlertsModule.formAlerts()
+    };
 
     $(document).ready(function () {
+        ko.applyBindings(viewModel);
 
         $('#cmsTextI18nList').dataTable({
             'iTabIndex': -1,
@@ -47,7 +82,8 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             },
             minLength: 0,
             select: function (event, ui) {
-                $('#searchLanguageId').val(ui.item.id);
+                viewModel.translationViewModel.searchLanguage(ui.item.value);
+                viewModel.translationViewModel.searchLanguageId = ui.item.id;
             }
         }).focus(function () {
             $(this).autocomplete("search", "");
@@ -73,7 +109,8 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             },
             minLength: 0,
             select: function (event, ui) {
-                $('#searchCategoryId').val(ui.item.id);
+                viewModel.translationViewModel.searchCategory(ui.item.value);
+                viewModel.translationViewModel.searchCategoryId = ui.item.id;
             }
         }).focus(function () {
             $(this).autocomplete("search", "");
@@ -90,35 +127,39 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
         removeCmsTextI18n($(this).val());
     });
 
+    $('#resetAddTranslation').click(function() {
+        viewModel.translationViewModel.searchLanguageId = null;
+        viewModel.translationViewModel.searchLanguage(null);
+        viewModel.translationViewModel.searchCategoryId = null;
+        viewModel.translationViewModel.searchCategory(null);
+        viewModel.translationViewModel.key(null);
+        viewModel.translationViewModel.text(null);
+        viewModel.formAlerts.cleanAllMessages();
+    });
+
     function addCmsTextI18n() {
-        var searchLanguageId = $('#searchLanguageId').val();
-        var searchCategoryId = $('#searchCategoryId').val();
-        var key = $('#key').val();
-        var text = $('#text').val();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addCmsTextI18n',
-            data: "langId=" + searchLanguageId + "&i18nCategory=" + searchCategoryId + "&i18nKey=" + key + "&i18nText=" + text,
+            data: "langId=" + viewModel.translationViewModel.searchLanguageId + "&i18nCategory=" + viewModel.translationViewModel.searchCategoryId + "&i18nKey=" + viewModel.translationViewModel.key() + "&i18nText=" + viewModel.translationViewModel.text(),
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#cmsTextI18nList").dataTable().fnDraw();
-                    $('#searchLanguage').val('');
-                    $('#searchLanguageId').val('');
-                    $('#searchCategory').val('');
-                    $('#searchCategoryId').val('');
-                    $('#key').val('');
-                    $('#text').val('');
+                    viewModel.translationViewModel.searchLanguageId = null;
+                    viewModel.translationViewModel.searchLanguage(null);
+                    viewModel.translationViewModel.searchCategoryId = null;
+                    viewModel.translationViewModel.searchCategory(null);
+                    viewModel.translationViewModel.key(null);
+                    viewModel.translationViewModel.text(null);
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#formValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -133,15 +174,13 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 if (response.status === 'SUCCESS') {
                     $("#cmsTextI18nList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }

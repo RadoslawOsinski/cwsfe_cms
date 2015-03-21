@@ -46,14 +46,14 @@
                     <label for="userName"><spring:message code="Username"/></label>
                     <input type="text" id="userName" required data-bind="textInput: usersViewModel.userName"/>
                     <small class="invisible" data-bind="attr: { 'class': usersViewModel.userNameIsRequiredStyle}">
-                        <spring:message
-                                code="UsernameIsRequired"/></small>
+                        <spring:message code="UsernameIsRequired"/>
+                    </small>
                     <label for="passwordHash"><spring:message code="Password"/></label>
                     <input type="password" id="passwordHash" required
                            data-bind="textInput: usersViewModel.passwordHash"/>
                     <small class="invisible" data-bind="attr: { 'class': usersViewModel.passwordIsRequiredStyle}">
-                        <spring:message
-                                code="PasswordMustBeSet"/></small>
+                        <spring:message code="PasswordMustBeSet"/>
+                    </small>
                     <input type="button" id="addUserButton" class="button small radius primary"
                            value="<spring:message code="Add"/>" data-bind="enable: usersViewModel.addUserFormIsValid"/>
                     <input type="reset" id="resetAddUser" value="Reset" class="button small radius alert"/>

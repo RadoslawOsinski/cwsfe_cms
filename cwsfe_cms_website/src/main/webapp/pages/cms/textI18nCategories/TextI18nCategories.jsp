@@ -22,17 +22,38 @@
         </div>
 
         <div class="row">
+
+            <div data-alert data-bind="visible: formAlerts.errorMessages().length > 0" class="alert-box radius alert">
+                <ul data-bind='template: { foreach: formAlerts.errorMessages, beforeRemove: formAlerts.hideMessageAnimation, afterAdd: formAlerts.showMessageAnimation }'>
+                    <li data-bind='text: msg'></li>
+                </ul>
+            </div>
+            <div data-alert data-bind="visible: formAlerts.warningMessages().length > 0"
+                 class="alert-box radius warning">
+                <ul data-bind='template: { foreach: formAlerts.warningMessages, beforeRemove: formAlerts.hideMessageAnimation, afterAdd: formAlerts.showMessageAnimation }'>
+                    <li data-bind='text: msg'></li>
+                </ul>
+            </div>
+            <div data-alert data-bind="visible: formAlerts.infoMessages().length > 0" class="alert-box radius success">
+                <ul data-bind='template: { foreach: formAlerts.infoMessages, beforeRemove: formAlerts.hideMessageAnimation, afterAdd: formAlerts.showMessageAnimation }'>
+                    <li data-bind='text: msg'></li>
+                </ul>
+            </div>
+
             <form class="large-5">
                 <fieldset>
                     <legend><spring:message code="TranslationCategoryAdding"/></legend>
                     <div class="row">
                         <label for="category"><spring:message code="Category"/></label>
-                        <input type="text" id="category"/>
+                        <input type="text" id="category" required data-bind="textInput: categoryViewModel.category"/>
+                        <small class="invisible" data-bind="attr: { 'class': categoryViewModel.categoryIsRequiredStyle}">
+                            <spring:message code="CategoryIsRequired"/>
+                        </small>
                     </div>
                     <div class="row">
                         <input type="button" id="addCmsTextI18nCategoryButton" class="button small radius primary"
-                               value="<spring:message code="Add"/>">
-                        <input type="reset" value="Reset" class="button small radius alert"/>
+                               value="<spring:message code="Add"/>" data-bind="enable: categoryViewModel.addCategoryFormIsValid">
+                        <input type="reset" id="resetAddCategory" value="Reset" class="button small radius alert"/>
                     </div>
                 </fieldset>
             </form>

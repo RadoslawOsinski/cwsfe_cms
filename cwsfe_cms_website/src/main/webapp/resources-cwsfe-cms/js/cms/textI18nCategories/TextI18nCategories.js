@@ -1,6 +1,24 @@
-require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
+require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
+
+    function CategoryViewModel() {
+        var self = this;
+        self.category = ko.observable();
+
+        self.categoryIsRequiredStyle= ko.computed(function() {
+            return self.category() == null || self.category() === '' ? 'error' : 'invisible';
+        });
+        self.addCategoryFormIsValid = ko.computed(function() {
+            return self.category() != null && self.category() !== '';
+        });
+    }
+
+    var viewModel = {
+        categoryViewModel: new CategoryViewModel(),
+        formAlerts: new formAlertsModule.formAlerts()
+    };
 
     $(document).ready(function () {
+        ko.applyBindings(viewModel);
 
         $('#cmsTextI18nCategoriesList').dataTable({
             'iTabIndex': -1,
@@ -44,27 +62,30 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
         removeCmsTextI18nCategory($(this).val());
     });
 
+    $('#resetAddUser').click(function() {
+        viewModel.categoryViewModel.category(null);
+        viewModel.formAlerts.cleanAllMessages();
+    });
+
     function addCmsTextI18nCategory() {
-        var category = $('#category').val();
+        viewModel.formAlerts.cleanAllMessages();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addCmsTextI18nCategory',
-            data: "category=" + category,
+            data: "category=" + viewModel.categoryViewModel.category(),
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#cmsTextI18nCategoriesList").dataTable().fnDraw();
-                    $('#category').val('');
+                    viewModel.categoryViewModel.category(null);
                 } else {
-                    var errorInfo = "";
-                    for (i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#formValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -79,15 +100,13 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 if (response.status === 'SUCCESS') {
                     $("#cmsTextI18nCategoriesList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
