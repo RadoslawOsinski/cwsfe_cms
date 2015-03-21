@@ -7,6 +7,7 @@ import eu.com.cwsfe.cms.model.Language;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -107,8 +108,12 @@ class LanguagesController extends JsonController {
         }
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsLanguagesDAO.add(cmsLanguage);
-            addJsonSuccess(responseDetailsJson);
+            try {
+                cmsLanguagesDAO.add(cmsLanguage);
+                addJsonSuccess(responseDetailsJson);
+            } catch (DuplicateKeyException e) {
+                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageAlreadyExists"));
+            }
         } else {
             prepareErrorResponse(result, responseDetailsJson);
         }

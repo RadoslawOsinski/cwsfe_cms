@@ -1,6 +1,25 @@
-require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
+require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
+
+    function FolderViewModel() {
+        var self = this;
+        self.folderName = ko.observable();
+        self.orderNumber = ko.observable(0);
+
+        self.folderNameIsRequiredStyle= ko.computed(function() {
+            return self.folderName() == null || self.folderName() === '' ? 'error' : 'invisible';
+        });
+        self.addFolderFormIsValid = ko.computed(function() {
+            return self.folderName() != null && self.folderName() !== '';
+        });
+    }
+
+    var viewModel = {
+        folderViewModel: new FolderViewModel(),
+        formAlerts: new formAlertsModule.formAlerts()
+    };
 
     $(document).ready(function () {
+        ko.applyBindings(viewModel);
 
         $('#foldersList').dataTable({
             'iTabIndex': -1,
@@ -35,29 +54,32 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
         deleteFolder($(this).val());
     });
 
+    $('#resetAddFolder').click(function() {
+        viewModel.folderViewModel.folderName(null);
+        viewModel.folderViewModel.orderNumber(0);
+        viewModel.formAlerts.cleanAllMessages();
+    });
+
     function addFolder() {
-        var folderName = $('#folderName').val();
-        var orderNumber = $('#orderNumber').val();
+        viewModel.formAlerts.cleanAllMessages();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addFolder',
-            data: "folderName=" + folderName + "&orderNumber=" + orderNumber,
+            data: "folderName=" + viewModel.folderViewModel.folderName() + "&orderNumber=" + viewModel.folderViewModel.orderNumber(),
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#foldersList").dataTable().fnDraw();
-                    $('#folderName').val('');
-                    $('#orderNumber').val('');
+                    viewModel.folderViewModel.folderName(null);
+                    viewModel.folderViewModel.orderNumber(0);
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#formValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -72,15 +94,13 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 if (response.status === 'SUCCESS') {
                     $("#foldersList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }

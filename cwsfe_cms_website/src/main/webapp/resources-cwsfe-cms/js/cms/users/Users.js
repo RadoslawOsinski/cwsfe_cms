@@ -80,13 +80,11 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
 
     function addUser() {
         viewModel.formAlerts.cleanAllMessages();
-        var userName = $('#userName').val();
-        var passwordHash = $('#passwordHash').val();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addUser',
-            data: "userName=" + userName + "&passwordHash=" + passwordHash,
+            data: "userName=" + viewModel.usersViewModel.userName() + "&passwordHash=" + viewModel.usersViewModel.passwordHash(),
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#usersList").dataTable().fnDraw();

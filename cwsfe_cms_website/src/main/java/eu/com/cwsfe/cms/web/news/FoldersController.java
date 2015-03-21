@@ -7,6 +7,7 @@ import eu.com.cwsfe.cms.model.CmsFolder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -102,8 +103,12 @@ public class FoldersController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "folderName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderNameMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsFoldersDAO.add(cmsFolder);
-            addJsonSuccess(responseDetailsJson);
+            try {
+                cmsFoldersDAO.add(cmsFolder);
+                addJsonSuccess(responseDetailsJson);
+            } catch (DuplicateKeyException e) {
+                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderNameAlreadyExist"));
+            }
         } else {
             prepareErrorResponse(result, responseDetailsJson);
         }

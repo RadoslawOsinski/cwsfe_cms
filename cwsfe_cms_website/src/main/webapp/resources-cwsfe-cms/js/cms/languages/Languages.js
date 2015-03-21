@@ -1,6 +1,29 @@
-require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
+require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
+
+    function LanguagesViewModel() {
+        var self = this;
+        self.code = ko.observable();
+        self.name = ko.observable();
+
+        self.languageIsRequiredStyle= ko.computed(function() {
+            return self.code() == null || self.code() === '' ? 'error' : 'invisible';
+        });
+        self.languageNameIsRequiredStyle= ko.computed(function() {
+            return self.name() == null || self.name() === '' ? 'error' : 'invisible';
+        });
+        self.addLanguagesFormIsValid = ko.computed(function() {
+            return self.code() != null && self.code() !== '' &&
+                self.name() != null && self.name() !== '';
+        });
+    }
+
+    var viewModel = {
+        languagesViewModel: new LanguagesViewModel(),
+        formAlerts: new formAlertsModule.formAlerts()
+    };
 
     $(document).ready(function () {
+        ko.applyBindings(viewModel);
 
         $('#LanguagesList').dataTable({
             'iTabIndex': -1,
@@ -35,29 +58,32 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
         removeLanguage($(this).val());
     });
 
+    $('#resetAddLanguages').click(function() {
+        viewModel.languagesViewModel.code(null);
+        viewModel.languagesViewModel.name(null);
+        viewModel.formAlerts.cleanAllMessages();
+    });
+
     function addLanguage() {
-        var code = $('#code').val();
-        var name = $('#name').val();
+        viewModel.formAlerts.cleanAllMessages();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addLanguage',
-            data: "code=" + code + "&name=" + name,
+            data: "code=" + viewModel.languagesViewModel.code() + "&name=" + viewModel.languagesViewModel.name(),
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#LanguagesList").dataTable().fnDraw();
-                    $('#code').val('');
-                    $('#name').val('');
+                    viewModel.languagesViewModel.code(null);
+                    viewModel.languagesViewModel.name(null);
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#formValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -72,15 +98,13 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 if (response.status === 'SUCCESS') {
                     $("#LanguagesList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }

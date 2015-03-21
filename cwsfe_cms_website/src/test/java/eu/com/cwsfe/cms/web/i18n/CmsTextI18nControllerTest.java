@@ -150,7 +150,8 @@ public class CmsTextI18nControllerTest {
         resultActions
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + CmsTextI18nController.JSON_STATUS).value(CmsTextI18nController.JSON_STATUS_FAIL));
+                .andExpect(jsonPath("$." + CmsTextI18nController.JSON_STATUS).value(CmsTextI18nController.JSON_STATUS_FAIL))
+                .andExpect(jsonPath("$." + CmsTextI18nController.JSON_ERROR_MESSAGES + "[0]").exists());
         verify(cmsTextI18nDAO, times(1)).add(any(CmsTextI18n.class));
         verifyNoMoreInteractions(cmsTextI18nDAO);
     }

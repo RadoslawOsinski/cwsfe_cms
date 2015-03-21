@@ -7,6 +7,7 @@ import eu.com.cwsfe.cms.model.Breadcrumb;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -82,8 +83,12 @@ public class BlogKeywordsController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "keywordName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("KeywordNameMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogKeywordsDAO.add(blogKeyword);
-            addJsonSuccess(responseDetailsJson);
+            try {
+                blogKeywordsDAO.add(blogKeyword);
+                addJsonSuccess(responseDetailsJson);
+            } catch (DuplicateKeyException e) {
+                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogKeywordsAlreadyExists"));
+            }
         } else {
             prepareErrorResponse(result, responseDetailsJson);
         }

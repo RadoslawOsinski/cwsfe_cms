@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -95,21 +96,33 @@ public class BlogKeywordsControllerTest {
 
     @Test
     public void testAddBlogKeyword() throws Exception {
-        BlogKeyword cmsTextI18nCategory = new BlogKeyword();
         String keywordName = "keywordName";
-        long id = 1l;
-        cmsTextI18nCategory.setId(id);
-        cmsTextI18nCategory.setKeywordName(keywordName);
         when(blogKeywordsDAO.add(any(BlogKeyword.class))).thenReturn(1l);
 
         ResultActions resultActions = mockMvc.perform(post("/addBlogKeyword")
-                .param("keywordName", keywordName))
-                .andExpect(status().isOk());
+                .param("keywordName", keywordName));
 
         resultActions
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + BlogKeywordsController.JSON_STATUS).value(BlogKeywordsController.JSON_STATUS_SUCCESS));
+                .andExpect(jsonPath("$." + BlogKeywordsController.JSON_STATUS).value(BlogKeywordsController.JSON_STATUS_SUCCESS))
+                .andExpect(jsonPath("$." + BlogKeywordsController.JSON_ERROR_MESSAGES + "[0]").exists());
+        verify(blogKeywordsDAO, times(1)).add(any(BlogKeyword.class));
+        verifyNoMoreInteractions(blogKeywordsDAO);
+    }
+
+    @Test
+    public void testAddExistingBlogKeyword() throws Exception {
+        String keywordName = "keywordName";
+        when(blogKeywordsDAO.add(any(BlogKeyword.class))).thenThrow(new DuplicateKeyException("Duplicate!"));
+
+        ResultActions resultActions = mockMvc.perform(post("/addBlogKeyword")
+                .param("keywordName", keywordName));
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+                .andExpect(jsonPath("$." + BlogKeywordsController.JSON_STATUS).value(BlogKeywordsController.JSON_STATUS_FAIL));
         verify(blogKeywordsDAO, times(1)).add(any(BlogKeyword.class));
         verifyNoMoreInteractions(blogKeywordsDAO);
     }

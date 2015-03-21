@@ -1,6 +1,24 @@
-require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
+require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
+
+    function BlogKeywordsViewModel() {
+        var self = this;
+        self.keywordName = ko.observable();
+
+        self.keywordNameIsRequiredStyle= ko.computed(function() {
+            return self.keywordName() == null || self.keywordName() === '' ? 'error' : 'invisible';
+        });
+        self.addBlogKeywordFormIsValid = ko.computed(function() {
+            return self.keywordName() != null && self.keywordName() !== '';
+        });
+    }
+
+    var viewModel = {
+        blogKeywordsViewModel: new BlogKeywordsViewModel(),
+        formAlerts: new formAlertsModule.formAlerts()
+    };
 
     $(document).ready(function () {
+        ko.applyBindings(viewModel);
 
         $('#blogKeywordsList').dataTable({
             'iTabIndex': -1,
@@ -34,27 +52,29 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
         removeBlogKeyword($(this).val());
     });
 
+    $('#resetAddBlogKeyword').click(function() {
+        viewModel.blogKeywordsViewModel.keywordName(null);
+        viewModel.formAlerts.cleanAllMessages();
+    });
+
     function addBlogKeyword() {
-        var keywordName = $('#keywordName').val();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addBlogKeyword',
-            data: "keywordName=" + keywordName,
+            data: "keywordName=" + viewModel.blogKeywordsViewModel.keywordName(),
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#blogKeywordsList").dataTable().fnDraw();
-                    $('#keywordName').val('');
+                    viewModel.blogKeywordsViewModel.keywordName('');
                 } else {
-                    var errorInfo = "";
-                    for (i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#formValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -69,15 +89,13 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
                 if (response.status === 'SUCCESS') {
                     $("#blogKeywordsList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }

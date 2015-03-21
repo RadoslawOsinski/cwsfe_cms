@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -126,13 +127,8 @@ public class LanguagesControllerTest {
 
     @Test
     public void testAddLanguage() throws Exception {
-        Language cmsTextI18nCategory = new Language();
         String code = "code";
         String name = "name";
-        long id = 1l;
-        cmsTextI18nCategory.setId(id);
-        cmsTextI18nCategory.setCode(code);
-        cmsTextI18nCategory.setName(name);
         when(cmsLanguagesDAO.add(any(Language.class))).thenReturn(1l);
 
         ResultActions resultActions = mockMvc.perform(post("/addLanguage")
@@ -144,6 +140,25 @@ public class LanguagesControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
                 .andExpect(jsonPath("$." + LanguagesController.JSON_STATUS).value(LanguagesController.JSON_STATUS_SUCCESS));
+        verify(cmsLanguagesDAO, times(1)).add(any(Language.class));
+        verifyNoMoreInteractions(cmsLanguagesDAO);
+    }
+
+    @Test
+    public void testAddExistingLanguage() throws Exception {
+        String code = "code";
+        String name = "name";
+        when(cmsLanguagesDAO.add(any(Language.class))).thenThrow(new DuplicateKeyException("Duplicate"));
+
+        ResultActions resultActions = mockMvc.perform(post("/addLanguage")
+                .param("code", code)
+                .param("name", name));
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+                .andExpect(jsonPath("$." + LanguagesController.JSON_STATUS).value(LanguagesController.JSON_STATUS_FAIL))
+                .andExpect(jsonPath("$." + LanguagesController.JSON_ERROR_MESSAGES + "[0]").exists());
         verify(cmsLanguagesDAO, times(1)).add(any(Language.class));
         verifyNoMoreInteractions(cmsLanguagesDAO);
     }
