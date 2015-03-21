@@ -8,7 +8,7 @@ requirejs.config({
 
     paths: {
         jquery: 'resources-cwsfe-cms/js/jquery/jquery-2.1.1.min',
-        jqueryUi: '/resources-cwsfe-cms/js/jqueryui/jquery-ui-1.10.3.custom.min',
+        jqueryUi: '/resources-cwsfe-cms/js/jqueryui/jquery-ui.min',
         foundation: '/resources-cwsfe-cms/js/foundation/foundation',
         foundationTabs: '/resources-cwsfe-cms/js/foundation/foundation.tab',
         foundationOffCanvas: '/resources-cwsfe-cms/js/foundation/foundation.offcanvas',

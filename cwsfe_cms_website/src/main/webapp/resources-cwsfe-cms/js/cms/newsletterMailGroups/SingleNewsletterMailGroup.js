@@ -74,6 +74,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             $(this).autocomplete("search", "");
         });
 
+        $('.ui-autocomplete').addClass('f-dropdown');
     });
 
     function searchMailInNewsletterMailGroup() {

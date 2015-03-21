@@ -1,0 +1,93 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="UTF-8">
+    <meta name="description" content="CWSFE CMS"/>
+    <meta name="author" content="Radosław Osiński">
+    <meta name="robots" content="none"/>
+    <title>CWSFE CMS</title>
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/foundation/normalize.css"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/foundation/foundation.css"
+          type="text/css"/>
+
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min.js"></script>
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/jqueryui/jquery-ui.min.js"></script>
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.js"></script>
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.dropdown.js"></script>
+
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/cms/shared.css"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/cms/colors.css"
+          type="text/css"/>
+
+    <script>
+        $(document).ready(function () {
+            $(document).foundation();
+
+            var availableTags = [
+                "ActionScript",
+                "AppleScript",
+                "Asp",
+                "BASIC",
+                "C",
+                "C++",
+                "Clojure",
+                "COBOL",
+                "ColdFusion",
+                "Erlang",
+                "Fortran",
+                "Groovy",
+                "Haskell",
+                "Java",
+                "JavaScript",
+                "Lisp",
+                "Perl",
+                "PHP",
+                "Python",
+                "Ruby",
+                "Scala",
+                "Scheme"
+            ];
+            $('#userName').autocomplete({
+                source: availableTags,
+                minLength: 0,
+                select: function (event, ui) {
+                }
+            }).focus(function () {
+                $(this).autocomplete("search", "");
+            });
+
+            //important class for jquery autocomplete from foundation
+            $('.ui-autocomplete').addClass('f-dropdown');
+        });
+
+    </script>
+
+</head>
+<body>
+
+<h1>Form</h1>
+
+<form id="blogPostBasicInfoForm">
+    <fieldset>
+        <legend>Personalia:</legend>
+        <div class="row">
+            <label for="userName">Username</label>
+            <input type="text" id="userName"/>
+        </div>
+        <div class="row">
+            <label for="status">Status</label>
+            <select id="status">
+                <option value="H" selected>Hidden</option>
+                <option value="P">Published</option>
+            </select>
+        </div>
+    </fieldset>
+</form>
+</body>
+</html>

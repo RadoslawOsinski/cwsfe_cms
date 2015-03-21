@@ -61,3 +61,6 @@ ul.subMenu {
 	-moz-border-radius:3px;;
 	-webkit-border-radius:3px;
 }
+
+/*################################################JQUERY AUTOCOMPLETE################*/
+.ui-helper-hidden-accessible{display:none}

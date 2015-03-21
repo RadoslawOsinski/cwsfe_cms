@@ -236,6 +236,7 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
             deleteBlogComment($(this).val());
         });
 
+        $('.ui-autocomplete').addClass('f-dropdown');
     });
 
     function saveBlogPost() {

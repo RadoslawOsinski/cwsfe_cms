@@ -40,7 +40,7 @@
         require.config({
             paths: {
                 jquery: $contextPath + '/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min',
-                jqueryUi: $contextPath + '/resources-cwsfe-cms/js/jqueryui/jquery-ui-1.10.3.custom.min',
+                jqueryUi: $contextPath + '/resources-cwsfe-cms/js/jqueryui/jquery-ui.min',
                 foundation: $contextPath + '/resources-cwsfe-cms/js/foundation/foundation',
                 foundationTabs: $contextPath + '/resources-cwsfe-cms/js/foundation/foundation.tab',
                 foundationOffCanvas: $contextPath + '/resources-cwsfe-cms/js/foundation/foundation.offcanvas',

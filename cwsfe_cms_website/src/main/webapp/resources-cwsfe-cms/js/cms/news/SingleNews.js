@@ -189,6 +189,7 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
             removeNewsImage($(this).val());
         });
 
+        $('.ui-autocomplete').addClass('f-dropdown');
     });
 
     function saveNews() {

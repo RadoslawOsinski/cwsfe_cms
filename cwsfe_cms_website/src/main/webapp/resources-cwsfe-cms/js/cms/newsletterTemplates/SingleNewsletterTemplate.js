@@ -28,6 +28,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout'], function ($) {
             $(this).autocomplete("search", "");
         });
 
+        $('.ui-autocomplete').addClass('f-dropdown');
     });
 
     $('#newsletterTemplateTestSendButton').click(function() {

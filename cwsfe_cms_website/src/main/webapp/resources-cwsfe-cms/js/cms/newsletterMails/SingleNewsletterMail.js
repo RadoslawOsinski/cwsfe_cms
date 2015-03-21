@@ -45,6 +45,7 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'foundationReveal'], function ($) {
             $('#confirmSendNewsletterModal').foundation('reveal', 'close');
         });
 
+        $('.ui-autocomplete').addClass('f-dropdown');
     });
 
     function newsletterTestSend() {
