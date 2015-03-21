@@ -21,7 +21,7 @@
                     </div>
                     <div class="row">
                         <input type="button" value="Submit" id="searchNewsletterTemplateButton"
-                               class="button small radius">
+                               class="button small radius primary">
                         <input type="reset" value="Reset" class="button small radius alert">
                     </div>
                 </fieldset>
@@ -60,7 +60,7 @@
                         <input type="text" id="newsletterTemplateName" maxlength="100"/>
                     </div>
                     <div class="row">
-                        <input type="button" id="addNewsletterTemplateButton" class="button small radius"
+                        <input type="button" id="addNewsletterTemplateButton" class="button small radius primary"
                                value="<spring:message code="Add"/>">
                         <input type="reset" value="Reset" class="button small radius alert">
                     </div>

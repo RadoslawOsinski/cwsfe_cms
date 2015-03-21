@@ -1,16 +1,30 @@
-require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko) {
+require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
 
     function UserNetAddressesModel() {
         var self = this;
-        self.userId = null;
+        self.userId = ko.observable();
         self.netAddress = ko.observable();
+
+        self.userNameIsRequiredStyle= ko.computed(function() {
+            return self.userId() == null || self.userId() === '' ? 'error' : 'invisible';
+        });
+        self.netAddressIsRequiredStyle= ko.computed(function() {
+            return self.netAddress() == null || self.netAddress() === '' ? 'error' : 'invisible';
+        });
+        self.addUserNetAddressFormIsValid = ko.computed(function() {
+            return self.userId() != null && self.userId() !== '' &&
+                self.netAddress() != null && self.netAddress() !== '';
+        });
     }
 
-    var userNetAddressesModel = new UserNetAddressesModel();
+    var viewModel = {
+        userNetAddressesModel: new UserNetAddressesModel(),
+        formAlerts: new formAlertsModule.formAlerts()
+    };
 
     $(document).ready(function () {
 
-        ko.applyBindings(userNetAddressesModel);
+        ko.applyBindings(viewModel);
 
         $('#netAddresses').dataTable({
             'iTabIndex': -1,
@@ -55,7 +69,7 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable'], function (
             },
             minLength: 0,
             select: function (event, ui) {
-                userNetAddressesModel.userId = ui.item.id;
+                viewModel.userNetAddressesModel.userId(ui.item.id);
             }
         }).focus(function () {
             $(this).autocomplete("search", "");
@@ -72,28 +86,31 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable'], function (
         removeNetAddress($(this).val());
     });
 
+    $('#resetAddNetAddressButton').click(function() {
+        viewModel.userNetAddressesModel.userId(null);
+        viewModel.userNetAddressesModel.netAddress(null);
+        viewModel.formAlerts.cleanAllMessages();
+    });
 
     function addNetAddress() {
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addNetAddress',
-            data: "userId=" + userNetAddressesModel.userId + "&inetAddress=" + userNetAddressesModel.netAddress(),
+            data: "userId=" + viewModel.userNetAddressesModel.userId() + "&inetAddress=" + viewModel.userNetAddressesModel.netAddress(),
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#netAddresses").dataTable().fnDraw();
-                    $("#userName").val();
-                    userNetAddressesModel.netAddress('');
+                    viewModel.userNetAddressesModel.userId(null);
+                    viewModel.userNetAddressesModel.netAddress(null);
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#formValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -108,15 +125,13 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable'], function (
                 if (response.status === 'SUCCESS') {
                     $("#netAddresses").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }

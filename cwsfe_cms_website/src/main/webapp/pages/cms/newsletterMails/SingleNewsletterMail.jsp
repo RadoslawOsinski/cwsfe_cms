@@ -65,7 +65,7 @@
                         <input type="email" id="testEmail" maxlength="350"/>
                     </div>
                     <div class="row">
-                        <input type="button" id="newsletterTestSendButton" value="<spring:message code="TestSend"/>" class="button small radius">
+                        <input type="button" id="newsletterTestSendButton" value="<spring:message code="TestSend"/>" class="button small radius primary">
                         <input type="reset" value="Reset" class="button small radius alert">
                     </div>
                 </fieldset>

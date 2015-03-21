@@ -68,7 +68,7 @@
                         <input type="text" id="newsCode" maxlength="100"/>
                     </div>
                     <div class="row">
-                        <input type="button" id="addNewsButton" class="button small radius"
+                        <input type="button" id="addNewsButton" class="button small radius primary"
                                value="<spring:message code="Add"/>">
                         <input type="reset" value="Reset" class="button small radius alert">
                     </div>

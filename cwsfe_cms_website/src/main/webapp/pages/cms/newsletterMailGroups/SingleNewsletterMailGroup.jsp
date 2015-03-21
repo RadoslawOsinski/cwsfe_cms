@@ -23,7 +23,7 @@
                         <input type="text" id="language" value="${newsletterMailGroupLanguageCode}"/>
                     </div>
                     <div class="row">
-                        <input type="button" id="saveNewsletterMailGroupButton" class="button small radius"
+                        <input type="button" id="saveNewsletterMailGroupButton" class="button small radius primary"
                                value="<spring:message code="Save"/>">
                         <input type="reset" value="Reset" class="button small radius alert">
                     </div>
@@ -73,7 +73,7 @@
                         <input type="email" id="newsletterMailAddress" maxlength="350"/>
                     </div>
                     <div class="row">
-                        <input type="button" id="addNewsletterMailAddressButton" class="button small radius"
+                        <input type="button" id="addNewsletterMailAddressButton" class="button small radius primary"
                                value="<spring:message code="Add"/>">
                         <input type="reset" value="Reset" class="button small radius alert">
                     </div>

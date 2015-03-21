@@ -30,7 +30,7 @@
                         <input type="text" id="category"/>
                     </div>
                     <div class="row">
-                        <input type="button" id="addCmsTextI18nCategoryButton" class="button small radius"
+                        <input type="button" id="addCmsTextI18nCategoryButton" class="button small radius primary"
                                value="<spring:message code="Add"/>">
                         <input type="reset" value="Reset" class="button small radius alert"/>
                     </div>

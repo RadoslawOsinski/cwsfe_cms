@@ -80,7 +80,7 @@
                                disabled/>
                     </div>
                     <div class="row">
-                        <input type="button" id="saveBlogPostButton" class="button small radius"
+                        <input type="button" id="saveBlogPostButton" class="button small radius primary"
                                value="<spring:message code="Save"/>">
                         <input type="reset" value="Revert" class="button small radius alert"/>
                     </div>
@@ -128,7 +128,7 @@
                             </select>
                         </div>
                         <div class="row">
-                            <input type="submit" value="<spring:message code="Save"/>" class="button small radius"/>
+                            <input type="submit" value="<spring:message code="Save"/>" class="button small radius primary"/>
                             <input type="reset" value="Revert" id="revertPostI18nButton"
                                    class="button small radius alert"/>
                         </div>
@@ -246,7 +246,7 @@
                     </div>
 
                     <div class="row">
-                        <input type="submit" value="<spring:message code="Add"/>" class="button small radius"/>
+                        <input type="submit" value="<spring:message code="Add"/>" class="button small radius primary"/>
                         <input type="reset" class="button small radius alert"/>
                     </div>
                 </form>
@@ -290,7 +290,7 @@
 
                     </c:forEach>
                     <div class="row">
-                        <input type="submit" value="<spring:message code="Save"/>" class="button small radius"/>
+                        <input type="submit" value="<spring:message code="Save"/>" class="button small radius primary"/>
                         <input type="reset" class="button small radius alert"/>
                     </div>
                 </form>
@@ -331,7 +331,7 @@
                     </div>
 
                     <div class="row">
-                        <input type="button" id="addBlogPostCodeButton" class="button small radius"
+                        <input type="button" id="addBlogPostCodeButton" class="button small radius primary"
                                value="<spring:message code="Add"/>">
                         <input type="reset" class="button small radius alert"/>
                     </div>

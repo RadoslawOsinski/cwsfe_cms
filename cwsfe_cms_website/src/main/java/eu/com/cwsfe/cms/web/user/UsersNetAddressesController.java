@@ -90,8 +90,12 @@ class UsersNetAddressesController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "inetAddress", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NetAddressMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsUserAllowedNetAddressDAO.add(cmsUserAllowedNetAddress);
-            addJsonSuccess(responseDetailsJson);
+            try {
+                cmsUserAllowedNetAddressDAO.add(cmsUserAllowedNetAddress);
+                addJsonSuccess(responseDetailsJson);
+            } catch (Exception e) {
+                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NetAddressIsIncorrect"));
+            }
         } else {
             prepareErrorResponse(result, responseDetailsJson);
         }

@@ -51,7 +51,7 @@
                             </select>
                         </div>
                         <div class="row">
-                            <input type="button" id="saveUserButton" class="button small radius"
+                            <input type="button" id="saveUserButton" class="button small radius primary"
                                    value="<spring:message code="Save"/>">
                             <input type="reset" value="Revert" class="button small radius alert"/>
                         </div>
@@ -80,7 +80,7 @@
 
                         </c:forEach>
                         <div class="row">
-                            <input type="submit" value="<spring:message code="Save"/>" class="button small radius"/>
+                            <input type="submit" value="<spring:message code="Save"/>" class="button small radius primary"/>
                             <input type="reset" class="button small radius alert"/>
                         </div>
                     </fieldset>

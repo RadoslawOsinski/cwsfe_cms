@@ -18,14 +18,18 @@ public abstract class JsonController {
     public static final String CWSFE_CMS_RESOURCE_BUNDLE_PATH = "cwsfe_cms_i18n";
 
     protected void prepareErrorResponse(BindingResult result, JSONObject responseDetailsJson) {
+        JSONArray jsonArray = (JSONArray) responseDetailsJson.get(JSON_ERROR_MESSAGES);
+        if (jsonArray == null) {
+            jsonArray = new JSONArray();
+        }
         responseDetailsJson.put(JSON_STATUS, JSON_STATUS_FAIL);
-        JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < result.getAllErrors().size(); i++) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("error", result.getAllErrors().get(i).getCode());
             jsonArray.add(formDetailsJson);
         }
-        responseDetailsJson.put(JSON_RESULT, jsonArray);
+        responseDetailsJson.remove(JSON_ERROR_MESSAGES);
+        responseDetailsJson.put(JSON_ERROR_MESSAGES, jsonArray);
     }
 
     protected void addJsonSuccess(JSONObject responseDetailsJson) {

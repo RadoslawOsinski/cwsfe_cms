@@ -55,8 +55,8 @@
                         <spring:message
                                 code="PasswordMustBeSet"/></small>
                     <input type="button" id="addUserButton" class="button small radius primary"
-                           value="<spring:message code="Add"/>" data-bind="enable: usersViewModel.addUserFormIsValid">
-                    <input type="reset" id="resetAddUser" value="Reset" class="button small radius alert">
+                           value="<spring:message code="Add"/>" data-bind="enable: usersViewModel.addUserFormIsValid"/>
+                    <input type="reset" id="resetAddUser" value="Reset" class="button small radius alert"/>
                 </fieldset>
             </form>
         </div>
