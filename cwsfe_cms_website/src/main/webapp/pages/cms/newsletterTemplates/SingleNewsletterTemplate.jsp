@@ -56,7 +56,7 @@
                     </div>
                     <div class="row">
                         <input type="submit" name="requestHandler" value="<spring:message code="Save"/>"
-                               class="button small radius"/>
+                               class="button small radius primary"/>
                         <input type="reset" value="Reset" class="button small radius alert">
                     </div>
                 </fieldset>
@@ -76,7 +76,7 @@
                     </div>
                     <div class="row">
                         <input type="button" id="newsletterTemplateTestSendButton" value="<spring:message code="TestSend"/>"
-                               class="button small radius">
+                               class="button small radius secondary">
                         <input type="reset" value="Reset" class="button small radius alert">
                     </div>
                 </fieldset>

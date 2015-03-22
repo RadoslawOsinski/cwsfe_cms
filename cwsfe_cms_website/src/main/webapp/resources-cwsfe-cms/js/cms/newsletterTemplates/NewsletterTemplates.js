@@ -1,6 +1,30 @@
-require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
+require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
+
+    function NewNewsletterTemplateViewModel() {
+        var self = this;
+        self.languageId = null;
+        self.language = ko.observable();
+        self.newsletterTemplateName = ko.observable();
+
+        self.languageIsRequiredStyle= ko.computed(function() {
+            return self.language() == null || self.language() === '' ? 'error' : 'invisible';
+        });
+        self.newsletterTemplateNameIsRequiredStyle= ko.computed(function() {
+            return self.newsletterTemplateName() == null || self.newsletterTemplateName() === '' ? 'error' : 'invisible';
+        });
+        self.newNewsletterTemplateFormIsValid = ko.computed(function() {
+            return self.language() != null && self.language() !== '' &&
+                self.newsletterTemplateName() != null && self.newsletterTemplateName() !== '';
+        });
+    }
+
+    var viewModel = {
+        newNewsletterTemplateViewModel: new NewNewsletterTemplateViewModel(),
+        formAlerts: new formAlertsModule.formAlerts()
+    };
 
     $(document).ready(function () {
+        ko.applyBindings(viewModel);
 
         $('#newsletterTemplatesList').dataTable({
             'iTabIndex': -1,
@@ -97,7 +121,8 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             },
             minLength: 0,
             select: function (event, ui) {
-                $('#languageId').val(ui.item.id);
+                viewModel.newNewsletterTemplateViewModel.languageId = ui.item.id;
+                viewModel.newNewsletterTemplateViewModel.language(ui.item.value);
             }
         }).focus(function () {
             $(this).autocomplete("search", "");
@@ -126,29 +151,34 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
         removeNewsletterTemplate($(this).val());
     });
 
+    $('#resetAddNewNewsletterTemplate').click(function() {
+        viewModel.newNewsletterTemplateViewModel.languageId = null;
+        viewModel.newNewsletterTemplateViewModel.language(null);
+        viewModel.newNewsletterTemplateViewModel.newsletterTemplateName(null);
+        viewModel.formAlerts.cleanAllMessages();
+    });
+
     function addNewsletterTemplate() {
-        var newsletterTemplateName = $('#newsletterTemplateName').val();
-        var languageId = $('#languageId').val();
         var subject = $('#subject').val();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addNewsletterTemplate',
-            data: "name=" + newsletterTemplateName + "&languageId=" + languageId + "&subject=" + subject,
+            data: "name=" + viewModel.newNewsletterTemplateViewModel.newsletterTemplateName() + "&languageId=" + viewModel.newNewsletterTemplateViewModel.languageId + "&subject=" + subject,
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#newsletterTemplatesList").dataTable().fnDraw();
-                    $("#addNewNewsletterTemplateForm").trigger('reset');
+                    viewModel.newNewsletterTemplateViewModel.languageId = null;
+                    viewModel.newNewsletterTemplateViewModel.language(null);
+                    viewModel.newNewsletterTemplateViewModel.newsletterTemplateName(null);
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#formValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -163,15 +193,13 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 if (response.status === 'SUCCESS') {
                     $("#newsletterTemplatesList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -186,15 +214,13 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 if (response.status === 'SUCCESS') {
                     $("#newsletterTemplatesList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
