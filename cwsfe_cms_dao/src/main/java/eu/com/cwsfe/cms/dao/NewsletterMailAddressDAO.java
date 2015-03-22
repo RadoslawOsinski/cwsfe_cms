@@ -165,13 +165,8 @@ public class NewsletterMailAddressDAO {
         Object[] dbParams = new Object[2];
         dbParams[0] = email;
         dbParams[1] = mailGroupId;
-        try {
-            return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                    mapNewsletterMailAddress(resultSet));
-        } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
-        }
-        return null;
+        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
+                mapNewsletterMailAddress(resultSet));
     }
 
     public NewsletterMailAddress getByConfirmString(String confirmString) {

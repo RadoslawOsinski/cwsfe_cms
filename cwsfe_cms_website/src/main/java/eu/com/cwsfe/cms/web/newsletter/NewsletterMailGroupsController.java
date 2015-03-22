@@ -12,6 +12,7 @@ import eu.com.cwsfe.cms.model.NewsletterMailGroup;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -223,8 +224,13 @@ class NewsletterMailGroupsController extends JsonController {
         if (!EmailValidator.isValidEmailAddress(newsletterMailAddress.getEmail())) {
             result.rejectValue("email", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("EmailIsInvalid"));
         } else {
-            NewsletterMailAddress existingMailAddress = newsletterMailAddressDAO.getByEmailAndMailGroup(newsletterMailAddress.getEmail(), newsletterMailAddress.getMailGroupId());
-            if (existingMailAddress != null) {
+            boolean mailAddressAlreadyExist = true;
+            try {
+                newsletterMailAddressDAO.getByEmailAndMailGroup(newsletterMailAddress.getEmail(), newsletterMailAddress.getMailGroupId());
+            } catch (EmptyResultDataAccessException e) {
+                mailAddressAlreadyExist = false;
+            }
+            if (mailAddressAlreadyExist) {
                 result.rejectValue("email", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("EmailAlreadyAdded"));
             }
         }

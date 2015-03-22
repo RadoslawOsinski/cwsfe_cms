@@ -1,6 +1,30 @@
-require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
+require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
+
+    function NewsletterMailGroupViewModel() {
+        var self = this;
+        self.languageId = null;
+        self.language = ko.observable();
+        self.newsletterMailGroupName = ko.observable();
+
+        self.languageIsRequiredStyle = ko.computed(function() {
+            return self.language() == null || self.language() === '' ? 'error' : 'invisible';
+        });
+        self.newsletterMailGroupNameIsRequiredStyle= ko.computed(function() {
+            return self.newsletterMailGroupName() == null || self.newsletterMailGroupName() === '' ? 'error' : 'invisible';
+        });
+        self.addNewsletterMailGroupFormIsValid = ko.computed(function() {
+            return self.language() != null && self.language() !== '' &&
+                self.newsletterMailGroupName() != null && self.newsletterMailGroupName() !== '';
+        });
+    }
+
+    var viewModel = {
+        newsletterMailGroupViewModel: new NewsletterMailGroupViewModel(),
+        formAlerts: new formAlertsModule.formAlerts()
+    };
 
     $(document).ready(function () {
+        ko.applyBindings(viewModel);
 
         $('#newsletterMailGroupsList').dataTable({
             'iTabIndex': -1,
@@ -85,7 +109,8 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             },
             minLength: 0,
             select: function (event, ui) {
-                $('#languageId').val(ui.item.id);
+                viewModel.newsletterMailGroupViewModel.language(ui.item.value);
+                viewModel.newsletterMailGroupViewModel.languageId = ui.item.id;
             }
         }).focus(function () {
             $(this).autocomplete("search", "");
@@ -106,28 +131,34 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
         removeNewsletterMailGroup($(this).val());
     });
 
+    $('#resetAddNewsletterMailGroup').click(function() {
+        viewModel.newsletterMailGroupViewModel.languageId = null;
+        viewModel.newsletterMailGroupViewModel.language(null);
+        viewModel.newsletterMailGroupViewModel.newsletterMailGroupName(null);
+        viewModel.formAlerts.cleanAllMessages();
+    });
+
     function addNewsletterMailGroup() {
-        var newsletterMailGroupName = $('#newsletterMailGroupName').val();
-        var languageId = $('#languageId').val();
+        viewModel.formAlerts.cleanAllMessages();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addNewsletterMailGroup',
-            data: "name=" + newsletterMailGroupName + "&languageId=" + languageId,
+            data: "name=" + viewModel.newsletterMailGroupViewModel.newsletterMailGroupName() + "&languageId=" + viewModel.newsletterMailGroupViewModel.languageId,
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#newsletterMailGroupsList").dataTable().fnDraw();
-                    $("#addNewBlogPostForm").trigger('reset');
+                    viewModel.newsletterMailGroupViewModel.languageId = null;
+                    viewModel.newsletterMailGroupViewModel.language(null);
+                    viewModel.newsletterMailGroupViewModel.newsletterMailGroupName(null);
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#formValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -141,17 +172,14 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#newsletterMailGroupsList").dataTable().fnDraw();
-                    $("#addNewNewsletterMailGroupForm").trigger('reset');
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }

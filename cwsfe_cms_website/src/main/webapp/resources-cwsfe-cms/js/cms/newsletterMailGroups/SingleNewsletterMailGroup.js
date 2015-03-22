@@ -1,7 +1,39 @@
-require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
+require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
+
+    function SingleNewsletterMailGroupViewModel() {
+        var self = this;
+        self.newsletterMailGroupName = ko.observable($('#newsletterMailGroupName').val());
+        self.languageId = $('#languageId').val();
+        self.language = ko.observable($('#language').val());
+        self.newsletterMailAddress = ko.observable($('#newsletterMailAddress').val());
+
+        self.newsletterMailGroupNameIsRequiredStyle= ko.computed(function() {
+            return self.newsletterMailGroupName() == null || self.newsletterMailGroupName() === '' ? 'error' : 'invisible';
+        });
+        self.languageIsRequiredStyle= ko.computed(function() {
+            return self.language() == null || self.language() === '' ? 'error' : 'invisible';
+        });
+        self.newsletterMailAddressIsRequiredStyle= ko.computed(function() {
+            return self.newsletterMailAddress() == null || self.newsletterMailAddress() === '' ? 'error' : 'invisible';
+        });
+        self.saveNewsletterMailGroupFormIsValid = ko.computed(function() {
+            return self.newsletterMailGroupName() != null && self.newsletterMailGroupName() !== '' &&
+                self.language() != null && self.language() !== '';
+        });
+        self.addNewsletterMailAddressFormIsValid = ko.computed(function() {
+            return self.newsletterMailAddress() != null && self.newsletterMailAddress() !== '';
+        });
+    }
+
+    var viewModel = {
+        singleNewsletterMailGroupViewModel: new SingleNewsletterMailGroupViewModel(),
+        editMailGroupAlerts: new formAlertsModule.formAlerts(),
+        newMailAddressAlerts: new formAlertsModule.formAlerts()
+    };
 
     $(document).ready(function () {
-
+        ko.applyBindings(viewModel);
+        
         $('#newsletterMailAddressesList').dataTable({
             'iTabIndex': -1,
             'bAutoWidth': true,
@@ -106,54 +138,64 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
         removeNewsletterMailAddress($(this).val());
     });
 
+    $('#resetSaveNewsletterMailGroupFormIsValid').click(function() {
+        viewModel.singleNewsletterMailGroupViewModel.newsletterMailGroupName($('#newsletterMailGroupName').val());
+        viewModel.singleNewsletterMailGroupViewModel.languageId = $('#languageId').val();
+        viewModel.singleNewsletterMailGroupViewModel.language($('#language').val());
+        viewModel.editMailGroupAlerts.cleanAllMessages();
+    });
+
+     $('#resetAddNewsletterMailAddress').click(function() {
+        viewModel.singleNewsletterMailGroupViewModel.newsletterMailAddress(null);
+        viewModel.newMailAddressAlerts.cleanAllMessages();
+    });
+
     function updateNewsletterMailGroup() {
+        viewModel.editMailGroupAlerts.cleanAllMessages();
         var mailGroupId = $('#mailGroupId').val();
-        var languageId = $('#languageId').val();
-        var newsletterMailGroupName = $('#newsletterMailGroupName').val();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'updateNewsletterMailGroup',
-            data: "id=" + mailGroupId + "&name=" + newsletterMailGroupName + "&languageId=" + languageId,
+            data: "id=" + mailGroupId + "&name=" + viewModel.singleNewsletterMailGroupViewModel.newsletterMailGroupName() + "&languageId=" + viewModel.singleNewsletterMailGroupViewModel.languageId,
             success: function (response) {
                 if (response.status === 'SUCCESS') {
-                    $("#mailGroupEditFormValidation").html("<p>Success</p>").show('slow');
+                    viewModel.singleNewsletterMailGroupViewModel.newsletterMailGroupName($('#newsletterMailGroupName').val());
+                    viewModel.singleNewsletterMailGroupViewModel.languageId = $('#languageId').val();
+                    viewModel.singleNewsletterMailGroupViewModel.language($('#language').val());
+                    viewModel.editMailGroupAlerts.cleanAllMessages();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.editMailGroupAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#mailGroupEditFormValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.editMailGroupAlerts.addMessage(response, 'error');
             }
         });
     }
 
     function addNewsletterMailAddress() {
+        viewModel.newMailAddressAlerts.cleanAllMessages();
         var mailGroupId = $('#mailGroupId').val();
-        var newsletterMailAddress = $('#newsletterMailAddress').val();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addNewsletterMailAddresses',
-            data: "mailGroupId=" + mailGroupId + "&email=" + newsletterMailAddress,
+            data: "mailGroupId=" + mailGroupId + "&email=" + viewModel.singleNewsletterMailGroupViewModel.newsletterMailAddress(),
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#newsletterMailAddressesList").dataTable().fnDraw();
-                    $("#addNewMailAddressForm").trigger('reset');
+                    viewModel.singleNewsletterMailGroupViewModel.newsletterMailAddress(null);
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.newMailAddressAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#addNewMailAddressFormValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.newMailAddressAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -168,15 +210,13 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 if (response.status === 'SUCCESS') {
                     $('#newsletterMailAddressesList').dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.editMailGroupAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.editMailGroupAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -191,15 +231,13 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 if (response.status === 'SUCCESS') {
                     $('#newsletterMailAddressesList').dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.editMailGroupAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.editMailGroupAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -214,15 +252,13 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 if (response.status === 'SUCCESS') {
                     $('#newsletterMailAddressesList').dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.editMailGroupAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.editMailGroupAlerts.addMessage(response, 'error');
             }
         });
     }

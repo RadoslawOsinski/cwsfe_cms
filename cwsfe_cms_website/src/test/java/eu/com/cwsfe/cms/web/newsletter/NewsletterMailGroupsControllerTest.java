@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -243,7 +244,7 @@ public class NewsletterMailGroupsControllerTest {
 
     @Test
     public void testAddNewsletterMailAddressesEmailValid() throws Exception {
-        when(newsletterMailAddressDAO.getByEmailAndMailGroup(anyString(), anyLong())).thenReturn(null);
+        when(newsletterMailAddressDAO.getByEmailAndMailGroup(anyString(), anyLong())).thenThrow(new EmptyResultDataAccessException(1));
         when(newsletterMailAddressDAO.getByConfirmString(anyString())).thenReturn(null);
         when(newsletterMailAddressDAO.getByUnSubscribeString(anyString())).thenReturn(null);
         when(newsletterMailAddressDAO.add(any(NewsletterMailAddress.class))).thenReturn(1l);
@@ -261,6 +262,27 @@ public class NewsletterMailGroupsControllerTest {
         verify(newsletterMailAddressDAO, times(1)).getByConfirmString(anyString());
         verify(newsletterMailAddressDAO, times(1)).getByUnSubscribeString(anyString());
         verify(newsletterMailAddressDAO, times(1)).add(any(NewsletterMailAddress.class));
+        verifyNoMoreInteractions(newsletterMailAddressDAO);
+    }
+
+    @Test
+    public void testAddExistingNewsletterMailAddressesEmailValid() throws Exception {
+        when(newsletterMailAddressDAO.getByEmailAndMailGroup(anyString(), anyLong())).thenReturn(new NewsletterMailAddress());
+        when(newsletterMailAddressDAO.getByConfirmString(anyString())).thenReturn(null);
+        when(newsletterMailAddressDAO.getByUnSubscribeString(anyString())).thenReturn(null);
+        when(newsletterMailAddressDAO.add(any(NewsletterMailAddress.class))).thenReturn(1l);
+
+        ResultActions resultActions = mockMvc.perform(post("/newsletterMailGroups/addNewsletterMailAddresses")
+                        .param("mailGroupId", "1")
+                        .param("email", "existing@cwsfe.pl")
+        );
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+                .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_FAIL))
+                .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_ERROR_MESSAGES + "[0]").exists());
+        verify(newsletterMailAddressDAO, times(1)).getByEmailAndMailGroup(anyString(), anyLong());
         verifyNoMoreInteractions(newsletterMailAddressDAO);
     }
 
