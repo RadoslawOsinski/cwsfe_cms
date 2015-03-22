@@ -5,10 +5,10 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.userName = ko.observable();
         self.passwordHash = ko.observable();
 
-        self.userNameIsRequiredStyle= ko.computed(function() {
+        self.userNameIsRequiredStyle = ko.computed(function() {
             return self.userName() == null || self.userName() === '' ? 'error' : 'invisible';
         });
-        self.passwordIsRequiredStyle= ko.computed(function() {
+        self.passwordIsRequiredStyle = ko.computed(function() {
             return self.passwordHash() == null || self.passwordHash() === '' ? 'error' : 'invisible';
         });
         self.addUserFormIsValid = ko.computed(function() {

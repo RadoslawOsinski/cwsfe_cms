@@ -171,7 +171,8 @@ class NewsletterTemplateController extends JsonController {
         return "cms/newsletterTemplates/SingleNewsletterTemplate";
     }
 
-    @RequestMapping(value = "/newsletterTemplates/updateNewsletterTemplate", method = RequestMethod.POST)
+    @RequestMapping(value = "/newsletterTemplates/updateNewsletterTemplate", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
     public String updateNewsletterTemplate(
             @ModelAttribute(value = "newsletterTemplate") NewsletterTemplate newsletterTemplate,
             BindingResult result, ModelMap model, Locale locale, HttpServletRequest httpServletRequest
@@ -181,18 +182,15 @@ class NewsletterTemplateController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "name", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterTemplateNameMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "subject", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("SubjectMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "content", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("ContentMustBeSet"));
+        JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
             newsletterTemplate.setContent(newsletterTemplate.getContent().trim());
             newsletterTemplateDAO.update(newsletterTemplate);
-            model.addAttribute("updateSuccessfull", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("Saved"));
+            addJsonSuccess(responseDetailsJson);
         } else {
-            StringBuilder errors = new StringBuilder();
-            for (int i = 0; i < result.getAllErrors().size(); i++) {
-                errors.append(result.getAllErrors().get(i).getCode()).append("<br/>");
-            }
-            model.addAttribute("updateErrors", errors);
+            prepareErrorResponse(result, responseDetailsJson);
         }
-        return browseNewsletterTemplate(model, locale, newsletterTemplate.getId(), httpServletRequest);
+        return responseDetailsJson.toString();
     }
 
     @RequestMapping(value = "/newsletterTemplates/newsletterTemplateTestSend", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
