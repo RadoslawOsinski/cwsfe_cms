@@ -1,6 +1,42 @@
-require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
+require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
+
+    function NewsViewModel() {
+        var self = this;
+        self.authorId = null;
+        self.author = ko.observable();
+        self.newsTypeId = null;
+        self.newsType = ko.observable();
+        self.newsFolderId = null;
+        self.newsFolder = ko.observable();
+        self.newsCode = ko.observable();
+
+        self.authorIsRequiredStyle = ko.computed(function() {
+            return self.author() == null || self.author() === '' ? 'error' : 'invisible';
+        });
+        self.newsTypeIsRequiredStyle = ko.computed(function() {
+            return self.newsType() == null || self.newsType() === '' ? 'error' : 'invisible';
+        });
+        self.newsFolderIsRequiredStyle = ko.computed(function() {
+            return self.newsFolder() == null || self.newsFolder() === '' ? 'error' : 'invisible';
+        });
+        self.newsCodeIsRequiredStyle = ko.computed(function() {
+            return self.newsCode() == null || self.newsCode() === '' ? 'error' : 'invisible';
+        });
+        self.addNewsFormIsValid = ko.computed(function() {
+            return self.author() != null && self.author() !== '' &&
+                self.newsType() != null && self.newsType() !== '' &&
+                self.newsFolder() != null && self.newsFolder() !== '' &&
+                self.newsCode() != null && self.newsCode() !== '';
+        });
+    }
+
+    var viewModel = {
+        newsViewModel: new NewsViewModel(),
+        formAlerts: new formAlertsModule.formAlerts()
+    };
 
     $(document).ready(function () {
+        ko.applyBindings(viewModel);
 
         $('#newsList').dataTable({
             'iTabIndex': -1,
@@ -84,7 +120,8 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             },
             minLength: 0,
             select: function (event, ui) {
-                $('#authorId').val(ui.item.id);
+                viewModel.newsViewModel.authorId = ui.item.id;
+                viewModel.newsViewModel.author(ui.item.value);
             }
         }).focus(function () {
             $(this).autocomplete("search", "");
@@ -110,7 +147,8 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             },
             minLength: 0,
             select: function (event, ui) {
-                $('#newsTypeId').val(ui.item.id);
+                viewModel.newsViewModel.newsTypeId = ui.item.id;
+                viewModel.newsViewModel.newsType(ui.item.value);
             }
         }).focus(function () {
             $(this).autocomplete("search", "");
@@ -137,7 +175,8 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             },
             minLength: 0,
             select: function (event, ui) {
-                $('#newsFolderId').val(ui.item.id);
+                viewModel.newsViewModel.newsFolderId = ui.item.id;
+                viewModel.newsViewModel.newsFolder(ui.item.value);
             }
         }).focus(function () {
             $(this).autocomplete("search", "");
@@ -158,30 +197,43 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
         removeNews($(this).val());
     });
 
+    $('#resetAddBlogPost').click(function() {
+        viewModel.newsViewModel.authorId = null;
+        viewModel.newsViewModel.author(null);
+        viewModel.newsViewModel.newsTypeId = null;
+        viewModel.newsViewModel.newsType(null);
+        viewModel.newsViewModel.newsFolderId = null;
+        viewModel.newsViewModel.newsFolder(null);
+        viewModel.newsViewModel.newsCode(null);
+        viewModel.formAlerts.cleanAllMessages();
+    });
+    
     function addNews() {
-        var authorId = $('#authorId').val();
-        var newsTypeId = $('#newsTypeId').val();
-        var newsFolderId = $('#newsFolderId').val();
-        var newsCode = $('#newsCode').val();
+        viewModel.formAlerts.cleanAllMessages();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addNews',
-            data: "authorId=" + authorId + "&newsTypeId=" + newsTypeId + "&newsFolderId=" + newsFolderId + "&newsCode=" + newsCode,
+            data: "authorId=" + viewModel.newsViewModel.authorId + "&newsTypeId=" + viewModel.newsViewModel.newsTypeId +
+                "&newsFolderId=" + viewModel.newsViewModel.newsFolderId + "&newsCode=" + viewModel.newsViewModel.newsCode(),
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#newsList").dataTable().fnDraw();
-                    $("#addNewNewsForm").trigger('reset');
+                    viewModel.newsViewModel.authorId = null;
+                    viewModel.newsViewModel.author(null);
+                    viewModel.newsViewModel.newsTypeId = null;
+                    viewModel.newsViewModel.newsType(null);
+                    viewModel.newsViewModel.newsFolderId = null;
+                    viewModel.newsViewModel.newsFolder(null);
+                    viewModel.newsViewModel.newsCode(null);
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#formValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -196,15 +248,13 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 if (response.status === 'SUCCESS') {
                     $("#newsList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }

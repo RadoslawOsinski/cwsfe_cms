@@ -1,6 +1,30 @@
-require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
+require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
+
+    function BlogPostsViewModel() {
+        var self = this;
+        self.authorId = null;
+        self.author = ko.observable();
+        self.postTextCode = ko.observable();
+
+        self.authorIsRequiredStyle = ko.computed(function() {
+            return self.author() == null || self.author() === '' ? 'error' : 'invisible';
+        });
+        self.postTextCodeIsRequiredStyle = ko.computed(function() {
+            return self.postTextCode() == null || self.postTextCode() === '' ? 'error' : 'invisible';
+        });
+        self.addBlogPostFormIsValid = ko.computed(function() {
+            return self.author() != null && self.author() !== '' &&
+                self.postTextCode() != null && self.postTextCode() !== '';
+        });
+    }
+
+    var viewModel = {
+        blogPostsViewModel: new BlogPostsViewModel(),
+        formAlerts: new formAlertsModule.formAlerts()
+    };
 
     $(document).ready(function () {
+        ko.applyBindings(viewModel);
 
         $('#blogPostsList').dataTable({
             'iTabIndex': -1,
@@ -84,7 +108,8 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             },
             minLength: 0,
             select: function (event, ui) {
-                $('#authorId').val(ui.item.id);
+                viewModel.blogPostsViewModel.authorId = ui.item.id;
+                viewModel.blogPostsViewModel.author(ui.item.value);
             }
         }).focus(function () {
             $(this).autocomplete("search", "");
@@ -105,28 +130,34 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
         removeBlogPost($(this).val());
     });
 
+    $('#resetAddBlogPost').click(function() {
+        viewModel.blogPostsViewModel.authorId = null;
+        viewModel.blogPostsViewModel.author(null);
+        viewModel.blogPostsViewModel.postTextCode(null);
+        viewModel.formAlerts.cleanAllMessages();
+    });
+
     function addBlogPost() {
-        var authorId = $('#authorId').val();
-        var postTextCode = $('#postTextCode').val();
+        viewModel.formAlerts.cleanAllMessages();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addBlogPost',
-            data: "postAuthorId=" + authorId + "&postTextCode=" + postTextCode,
+            data: "postAuthorId=" + viewModel.blogPostsViewModel.authorId + "&postTextCode=" + viewModel.blogPostsViewModel.postTextCode(),
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#blogPostsList").dataTable().fnDraw();
-                    $("#addNewBlogPostForm").trigger('reset');
+                    viewModel.blogPostsViewModel.authorId = null;
+                    viewModel.blogPostsViewModel.author(null);
+                    viewModel.blogPostsViewModel.postTextCode(null);
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#formValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -141,15 +172,13 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 if (response.status === 'SUCCESS') {
                     $("#blogPostsList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
