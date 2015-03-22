@@ -1,6 +1,35 @@
-require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
+require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
+
+    function NewsletterMailsViewModel() {
+        var self = this;
+        self.recipientGroupId = null;
+        self.recipientGroup = ko.observable();
+        self.newsletterMailName = ko.observable();
+        self.newsletterMailSubject = ko.observable();
+
+        self.recipientGroupIsRequiredStyle= ko.computed(function() {
+            return self.recipientGroup() == null || self.recipientGroup() === '' ? 'error' : 'invisible';
+        });
+        self.newsletterMailNameIsRequiredStyle= ko.computed(function() {
+            return self.newsletterMailName() == null || self.newsletterMailName() === '' ? 'error' : 'invisible';
+        });
+        self.newsletterMailSubjectIsRequiredStyle= ko.computed(function() {
+            return self.newsletterMailSubject() == null || self.newsletterMailSubject() === '' ? 'error' : 'invisible';
+        });
+        self.addNewsletterMailFormIsValid = ko.computed(function() {
+            return self.recipientGroup() != null && self.recipientGroup() !== '' &&
+                self.newsletterMailName() != null && self.newsletterMailName() !== '' &&
+                self.newsletterMailSubject() != null && self.newsletterMailSubject() !== '';
+        });
+    }
+
+    var viewModel = {
+        newsletterMailsViewModel: new NewsletterMailsViewModel(),
+        formAlerts: new formAlertsModule.formAlerts()
+    };
 
     $(document).ready(function () {
+        ko.applyBindings(viewModel);
 
         $('#newsletterMailsList').dataTable({
             'iTabIndex': -1,
@@ -113,7 +142,8 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
             },
             minLength: 0,
             select: function (event, ui) {
-                $('#recipientGroupId').val(ui.item.id);
+                viewModel.newsletterMailsViewModel.recipientGroup(ui.item.value);
+                viewModel.newsletterMailsViewModel.recipientGroupId = ui.item.id;
             }
         }).focus(function () {
             $(this).autocomplete("search", "");
@@ -126,29 +156,35 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
         $("#newsletterMailsList").dataTable().fnDraw();
     }
 
+    $('#resetAddNewsletterMail').click(function() {
+        viewModel.newsletterMailsViewModel.recipientGroupId = null;
+        viewModel.newsletterMailsViewModel.recipientGroup(null);
+        viewModel.newsletterMailsViewModel.newsletterMailName(null);
+        viewModel.newsletterMailsViewModel.newsletterMailSubject(null);
+        viewModel.formAlerts.cleanAllMessages();
+    });
+
     function addNewsletterMail() {
-        var newsletterMailName = $('#newsletterMailName').val();
-        var recipientGroupId = $('#recipientGroupId').val();
-        var newsletterMailSubject = $('#newsletterMailSubject').val();
+        viewModel.formAlerts.cleanAllMessages();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addNewsletterMail',
-            data: "name=" + newsletterMailName + "&recipientGroupId=" + recipientGroupId + "&subject=" + newsletterMailSubject,
+            data: "name=" + viewModel.newsletterMailsViewModel.newsletterMailName() + "&recipientGroupId=" + viewModel.newsletterMailsViewModel.recipientGroupId + "&subject=" + viewModel.newsletterMailsViewModel.newsletterMailSubject(),
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#newsletterMailsList").dataTable().fnDraw();
-                    $("#addNewNewsletterMailForm").trigger('reset');
+                    viewModel.newsletterMailsViewModel.recipientGroup(null);
+                    viewModel.newsletterMailsViewModel.newsletterMailName(null);
+                    viewModel.newsletterMailsViewModel.newsletterMailSubject(null);
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#formValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -163,15 +199,13 @@ require(['jquery', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($) {
                 if (response.status === 'SUCCESS') {
                     $("#newsletterMailsList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                viewModel.formAlerts.addMessage(response, 'error');
             }
         });
     }
