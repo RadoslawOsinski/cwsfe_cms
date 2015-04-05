@@ -177,3 +177,7 @@ h1{
 .dataTables_paginate .paginate_button_disabled{
     background-color: #e7e7e7 !important;
 }
+
+.ball-grid-pulse > div {
+	background-color: #00729f;
+}

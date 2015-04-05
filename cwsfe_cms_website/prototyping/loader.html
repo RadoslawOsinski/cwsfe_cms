@@ -1,0 +1,69 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="UTF-8">
+    <meta name="description" content="CWSFE CMS"/>
+    <meta name="author" content="Radosław Osiński">
+    <meta name="robots" content="none"/>
+    <title>CWSFE CMS</title>
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/foundation/normalize.css"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/foundation/foundation.css"
+          type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="../src/main/webapp/resources-cwsfe-cms/css/loaders/loaders.css"/>
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/cms/shared.css"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="../src/main/webapp/resources-cwsfe-cms/css/cms/colors.css"
+          type="text/css"/>
+
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min.js"></script>
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation.js"></script>
+
+    <script src="../src/main/webapp/resources-cwsfe-cms/js/requirejs/require.js"
+            type="application/javascript"></script>
+
+    <script type="application/javascript">
+        var $contextPath = '/';
+        require.config({
+            paths: {
+                jquery: '../src/main/webapp/resources-cwsfe-cms/js/jquery/jquery-2.1.1.min',
+                jqueryUi: '../src/main/webapp/resources-cwsfe-cms/js/jqueryui/jquery-ui.min.js',
+                foundation: '../src/main/webapp/resources-cwsfe-cms/js/foundation/foundation',
+                cmsLayout: '../src/main/webapp/resources-cwsfe-cms/js/cms/layout/CmsLayout'
+            },
+            shim: {
+                'jqueryUi': ['jquery'],
+                'foundation': ['jquery']
+            }
+        });
+
+        $(document).ready(function () {
+            $(document).foundation();
+            $('#pageLoad').show('slow').delay(5000).hide('slow');
+        });
+
+    </script>
+
+</head>
+<body>
+
+    <div id="pageLoad" class="loader row large-centered" hidden>
+        <div class="loader-inner ball-grid-pulse">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+</body>
+</html>
