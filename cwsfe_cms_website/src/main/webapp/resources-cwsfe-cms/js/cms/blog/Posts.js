@@ -7,14 +7,14 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.postTextCode = ko.observable();
 
         self.authorIsRequiredStyle = ko.computed(function() {
-            return self.author() == null || self.author() === '' ? 'error' : 'invisible';
+            return self.author() === null || self.author() === '' ? 'error' : 'invisible';
         });
         self.postTextCodeIsRequiredStyle = ko.computed(function() {
-            return self.postTextCode() == null || self.postTextCode() === '' ? 'error' : 'invisible';
+            return self.postTextCode() === null || self.postTextCode() === '' ? 'error' : 'invisible';
         });
         self.addBlogPostFormIsValid = ko.computed(function() {
-            return self.author() != null && self.author() !== '' &&
-                self.postTextCode() != null && self.postTextCode() !== '';
+            return self.author() !== null && self.author() !== '' &&
+                self.postTextCode() !== null && self.postTextCode() !== '';
         });
     }
 

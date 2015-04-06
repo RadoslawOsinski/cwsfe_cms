@@ -7,14 +7,14 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.newsletterTemplateName = ko.observable();
 
         self.languageIsRequiredStyle= ko.computed(function() {
-            return self.language() == null || self.language() === '' ? 'error' : 'invisible';
+            return self.language() === null || self.language() === '' ? 'error' : 'invisible';
         });
         self.newsletterTemplateNameIsRequiredStyle= ko.computed(function() {
-            return self.newsletterTemplateName() == null || self.newsletterTemplateName() === '' ? 'error' : 'invisible';
+            return self.newsletterTemplateName() === null || self.newsletterTemplateName() === '' ? 'error' : 'invisible';
         });
         self.newNewsletterTemplateFormIsValid = ko.computed(function() {
-            return self.language() != null && self.language() !== '' &&
-                self.newsletterTemplateName() != null && self.newsletterTemplateName() !== '';
+            return self.language() !== null && self.language() !== '' &&
+                self.newsletterTemplateName() !== null && self.newsletterTemplateName() !== '';
         });
     }
 

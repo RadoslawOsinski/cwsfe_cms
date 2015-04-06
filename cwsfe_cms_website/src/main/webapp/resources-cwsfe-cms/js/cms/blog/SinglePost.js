@@ -20,40 +20,40 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.blogPostCodeAlerts = new formAlertsModule.formAlerts();
 
         self.postTextCodeIsRequiredStyle = ko.computed(function () {
-            return self.postTextCode() == null || self.postTextCode() === '' ? 'error' : 'invisible';
+            return self.postTextCode() === null || self.postTextCode() === '' ? 'error' : 'invisible';
         });
         self.postTitleIsRequiredStyle = ko.computed(function () {
-            if (self.languageId() == null) {
+            if (self.languageId() === null) {
                 return 'invisible';
             }
-            return self.postTitle() == null || self.postTitle() === '' ? 'error' : 'invisible';
+            return self.postTitle() === null || self.postTitle() === '' ? 'error' : 'invisible';
         });
         self.i18nLanguageIsRequiredStyle = ko.computed(function () {
-            return self.languageId() == null ? 'error' : 'invisible';
+            return self.languageId() === null ? 'error' : 'invisible';
         });
         self.imageTitleIsRequiredStyle = ko.computed(function () {
-            return self.imageTitle() == null || self.imageTitle() === '' ? 'error' : 'invisible';
+            return self.imageTitle() === null || self.imageTitle() === '' ? 'error' : 'invisible';
         });
         self.codeIdIsRequiredStyle = ko.computed(function () {
-            return self.codeId() == null || self.codeId() === '' ? 'error' : 'invisible';
+            return self.codeId() === null || self.codeId() === '' ? 'error' : 'invisible';
         });
 
         self.editPostFormIsValid = ko.computed(function () {
-            return self.postTextCode() != null && self.postTextCode() !== '' &&
-                self.status() != null && self.status() !== '';
+            return self.postTextCode() !== null && self.postTextCode() !== '' &&
+                self.status() !== null && self.status() !== '';
         });
         self.addImageFormIsValid = ko.computed(function () {
-            return self.imageTitle() != null && self.imageTitle() !== '';
+            return self.imageTitle() !== null && self.imageTitle() !== '';
         });
 
         self.isPostI18nVisible = ko.computed(function () {
-            return self.languageId() != null;
+            return self.languageId() !== null;
         });
         self.savePostI18nFormIsValid = ko.computed(function () {
-            return self.postTitle() != null && self.postTitle() !== '';
+            return self.postTitle() !== null && self.postTitle() !== '';
         });
         self.addCodeFormIsValid = ko.computed(function () {
-            return self.codeId() != null && self.codeId() !== '';
+            return self.codeId() !== null && self.codeId() !== '';
         });
 
         self.initializeSinglePostViewModel = function () {
@@ -65,7 +65,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                 url: $('#blogPostId').val() + '/' + self.languageId(),
                 async: true,
                 success: function (response) {
-                    if (response != null && 'SUCCESS' === response.status) {
+                    if (response !== null && 'SUCCESS' === response.status) {
                         self.postTitle(response.data.postTitle);
                         self.postShortcut(response.data.postShortcut);
                         self.postDescription(response.data.postDescription);

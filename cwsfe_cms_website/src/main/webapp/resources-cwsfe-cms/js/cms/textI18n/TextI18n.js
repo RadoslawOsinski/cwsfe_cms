@@ -10,22 +10,22 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.text = ko.observable();
 
         self.searchLanguageIsRequiredStyle= ko.computed(function() {
-            return self.searchLanguage() == null || self.searchLanguage() === '' ? 'error' : 'invisible';
+            return self.searchLanguage() === null || self.searchLanguage() === '' ? 'error' : 'invisible';
         });
         self.searchCategoryIsRequiredStyle= ko.computed(function() {
-            return self.searchCategory() == null || self.searchCategory() === '' ? 'error' : 'invisible';
+            return self.searchCategory() === null || self.searchCategory() === '' ? 'error' : 'invisible';
         });
         self.keyIsRequiredStyle= ko.computed(function() {
-            return self.key() == null || self.key() === '' ? 'error' : 'invisible';
+            return self.key() === null || self.key() === '' ? 'error' : 'invisible';
         });
         self.textIsRequiredStyle= ko.computed(function() {
-            return self.text() == null || self.text() === '' ? 'error' : 'invisible';
+            return self.text() === null || self.text() === '' ? 'error' : 'invisible';
         });
         self.addTranslationFormIsValid = ko.computed(function() {
-            return self.searchLanguage() != null && self.searchLanguage() !== '' &&
-                self.searchCategory() != null && self.searchCategory() !== '' &&
-                self.key() != null && self.key() !== '' &&
-                self.text() != null && self.text() !== '';
+            return self.searchLanguage() !== null && self.searchLanguage() !== '' &&
+                self.searchCategory() !== null && self.searchCategory() !== '' &&
+                self.key() !== null && self.key() !== '' &&
+                self.text() !== null && self.text() !== '';
         });
     }
 

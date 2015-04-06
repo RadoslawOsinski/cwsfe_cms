@@ -5,10 +5,10 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         self.type = ko.observable();
 
         self.typeIsRequiredStyle= ko.computed(function() {
-            return self.type() == null || self.type() === '' ? 'error' : 'invisible';
+            return self.type() === null || self.type() === '' ? 'error' : 'invisible';
         });
         self.addNewsTypeFormIsValid = ko.computed(function() {
-            return self.type() != null && self.type() !== '';
+            return self.type() !== null && self.type() !== '';
         });
     }
 

@@ -6,14 +6,14 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.passwordHash = ko.observable();
 
         self.userNameIsRequiredStyle = ko.computed(function() {
-            return self.userName() == null || self.userName() === '' ? 'error' : 'invisible';
+            return self.userName() === null || self.userName() === '' ? 'error' : 'invisible';
         });
         self.passwordIsRequiredStyle = ko.computed(function() {
-            return self.passwordHash() == null || self.passwordHash() === '' ? 'error' : 'invisible';
+            return self.passwordHash() === null || self.passwordHash() === '' ? 'error' : 'invisible';
         });
         self.addUserFormIsValid = ko.computed(function() {
-            return self.userName() != null && self.userName() !== '' &&
-                self.passwordHash() != null && self.passwordHash() !== '';
+            return self.userName() !== null && self.userName() !== '' &&
+                self.passwordHash() !== null && self.passwordHash() !== '';
         });
     }
 

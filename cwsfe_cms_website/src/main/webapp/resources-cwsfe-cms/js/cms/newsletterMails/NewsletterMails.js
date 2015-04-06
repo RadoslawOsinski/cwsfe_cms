@@ -8,18 +8,18 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.newsletterMailSubject = ko.observable();
 
         self.recipientGroupIsRequiredStyle= ko.computed(function() {
-            return self.recipientGroup() == null || self.recipientGroup() === '' ? 'error' : 'invisible';
+            return self.recipientGroup() === null || self.recipientGroup() === '' ? 'error' : 'invisible';
         });
         self.newsletterMailNameIsRequiredStyle= ko.computed(function() {
-            return self.newsletterMailName() == null || self.newsletterMailName() === '' ? 'error' : 'invisible';
+            return self.newsletterMailName() === null || self.newsletterMailName() === '' ? 'error' : 'invisible';
         });
         self.newsletterMailSubjectIsRequiredStyle= ko.computed(function() {
-            return self.newsletterMailSubject() == null || self.newsletterMailSubject() === '' ? 'error' : 'invisible';
+            return self.newsletterMailSubject() === null || self.newsletterMailSubject() === '' ? 'error' : 'invisible';
         });
         self.addNewsletterMailFormIsValid = ko.computed(function() {
-            return self.recipientGroup() != null && self.recipientGroup() !== '' &&
-                self.newsletterMailName() != null && self.newsletterMailName() !== '' &&
-                self.newsletterMailSubject() != null && self.newsletterMailSubject() !== '';
+            return self.recipientGroup() !== null && self.recipientGroup() !== '' &&
+                self.newsletterMailName() !== null && self.newsletterMailName() !== '' &&
+                self.newsletterMailSubject() !== null && self.newsletterMailSubject() !== '';
         });
     }
 

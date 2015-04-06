@@ -9,24 +9,24 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout'], function 
         self.testEmail = ko.observable();
 
         self.languageIsRequiredStyle = ko.computed(function() {
-            return self.language() == null || self.language() === '' ? 'error' : 'invisible';
+            return self.language() === null || self.language() === '' ? 'error' : 'invisible';
         });
         self.newsletterTemplateNameIsRequiredStyle = ko.computed(function() {
-            return self.newsletterTemplateName() == null || self.newsletterTemplateName() === '' ? 'error' : 'invisible';
+            return self.newsletterTemplateName() === null || self.newsletterTemplateName() === '' ? 'error' : 'invisible';
         });
         self.newsletterTemplateSubjectIsRequiredStyle = ko.computed(function() {
-            return self.newsletterTemplateSubject() == null || self.newsletterTemplateSubject() === '' ? 'error' : 'invisible';
+            return self.newsletterTemplateSubject() === null || self.newsletterTemplateSubject() === '' ? 'error' : 'invisible';
         });
         self.testEmailIsRequiredStyle = ko.computed(function() {
-            return self.testEmail() == null || self.testEmail() === '' ? 'error' : 'invisible';
+            return self.testEmail() === null || self.testEmail() === '' ? 'error' : 'invisible';
         });
         self.updateNewsletterTemplateFormIsValid = ko.computed(function() {
-            return self.language() != null && self.language() !== '' &&
-                self.newsletterTemplateName() != null && self.newsletterTemplateName() !== '' &&
-                self.newsletterTemplateSubject() != null && self.newsletterTemplateSubject() !== '';
+            return self.language() !== null && self.language() !== '' &&
+                self.newsletterTemplateName() !== null && self.newsletterTemplateName() !== '' &&
+                self.newsletterTemplateSubject() !== null && self.newsletterTemplateSubject() !== '';
         });
         self.newsletterTemplateTestSendFormIsValid = ko.computed(function() {
-            return self.testEmail() != null && self.testEmail() !== '';
+            return self.testEmail() !== null && self.testEmail() !== '';
         });
     }
 

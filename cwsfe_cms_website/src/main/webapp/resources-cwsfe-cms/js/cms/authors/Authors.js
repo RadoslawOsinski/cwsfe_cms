@@ -6,14 +6,14 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         self.lastName = ko.observable();
 
         self.firstNameIsRequiredStyle= ko.computed(function() {
-            return self.firstName() == null || self.firstName() === '' ? 'error' : 'invisible';
+            return self.firstName() === null || self.firstName() === '' ? 'error' : 'invisible';
         });
         self.lastNameIsRequiredStyle= ko.computed(function() {
-            return self.lastName() == null || self.lastName() === '' ? 'error' : 'invisible';
+            return self.lastName() === null || self.lastName() === '' ? 'error' : 'invisible';
         });
         self.addAuthorFormIsValid = ko.computed(function() {
-            return self.firstName() != null && self.firstName() !== '' &&
-                self.lastName() != null && self.lastName() !== '';
+            return self.firstName() !== null && self.firstName() !== '' &&
+                self.lastName() !== null && self.lastName() !== '';
         });
     }
 

@@ -6,10 +6,10 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         self.orderNumber = ko.observable(0);
 
         self.folderNameIsRequiredStyle= ko.computed(function() {
-            return self.folderName() == null || self.folderName() === '' ? 'error' : 'invisible';
+            return self.folderName() === null || self.folderName() === '' ? 'error' : 'invisible';
         });
         self.addFolderFormIsValid = ko.computed(function() {
-            return self.folderName() != null && self.folderName() !== '';
+            return self.folderName() !== null && self.folderName() !== '';
         });
     }
 

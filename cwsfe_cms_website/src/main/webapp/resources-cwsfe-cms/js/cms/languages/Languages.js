@@ -6,14 +6,14 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         self.name = ko.observable();
 
         self.languageIsRequiredStyle= ko.computed(function() {
-            return self.code() == null || self.code() === '' ? 'error' : 'invisible';
+            return self.code() === null || self.code() === '' ? 'error' : 'invisible';
         });
         self.languageNameIsRequiredStyle= ko.computed(function() {
-            return self.name() == null || self.name() === '' ? 'error' : 'invisible';
+            return self.name() === null || self.name() === '' ? 'error' : 'invisible';
         });
         self.addLanguagesFormIsValid = ko.computed(function() {
-            return self.code() != null && self.code() !== '' &&
-                self.name() != null && self.name() !== '';
+            return self.code() !== null && self.code() !== '' &&
+                self.name() !== null && self.name() !== '';
         });
     }
 

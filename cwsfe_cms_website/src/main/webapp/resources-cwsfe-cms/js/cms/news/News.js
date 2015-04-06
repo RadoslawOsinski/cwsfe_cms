@@ -11,22 +11,22 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.newsCode = ko.observable();
 
         self.authorIsRequiredStyle = ko.computed(function() {
-            return self.author() == null || self.author() === '' ? 'error' : 'invisible';
+            return self.author() === null || self.author() === '' ? 'error' : 'invisible';
         });
         self.newsTypeIsRequiredStyle = ko.computed(function() {
-            return self.newsType() == null || self.newsType() === '' ? 'error' : 'invisible';
+            return self.newsType() === null || self.newsType() === '' ? 'error' : 'invisible';
         });
         self.newsFolderIsRequiredStyle = ko.computed(function() {
-            return self.newsFolder() == null || self.newsFolder() === '' ? 'error' : 'invisible';
+            return self.newsFolder() === null || self.newsFolder() === '' ? 'error' : 'invisible';
         });
         self.newsCodeIsRequiredStyle = ko.computed(function() {
-            return self.newsCode() == null || self.newsCode() === '' ? 'error' : 'invisible';
+            return self.newsCode() === null || self.newsCode() === '' ? 'error' : 'invisible';
         });
         self.addNewsFormIsValid = ko.computed(function() {
-            return self.author() != null && self.author() !== '' &&
-                self.newsType() != null && self.newsType() !== '' &&
-                self.newsFolder() != null && self.newsFolder() !== '' &&
-                self.newsCode() != null && self.newsCode() !== '';
+            return self.author() !== null && self.author() !== '' &&
+                self.newsType() !== null && self.newsType() !== '' &&
+                self.newsFolder() !== null && self.newsFolder() !== '' &&
+                self.newsCode() !== null && self.newsCode() !== '';
         });
     }
 

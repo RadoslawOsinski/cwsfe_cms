@@ -9,24 +9,24 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'foundatio
         self.testEmail = ko.observable();
 
         self.newsletterMailGroupNameIsRequiredStyle= ko.computed(function() {
-            return self.newsletterMailGroupName() == null || self.newsletterMailGroupName() === '' ? 'error' : 'invisible';
+            return self.newsletterMailGroupName() === null || self.newsletterMailGroupName() === '' ? 'error' : 'invisible';
         });
         self.nameIsRequiredStyle= ko.computed(function() {
-            return self.name() == null || self.name() === '' ? 'error' : 'invisible';
+            return self.name() === null || self.name() === '' ? 'error' : 'invisible';
         });
         self.subjectIsRequiredStyle= ko.computed(function() {
-            return self.subject() == null || self.subject() === '' ? 'error' : 'invisible';
+            return self.subject() === null || self.subject() === '' ? 'error' : 'invisible';
         });
          self.testEmailIsRequiredStyle= ko.computed(function() {
-            return self.testEmail() == null || self.testEmail() === '' ? 'error' : 'invisible';
+            return self.testEmail() === null || self.testEmail() === '' ? 'error' : 'invisible';
         });
         self.updateNewsletterMailFormIsValid = ko.computed(function() {
-            return self.newsletterMailGroupName() != null && self.newsletterMailGroupName() !== '' &&
-                self.name() != null && self.name() !== '' &&
-                self.subject() != null && self.subject() !== '';
+            return self.newsletterMailGroupName() !== null && self.newsletterMailGroupName() !== '' &&
+                self.name() !== null && self.name() !== '' &&
+                self.subject() !== null && self.subject() !== '';
         });
         self.newsletterTestSendFormIsValid = ko.computed(function() {
-            return self.testEmail() != null && self.testEmail() !== '';
+            return self.testEmail() !== null && self.testEmail() !== '';
         });
     }
 

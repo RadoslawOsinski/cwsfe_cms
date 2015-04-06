@@ -6,7 +6,7 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
         self.i18nData = ko.observable();
 
         self.isNewsI18nVisible = ko.computed(function() {
-            return self.languageId() != null;
+            return self.languageId() !== null;
         });
 
         self.initializeSingleNewsViewModel = function() {
@@ -18,7 +18,7 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
                 url: $('#cmsNewsId').val() + '/' + self.languageId(),
                 async: true,
                 success: function (response) {
-                    if (response != null && 'SUCCESS' === response.status) {
+                    if (response !== null && 'SUCCESS' === response.status) {
                         self.i18nData({
                             newsTitle: response.data.newsTitle,
                             newsShortcut: response.data.newsShortcut,

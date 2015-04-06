@@ -6,14 +6,14 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.netAddress = ko.observable();
 
         self.userNameIsRequiredStyle= ko.computed(function() {
-            return self.userId() == null || self.userId() === '' ? 'error' : 'invisible';
+            return self.userId() === null || self.userId() === '' ? 'error' : 'invisible';
         });
         self.netAddressIsRequiredStyle= ko.computed(function() {
-            return self.netAddress() == null || self.netAddress() === '' ? 'error' : 'invisible';
+            return self.netAddress() === null || self.netAddress() === '' ? 'error' : 'invisible';
         });
         self.addUserNetAddressFormIsValid = ko.computed(function() {
-            return self.userId() != null && self.userId() !== '' &&
-                self.netAddress() != null && self.netAddress() !== '';
+            return self.userId() !== null && self.userId() !== '' &&
+                self.netAddress() !== null && self.netAddress() !== '';
         });
     }
 

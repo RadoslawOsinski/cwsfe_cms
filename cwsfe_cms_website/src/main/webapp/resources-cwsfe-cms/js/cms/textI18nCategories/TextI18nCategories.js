@@ -5,10 +5,10 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         self.category = ko.observable();
 
         self.categoryIsRequiredStyle= ko.computed(function() {
-            return self.category() == null || self.category() === '' ? 'error' : 'invisible';
+            return self.category() === null || self.category() === '' ? 'error' : 'invisible';
         });
         self.addCategoryFormIsValid = ko.computed(function() {
-            return self.category() != null && self.category() !== '';
+            return self.category() !== null && self.category() !== '';
         });
     }
 

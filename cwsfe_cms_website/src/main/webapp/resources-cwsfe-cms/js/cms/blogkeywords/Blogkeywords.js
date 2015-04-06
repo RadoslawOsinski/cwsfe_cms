@@ -5,10 +5,10 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         self.keywordName = ko.observable();
 
         self.keywordNameIsRequiredStyle= ko.computed(function() {
-            return self.keywordName() == null || self.keywordName() === '' ? 'error' : 'invisible';
+            return self.keywordName() === null || self.keywordName() === '' ? 'error' : 'invisible';
         });
         self.addBlogKeywordFormIsValid = ko.computed(function() {
-            return self.keywordName() != null && self.keywordName() !== '';
+            return self.keywordName() !== null && self.keywordName() !== '';
         });
     }
 

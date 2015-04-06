@@ -7,14 +7,14 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.newsletterMailGroupName = ko.observable();
 
         self.languageIsRequiredStyle = ko.computed(function() {
-            return self.language() == null || self.language() === '' ? 'error' : 'invisible';
+            return self.language() === null || self.language() === '' ? 'error' : 'invisible';
         });
         self.newsletterMailGroupNameIsRequiredStyle= ko.computed(function() {
-            return self.newsletterMailGroupName() == null || self.newsletterMailGroupName() === '' ? 'error' : 'invisible';
+            return self.newsletterMailGroupName() === null || self.newsletterMailGroupName() === '' ? 'error' : 'invisible';
         });
         self.addNewsletterMailGroupFormIsValid = ko.computed(function() {
-            return self.language() != null && self.language() !== '' &&
-                self.newsletterMailGroupName() != null && self.newsletterMailGroupName() !== '';
+            return self.language() !== null && self.language() !== '' &&
+                self.newsletterMailGroupName() !== null && self.newsletterMailGroupName() !== '';
         });
     }
 
