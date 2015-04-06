@@ -1,14 +1,12 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.domains.BlogPostStatus;
-import eu.com.cwsfe.cms.model.BlogKeyword;
-import eu.com.cwsfe.cms.model.BlogPost;
-import eu.com.cwsfe.cms.model.BlogPostKeyword;
-import eu.com.cwsfe.cms.model.CmsAuthor;
+import eu.com.cwsfe.cms.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -67,6 +65,48 @@ public class BlogPostKeywordsDAOTest extends AbstractTransactionalJUnit4SpringCo
     }
 
     @Test
+    public void testListValuesForPost() throws Exception {
+        //given
+        //when
+        List<BlogKeywordAssignment> list = dao.listValuesForPost(1l);
+
+        //then
+        assertNotNull("Empty results should not return null", list);
+        assertFalse("Keywords exist in cms so assignment info should exist", list.isEmpty());
+        for (BlogKeywordAssignment blogKeywordAssignment : list) {
+            assertNotNull("Assignment info should be true or false", blogKeywordAssignment.isAssigned());
+        }
+    }
+
+    @Test
+    public void testGet() throws Exception {
+        //given
+        BlogPostKeyword blogPostKeyword = new BlogPostKeyword(BLOG_POST.getId(), BLOG_KEYWORD.getId());
+        dao.add(blogPostKeyword);
+
+        //when
+        BlogPostKeyword blogPostKeywordFromDatabase = dao.get(BLOG_POST.getId(), BLOG_KEYWORD.getId());
+
+        //then
+        assertNotNull("Assigned keyword to post should exist after adding", blogPostKeywordFromDatabase);
+        assertEquals(BLOG_KEYWORD.getId(), blogPostKeywordFromDatabase.getBlogKeywordId());
+        assertEquals(BLOG_POST.getId(), blogPostKeywordFromDatabase.getBlogPostId());
+    }
+
+    @Test
+    public void testGetNonExisting() throws Exception {
+        //given
+
+        //when
+        try {
+            dao.get(BLOG_POST.getId(), BLOG_KEYWORD.getId());
+            fail("There should be exception for non existing entry");
+        } catch (EmptyResultDataAccessException e) {
+            //then exception should occur
+        }
+    }
+
+    @Test
     public void testAdd() throws Exception {
         //given
         BlogPostKeyword blogPostKeyword = new BlogPostKeyword(BLOG_POST.getId(), BLOG_KEYWORD.getId());
@@ -103,6 +143,21 @@ public class BlogPostKeywordsDAOTest extends AbstractTransactionalJUnit4SpringCo
 
         //when
         dao.deleteForPost(BLOG_POST.getId());
+
+        //then
+        List<BlogKeyword> blogKeywords = dao.listForPost(BLOG_POST.getId());
+        assertNotNull(blogKeywords);
+        assertTrue(blogKeywords.isEmpty());
+    }
+
+    @Test
+    public void testDeleteForPostIdAndKeywordId() throws Exception {
+        //given
+        BlogPostKeyword blogPostKeyword = new BlogPostKeyword(BLOG_POST.getId(), BLOG_KEYWORD.getId());
+        dao.add(blogPostKeyword);
+
+        //when
+        dao.delete(BLOG_POST.getId(), BLOG_KEYWORD.getId());
 
         //then
         List<BlogKeyword> blogKeywords = dao.listForPost(BLOG_POST.getId());

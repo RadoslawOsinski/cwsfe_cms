@@ -8,6 +8,7 @@ import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ValidationUtils;
@@ -76,8 +77,13 @@ public class BlogPostCodeController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "codeId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CodeIdMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "blogPostId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "code", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CodeMustBeSet"));
-        final BlogPostCode existingCode = blogPostCodesDAO.getCodeForPostByCodeId(blogPostCode.getBlogPostId(), blogPostCode.getCodeId());
-        if (existingCode != null) {
+        BlogPostCode existingCode;
+        try {
+            existingCode = blogPostCodesDAO.getCodeForPostByCodeId(blogPostCode.getBlogPostId(), blogPostCode.getCodeId());
+        } catch (EmptyResultDataAccessException e) {
+            existingCode = null;
+        }
+        if (existingCode != null && existingCode.getCodeId().equals(blogPostCode.getCodeId())) {
             result.rejectValue("code", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CodeIdMustBeUnique"));
         }
         JSONObject responseDetailsJson = new JSONObject();

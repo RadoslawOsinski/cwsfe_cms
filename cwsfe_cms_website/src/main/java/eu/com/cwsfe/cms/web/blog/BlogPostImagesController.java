@@ -59,6 +59,7 @@ public class BlogPostImagesController extends JsonController {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("#", iDisplayStart + i + 1);
             final BlogPostImage object = dbList.get(i);
+            formDetailsJson.put("image", object.getId());
             formDetailsJson.put("title", object.getTitle());
             formDetailsJson.put("id", object.getId());
             jsonArray.add(formDetailsJson);

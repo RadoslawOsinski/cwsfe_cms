@@ -10,6 +10,7 @@ import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -18,14 +19,11 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Radoslaw Osinski
@@ -122,6 +120,27 @@ public class BlogPostsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
+    @RequestMapping(value = "/blogPostKeywordAssignment", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String listBlogPostKeywordAssignment(
+            @RequestParam long blogPostId,
+            WebRequest webRequest
+    ) {
+        List<BlogKeywordAssignment> blogKeywordAssignments = blogPostKeywordsDAO.listValuesForPost(blogPostId);
+        JSONObject responseDetailsJson = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        for (BlogKeywordAssignment blogKeywordAssignment : blogKeywordAssignments) {
+            JSONObject formDetailsJson = new JSONObject();
+            formDetailsJson.put("id", blogKeywordAssignment.getId());
+            formDetailsJson.put("keywordName", blogKeywordAssignment.getKeywordName());
+            formDetailsJson.put("status", blogKeywordAssignment.getStatus());
+            formDetailsJson.put("assigned", blogKeywordAssignment.isAssigned());
+            jsonArray.add(formDetailsJson);
+        }
+        responseDetailsJson.put("aaData", jsonArray);
+        return responseDetailsJson.toString();
+    }
+
     @RequestMapping(value = "/addBlogPost", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addBlogPost(
@@ -166,9 +185,6 @@ public class BlogPostsController extends JsonController {
         model.addAttribute("breadcrumbs", getSingleBlogPostsBreadcrumbs(locale, id));
         BlogPost blogPost = blogPostsDAO.get(id);
         model.addAttribute("cmsLanguages", cmsLanguagesDAO.listAll());
-        blogPost.setBlogKeywords(blogPostKeywordsDAO.listForPost(blogPost.getId()));
-        model.addAttribute("blogPostSelectedKeywords", blogPost.getBlogKeywords().stream().map(BlogKeyword::getId).collect(Collectors.toList()));
-        model.addAttribute("blogKeywords", blogKeywordsDAO.list());
         model.addAttribute("blogPost", blogPost);
         model.addAttribute("cmsAuthor", cmsAuthorsDAO.get(blogPost.getPostAuthorId()));
         return "cms/blog/SingleBlogPost";
@@ -186,8 +202,10 @@ public class BlogPostsController extends JsonController {
         }
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            BlogPostI18nContent cmsBlogPostI18nContent = blogPostI18nContentsDAO.getByLanguageForPost(blogPostId, langId);
-            if (cmsBlogPostI18nContent == null) {
+            BlogPostI18nContent cmsBlogPostI18nContent;
+            try {
+                cmsBlogPostI18nContent = blogPostI18nContentsDAO.getByLanguageForPost(blogPostId, langId);
+            } catch (EmptyResultDataAccessException ignored) {
                 cmsBlogPostI18nContent = new BlogPostI18nContent();
                 cmsBlogPostI18nContent.setPostId(blogPostId);
                 cmsBlogPostI18nContent.setLanguageId(langId);
@@ -228,53 +246,82 @@ public class BlogPostsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    private ModelAndView redirectToPost(BlogPostI18nContent blogPostI18nContent, ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {
-        browseBlogPost(model, locale, blogPostI18nContent.getPostId(), httpServletRequest);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setView(new RedirectView("/blogPosts/" + blogPostI18nContent.getPostId(), true, false, false));
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/blogPosts/updateBlogPostI18nContent", method = RequestMethod.POST)
-    public ModelAndView updateBlogPostI18nContent(
+    @RequestMapping(value = "/blogPosts/updateBlogPostI18nContent", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String updateBlogPostI18nContent(
             @ModelAttribute(value = "BlogPostI18nContent") BlogPostI18nContent blogPostI18nContent,
-            ModelMap model, Locale locale, HttpServletRequest httpServletRequest
+            BindingResult result, ModelMap model, Locale locale, HttpServletRequest httpServletRequest
     ) {
+        ValidationUtils.rejectIfEmpty(result, "postId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));
+        ValidationUtils.rejectIfEmpty(result, "languageId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet"));
+        ValidationUtils.rejectIfEmpty(result, "postTitle", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TitleMustBeSet"));
         blogPostI18nContent.setPostTitle(blogPostI18nContent.getPostTitle().trim());
-        blogPostI18nContent.setPostShortcut(blogPostI18nContent.getPostShortcut().trim());
-        blogPostI18nContent.setPostDescription(blogPostI18nContent.getPostDescription().trim());
-        BlogPostI18nContent existingI18nContent = blogPostI18nContentsDAO.getByLanguageForPost(blogPostI18nContent.getPostId(), blogPostI18nContent.getLanguageId());
-        if (existingI18nContent == null) {
-            blogPostI18nContentsDAO.add(blogPostI18nContent);
-        } else {
-            blogPostI18nContent.setId(existingI18nContent.getId());
-            blogPostI18nContentsDAO.updateContentWithStatus(blogPostI18nContent);
+        if (blogPostI18nContent.getPostShortcut() != null) {
+            blogPostI18nContent.setPostShortcut(blogPostI18nContent.getPostShortcut().trim());
         }
-        return redirectToPost(blogPostI18nContent, model, locale, httpServletRequest);
+        if (blogPostI18nContent.getPostDescription() != null) {
+            blogPostI18nContent.setPostDescription(blogPostI18nContent.getPostDescription().trim());
+        }
+        BlogPostI18nContent existingI18nContent;
+        JSONObject responseDetailsJson = new JSONObject();
+        if (!result.hasErrors()) {
+            try {
+                existingI18nContent = blogPostI18nContentsDAO.getByLanguageForPost(blogPostI18nContent.getPostId(), blogPostI18nContent.getLanguageId());
+            } catch (EmptyResultDataAccessException e) {
+                existingI18nContent = null;
+            }
+            try {
+                if (existingI18nContent == null) {
+                    blogPostI18nContentsDAO.add(blogPostI18nContent);
+                } else {
+                    blogPostI18nContent.setId(existingI18nContent.getId());
+                    blogPostI18nContentsDAO.updateContentWithStatus(blogPostI18nContent);
+                }
+                addJsonSuccess(responseDetailsJson);
+            } catch (Exception e) {
+                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("SavingFailed"));
+            }
+        } else{
+            prepareErrorResponse(result, responseDetailsJson);
+        }
+        return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/postCategoriesUpdate", method = RequestMethod.POST)
-    public ModelAndView postCategoriesUpdate(
-            @ModelAttribute(value = "blogPost") BlogPost blogPost,
-            ModelMap model, Locale locale,
+    @RequestMapping(value = "/postCategoryUpdate", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String postCategoriesUpdate(
+            @ModelAttribute(value = "blogKeywordAssignment") BlogKeywordAssignment blogKeywordAssignment,
+            @RequestParam Long postId,
+            ModelMap model, Locale locale, BindingResult result,
             WebRequest webRequest, HttpServletRequest httpServletRequest
     ) {
-        String[] postCategoriesStrings = webRequest.getParameterValues("postCategories");
-        //todo add transactions!
-        blogPostKeywordsDAO.deleteForPost(blogPost.getId());
-        if (postCategoriesStrings != null) {
-            for (String keywordIdString : postCategoriesStrings) {
-                blogPostKeywordsDAO.add(new BlogPostKeyword(
-                        blogPost.getId(),
-                        Long.parseLong(keywordIdString)
-                ));
-            }
+        if (postId == null) {
+            result.addError(new ObjectError("postId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet")));
         }
-        /////////// end transaction
-        browseBlogPost(model, locale, blogPost.getId(), httpServletRequest);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setView(new RedirectView("/blogPosts/" + blogPost.getId(), true, false, false));
-        return modelAndView;
+        ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogKeywordIsRequired"));
+        ValidationUtils.rejectIfEmpty(result, "assigned", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogKeywordAssignmentIsRequired"));
+        JSONObject responseDetailsJson = new JSONObject();
+        if (!result.hasErrors()) {
+            BlogPostKeyword blogPostKeyword;
+            try {
+                blogPostKeyword = blogPostKeywordsDAO.get(postId, blogKeywordAssignment.getId());
+            } catch (EmptyResultDataAccessException e) {
+                blogPostKeyword = null;
+            }
+            try {
+                if (blogPostKeyword == null && blogKeywordAssignment.isAssigned()) {
+                    blogPostKeywordsDAO.add(new BlogPostKeyword(postId, blogKeywordAssignment.getId()));
+                } else if (blogPostKeyword != null && !blogKeywordAssignment.isAssigned()){
+                    blogPostKeywordsDAO.delete(postId, blogKeywordAssignment.getId());
+                }
+                addJsonSuccess(responseDetailsJson);
+            } catch (Exception e) {
+                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("SavingFailed"));
+            }
+        } else{
+            prepareErrorResponse(result, responseDetailsJson);
+        }
+        return responseDetailsJson.toString();
     }
 
 }

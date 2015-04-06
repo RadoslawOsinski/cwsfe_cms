@@ -1,15 +1,62 @@
-require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation', 'foundationTabs'], function ($, ko) {
+require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation', 'foundationTabs'], function ($, ko, formAlertsModule) {
 
     function SinglePostViewModel() {
         var self = this;
         self.languageId = ko.observable();
-        self.i18nData = ko.observable();
+        self.postTextCode = ko.observable($('#postTextCode').val());
+        self.status = ko.observable($('#status').val());
+        self.postTitle = ko.observable();
+        self.postShortcut = ko.observable();
+        self.postDescription = ko.observable();
+        self.i18nDataStatus = ko.observable();
+        self.imageTitle = ko.observable($('#title').val());
+        self.blogKeywordsAssignment = ko.observableArray();
+        self.codeId = ko.observable(null);
+        self.code = ko.observable('');
+        self.basicInfoAlerts = new formAlertsModule.formAlerts();
+        self.i18nContentAlerts = new formAlertsModule.formAlerts();
+        self.commentsAlerts = new formAlertsModule.formAlerts();
+        self.imagesAlerts = new formAlertsModule.formAlerts();
+        self.blogPostCodeAlerts = new formAlertsModule.formAlerts();
 
-        self.isPostI18nVisible = ko.computed(function() {
-            return self.languageId() != null;
+        self.postTextCodeIsRequiredStyle = ko.computed(function () {
+            return self.postTextCode() == null || self.postTextCode() === '' ? 'error' : 'invisible';
+        });
+        self.postTitleIsRequiredStyle = ko.computed(function () {
+            if (self.languageId() == null) {
+                return 'invisible';
+            }
+            return self.postTitle() == null || self.postTitle() === '' ? 'error' : 'invisible';
+        });
+        self.i18nLanguageIsRequiredStyle = ko.computed(function () {
+            return self.languageId() == null ? 'error' : 'invisible';
+        });
+        self.imageTitleIsRequiredStyle = ko.computed(function () {
+            return self.imageTitle() == null || self.imageTitle() === '' ? 'error' : 'invisible';
+        });
+        self.codeIdIsRequiredStyle = ko.computed(function () {
+            return self.codeId() == null || self.codeId() === '' ? 'error' : 'invisible';
         });
 
-        self.initializeSinglePostViewModel = function() {
+        self.editPostFormIsValid = ko.computed(function () {
+            return self.postTextCode() != null && self.postTextCode() !== '' &&
+                self.status() != null && self.status() !== '';
+        });
+        self.addImageFormIsValid = ko.computed(function () {
+            return self.imageTitle() != null && self.imageTitle() !== '';
+        });
+
+        self.isPostI18nVisible = ko.computed(function () {
+            return self.languageId() != null;
+        });
+        self.savePostI18nFormIsValid = ko.computed(function () {
+            return self.postTitle() != null && self.postTitle() !== '';
+        });
+        self.addCodeFormIsValid = ko.computed(function () {
+            return self.codeId() != null && self.codeId() !== '';
+        });
+
+        self.initializeSinglePostViewModel = function () {
             self.languageId(null);
         };
 
@@ -19,23 +66,51 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
                 async: true,
                 success: function (response) {
                     if (response != null && 'SUCCESS' === response.status) {
-                        self.i18nData({
-                            postTitle: response.data.postTitle,
-                            postShortcut: response.data.postShortcut,
-                            postDescription: response.data.postDescription,
-                            status: response.data.status
-                        });
+                        self.postTitle(response.data.postTitle);
+                        self.postShortcut(response.data.postShortcut);
+                        self.postDescription(response.data.postDescription);
+                        self.i18nDataStatus(response.data.status);
                     }
                 }
             });
         };
+
+        self.initializeBlogKeywordsAssignment = function () {
+            $.ajax({
+                url: '../blogPostKeywordAssignment',
+                data: {
+                    blogPostId: $('#blogPostId').val()
+                },
+                async: true,
+                success: function (response) {
+                    self.blogKeywordsAssignment(response.aaData);
+                }
+            });
+        };
+
+        self.changeBlogKeywordAssignment = function (item) {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '../postCategoryUpdate',
+                data: {
+                    postId: $('#blogPostId').val(),
+                    id: item.id,
+                    assigned: item.assigned
+                },
+                async: true,
+                success: function (response) {
+                }
+            });
+            return true;
+        };
     }
 
+    var singlePostViewModel = new SinglePostViewModel();
+
     $(document).ready(function () {
-
-        var singlePostViewModel = new SinglePostViewModel();
-
         ko.applyBindings(singlePostViewModel);
+        singlePostViewModel.initializeBlogKeywordsAssignment();
 
         $('#author').autocomplete({
             source: function (request, response) {
@@ -83,10 +158,9 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
                 {'bSortable': false, mData: '#'},
                 {'bSortable': false, mData: 'title'},
                 {
-                    'bSortable': false, mData: 'image',
-                    "fnRender": function (o) {
-                        return '<img src="../blogPostImages/?imageId=' + o.aData.id + '" height="200" width="480"/>';
-                    }
+                    'bSortable': false, mData: 'image', 'fnRender': function (o) {
+                    return '<img src="../blogPostImages/?imageId=' + o.aData.id + '" height="200" width="480"/>';
+                }
                 },
                 {
                     'bSortable': false, mData: 'id',
@@ -202,65 +276,102 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
             ]
         });
 
-        $('#saveBlogPostButton').click(function() {
+        $('#saveBlogPostButton').click(function () {
             saveBlogPost();
         });
-        $('#addBlogPostCodeButton').click(function() {
+        $('#updatePostI18nButton').click(function () {
+            updatePostI18n();
+        });
+        $('#addBlogPostCodeButton').click(function () {
             addBlogPostCode();
         });
 
         var $body = $('body');
-        $body.on('click', '#addBlogPostCodeButton', function() {
+        $body.on('click', '#addBlogPostCodeButton', function () {
             singlePostViewModel.initializeSinglePostViewModel();
         });
-        $body.on('click', 'button[name="removeBlogPostCodeButton"]', function() {
+        $body.on('click', 'button[name="removeBlogPostCodeButton"]', function () {
             removeBlogPostCode($(this).val());
         });
-        $body.on('click', 'button[name="removeBlogPostImageButton"]', function() {
+        $body.on('click', 'button[name="removeBlogPostImageButton"]', function () {
             removeBlogPostImage($(this).val());
         });
 
-        $body.on('click', 'button[name="publishBlogCommentButton"]', function() {
+        $body.on('click', 'button[name="publishBlogCommentButton"]', function () {
             publishBlogComment($(this).val());
         });
 
-        $body.on('click', 'button[name="blockBlogCommentButton"]', function() {
+        $body.on('click', 'button[name="blockBlogCommentButton"]', function () {
             blockBlogComment($(this).val());
         });
 
-        $body.on('click', 'button[name="markAsSpamBlogPostCommentButton"]', function() {
+        $body.on('click', 'button[name="markAsSpamBlogPostCommentButton"]', function () {
             markAsSpamBlogPostComment($(this).val());
         });
 
-        $body.on('click', 'button[name="deleteBlogCommentButton"]', function() {
+        $body.on('click', 'button[name="deleteBlogCommentButton"]', function () {
             deleteBlogComment($(this).val());
         });
 
         $('.ui-autocomplete').addClass('f-dropdown');
     });
 
+    $('#resetBasicInfoForm').click(function () {
+        singlePostViewModel.postTextCode($('#postTextCode').val());
+        singlePostViewModel.status($('#status').val());
+        singlePostViewModel.basicInfoAlerts.cleanAllMessages();
+    });
+
+    $('#revertPostI18nButton').click(function () {
+        singlePostViewModel.initializeI18nData();
+    });
+
+    $('#resetImagesFormButton').click(function () {
+        singlePostViewModel.imageTitle($('#title').val());
+        singlePostViewModel.imagesAlerts.cleanAllMessages();
+    });
+
     function saveBlogPost() {
         var id = $('#blogPostId').val();
-        var postTextCode = $('#postTextCode').val();
-        var status = $('#status').val();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'updatePostBasicInfo',
-            data: "postTextCode=" + postTextCode + "&status=" + status + "&id=" + id,
+            data: "postTextCode=" + singlePostViewModel.postTextCode() + "&status=" + singlePostViewModel.status() + "&id=" + id,
             success: function (response) {
                 if (response.status === 'SUCCESS') {
-                    $("#basicInfoFormValidation").html("<p>Success</p>").show('slow');
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        singlePostViewModel.basicInfoAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#basicInfoFormValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                singlePostViewModel.basicInfoAlerts.addMessage(response, 'error');
+            }
+        });
+    }
+
+    function updatePostI18n() {
+        singlePostViewModel.i18nContentAlerts.cleanAllMessages();
+        var blogPostId = $('#blogPostId').val();
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: 'updateBlogPostI18nContent',
+            data: "postTitle=" + singlePostViewModel.postTitle() + "&postShortcut=" + singlePostViewModel.postShortcut() +
+            "&postDescription=" + singlePostViewModel.postDescription() + "&status=" + singlePostViewModel.i18nDataStatus() +
+            "&languageId=" + singlePostViewModel.languageId() + "&postId=" + blogPostId,
+            success: function (response) {
+                if (response.status === 'SUCCESS') {
+                } else {
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        singlePostViewModel.i18nContentAlerts.addWarning(response.errorMessages[i].error);
+                    }
+                }
+            },
+            error: function (response) {
+                singlePostViewModel.i18nContentAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -275,47 +386,46 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
                 if (response.status === 'SUCCESS') {
                     $('#blogPostImagesList').dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        singlePostViewModel.imagesAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#blogPostImagesListTableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                singlePostViewModel.imagesAlerts.addMessage(response, 'error');
             }
         });
     }
 
     function addBlogPostCode() {
+        singlePostViewModel.blogPostCodeAlerts.cleanAllMessages();
         var blogPostId = $('#blogPostId').val();
-        var codeId = $('#codeId').val();
-        var code = $('#code').val();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'addBlogPostCode',
-            data: "blogPostId=" + blogPostId + "&codeId=" + codeId + "&code=" + code,
+            data: "blogPostId=" + blogPostId + "&codeId=" + singlePostViewModel.codeId() + "&code=" + singlePostViewModel.code() +
+                "&status=NEW",
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#blogPostCodesList").dataTable().fnDraw();
+                    singlePostViewModel.codeId(null);
+                    singlePostViewModel.code('');
                     $("#addBlogPostCodeForm").trigger('reset');
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        singlePostViewModel.blogPostCodeAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#addBlogPostCodeFormValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                singlePostViewModel.blogPostCodeAlerts.addMessage(response, 'error');
             }
         });
     }
 
-    function removeBlogPostCode(blogPostId, codeId) {
+    function removeBlogPostCode(codeId) {
+        var blogPostId = $('#blogPostId').val();
         $.ajax({
             type: 'POST',
             dataType: 'json',
@@ -325,15 +435,13 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
                 if (response.status === 'SUCCESS') {
                     $('#blogPostCodesList').dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        singlePostViewModel.blogPostCodeAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#blogPostCodesTableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                singlePostViewModel.blogPostCodeAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -348,15 +456,13 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
                 if (response.status === 'SUCCESS') {
                     $("#blogPostCommentsList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        singlePostViewModel.commentsAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                singlePostViewModel.commentsAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -371,15 +477,13 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
                 if (response.status === 'SUCCESS') {
                     $("#blogPostCommentsList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        singlePostViewModel.commentsAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                singlePostViewModel.commentsAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -394,15 +498,13 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
                 if (response.status === 'SUCCESS') {
                     $("#blogPostCommentsList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        singlePostViewModel.commentsAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                singlePostViewModel.commentsAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -417,15 +519,13 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
                 if (response.status === 'SUCCESS') {
                     $("#blogPostCommentsList").dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        singlePostViewModel.commentsAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#tableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                singlePostViewModel.commentsAlerts.addMessage(response, 'error');
             }
         });
     }

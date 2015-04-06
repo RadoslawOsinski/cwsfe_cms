@@ -1,6 +1,7 @@
 package eu.com.cwsfe.cms.web.blog;
 
 import eu.com.cwsfe.cms.dao.*;
+import eu.com.cwsfe.cms.domains.BlogKeywordStatus;
 import eu.com.cwsfe.cms.domains.BlogPostI18nContentStatus;
 import eu.com.cwsfe.cms.model.*;
 import org.junit.Before;
@@ -9,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -110,6 +112,36 @@ public class BlogPostsControllerTest {
         verify(blogPostsDAO, times(1)).searchByAjaxCount(anyInt(), anyString());
         verify(blogPostsDAO, times(1)).getTotalNumberNotDeleted();
         verifyNoMoreInteractions(blogPostsDAO);
+    }
+
+    @Test
+    public void testListBlogPostKeywordAssignment() throws Exception {
+        ArrayList<BlogKeywordAssignment> blogKeywordAssignments = new ArrayList<>();
+        BlogKeywordAssignment blogKeywordAssignment = new BlogKeywordAssignment();
+        long id = 1l;
+        String keywordName = "keywordName";
+        boolean assigned = true;
+        BlogKeywordStatus status = BlogKeywordStatus.NEW;
+        blogKeywordAssignment.setId(id);
+        blogKeywordAssignment.setKeywordName(keywordName);
+        blogKeywordAssignment.setAssigned(assigned);
+        blogKeywordAssignment.setStatus(status);
+        blogKeywordAssignments.add(blogKeywordAssignment);
+        when(blogPostKeywordsDAO.listValuesForPost(anyLong())).thenReturn(blogKeywordAssignments);
+
+        ResultActions resultActions = mockMvc.perform(get("/blogPostKeywordAssignment")
+                .param("blogPostId", "1"));
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+                .andExpect(jsonPath("$.aaData").exists())
+                .andExpect(jsonPath("$.aaData[0].id").value((int) id))
+                .andExpect(jsonPath("$.aaData[0].keywordName").value(keywordName))
+                .andExpect(jsonPath("$.aaData[0].assigned").value(assigned))
+                .andExpect(jsonPath("$.aaData[0].status").value(BlogKeywordStatus.NEW.name()));
+        verify(blogPostKeywordsDAO, times(1)).listValuesForPost(anyLong());
+        verifyNoMoreInteractions(blogPostKeywordsDAO);
     }
 
     @Test
@@ -216,37 +248,54 @@ public class BlogPostsControllerTest {
         when(blogPostsDAO.get(anyLong())).thenReturn(new BlogPost());
 
         ResultActions resultActions = mockMvc.perform(post("/blogPosts/updateBlogPostI18nContent")
+                .param("languageId", "1")
+                .param("postId", "2")
                 .param("postTitle", "postTitle")
                 .param("postShortcut", "postShortcut")
                 .param("postDescription", "postDescription"));
 
-        resultActions.andExpect(status().isSeeOther())
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/blog/SinglePost.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()));
-        verify(blogPostI18nContentsDAO, times(1)).getByLanguageForPost(anyLong(), anyLong());
+        resultActions.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+                .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS));
+                verify(blogPostI18nContentsDAO, times(1)).getByLanguageForPost(anyLong(), anyLong());
         verify(blogPostI18nContentsDAO, times(1)).add(any(BlogPostI18nContent.class));
         verifyNoMoreInteractions(blogPostI18nContentsDAO);
     }
 
     @Test
-    public void testPostCategoriesUpdate() throws Exception {
-        doNothing().when(blogPostKeywordsDAO).deleteForPost(anyLong());
-        doNothing().when(blogPostKeywordsDAO).add(any(BlogPostKeyword.class));
-        when(blogPostKeywordsDAO.listForPost(anyLong())).thenReturn(new ArrayList<>());
-        when(blogPostsDAO.get(anyLong())).thenReturn(new BlogPost());
+    public void testChangeKeywordAssignmentForTrue() throws Exception {
+        when(blogPostKeywordsDAO.get(anyLong(), anyLong())).thenThrow(new EmptyResultDataAccessException(1));
 
-        ResultActions resultActions = mockMvc.perform(post("/postCategoriesUpdate")
-                .param("postCategories", "1")
-                .param("postCategories", "2")
-                .param("postCategories", "3")
-                .param("id", "1"));
+        ResultActions resultActions = mockMvc.perform(post("/postCategoryUpdate")
+                .param("postId", "1")
+                .param("id", "1")
+                .param("assigned", "true"));
 
-        resultActions.andExpect(status().isSeeOther())
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/blog/SinglePost.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()));
-        verify(blogPostKeywordsDAO, times(1)).deleteForPost(anyLong());
-        verify(blogPostKeywordsDAO, times(3)).add(any(BlogPostKeyword.class));
-        verify(blogPostKeywordsDAO, times(1)).listForPost(anyLong());
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+                .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS));
+        verify(blogPostKeywordsDAO, times(1)).get(anyLong(), anyLong());
+        verify(blogPostKeywordsDAO, times(1)).add(any(BlogPostKeyword.class));
         verifyNoMoreInteractions(blogPostKeywordsDAO);
     }
+
+    @Test
+    public void testChangeKeywordAssignmentForFalse() throws Exception {
+        when(blogPostKeywordsDAO.get(anyLong(), anyLong())).thenReturn(new BlogPostKeyword(anyLong(), anyLong()));
+
+        ResultActions resultActions = mockMvc.perform(post("/postCategoryUpdate")
+                .param("postId", "1")
+                .param("id", "1")
+                .param("assigned", "false"));
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+                .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS));
+        verify(blogPostKeywordsDAO, times(1)).get(anyLong(), anyLong());
+        verify(blogPostKeywordsDAO, times(1)).delete(anyLong(), anyLong());
+        verifyNoMoreInteractions(blogPostKeywordsDAO);
+    }
+
 }
