@@ -11,6 +11,7 @@ import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.*;
@@ -244,25 +245,46 @@ public class CmsNewsController extends JsonController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/news/updateNewsI18nContent", method = RequestMethod.POST)
-    public ModelAndView updateNewsI18nContent(
+
+    @RequestMapping(value = "/news/updateNewsI18nContent", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String updateNewsI18nContent(
             @ModelAttribute(value = "cmsNewsI18nContent") CmsNewsI18nContent cmsNewsI18nContent,
-            ModelMap model, Locale locale, HttpServletRequest httpServletRequest
+            BindingResult result, ModelMap model, Locale locale, HttpServletRequest httpServletRequest
     ) {
+        ValidationUtils.rejectIfEmpty(result, "newsId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsMustBeSet"));
+        ValidationUtils.rejectIfEmpty(result, "languageId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet"));
+        ValidationUtils.rejectIfEmpty(result, "newsTitle", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TitleMustBeSet"));
         cmsNewsI18nContent.setNewsTitle(cmsNewsI18nContent.getNewsTitle().trim());
-        cmsNewsI18nContent.setNewsShortcut(cmsNewsI18nContent.getNewsShortcut().trim());
-        cmsNewsI18nContent.setNewsDescription(cmsNewsI18nContent.getNewsDescription().trim());
-        CmsNewsI18nContent existingI18nContent = cmsNewsI18nContentsDAO.getByLanguageForNews(cmsNewsI18nContent.getNewsId(), cmsNewsI18nContent.getLanguageId());
-        if (existingI18nContent == null) {
-            cmsNewsI18nContentsDAO.add(cmsNewsI18nContent);
-        } else {
-            cmsNewsI18nContent.setId(existingI18nContent.getId());
-            cmsNewsI18nContentsDAO.updateContentWithStatus(cmsNewsI18nContent);
+        if (cmsNewsI18nContent.getNewsShortcut() != null) {
+            cmsNewsI18nContent.setNewsShortcut(cmsNewsI18nContent.getNewsShortcut().trim());
         }
-        browseNews(model, locale, cmsNewsI18nContent.getNewsId(), httpServletRequest);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setView(new RedirectView("/news/" + cmsNewsI18nContent.getNewsId(), true, false, false));
-        return modelAndView;
+        if (cmsNewsI18nContent.getNewsDescription() != null) {
+            cmsNewsI18nContent.setNewsDescription(cmsNewsI18nContent.getNewsDescription().trim());
+        }
+        CmsNewsI18nContent existingI18nContent;
+        JSONObject responseDetailsJson = new JSONObject();
+        if (!result.hasErrors()) {
+            try {
+                existingI18nContent = cmsNewsI18nContentsDAO.getByLanguageForNews(cmsNewsI18nContent.getNewsId(), cmsNewsI18nContent.getLanguageId());
+            } catch (EmptyResultDataAccessException e) {
+                existingI18nContent = null;
+            }
+            try {
+                if (existingI18nContent == null) {
+                    cmsNewsI18nContentsDAO.add(cmsNewsI18nContent);
+                } else {
+                    cmsNewsI18nContent.setId(existingI18nContent.getId());
+                    cmsNewsI18nContentsDAO.updateContentWithStatus(cmsNewsI18nContent);
+                }
+                addJsonSuccess(responseDetailsJson);
+            } catch (Exception e) {
+                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("SavingFailed"));
+            }
+        } else{
+            prepareErrorResponse(result, responseDetailsJson);
+        }
+        return responseDetailsJson.toString();
     }
 
 }

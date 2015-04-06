@@ -163,8 +163,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                 }
                 },
                 {
-                    'bSortable': false, mData: 'id',
-                    "fnRender": function (o) {
+                    'bSortable': false, mData: 'id', 'fnRender': function (o) {
                         return '<button class="button red tiny" name="removeBlogPostImageButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>';
                     }
                 }

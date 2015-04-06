@@ -4,10 +4,13 @@ var plugins = gulpLoadPlugins();
 var minifyCSS = require('gulp-minify-css');
 
 gulp.task('jsDevelopment', function () {
+    //copy all js files
+    gulp.src('src/main/webapp/resources-cwsfe-cms/js/**/*.js')
+        .pipe(gulp.dest('build/webapp/resources-cwsfe-cms/js'));
+    //count jsHints only on project sources
     return gulp.src('src/main/webapp/resources-cwsfe-cms/js/cms/**/*.js')
         .pipe(plugins.jshint())
-        .pipe(plugins.jshint.reporter('default'))
-        .pipe(gulp.dest('build/webapp/resources-cwsfe-cms/js'));
+        .pipe(plugins.jshint.reporter('default'));
 });
 
 gulp.task('cssDevelopment', function () {

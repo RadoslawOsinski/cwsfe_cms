@@ -3,8 +3,6 @@ package eu.com.cwsfe.cms.dao;
 import eu.com.cwsfe.cms.domains.CmsNewsStatus;
 import eu.com.cwsfe.cms.model.CmsNews;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -124,7 +122,6 @@ public class CmsNewsDAO {
         return cmsNews;
     }
 
-    @Cacheable(value="cmsNewsById")
     public CmsNews get(Long id) {
         String query =
                 "SELECT " +
@@ -136,7 +133,6 @@ public class CmsNewsDAO {
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapCmsNews(resultSet));
     }
 
-    @Cacheable(value="cmsNewsByNewsTypeIdNewsFolderIdNewsCode")
     public CmsNews getByNewsTypeFolderAndNewsCode(Long newsTypeId, Long newsFolderId, String newsCode) {
         String query =
                 "SELECT " +
@@ -167,7 +163,6 @@ public class CmsNewsDAO {
         return id;
     }
 
-    @CacheEvict(value = {"cmsNewsById", "cmsNewsByNewsTypeIdNewsFolderIdNewsCode"})
     public void update(CmsNews newsPost) {
         Object[] dbParams = new Object[3];
         dbParams[0] = newsPost.getNewsCode();
@@ -176,32 +171,28 @@ public class CmsNewsDAO {
         jdbcTemplate.update("UPDATE CMS_NEWS SET news_code = ?, status = ? WHERE id = ?", dbParams);
     }
 
-    @CacheEvict(value = {"cmsNewsById", "cmsNewsByNewsTypeIdNewsFolderIdNewsCode"})
     public void updatePostBasicInfo(CmsNews newsPost) {
         Object[] dbParams = new Object[5];
         dbParams[0] = newsPost.getNewsTypeId();
         dbParams[1] = newsPost.getNewsFolderId();
         dbParams[2] = newsPost.getNewsCode();
-        dbParams[3] = newsPost.getStatus();
+        dbParams[3] = newsPost.getStatus().getCode();
         dbParams[4] = newsPost.getId();
         jdbcTemplate.update("UPDATE CMS_NEWS SET news_type_id = ?, folder_id = ?, news_code = ?, status = ? WHERE id = ?", dbParams);
     }
 
-    @CacheEvict(value = {"cmsNewsById", "cmsNewsByNewsTypeIdNewsFolderIdNewsCode"}, allEntries = true)
     public void delete(CmsNews newsPost) {
         Object[] dbParams = new Object[1];
         dbParams[0] = newsPost.getId();
         jdbcTemplate.update("update CMS_NEWS set status = 'D' where id = ?", dbParams);
     }
 
-    @CacheEvict(value = {"cmsNewsById", "cmsNewsByNewsTypeIdNewsFolderIdNewsCode"}, allEntries = true)
     public void undelete(CmsNews newsPost) {
         Object[] dbParams = new Object[1];
         dbParams[0] = newsPost.getId();
         jdbcTemplate.update("update CMS_NEWS set status = 'H' where id = ?", dbParams);
     }
 
-    @CacheEvict(value = {"cmsNewsById", "cmsNewsByNewsTypeIdNewsFolderIdNewsCode"}, allEntries = true)
     public void publish(CmsNews newsPost) {
         Object[] dbParams = new Object[1];
         dbParams[0] = newsPost.getId();
@@ -252,40 +243,6 @@ public class CmsNewsDAO {
                         " ORDER BY cn.creation_date DESC" +
                         ") AS results";
         return jdbcTemplate.queryForObject(query, dbParams, Integer.class);
-    }
-
-    //todo probably for deletion
-    public List<Object[]> listI18nProjectslistI18nProjects(Long languageId) {
-        Object[] dbParams = new Object[1];
-        dbParams[0] = languageId;
-        String query =
-                "SELECT cn.id, cni.id " +
-                        "FROM CMS_NEWS cn, CMS_NEWS_I18N_CONTENTS cni " +
-                        "WHERE " +
-                        "cn.status = 'P' AND cni.status = 'P' AND " +
-                        "cn.id = cni.news_id AND " +
-                        "cni.language_id = ? AND " +
-                        "cn.news_type_id = (SELECT id FROM CMS_NEWS_TYPES WHERE status = 'N' AND type = 'Projects') " +
-                        "ORDER BY creation_date DESC ";
-        return jdbcTemplate.query(query, dbParams,
-                (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
-    }
-
-    //todo probably for deletion
-    public List<Object[]> listI18nProducts(Long languageId) {
-        Object[] dbParams = new Object[1];
-        dbParams[0] = languageId;
-        String query =
-                "SELECT cn.id, cni.id " +
-                        "FROM CMS_NEWS cn, CMS_NEWS_I18N_CONTENTS cni " +
-                        "WHERE " +
-                        "cn.status = 'P' AND cni.status = 'P' AND " +
-                        "cn.id = cni.news_id AND " +
-                        "cni.language_id = ? AND " +
-                        "cn.news_type_id = (SELECT id FROM CMS_NEWS_TYPES WHERE status = 'N' AND type = 'Products') " +
-                        "ORDER BY creation_date DESC ";
-        return jdbcTemplate.query(query, dbParams,
-                (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
     }
 
 }

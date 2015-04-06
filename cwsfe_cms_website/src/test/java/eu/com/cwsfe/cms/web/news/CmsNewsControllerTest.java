@@ -253,13 +253,15 @@ public class CmsNewsControllerTest {
         when(cmsFoldersDAO.get(anyLong())).thenReturn(new CmsFolder());
 
         ResultActions resultActions = mockMvc.perform(post("/news/updateNewsI18nContent")
+                .param("newsId", "1")
+                .param("languageId", "2")
                 .param("newsTitle", "newsTitle")
                 .param("newsShortcut", "newsShortcut")
                 .param("newsDescription", "newsDescription"));
 
-        resultActions.andExpect(status().isSeeOther())
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/news/SingleNews.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()));
+        resultActions.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+                .andExpect(jsonPath("$." + CmsNewsController.JSON_STATUS).value(CmsNewsController.JSON_STATUS_SUCCESS));
         verify(cmsNewsI18nContentsDAO, times(1)).getByLanguageForNews(anyLong(), anyLong());
         verify(cmsNewsI18nContentsDAO, times(1)).add(any(CmsNewsI18nContent.class));
         verifyNoMoreInteractions(cmsNewsI18nContentsDAO);

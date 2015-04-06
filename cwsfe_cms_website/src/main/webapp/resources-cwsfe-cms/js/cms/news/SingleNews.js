@@ -1,15 +1,62 @@
-require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation', 'foundationTabs'], function ($, ko) {
+require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation', 'foundationTabs'], function ($, ko, formAlertsModule) {
 
     function SingleNewsViewModel() {
         var self = this;
-        self.languageId = ko.observable();
-        self.i18nData = ko.observable();
+        self.languageId = ko.observable(null);
+        self.newsTypeId = ko.observable($('#newsTypeId').val());
+        self.newsType = ko.observable($('#newsType').val());
+        self.newsFolderId = ko.observable($('#newsFolderId').val());
+        self.newsFolder = ko.observable($('#newsFolder').val());
+        self.newsCode = ko.observable($('#newsCode').val());
+        self.newsTitle = ko.observable();
+        self.newsShortcut = ko.observable();
+        self.newsDescription = ko.observable();
+        self.i18nStatus = ko.observable();
+        self.imageTitle = ko.observable($('#title').val());
+        self.basicInfoAlerts = new formAlertsModule.formAlerts();
+        self.i18nContentAlerts = new formAlertsModule.formAlerts();
+        self.imageAlerts = new formAlertsModule.formAlerts();
 
-        self.isNewsI18nVisible = ko.computed(function() {
+        self.newsTypeIsRequiredStyle = ko.computed(function () {
+            return self.newsType() === null || self.newsType() === '' ? 'error' : 'invisible';
+        });
+        self.newsFolderIsRequiredStyle = ko.computed(function () {
+            return self.newsFolder() === null || self.newsFolder() === '' ? 'error' : 'invisible';
+        });
+        self.newsCodeIsRequiredStyle = ko.computed(function () {
+            return self.newsCode() === null || self.newsCode() === '' ? 'error' : 'invisible';
+        });
+        self.i18nLanguageIsRequiredStyle = ko.computed(function () {
+            return self.languageId() === null ? 'error' : 'invisible';
+        });
+        self.newsTitleIsRequiredStyle = ko.computed(function () {
+            if (self.languageId() === null) {
+                return 'invisible';
+            }
+            return self.newsTitle() === null || self.newsTitle() === '' ? 'error' : 'invisible';
+        });
+        self.imageTitleIsRequiredStyle = ko.computed(function () {
+            return self.imageTitle() === null || self.imageTitle() === '' ? 'error' : 'invisible';
+        });
+
+        self.saveBasicInfoFormIsValid = ko.computed(function () {
+            return self.newsType() !== null && self.newsType() !== '' &&
+                self.newsFolder() !== null && self.newsFolder() !== '' &&
+                self.newsCode() !== null && self.newsCode() !== '';
+        });
+        self.saveNewsI18nFormIsValid = ko.computed(function () {
+            return self.newsTitle() !== null && self.newsTitle() !== '';
+        });
+
+        self.addImageFormIsValid = ko.computed(function () {
+            return self.imageTitle() !== null && self.imageTitle() !== '';
+        });
+
+        self.isNewsI18nVisible = ko.computed(function () {
             return self.languageId() !== null;
         });
 
-        self.initializeSingleNewsViewModel = function() {
+        self.initializeSingleNewsViewModel = function () {
             self.languageId(null);
         };
 
@@ -19,21 +66,19 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
                 async: true,
                 success: function (response) {
                     if (response !== null && 'SUCCESS' === response.status) {
-                        self.i18nData({
-                            newsTitle: response.data.newsTitle,
-                            newsShortcut: response.data.newsShortcut,
-                            newsDescription: response.data.newsDescription,
-                            status: response.data.status
-                        });
+                        self.newsTitle(response.data.newsTitle);
+                        self.newsShortcut(response.data.newsShortcut);
+                        self.newsDescription(response.data.newsDescription);
+                        self.i18nStatus(response.data.status);
                     }
                 }
             });
         };
     }
 
-    $(document).ready(function () {
+    var singleNewsViewModel = new SingleNewsViewModel();
 
-        var singleNewsViewModel = new SingleNewsViewModel();
+    $(document).ready(function () {
 
         ko.applyBindings(singleNewsViewModel);
 
@@ -83,7 +128,8 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
             },
             minLength: 0,
             select: function (event, ui) {
-                $('#newsTypeId').val(ui.item.id);
+                singleNewsViewModel.newsTypeId(ui.item.id);
+                singleNewsViewModel.newsType(ui.item.value);
             }
         }).focus(function () {
             $(this).autocomplete("search", "");
@@ -109,7 +155,8 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
             },
             minLength: 0,
             select: function (event, ui) {
-                $('#newsFolderId').val(ui.item.id);
+                singleNewsViewModel.newsFolderId(ui.item.id);
+                singleNewsViewModel.newsFolder(ui.item.value);
             }
         }).focus(function () {
             $(this).autocomplete("search", "");
@@ -162,60 +209,101 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
                 {'bSortable': false, mData: '#'},
                 {'bSortable': false, mData: 'title'},
                 {
-                    'bSortable': false, mData: 'image',
-                    "fnRender": function (o) {
-                        return '<img src="../newsImages/?imageId=' + o.aData.id + '" height="200" width="480"/>';
-                    }
+                    'bSortable': false, mData: 'image', 'fnRender': function (o) {
+                    return '<img src="../newsImages/?imageId=' + o.aData.id + '" height="200" width="480"/>';
+                }
                 },
                 {
-                    'bSortable': false, mData: 'id',
-                    "fnRender": function (o) {
-                        return '<button class="button red tiny" name="removeNewsImageButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>';
-                    }
+                    'bSortable': false, mData: 'id', 'fnRender': function (o) {
+                    return '<button class="button red tiny" name="removeNewsImageButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>';
+                }
                 }
             ]
         });
 
-        $('#saveNewsButton').click(function() {
+        $('#saveNewsButton').click(function () {
             saveNews();
         });
 
         var $body = $('body');
-        $body.on('click', '#revertNewsI18nButton', function() {
+        $body.on('click', '#revertNewsI18nButton', function () {
+            singleNewsViewModel.i18nContentAlerts.cleanAllMessages();
             singleNewsViewModel.initializeSingleNewsViewModel();
         });
 
-        $body.on('click', 'button[name="removeNewsImageButton"]', function() {
+        $('#resetBasicInfoForm').click(function () {
+            singleNewsViewModel.basicInfoAlerts.cleanAllMessages();
+        });
+
+        $body.on('click', 'button[name="removeNewsImageButton"]', function () {
             removeNewsImage($(this).val());
+        });
+
+        $('#updateNewsI18nButton').click(function () {
+            updateNewsI18n();
         });
 
         $('.ui-autocomplete').addClass('f-dropdown');
     });
 
+    $('#resetSaveBasicInfoButton').click(function () {
+        singleNewsViewModel.newsTypeId($('#newsTypeId').val());
+        singleNewsViewModel.newsType($('#newsType').val());
+        singleNewsViewModel.newsFolderId($('#newsFolderId').val());
+        singleNewsViewModel.newsFolder($('#newsFolder').val());
+        singleNewsViewModel.newsCode($('#newsCode').val());
+        singleNewsViewModel.basicInfoAlerts.cleanAllMessages();
+    });
+
+    $('#resetImagesFormButton').click(function () {
+        singleNewsViewModel.imageTitle($('#title').val());
+        singleNewsViewModel.imageAlerts.cleanAllMessages();
+    });
+
     function saveNews() {
-        var newsTypeId = $('#newsTypeId').val();
-        var newsFolderId = $('#newsFolderId').val();
-        var newsCode = $('#newsCode').val();
+        singleNewsViewModel.basicInfoAlerts.cleanAllMessages();
         var status = $('#status').val();
         var id = $('#cmsNewsId').val();
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: 'updateNewsBasicInfo',
-            data: "newsTypeId=" + newsTypeId + "&newsFolderId=" + newsFolderId + "&newsCode=" + newsCode + "&status=" + status + "&id=" + id,
+            data: "newsTypeId=" + singleNewsViewModel.newsTypeId() + "&newsFolderId=" + singleNewsViewModel.newsFolderId() +
+            "&newsCode=" + singleNewsViewModel.newsCode() + "&status=" + status + "&id=" + id,
             success: function (response) {
                 if (response.status === 'SUCCESS') {
-                    $("#basicInfoFormValidation").html("<p>Success</p>").show('slow');
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        singleNewsViewModel.basicInfoAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#basicInfoFormValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                singleNewsViewModel.basicInfoAlerts.addMessage(response, 'error');
+            }
+        });
+    }
+
+    function updateNewsI18n() {
+        singleNewsViewModel.i18nContentAlerts.cleanAllMessages();
+        var cmsNewsId = $('#cmsNewsId').val();
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: 'updateNewsI18nContent',
+            data: "newsTitle=" + singleNewsViewModel.newsTitle() + "&newsShortcut=" + singleNewsViewModel.newsShortcut() +
+            "&newsDescription=" + singleNewsViewModel.newsDescription() + "&status=" + singleNewsViewModel.i18nStatus() +
+            "&languageId=" + singleNewsViewModel.languageId() + "&newsId=" + cmsNewsId,
+            success: function (response) {
+                if (response.status === 'SUCCESS') {
+                } else {
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        singleNewsViewModel.i18nContentAlerts.addWarning(response.errorMessages[i].error);
+                    }
+                }
+            },
+            error: function (response) {
+                singleNewsViewModel.i18nContentAlerts.addMessage(response, 'error');
             }
         });
     }
@@ -230,15 +318,13 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation
                 if (response.status === 'SUCCESS') {
                     $('#cmsNewsImagesList').dataTable().fnDraw();
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        singleNewsViewModel.imageAlerts.addWarning(response.errorMessages[i].error);
                     }
-                    $('#cmsNewsImagesListTableValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }
             },
             error: function (response) {
-                console.log('BUG: ' + response);
+                singleNewsViewModel.imageAlerts.addMessage(response, 'error');
             }
         });
     }
