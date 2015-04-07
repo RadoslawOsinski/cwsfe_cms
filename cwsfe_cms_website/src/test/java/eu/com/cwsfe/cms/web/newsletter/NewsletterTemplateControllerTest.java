@@ -180,13 +180,6 @@ public class NewsletterTemplateControllerTest {
     @Test
     public void testUpdateNewsletterTemplate() throws Exception {
         doNothing().when(newsletterTemplateDAO).update(any(NewsletterTemplate.class));
-        NewsletterTemplate newsletterTemplate = new NewsletterTemplate();
-        newsletterTemplate.setLanguageId(1l);
-        when(newsletterTemplateDAO.get(anyLong())).thenReturn(newsletterTemplate);
-        Language language = new Language();
-        String languageCode = "pl";
-        language.setCode(languageCode);
-        when(cmsLanguagesDAO.getById(anyLong())).thenReturn(language);
 
         ResultActions resultActions = mockMvc.perform(post("/newsletterTemplates/updateNewsletterTemplate")
                         .param("id", "1")
@@ -198,12 +191,9 @@ public class NewsletterTemplateControllerTest {
 
         resultActions
                 .andExpect(status().isOk())
-                .andExpect(model().attribute("breadcrumbs", anything()))
-                .andExpect(model().attribute("newsletterTemplate", anything()))
-                .andExpect(model().attribute("newsletterTemplateLanguageCode", languageCode));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+                .andExpect(jsonPath("$." + NewsletterTemplateController.JSON_STATUS).value(NewsletterTemplateController.JSON_STATUS_SUCCESS));
         verify(newsletterTemplateDAO, times(1)).update(any(NewsletterTemplate.class));
-        verify(newsletterTemplateDAO, times(1)).get(anyLong());
-        verify(cmsLanguagesDAO, times(1)).getById(anyLong());
         verifyNoMoreInteractions(newsletterTemplateDAO);
     }
 
