@@ -166,7 +166,7 @@ public class CmsNewsDAO {
     public void update(CmsNews newsPost) {
         Object[] dbParams = new Object[3];
         dbParams[0] = newsPost.getNewsCode();
-        dbParams[1] = newsPost.getStatus();
+        dbParams[1] = newsPost.getStatus().getCode();
         dbParams[2] = newsPost.getId();
         jdbcTemplate.update("UPDATE CMS_NEWS SET news_code = ?, status = ? WHERE id = ?", dbParams);
     }

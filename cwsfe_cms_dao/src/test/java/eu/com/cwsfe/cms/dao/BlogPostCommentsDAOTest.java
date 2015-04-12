@@ -199,6 +199,7 @@ public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringCo
         blogPostComment.setBlogPostI18nContentId(BLOG_POST_I18N_CONTENT.getId());
         blogPostComment.setId(dao.add(blogPostComment));
         blogPostComment.setComment(newComment);
+
         //when
         dao.update(blogPostComment);
 
