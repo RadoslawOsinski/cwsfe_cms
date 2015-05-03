@@ -1,23 +1,23 @@
 module.exports = function(config) {
     config.set({
         // base path, that will be used to resolve files and exclude
-        basePath: './',
+        basePath: './../../../',
 
-        frameworks: ['jasmine', 'requirejs'],
+        frameworks: ['mocha', 'requirejs'],
 
         // list of files / patterns to load in the browser      
         files: [{
-                pattern: 'src/main/webapp/resources-cwsfe-cms/js/**/*.js',
+                pattern: 'src/main/webapp/resources-cwsfe-cms/js/cms/**/*.js',
                 included: false
             }, {
-                pattern: 'src/main/webapp/resources-cwsfe-cms/js/**/*.js',
+                pattern: 'src/test/js/resources-cwsfe-cms/cms/**/*.js',
                 included: false
             }, {
                 pattern: 'src/test/js/**/*Spec.js',
                 included: false
-            },
-
-            'src/test/js/test-main.js'
+            }
+            //,
+            //'src/test/js/test-main.js'
         ],
 
         // list of files to exclude
@@ -68,6 +68,8 @@ module.exports = function(config) {
         //browsers: [process.env.TRAVIS ? 'Firefox' : 'Chrome'],
 
         browsers: ['PhantomJS'],
+        //browsers: ['Chrome'],
+        //browserNoActivityTimeout: 10000,
 
         // If browser does not capture in given timeout [ms], kill it
         // CLI --capture-timeout 5000
@@ -82,18 +84,18 @@ module.exports = function(config) {
         reportSlowerThan: 500,
 
         // compile coffee scripts
-        preprocessors: {
-            '**/*.coffee': 'coffee'
-        },
+        //preprocessors: {
+        //    '**/*.coffee': 'coffee'
+        //},
 
         plugins: [
             'karma-requirejs',
-            'karma-jasmine',
+            'karma-mocha',
+            'karma-coverage',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
             'karma-phantomjs-launcher',
             'karma-junit-reporter'
-            //,'karma-coverage-reporter'
         ]
     });
 };

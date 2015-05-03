@@ -2,6 +2,8 @@ var gulp = require('gulp');
 var gulpLoadPlugins = require('gulp-load-plugins');
 var plugins = gulpLoadPlugins();
 var minifyCSS = require('gulp-minify-css');
+//var mocha  = require('gulp-mocha');
+//var mochaPhantomJS = require('gulp-mocha-phantomjs');
 
 gulp.task('jsDevelopment', function () {
     //copy all js files
@@ -22,6 +24,12 @@ gulp.task('watch', function () {
     gulp.watch('src/main/webapp/resources-cwsfe-cms/js/cms/**/*.js', ['jsDevelopment']);
     gulp.watch('src/main/webapp/resources-cwsfe-cms/css/**/*.css', ['cssDevelopment']);
 });
+
+//gulp.task('test', function() {
+//    return gulp
+//        .src('test/js/cms/*.js')
+//        .pipe(mochaPhantomJS({reporter: 'spec', dump:'test.log'}));
+//});
 
 gulp.task('release', ['minifyJS', 'minCss']);
 
