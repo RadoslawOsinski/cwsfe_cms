@@ -355,7 +355,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
     public void testListImagesForNewsWithoutThumbnailsAndContent() throws Exception {
         //given
         //when
-        List<CmsNewsImage> cmsNewsImagesWithoutThumbnails = dao.listImagesForNewsWithoutThumbnailsAndContent(1l);
+        List<CmsNewsImage> cmsNewsImagesWithoutThumbnails = dao.listImagesForNewsWithoutThumbnails(1l);
 
         //then
         assertNotNull(cmsNewsImagesWithoutThumbnails);
@@ -389,7 +389,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         dao.add(newsImage);
 
         //when
-        CmsNewsImage result = dao.getThumbnailForNewsWithoutContent(NEWS.getId());
+        CmsNewsImage result = dao.getThumbnailForNews(NEWS.getId());
 
         //then
         assertNotNull(result);

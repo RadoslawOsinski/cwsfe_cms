@@ -92,20 +92,10 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
     }
 
     @Test
-    public void testListForPostWithoutContent() throws Exception {
+    public void testListForPost() throws Exception {
         //given
         //when
-        List<BlogPostImage> blogPostImages = dao.listForPostWithoutContent(1l);
-
-        //then
-        assertNotNull(blogPostImages);
-    }
-
-    @Test
-    public void testListForPostWithContent() throws Exception {
-        //given
-        //when
-        List<BlogPostImage> blogPostImages = dao.listForPostWithContent(1l);
+        List<BlogPostImage> blogPostImages = dao.listForPost(1l);
 
         //then
         assertNotNull(blogPostImages);

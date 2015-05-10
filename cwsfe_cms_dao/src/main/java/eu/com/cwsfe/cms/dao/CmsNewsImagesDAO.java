@@ -99,8 +99,7 @@ public class CmsNewsImagesDAO {
                         " mime_type, created, last_modified, status " +
                         " FROM CMS_NEWS_IMAGES " +
                         " WHERE id = ? ";
-        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                    mapCmsNewsImage(resultSet));
+        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapCmsNewsImage(resultSet));
     }
 
     public Long add(CmsNewsImage cmsNewsImage) {
@@ -124,39 +123,16 @@ public class CmsNewsImagesDAO {
 
     @CacheEvict(value = {"cmsNewsImageWithContentById", "cmsNewsImageById"})
     public void delete(CmsNewsImage cmsNewsImage) {
-        Object[] dbParams = new Object[1];
-        dbParams[0] = cmsNewsImage.getId();
-        jdbcTemplate.update("UPDATE CMS_NEWS_IMAGES SET status = 'D' WHERE id = ?", dbParams);
+        jdbcTemplate.update("UPDATE CMS_NEWS_IMAGES SET status = 'D' WHERE id = ?", cmsNewsImage.getId());
     }
 
     @CacheEvict(value = {"cmsNewsImageWithContentById", "cmsNewsImageById"})
     public void undelete(CmsNewsImage cmsNewsImage) {
-        Object[] dbParams = new Object[1];
-        dbParams[0] = cmsNewsImage.getId();
-        jdbcTemplate.update("UPDATE CMS_NEWS_IMAGES SET status = 'N' WHERE id = ?", dbParams);
+        jdbcTemplate.update("UPDATE CMS_NEWS_IMAGES SET status = 'N' WHERE id = ?", cmsNewsImage.getId());
     }
 
     /////////////////////////// SPECIAL METHODS:
     public List<CmsNewsImage> listImagesForNewsWithoutThumbnails(Long newsId) {
-        String query =
-                "SELECT " +
-                        " id, news_id, title, file_name, file_size, width, height," +
-                        " mime_type, created, last_modified, status" +
-                        " FROM CMS_NEWS_IMAGES " +
-                        "WHERE news_id = ? AND status = 'N' AND title NOT LIKE 'thumbnail_%'";
-        Object[] dbParams = new Object[1];
-        dbParams[0] = newsId;
-        List<CmsNewsImage> cmsNewsImages = new ArrayList<>(0);
-        try {
-            cmsNewsImages = jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                    mapCmsNewsImage(resultSet));
-        } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
-        }
-        return cmsNewsImages;
-    }
-
-    public List<CmsNewsImage> listImagesForNewsWithoutThumbnailsAndContent(Long newsId) {
         String query =
                 "SELECT " +
                         " id, news_id, title, file_name, file_size, width, height," +
@@ -184,21 +160,7 @@ public class CmsNewsImagesDAO {
                         "WHERE news_id = ? AND status = 'N' AND title LIKE 'thumbnail_%'";
         Object[] dbParams = new Object[1];
         dbParams[0] = newsId;
-        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapCmsNewsImage(resultSet));
-    }
-
-    public CmsNewsImage getThumbnailForNewsWithoutContent(Long newsId) {
-        String query =
-                "SELECT " +
-                        " id, news_id, title, file_name, file_size, width, height," +
-                        " mime_type, created, last_modified, status" +
-                        " FROM CMS_NEWS_IMAGES " +
-                        "WHERE news_id = ? AND status = 'N' AND title LIKE 'thumbnail_%'";
-        Object[] dbParams = new Object[1];
-        dbParams[0] = newsId;
-        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapCmsNewsImage(resultSet));
+        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapCmsNewsImage(resultSet));
     }
 
     @Cacheable(value="cmsNewsImageById")

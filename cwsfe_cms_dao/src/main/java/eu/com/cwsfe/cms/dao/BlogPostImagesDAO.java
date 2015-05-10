@@ -50,14 +50,14 @@ public class BlogPostImagesDAO {
                         " LIMIT ? OFFSET ?";
         List<BlogPostImage> blogPostImages = new ArrayList<>(0);
         try {
-            blogPostImages = jdbcTemplate.query(query, dbParams, (resultSet, rowNum) -> mapBlogPostImage(resultSet, false));
+            blogPostImages = jdbcTemplate.query(query, dbParams, (resultSet, rowNum) -> mapBlogPostImage(resultSet));
         } catch (DataAccessException e) {
             LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
         }
         return blogPostImages;
     }
 
-    private BlogPostImage mapBlogPostImage(ResultSet resultSet, boolean withContent) throws SQLException {
+    private BlogPostImage mapBlogPostImage(ResultSet resultSet) throws SQLException {
         BlogPostImage blogPostImage = new BlogPostImage();
         blogPostImage.setId(resultSet.getLong("ID"));
         blogPostImage.setBlogPostId(resultSet.getLong("blog_post_id"));
@@ -88,7 +88,7 @@ public class BlogPostImagesDAO {
         return jdbcTemplate.queryForObject(query, dbParams, Integer.class);
     }
 
-    public List<BlogPostImage> listForPostWithoutContent(Long postId) {
+    public List<BlogPostImage> listForPost(Long postId) {
         Object[] dbParams = new Object[1];
         dbParams[0] = postId;
         String query =
@@ -100,28 +100,7 @@ public class BlogPostImagesDAO {
                         " ORDER BY created DESC";
         List<BlogPostImage> blogPostImages = new ArrayList<>(0);
         try {
-            blogPostImages = jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                    mapBlogPostImage(resultSet, false));
-        } catch (DataAccessException e) {
-            LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
-        }
-        return blogPostImages;
-    }
-
-    public List<BlogPostImage> listForPostWithContent(Long postId) {
-        Object[] dbParams = new Object[1];
-        dbParams[0] = postId;
-        String query =
-                "SELECT " +
-                        " id, blog_post_id, title, file_name, file_size, width, height, " +
-                        " mime_type, created, last_modified, status " +
-                        " FROM BLOG_POST_IMAGES" +
-                        " WHERE status <> 'D' AND blog_post_id = ?" +
-                        " ORDER BY created DESC";
-        List<BlogPostImage> blogPostImages = new ArrayList<>(0);
-        try {
-            blogPostImages = jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                    mapBlogPostImage(resultSet, true));
+            blogPostImages = jdbcTemplate.query(query, dbParams, (resultSet, rowNum) -> mapBlogPostImage(resultSet));
         } catch (DataAccessException e) {
             LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
         }
@@ -138,15 +117,14 @@ public class BlogPostImagesDAO {
                         " ORDER BY created DESC";
         List<BlogPostImage> blogPostImages = new ArrayList<>(0);
         try {
-            blogPostImages = jdbcTemplate.query(query, (resultSet, rowNum) ->
-                    mapBlogPostImage(resultSet, true));
+            blogPostImages = jdbcTemplate.query(query, (resultSet, rowNum) -> mapBlogPostImage(resultSet));
         } catch (DataAccessException e) {
             LOGGER.error("Problem query: [{}]", query, e);
         }
         return blogPostImages;
     }
 
-    @Cacheable(value="blogPostImageWithContentById")
+    @Cacheable(value = "blogPostImageWithContentById")
     public BlogPostImage getWithContent(Long id) {
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
@@ -156,8 +134,7 @@ public class BlogPostImagesDAO {
                         " mime_type, created, last_modified, status " +
                         " FROM BLOG_POST_IMAGES " +
                         " WHERE id = ? ";
-        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapBlogPostImage(resultSet, true));
+        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPostImage(resultSet));
     }
 
     public Long add(BlogPostImage blogPostImage) {
@@ -199,16 +176,12 @@ public class BlogPostImagesDAO {
 
     @CacheEvict(value = {"blogPostImageWithContentById"})
     public void delete(BlogPostImage blogPostImage) {
-        Object[] dbParams = new Object[1];
-        dbParams[0] = blogPostImage.getId();
-        jdbcTemplate.update("UPDATE BLOG_POST_IMAGES SET status = 'D' WHERE id = ?", dbParams);
+        jdbcTemplate.update("UPDATE BLOG_POST_IMAGES SET status = 'D' WHERE id = ?", blogPostImage.getId());
     }
 
     @CacheEvict(value = {"blogPostImageWithContentById"})
     public void undelete(BlogPostImage blogPostImage) {
-        Object[] dbParams = new Object[1];
-        dbParams[0] = blogPostImage.getId();
-        jdbcTemplate.update("UPDATE BLOG_POST_IMAGES SET status = 'N' WHERE id = ?", dbParams);
+        jdbcTemplate.update("UPDATE BLOG_POST_IMAGES SET status = 'N' WHERE id = ?", blogPostImage.getId());
     }
 
 }

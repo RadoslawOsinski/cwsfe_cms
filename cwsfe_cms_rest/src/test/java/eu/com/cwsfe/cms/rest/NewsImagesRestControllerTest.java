@@ -69,8 +69,8 @@ public class NewsImagesRestControllerTest {
         image.setTitle(imageTitle);
         ArrayList<CmsNewsImage> images = new ArrayList<>();
         images.add(image);
-        when(cmsNewsImagesDAO.getThumbnailForNewsWithoutContent(anyLong())).thenReturn(thumbnail);
-        when(cmsNewsImagesDAO.listImagesForNewsWithoutThumbnailsAndContent(anyLong())).thenReturn(images);
+        when(cmsNewsImagesDAO.getThumbnailForNews(anyLong())).thenReturn(thumbnail);
+        when(cmsNewsImagesDAO.listImagesForNewsWithoutThumbnails(anyLong())).thenReturn(images);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/newsImages")
                 .param("newsId", "1")
