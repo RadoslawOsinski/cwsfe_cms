@@ -1,4 +1,4 @@
-package eu.com.cwsfe.cms;
+package eu.com.cwsfe.cms.web.newsletter;
 
 import java.util.UUID;
 

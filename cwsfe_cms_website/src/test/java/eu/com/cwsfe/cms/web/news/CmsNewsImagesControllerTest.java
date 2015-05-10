@@ -1,6 +1,8 @@
 package eu.com.cwsfe.cms.web.news;
 
+import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
 import eu.com.cwsfe.cms.dao.CmsNewsImagesDAO;
+import eu.com.cwsfe.cms.model.CmsGlobalParam;
 import eu.com.cwsfe.cms.model.CmsNewsImage;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,13 +11,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +43,8 @@ public class CmsNewsImagesControllerTest {
 
     @Mock
     private CmsNewsImagesDAO cmsNewsImagesDAO;
+    @Mock
+    private CmsGlobalParamsDAO cmsGlobalParamsDAO;
 
     @InjectMocks
     private CmsNewsImagesController cmsNewsImagesController;
@@ -56,9 +66,11 @@ public class CmsNewsImagesControllerTest {
         List<CmsNewsImage> cmsNewsImages = new ArrayList<>();
         CmsNewsImage blogPostImage = new CmsNewsImage();
         String title = "title";
+        String fileName = "fileName";
         long id = 1l;
         blogPostImage.setId(id);
         blogPostImage.setTitle(title);
+        blogPostImage.setFileName(fileName);
         cmsNewsImages.add(blogPostImage);
         when(cmsNewsImagesDAO.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, cmsNewsId)).thenReturn(cmsNewsImages);
         when(cmsNewsImagesDAO.searchByAjaxCountWithoutContent(cmsNewsId)).thenReturn(numberOfCmsNewsImages);
@@ -68,8 +80,7 @@ public class CmsNewsImagesControllerTest {
                 .param("iDisplayStart", String.valueOf(iDisplayStart))
                 .param("iDisplayLength", String.valueOf(iDisplayLength))
                 .param("sEcho", sEcho)
-                .param("cmsNewsId", String.valueOf(cmsNewsId)))
-                .andExpect(status().isOk());
+                .param("cmsNewsId", String.valueOf(cmsNewsId)));
 
         resultActions
                 .andExpect(status().isOk())
@@ -80,6 +91,7 @@ public class CmsNewsImagesControllerTest {
                 .andExpect(jsonPath("$.aaData").exists())
                 .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
                 .andExpect(jsonPath("$.aaData[0].title").value(title))
+                .andExpect(jsonPath("$.aaData[0].fileName").value(fileName))
                 .andExpect(jsonPath("$.aaData[0].id").value((int) id));
         verify(cmsNewsImagesDAO, times(1)).searchByAjaxWithoutContent(anyInt(), anyInt(), anyLong());
         verify(cmsNewsImagesDAO, times(1)).searchByAjaxCountWithoutContent(anyLong());
@@ -88,12 +100,34 @@ public class CmsNewsImagesControllerTest {
     }
 
     @Test
+    public void testAddCmsNewsImage() throws Exception {
+        URL resource = getClass().getResource("/testImage.png");
+        Path path = Paths.get(resource.toURI());
+        byte[] testData = Files.readAllBytes(path);
+        MockMultipartFile file = new MockMultipartFile("file", "testImage.png", "image/png", testData);
+
+        when(cmsNewsImagesDAO.add(any(CmsNewsImage.class))).thenReturn(1l);
+        CmsGlobalParam cmsGlobalParam = mock(CmsGlobalParam.class);
+        when(cmsGlobalParamsDAO.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH")).thenReturn(cmsGlobalParam);
+        when(cmsGlobalParam.getValue()).thenReturn(System.getProperty("java.io.tmpdir"));
+
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.fileUpload("/news/addCmsNewsImage")
+                        .file(file)
+                        .param("newsId", "1")
+                        .param("title", "testImage")
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+        );
+
+        resultActions.andExpect(status().is3xxRedirection());
+    }
+
+    @Test
     public void testDeleteCmsNewsImage() throws Exception {
         doNothing().when(cmsNewsImagesDAO).delete(any(CmsNewsImage.class));
 
         ResultActions resultActions = mockMvc.perform(post("/news/deleteCmsNewsImage")
-                .param("id", "1"))
-                .andExpect(status().isOk());
+                .param("id", "1"));
 
         resultActions
                 .andExpect(status().isOk())

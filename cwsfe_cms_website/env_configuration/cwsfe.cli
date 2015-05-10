@@ -28,4 +28,20 @@ if (outcome != success) of /subsystem=datasources/data-source=cwsfe_cms/:read-re
     /subsystem=datasources/data-source=cwsfe_cms/:add(jndi-name=java:/jdbc/cwsfe_cms,driver-name=postgresql,connection-url=jdbc:postgresql://localhost:5432/cwsfe,prepared-statements-cache-size=100,share-prepared-statements=false,password=cwsfe,max-pool-size=20,jta=false,background-validation-millis=1,track-statements=NOWARN,flush-strategy=FailingConnectionOnly,user-name=cwsfe,min-pool-size=2,initial-pool-size=2,validate-on-match=false,background-validation=false)
 end-if
 
+if (outcome != success) of /subsystem=undertow/configuration=handler/file=newsImages/:read-resource(recursive-depth=0)
+    /subsystem=undertow/configuration=handler/file=newsImages/:add(path=/home/rmo/BinaryPrograms/cms_tmp/newsImages/,cache-buffer-size=1024,cache-buffers=1024)
+end-if
+
+if (outcome != success) of /subsystem=undertow/configuration=handler/file=blogImages/:read-resource(recursive-depth=0)
+    /subsystem=undertow/configuration=handler/file=blogImages/:add(path=/home/rmo/BinaryPrograms/cms_tmp/blogImages/,cache-buffer-size=1024,cache-buffers=1024)
+end-if
+
+if (outcome != success) of /subsystem=undertow/server=default-server/host=default-host/location=CWSFE_CMS\/newsImages/:read-resource(recursive-depth=0)
+    /subsystem=undertow/server=default-server/host=default-host/location=CWSFE_CMS\/newsImages/:add(handler=newsImages)
+end-if
+
+if (outcome != success) of /subsystem=undertow/server=default-server/host=default-host/location=CWSFE_CMS\/blogImages/:read-resource(recursive-depth=0)
+    /subsystem=undertow/server=default-server/host=default-host/location=CWSFE_CMS\/blogImages/:add(handler=blogImages)
+end-if
+
 :reload

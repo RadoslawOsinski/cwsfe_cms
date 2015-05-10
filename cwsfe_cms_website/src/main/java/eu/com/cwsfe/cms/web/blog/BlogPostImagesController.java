@@ -1,7 +1,9 @@
 package eu.com.cwsfe.cms.web.blog;
 
 import eu.com.cwsfe.cms.dao.BlogPostImagesDAO;
+import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
 import eu.com.cwsfe.cms.model.BlogPostImage;
+import eu.com.cwsfe.cms.model.CmsGlobalParam;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -11,16 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ValidationUtils;
-import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -36,6 +38,9 @@ public class BlogPostImagesController extends JsonController {
 
     @Autowired
     private BlogPostImagesDAO blogPostImagesDAO;
+
+    @Autowired
+    private CmsGlobalParamsDAO cmsGlobalParamsDAO;
 
     @RequestMapping(value = "/blogPosts/blogPostImagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -61,6 +66,7 @@ public class BlogPostImagesController extends JsonController {
             final BlogPostImage object = dbList.get(i);
             formDetailsJson.put("image", object.getId());
             formDetailsJson.put("title", object.getTitle());
+            formDetailsJson.put("fileName", object.getFileName());
             formDetailsJson.put("id", object.getId());
             jsonArray.add(formDetailsJson);
         }
@@ -78,21 +84,29 @@ public class BlogPostImagesController extends JsonController {
     ) {
         BufferedImage image;
         try {
-            image = ImageIO.read(blogPostImage.getFile().getFileItem().getInputStream());
+            image = ImageIO.read(blogPostImage.getFile().getInputStream());
             blogPostImage.setWidth(image.getWidth());
             blogPostImage.setHeight(image.getHeight());
         } catch (IOException e) {
             LOGGER.error("Problem with reading image", e);
         }
-        blogPostImage.setFileName(blogPostImage.getFile().getName());
+        blogPostImage.setFileName(blogPostImage.getFile().getOriginalFilename());
         blogPostImage.setFileSize(blogPostImage.getFile().getSize());
         blogPostImage.setMimeType(blogPostImage.getFile().getContentType());
-        blogPostImage.setContent(blogPostImage.getFile().getFileItem().get());
         blogPostImage.setCreated(new Date());
+        blogPostImage.setLastModified(blogPostImage.getCreated());
         ValidationUtils.rejectIfEmpty(result, "title", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TitleMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "blogPostId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));
         if (!result.hasErrors()) {
             blogPostImagesDAO.add(blogPostImage);
+            CmsGlobalParam blogImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH");
+            File copiedFile = new File(blogImagesPath.getValue(), blogPostImage.getFile().getOriginalFilename());
+            try {
+                copiedFile.setExecutable(false);
+                Files.copy(blogPostImage.getFile().getInputStream(), copiedFile.toPath());
+            } catch (IOException e) {
+                LOGGER.error("Cannot save image to " + copiedFile.getAbsolutePath(), e);
+            }
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("/blogPosts/" + blogPostImage.getBlogPostId(), true, false, false));
@@ -127,10 +141,6 @@ public class BlogPostImagesController extends JsonController {
                 "image/pjpeg".equals(mimeType) ||
                 "image/bmp".equals(mimeType) ||
                 "image/png".equals(mimeType);
-    }
-
-    protected void initBinder(ServletRequestDataBinder binder) {
-        binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
     }
 
 }

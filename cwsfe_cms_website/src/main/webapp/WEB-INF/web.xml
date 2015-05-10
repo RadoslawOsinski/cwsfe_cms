@@ -72,29 +72,9 @@
         <async-supported>true</async-supported>
     </servlet>
 
-    <servlet>
-        <servlet-name>cwsfe_cms_blogPostImageServlet</servlet-name>
-        <servlet-class>eu.com.cwsfe.cms.images.BlogPostImageServlet</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>cwsfe_cms_newsImageServlet</servlet-name>
-        <servlet-class>eu.com.cwsfe.cms.images.NewsImageServlet</servlet-class>
-    </servlet>
-
     <servlet-mapping>
         <servlet-name>cwsfe-cms-mvc-dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>cwsfe_cms_blogPostImageServlet</servlet-name>
-        <url-pattern>/blogPostImages/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>cwsfe_cms_newsImageServlet</servlet-name>
-        <url-pattern>/newsImages/*</url-pattern>
     </servlet-mapping>
 
     <context-param>

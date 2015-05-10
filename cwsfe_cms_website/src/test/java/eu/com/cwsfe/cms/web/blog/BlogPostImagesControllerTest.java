@@ -1,7 +1,9 @@
 package eu.com.cwsfe.cms.web.blog;
 
 import eu.com.cwsfe.cms.dao.BlogPostImagesDAO;
+import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
 import eu.com.cwsfe.cms.model.BlogPostImage;
+import eu.com.cwsfe.cms.model.CmsGlobalParam;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,18 +17,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -40,6 +42,8 @@ public class BlogPostImagesControllerTest {
 
     @Mock
     private BlogPostImagesDAO blogPostImagesDAO;
+    @Mock
+    private CmsGlobalParamsDAO cmsGlobalParamsDAO;
 
     @InjectMocks
     private BlogPostImagesController blogPostImagesController;
@@ -61,9 +65,11 @@ public class BlogPostImagesControllerTest {
         List<BlogPostImage> blogPostImages = new ArrayList<>();
         BlogPostImage blogPostImage = new BlogPostImage();
         String title = "title";
+        String fileName = "fileName";
         long id = 1l;
         blogPostImage.setId(id);
         blogPostImage.setTitle(title);
+        blogPostImage.setFileName(fileName);
         blogPostImages.add(blogPostImage);
         when(blogPostImagesDAO.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, blogPostId)).thenReturn(blogPostImages);
         when(blogPostImagesDAO.searchByAjaxCountWithoutContent(blogPostId)).thenReturn(numberOfBlogPostImages);
@@ -73,8 +79,7 @@ public class BlogPostImagesControllerTest {
                 .param("iDisplayStart", String.valueOf(iDisplayStart))
                 .param("iDisplayLength", String.valueOf(iDisplayLength))
                 .param("sEcho", sEcho)
-                .param("blogPostId", String.valueOf(blogPostId)))
-                .andExpect(status().isOk());
+                .param("blogPostId", String.valueOf(blogPostId)));
 
         resultActions
                 .andExpect(status().isOk())
@@ -85,6 +90,7 @@ public class BlogPostImagesControllerTest {
                 .andExpect(jsonPath("$.aaData").exists())
                 .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
                 .andExpect(jsonPath("$.aaData[0].title").value(title))
+                .andExpect(jsonPath("$.aaData[0].fileName").value(fileName))
                 .andExpect(jsonPath("$.aaData[0].id").value((int) id));
         verify(blogPostImagesDAO, times(1)).searchByAjaxWithoutContent(anyInt(), anyInt(), anyLong());
         verify(blogPostImagesDAO, times(1)).searchByAjaxCountWithoutContent(anyLong());
@@ -93,12 +99,34 @@ public class BlogPostImagesControllerTest {
     }
 
     @Test
+    public void testAddBlogPostImage() throws Exception {
+        URL resource = getClass().getResource("/testImage.png");
+        Path path = Paths.get(resource.toURI());
+        byte[] testData = Files.readAllBytes(path);
+        MockMultipartFile file = new MockMultipartFile("file", "testImage.png", "image/png", testData);
+
+        when(blogPostImagesDAO.add(any(BlogPostImage.class))).thenReturn(1l);
+        CmsGlobalParam cmsGlobalParam = mock(CmsGlobalParam.class);
+        when(cmsGlobalParamsDAO.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH")).thenReturn(cmsGlobalParam);
+        when(cmsGlobalParam.getValue()).thenReturn(System.getProperty("java.io.tmpdir"));
+
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.fileUpload("/blogPosts/addBlogPostImage")
+                        .file(file)
+                        .param("blogPostId", "1")
+                        .param("title", "testImage")
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+        );
+
+        resultActions.andExpect(status().is3xxRedirection());
+    }
+
+    @Test
     public void testDeleteBlogPostImage() throws Exception {
         doNothing().when(blogPostImagesDAO).delete(any(BlogPostImage.class));
 
         ResultActions resultActions = mockMvc.perform(post("/blogPosts/deleteBlogPostImage")
-                .param("id", "1"))
-                .andExpect(status().isOk());
+                .param("id", "1"));
 
         resultActions
                 .andExpect(status().isOk())

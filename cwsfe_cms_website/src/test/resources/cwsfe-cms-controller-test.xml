@@ -46,9 +46,7 @@
     </bean>
 
     <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-        <property name="interceptors">
-            <ref bean="cwsfeCmsLocaleChangeInterceptor"/>
-        </property>
+        <property name="interceptors" ref="cwsfeCmsLocaleChangeInterceptor"/>
     </bean>
 
     <!-- spring sucks in definining different id than messageSource :( -->

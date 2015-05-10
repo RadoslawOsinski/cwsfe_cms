@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.web.news;
 
+import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
+import eu.com.cwsfe.cms.model.CmsGlobalParam;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import eu.com.cwsfe.cms.dao.CmsNewsImagesDAO;
 import eu.com.cwsfe.cms.model.CmsNewsImage;
@@ -20,7 +22,9 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -36,6 +40,9 @@ public class CmsNewsImagesController extends JsonController {
 
     @Autowired
     private CmsNewsImagesDAO cmsNewsImagesDAO;
+
+    @Autowired
+    private CmsGlobalParamsDAO cmsGlobalParamsDAO;
 
     @RequestMapping(value = "/news/cmsNewsImagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -61,6 +68,7 @@ public class CmsNewsImagesController extends JsonController {
             final CmsNewsImage object = dbList.get(i);
             formDetailsJson.put("image", object.getId());
             formDetailsJson.put("title", object.getTitle());
+            formDetailsJson.put("fileName", object.getFileName());
             formDetailsJson.put("id", object.getId());
             jsonArray.add(formDetailsJson);
         }
@@ -79,7 +87,7 @@ public class CmsNewsImagesController extends JsonController {
         BufferedImage image;
         if (cmsNewsImage != null && cmsNewsImage.getFile() != null) {
             try {
-                image = ImageIO.read(cmsNewsImage.getFile().getFileItem().getInputStream());
+                image = ImageIO.read(cmsNewsImage.getFile().getInputStream());
                 cmsNewsImage.setWidth(image.getWidth());
                 cmsNewsImage.setHeight(image.getHeight());
             } catch (IOException e) {
@@ -88,12 +96,20 @@ public class CmsNewsImagesController extends JsonController {
             cmsNewsImage.setFileName(cmsNewsImage.getFile().getName());
             cmsNewsImage.setFileSize(cmsNewsImage.getFile().getSize());
             cmsNewsImage.setMimeType(cmsNewsImage.getFile().getContentType());
-            cmsNewsImage.setContent(cmsNewsImage.getFile().getFileItem().get());
             cmsNewsImage.setCreated(new Date());
+            cmsNewsImage.setLastModified(cmsNewsImage.getCreated());
             ValidationUtils.rejectIfEmpty(result, "title", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TitleMustBeSet"));
             ValidationUtils.rejectIfEmpty(result, "newsId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CmsNewsMustBeSet"));
             if (!result.hasErrors()) {
                 cmsNewsImagesDAO.add(cmsNewsImage);
+                CmsGlobalParam newsImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
+                File copiedFile = new File(newsImagesPath.getValue(), cmsNewsImage.getFile().getOriginalFilename());
+                try {
+                    copiedFile.setExecutable(false);
+                    Files.copy(cmsNewsImage.getFile().getInputStream(), copiedFile.toPath());
+                } catch (IOException e) {
+                    LOGGER.error("Cannot save image to " + copiedFile.getAbsolutePath(), e);
+                }
             }
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.setView(new RedirectView("/news/" + cmsNewsImage.getNewsId(), true, false, false));

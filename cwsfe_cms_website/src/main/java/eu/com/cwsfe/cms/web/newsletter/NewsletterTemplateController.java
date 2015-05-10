@@ -1,6 +1,5 @@
 package eu.com.cwsfe.cms.web.newsletter;
 
-import eu.com.cwsfe.cms.EmailValidator;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import eu.com.cwsfe.cms.dao.CmsLanguagesDAO;
 import eu.com.cwsfe.cms.dao.NewsletterTemplateDAO;

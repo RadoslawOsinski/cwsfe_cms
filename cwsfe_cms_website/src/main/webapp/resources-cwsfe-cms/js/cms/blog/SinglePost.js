@@ -159,7 +159,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                 {'bSortable': false, mData: 'title'},
                 {
                     'bSortable': false, mData: 'image', 'fnRender': function (o) {
-                    return '<img src="../blogPostImages/?imageId=' + o.aData.id + '" height="200" width="480"/>';
+                    return '<img src="../blogImages/' + o.aData.fileName + '" height="200" width="480"/>';
                 }
                 },
                 {

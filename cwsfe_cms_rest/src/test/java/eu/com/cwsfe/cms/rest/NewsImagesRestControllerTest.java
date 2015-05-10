@@ -61,14 +61,12 @@ public class NewsImagesRestControllerTest {
         thumbnail.setHeight(thumbnailHeight);
         thumbnail.setWidth(thumbnailWidth);
         thumbnail.setTitle(thumbnailTitle);
-        thumbnail.setContent(null);
         CmsNewsImage image = new CmsNewsImage();
         image.setId(imageId);
         image.setFileName(imageFileName);
         image.setHeight(imageHeight);
         image.setWidth(imageWidth);
         image.setTitle(imageTitle);
-        image.setContent(null);
         ArrayList<CmsNewsImage> images = new ArrayList<>();
         images.add(image);
         when(cmsNewsImagesDAO.getThumbnailForNewsWithoutContent(anyLong())).thenReturn(thumbnail);
@@ -87,12 +85,10 @@ public class NewsImagesRestControllerTest {
                 .andExpect(jsonPath("$.thumbnailImage.height").value(thumbnailHeight))
                 .andExpect(jsonPath("$.thumbnailImage.width").value(thumbnailWidth))
                 .andExpect(jsonPath("$.thumbnailImage.title").value(thumbnailTitle))
-                .andExpect(jsonPath("$.thumbnailImage.content").value((String) null))
                 .andExpect(jsonPath("$.newsImages[0].id").value((int) imageId))
                 .andExpect(jsonPath("$.newsImages[0].fileName").value(imageFileName))
                 .andExpect(jsonPath("$.newsImages[0].height").value(imageHeight))
                 .andExpect(jsonPath("$.newsImages[0].width").value(imageWidth))
-                .andExpect(jsonPath("$.newsImages[0].title").value(imageTitle))
-                .andExpect(jsonPath("$.newsImages[0].content").value((String) null));
+                .andExpect(jsonPath("$.newsImages[0].title").value(imageTitle));
     }
 }
