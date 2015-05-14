@@ -18,7 +18,7 @@ apply plugin: 'sonar-runner'
 apply plugin: 'jacoco'
 apply plugin: 'flyway'
 
-version = '1.5'
+version = '2.0'
 group = "eu.com.cwsfe.cms"
 compileJava.options.encoding = 'UTF-8'
 
