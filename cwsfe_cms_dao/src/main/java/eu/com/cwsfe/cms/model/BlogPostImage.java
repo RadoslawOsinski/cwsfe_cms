@@ -1,10 +1,6 @@
 package eu.com.cwsfe.cms.model;
 
 import eu.com.cwsfe.cms.domains.BlogPostImageStatus;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-
-import java.io.Serializable;
-import java.util.Date;
 
 public class BlogPostImage extends CmsImage {
 

@@ -130,17 +130,4 @@ public class BlogPostImagesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    private static boolean isImageMimeTypeValid(String mimeType) {
-        if (mimeType == null) {
-            return false;
-        }
-        mimeType = mimeType.trim().toLowerCase();
-        return "image/gif".equals(mimeType) ||
-                "image/jpg".equals(mimeType) ||
-                "image/jpeg".equals(mimeType) ||
-                "image/pjpeg".equals(mimeType) ||
-                "image/bmp".equals(mimeType) ||
-                "image/png".equals(mimeType);
-    }
-
 }

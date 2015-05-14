@@ -70,9 +70,9 @@ public class BlogPostKeywordsDAO {
         Object[] dbParams = new Object[2];
         dbParams[0] = blogPostId;
         dbParams[1] = blogKeywordId;
-        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> {
-            return new BlogPostKeyword(resultSet.getLong("blog_post_id"), resultSet.getLong("blog_keyword_id"));
-        });
+        return jdbcTemplate.queryForObject(query, dbParams,
+                (resultSet, rowNum) -> new BlogPostKeyword(resultSet.getLong("blog_post_id"), resultSet.getLong("blog_keyword_id"))
+        );
     }
 
     public void add(BlogPostKeyword blogPostKeyword) {

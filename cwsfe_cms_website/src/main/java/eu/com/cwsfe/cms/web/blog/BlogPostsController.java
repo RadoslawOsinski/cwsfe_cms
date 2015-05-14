@@ -34,8 +34,6 @@ public class BlogPostsController extends JsonController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BlogPostsController.class);
 
     @Autowired
-    private BlogKeywordsDAO blogKeywordsDAO;
-    @Autowired
     private BlogPostKeywordsDAO blogPostKeywordsDAO;
     @Autowired
     private BlogPostI18nContentsDAO blogPostI18nContentsDAO;
