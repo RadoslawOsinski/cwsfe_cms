@@ -85,40 +85,34 @@ public class CmsNewsImagesController extends JsonController {
             BindingResult result, Locale locale
     ) {
         BufferedImage image;
-        if (cmsNewsImage != null && cmsNewsImage.getFile() != null) {
-            try {
-                image = ImageIO.read(cmsNewsImage.getFile().getInputStream());
-                cmsNewsImage.setWidth(image.getWidth());
-                cmsNewsImage.setHeight(image.getHeight());
-            } catch (IOException e) {
-                LOGGER.error("Problem with reading image", e);
-            }
-            cmsNewsImage.setFileName(cmsNewsImage.getFile().getName());
-            cmsNewsImage.setFileSize(cmsNewsImage.getFile().getSize());
-            cmsNewsImage.setMimeType(cmsNewsImage.getFile().getContentType());
-            cmsNewsImage.setCreated(new Date());
-            cmsNewsImage.setLastModified(cmsNewsImage.getCreated());
-            ValidationUtils.rejectIfEmpty(result, "title", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TitleMustBeSet"));
-            ValidationUtils.rejectIfEmpty(result, "newsId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CmsNewsMustBeSet"));
-            if (!result.hasErrors()) {
-                cmsNewsImagesDAO.add(cmsNewsImage);
-                CmsGlobalParam newsImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
-                File copiedFile = new File(newsImagesPath.getValue(), cmsNewsImage.getFile().getOriginalFilename());
-                try {
-                    copiedFile.setExecutable(false);
-                    Files.copy(cmsNewsImage.getFile().getInputStream(), copiedFile.toPath());
-                } catch (IOException e) {
-                    LOGGER.error("Cannot save image to " + copiedFile.getAbsolutePath(), e);
-                }
-            }
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setView(new RedirectView("/news/" + cmsNewsImage.getNewsId(), true, false, false));
-            return modelAndView;
-        } else {
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setView(new RedirectView("/news/", true, false, false));
-            return modelAndView;
+        try {
+            image = ImageIO.read(cmsNewsImage.getFile().getInputStream());
+            cmsNewsImage.setWidth(image.getWidth());
+            cmsNewsImage.setHeight(image.getHeight());
+        } catch (IOException e) {
+            LOGGER.error("Problem with reading image", e);
         }
+        cmsNewsImage.setFileName(cmsNewsImage.getFile().getOriginalFilename());
+        cmsNewsImage.setFileSize(cmsNewsImage.getFile().getSize());
+        cmsNewsImage.setMimeType(cmsNewsImage.getFile().getContentType());
+        cmsNewsImage.setCreated(new Date());
+        cmsNewsImage.setLastModified(cmsNewsImage.getCreated());
+        ValidationUtils.rejectIfEmpty(result, "title", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TitleMustBeSet"));
+        ValidationUtils.rejectIfEmpty(result, "newsId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CmsNewsMustBeSet"));
+        if (!result.hasErrors()) {
+            cmsNewsImagesDAO.add(cmsNewsImage);
+            CmsGlobalParam newsImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
+            File copiedFile = new File(newsImagesPath.getValue(), cmsNewsImage.getFile().getOriginalFilename());
+            try {
+                copiedFile.setExecutable(false);
+                Files.copy(cmsNewsImage.getFile().getInputStream(), copiedFile.toPath());
+            } catch (IOException e) {
+                LOGGER.error("Cannot save image to " + copiedFile.getAbsolutePath(), e);
+            }
+        }
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setView(new RedirectView("/news/" + cmsNewsImage.getNewsId(), true, false, false));
+        return modelAndView;
     }
 
     @RequestMapping(value = "/news/deleteCmsNewsImage", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -136,10 +130,6 @@ public class CmsNewsImagesController extends JsonController {
             prepareErrorResponse(result, responseDetailsJson);
         }
         return responseDetailsJson.toString();
-    }
-
-    protected void initBinder(ServletRequestDataBinder binder) {
-        binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
     }
 
 }

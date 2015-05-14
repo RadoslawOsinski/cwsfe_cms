@@ -34,15 +34,18 @@ gulp.task('watch', function () {
 gulp.task('release', ['minifyJS', 'minCss']);
 
 gulp.task('minifyJS', function () {
-    var src = 'src/main/webapp/resources-cwsfe-cms/js/cms/**/*.js',
-        dst = 'build/webapp/resources-cwsfe-cms/js';
-        gulp.src(src)
-            .pipe(plugins.changed(dst))
-            .pipe(plugins.jshint())
-            .pipe(plugins.jshint.reporter('default'))
-            .pipe(plugins.uglify())
-            .pipe(gulp.dest(dst));
-        //.pipe(plugins.changed('build/webapp/resources-cwsfe-cms/js', {hasChanged: plugins.changed.compareSha1Digest}))
+    gulp.src('src/main/webapp/resources-cwsfe-cms/js/**/*.js')
+        .pipe(plugins.uglify())
+        .pipe(gulp.dest('build/webapp/resources-cwsfe-cms/js'));
+    //var src = 'src/main/webapp/resources-cwsfe-cms/js/cms/**/*.js',
+    //    dst = 'build/webapp/resources-cwsfe-cms/js';
+    //    gulp.src(src)
+    //        //.pipe(plugins.changed(dst))
+    //        //.pipe(plugins.jshint())
+    //        //.pipe(plugins.jshint.reporter('default'))
+    //        .pipe(plugins.uglify())
+    //        .pipe(gulp.dest(dst));
+    //    //.pipe(plugins.changed('build/webapp/resources-cwsfe-cms/js', {hasChanged: plugins.changed.compareSha1Digest}))
 });
 
 gulp.task('minCss', function () {
