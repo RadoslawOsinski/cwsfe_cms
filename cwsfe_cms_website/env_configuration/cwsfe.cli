@@ -29,11 +29,11 @@ if (outcome != success) of /subsystem=datasources/data-source=cwsfe_cms/:read-re
 end-if
 
 if (outcome != success) of /subsystem=undertow/configuration=handler/file=newsImages/:read-resource(recursive-depth=0)
-    /subsystem=undertow/configuration=handler/file=newsImages/:add(path=/home/rmo/BinaryPrograms/cms_tmp/newsImages/,cache-buffer-size=1024,cache-buffers=1024)
+    /subsystem=undertow/configuration=handler/file=newsImages/:add(path=/opt/cwsfe_cms/newsImages,cache-buffer-size=1024,cache-buffers=1024)
 end-if
 
 if (outcome != success) of /subsystem=undertow/configuration=handler/file=blogImages/:read-resource(recursive-depth=0)
-    /subsystem=undertow/configuration=handler/file=blogImages/:add(path=/home/rmo/BinaryPrograms/cms_tmp/blogImages/,cache-buffer-size=1024,cache-buffers=1024)
+    /subsystem=undertow/configuration=handler/file=blogImages/:add(path=/opt/cwsfe_cms/blogImages,cache-buffer-size=1024,cache-buffers=1024)
 end-if
 
 if (outcome != success) of /subsystem=undertow/server=default-server/host=default-host/location=CWSFE_CMS\/newsImages/:read-resource(recursive-depth=0)
