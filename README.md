@@ -22,15 +22,6 @@ Used technologies - 100% open source
 - Foundation for website theme
 - JavaScript: JQuery, Knockout, RequireJs, DataTables
 - Tested with selenium, mockito, junit
-
-Used technologies
----
-- Spring 4
-- Flyway
-- Postgres 9.4
-- JDK 8
-- Wildfly 8
-- Tested with selenium, mockito, junit.
 - Sonar for improving code quality.
 
 Donations
