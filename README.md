@@ -30,8 +30,8 @@ Used technologies
 - Postgres 9.4
 - JDK 8
 - Wildfly 8
-- Tested with selenium, mockito, junit. 
-- Sonar for 
+- Tested with selenium, mockito, junit.
+- Sonar for improving code quality.
 
 Donations
 ---
