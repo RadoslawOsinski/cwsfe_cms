@@ -7,4 +7,4 @@ Just another CMS. This are my experiments with the code before introducing them 
 
 Developer guide
 ---
-[Configuration](/cwsfe_cms_website/env_configuration/configure.txt)
+[Configuration](/cwsfe_cms_website/env_configuration/standalone/configure.txt)
