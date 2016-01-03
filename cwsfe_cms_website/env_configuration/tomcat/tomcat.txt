@@ -5,3 +5,5 @@ org.postgresql:postgresql:jar to ${CATALINA_HOME}/lib
 
 * Add environment variables for spring:
 -Dspring.profiles.active="tomcat" -Dlogback.configurationFile=/somePath/logback.xml -DlogbackLogsDir=/someLogDir/logs
+
+* modify ${CATALINA_HOME}/context.xml according to example
