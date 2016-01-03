@@ -3,8 +3,7 @@
 
     <jmxConfigurator/>
 
-    <property name="log-path" value="/var/log/wildfly/logs"/>
-    <!--<property name="log-path" value="./"/>-->
+    <property name="log-path" value="${logbackLogsDir}"/>
 
     <appender name="CWSFE_CMS_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log-path}/cwsfe_cms.log</file>
@@ -17,7 +16,7 @@
             <MaxIndex>10</MaxIndex>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${log-path}/cwsfe.%d{yyyy-MM-dd}.%i.log.gz</FileNamePattern>
+            <FileNamePattern>${log-path}/cwsfe_cms.%d{yyyy-MM-dd}.%i.log.gz</FileNamePattern>
             <MaxHistory>30</MaxHistory>
             <!-- Limit all logs size to 300MB -->
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
