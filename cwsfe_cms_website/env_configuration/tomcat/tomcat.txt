@@ -1,0 +1,7 @@
+* Add
+javax.mail:mail:1.4.7.jar to ${CATALINA_HOME}/lib
+javax.activation:activation:1.1.1.jar to ${CATALINA_HOME}/lib
+org.postgresql:postgresql:jar to ${CATALINA_HOME}/lib
+
+* Add environment variables for spring:
+-Dspring.profiles.active="tomcat" -Dlogback.configurationFile=/somePath/logback.xml -DlogbackLogsDir=/someLogDir/logs

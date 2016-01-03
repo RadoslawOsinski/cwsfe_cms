@@ -8,8 +8,15 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="jdbc/cwsfe_cms"/>
-    </bean>
+    <beans profile="wildfly">
+        <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+            <property name="jndiName" value="jdbc/cwsfe_cms"/><!--JNDI name in wildfly is different than tomcat. Java standards sucks.-->
+        </bean>
+    </beans>
+    <beans profile="tomcat">
+        <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+            <property name="jndiName" value="java:comp/env/jdbc/cwsfe_cms"/><!--JNDI name in wildfly is different than tomcat. Java standards sucks.-->
+        </bean>
+    </beans>
 
 </beans>

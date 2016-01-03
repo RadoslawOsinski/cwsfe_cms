@@ -36,7 +36,7 @@
 
     <beans:bean id="cmsAuthenticationEntryPoint"
                 class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-        <beans:property name="loginFormUrl" value="/loginPage"/>
+        <beans:constructor-arg value="/loginPage"/>
     </beans:bean>
 
     <beans:bean id="cmsAuthenticationProcessingFilter" class="eu.com.cwsfe.cms.web.login.CmsAuthenticationProcessingFilter">
