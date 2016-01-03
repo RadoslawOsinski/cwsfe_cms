@@ -1,0 +1,20 @@
+//in root project configuration
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.1.6'
+    }
+}
+
+subprojects {
+    apply plugin: 'info.solidsoft.pitest'
+    pitest {
+        threads = 4
+        if (project.name in ['module-without-any-test']) {
+            failWhenNoMutations = false
+        }
+    }
+}

@@ -14,7 +14,6 @@ apply plugin: 'maven'
 apply plugin: 'war'
 apply plugin: 'java'
 apply plugin: 'base'
-apply plugin: 'sonar-runner'
 apply plugin: 'jacoco'
 apply plugin: 'flyway'
 
@@ -46,6 +45,9 @@ dependencies {
     compile project(':cwsfe_cms_rest')
     providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version: '2.2.1-b03'
     providedCompile group: 'javax.servlet', name: 'servlet-api', version: '2.5'
+    providedCompile group: 'javax.mail', name: 'mail', version: '1.4.7' //only for tomcat :(, add this jar to ${CATALINA_HOME}/lib
+    providedCompile group: 'javax.activation', name: 'activation', version: '1.1.1' //only for tomcat, add this jar to ${CATALINA_HOME}/lib
+    providedCompile group: 'javax.mail', name: 'javax.mail-api', version: '1.5.0'
     compile group: 'org.springframework.security', name: 'spring-security-web', version: '4.0.0.M2'
     compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.0.0.M2'
     compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.0.0.M2'
@@ -78,7 +80,6 @@ dependencies {
     compile group: 'net.sf.json-lib', name: 'json-lib', version: '2.4', classifier: 'jdk15'
     compile group: 'org.postgresql', name: 'postgresql', version: '9.3-1102-jdbc4'
     compile group: 'net.java.dev.rome', name: 'rome', version: '1.0.0'
-    compile group: 'javax.mail', name: 'javax.mail-api', version: '1.5.0'
     compile group: 'org.flywaydb', name: 'flyway-core', version: '3.2.1'
     testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
     testCompile group: 'junit', name: 'junit', version: '4.11'
@@ -104,57 +105,8 @@ war {
 }
 war.archiveName = 'CWSFE_CMS-' + version + '.war';
 
-sonarRunner {
-    def props = new Properties()
-    try {
-        def propertiesFile = new File("sensitive_data.properties")
-        if (propertiesFile != null) {
-            propertiesFile.withInputStream {
-                stream -> props.load(stream)
-            }
-        }
-    } catch (FileNotFoundException ignored) {
-        //file not exists in repo
-    }
-    sonarProperties {
-        property 'toolVersion', '2.5'
-        property "sonar.host.url", props["sonar.host.url"]
-        property "sonar.jdbc.url", props["sonar.jdbc.url"]
-        property "sonar.jdbc.username", props["sonar.jdbc.username"]
-        property "sonar.jdbc.password", props["sonar.jdbc.password"]
-        property "sonar.sourceEncoding", "UTF-8"
-        property "sonar.login", props["sonar.login"]
-        property "sonar.password", props["sonar.password"]
-
-        property "sonar.projectKey", 'cwsfe_cms_website'
-        property "sonar.projectName", 'CWSFE cms website'
-//        property "sonar.projectVersion", '1.0'
-        property "sonar.sources", 'src/main'
-        property "sonar.tests", 'src/test'
-        property "sonar.sourceEncoding", 'UTF-8'
-        property "sonar.exclusions", '**/datatables/*,**/foundation/*,**/jquery/*,**/jqueryui/*,**/knockout/*,**/modernizr/*,**/requirejs/*,**/*.css'
-    }
-}
-
 jacocoTestReport {
     group = "Reporting"
     description = "Generate Jacoco coverage reports after running tests."
     additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
-}
-
-flyway {
-    def props = new Properties()
-    try {
-        def propertiesFile = new File("sensitive_data.properties")
-        if (propertiesFile != null) {
-            propertiesFile.withInputStream {
-                stream -> props.load(stream)
-            }
-        }
-    } catch (FileNotFoundException ignored) {
-        //file not exists in repo
-    }
-    url = props["cwsfe_cms.jdbc.url"];
-    user = props["cwsfe_cms.jdbc.user"];
-    password = props["cwsfe_cms.jdbc.password"];
 }

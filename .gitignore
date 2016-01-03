@@ -1,6 +1,3 @@
-#don't commit
-sensitive_data.properties
-
 ### Java ###
 *.class
 
