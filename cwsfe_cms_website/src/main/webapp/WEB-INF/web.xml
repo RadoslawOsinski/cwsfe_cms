@@ -27,11 +27,6 @@
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
 
-    <!--<filter>-->
-    <!--<filter-name>sessionExpirationFilter</filter-name>-->
-    <!--<filter-class>eu.com.cwsfe.cms.login.SessionExpirationFilter</filter-class>-->
-    <!--</filter>-->
-
     <locale-encoding-mapping-list>
         <locale-encoding-mapping>
             <locale>en</locale>
@@ -52,10 +47,6 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    <!--<filter-mapping>-->
-    <!--<filter-name>sessionExpirationFilter</filter-name>-->
-    <!--<url-pattern>*.jsp</url-pattern>-->
-    <!--</filter-mapping>-->
 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -83,8 +74,8 @@
     </context-param>
 
     <!--<error-page>-->
-        <!--<error-code>404</error-code>-->
-        <!--<location>/pages/cms/errors/404</location>-->
+        <!--<exception-type>java.lang.Throwable</exception-type>-->
+        <!--<location>/error</location>-->
     <!--</error-page>-->
 
 </web-app>
