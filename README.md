@@ -8,6 +8,11 @@ Just another CMS.
 Demo page - Under construction
 ---
 
+---
+Source compilation:
+- cd cwsfe_cms_website/; npm install; node_modules/gulp/bin/gulp.js release
+- gradlew build
+
 Developer guide
 ---
 [Configuration](/cwsfe_cms_website/env_configuration/standalone/configure.txt)
