@@ -65,9 +65,6 @@
     <!-- Handles HTTP GET requests for /resources-cwsfe-cms/** by efficiently serving up static resources in the ${webappRoot}/resources-cwsfe-cms/ directory -->
     <mvc:resources mapping="/resources-cwsfe-cms/**" location="/resources-cwsfe-cms/" cache-period="31556926"/>
 
-    <!--<import resource="cwsfe-cms-mail-configuration.xml"/>-->
-    <!--<import resource="cwsfe-cms-spring-security.xml"/>-->
-
     <!-- DAO already tested. Mock tests should be fast -->
     <bean id="jdbcTemplate" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="org.springframework.jdbc.core.JdbcTemplate"/>

@@ -11,6 +11,7 @@ import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,7 @@ class NewsletterTemplateController extends JsonController {
     private NewsletterTemplateDAO newsletterTemplateDAO;
     @Autowired
     private CmsLanguagesDAO cmsLanguagesDAO;
+    @Lazy
     @Autowired
     private JavaMailSender cmsMailSender;
 

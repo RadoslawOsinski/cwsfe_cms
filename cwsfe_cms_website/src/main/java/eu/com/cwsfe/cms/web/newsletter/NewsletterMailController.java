@@ -1,6 +1,5 @@
 package eu.com.cwsfe.cms.web.newsletter;
 
-import eu.com.cwsfe.cms.web.mvc.JsonController;
 import eu.com.cwsfe.cms.dao.NewsletterMailAddressDAO;
 import eu.com.cwsfe.cms.dao.NewsletterMailDAO;
 import eu.com.cwsfe.cms.dao.NewsletterMailGroupDAO;
@@ -8,12 +7,13 @@ import eu.com.cwsfe.cms.model.Breadcrumb;
 import eu.com.cwsfe.cms.model.NewsletterMail;
 import eu.com.cwsfe.cms.model.NewsletterMailAddress;
 import eu.com.cwsfe.cms.model.NewsletterMailGroup;
+import eu.com.cwsfe.cms.web.mail.CmsMailSender;
+import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -45,7 +45,7 @@ public class NewsletterMailController extends JsonController {
     @Autowired
     private NewsletterMailGroupDAO newsletterMailGroupDAO;
     @Autowired
-    private JavaMailSender cmsMailSender;
+    private CmsMailSender cmsMailSender;
 
     @RequestMapping(value = "/newsletterMails", method = RequestMethod.GET)
     public String defaultView(ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {
