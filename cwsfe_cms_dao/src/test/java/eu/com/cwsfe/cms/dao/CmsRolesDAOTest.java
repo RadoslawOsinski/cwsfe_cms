@@ -4,6 +4,7 @@ import eu.com.cwsfe.cms.model.CmsRole;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.IfProfileValue;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -14,8 +15,9 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(defaultRollback = true)
+@TransactionConfiguration
 @ContextConfiguration(locations = {"classpath:cwsfe-cms-dao-test.xml", "classpath:cwsfe-cms-cache-test.xml"})
+@IfProfileValue(name = "test-groups", values = {"integration-tests-local"})
 public class CmsRolesDAOTest  extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
