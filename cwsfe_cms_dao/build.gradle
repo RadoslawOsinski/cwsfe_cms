@@ -83,6 +83,7 @@ jacocoTestReport {
 }
 
 flyway {
+    //values in ~/.gradle/gradle.properties file
     driver = System.properties['cwsfe_cms.jdbc.driver'];
     url = System.properties['cwsfe_cms.jdbc.url'];
     user = System.properties['cwsfe_cms.jdbc.user'];
