@@ -1,10 +1,9 @@
 package eu.com.cwsfe.cms.web.news;
 
-import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
-import eu.com.cwsfe.cms.model.CmsGlobalParam;
-import eu.com.cwsfe.cms.web.mvc.JsonController;
 import eu.com.cwsfe.cms.dao.CmsNewsImagesDAO;
 import eu.com.cwsfe.cms.model.CmsNewsImage;
+import eu.com.cwsfe.cms.web.images.ImageStorageService;
+import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -13,18 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ValidationUtils;
-import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -42,7 +37,7 @@ public class CmsNewsImagesController extends JsonController {
     private CmsNewsImagesDAO cmsNewsImagesDAO;
 
     @Autowired
-    private CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    ImageStorageService imageStorageService;
 
     @RequestMapping(value = "/news/cmsNewsImagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -101,14 +96,7 @@ public class CmsNewsImagesController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "newsId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CmsNewsMustBeSet"));
         if (!result.hasErrors()) {
             cmsNewsImagesDAO.add(cmsNewsImage);
-            CmsGlobalParam newsImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
-            File copiedFile = new File(newsImagesPath.getValue(), cmsNewsImage.getFile().getOriginalFilename());
-            try {
-                copiedFile.setExecutable(false);
-                Files.copy(cmsNewsImage.getFile().getInputStream(), copiedFile.toPath());
-            } catch (IOException e) {
-                LOGGER.error("Cannot save image to " + copiedFile.getAbsolutePath(), e);
-            }
+            imageStorageService.storeNewsImage(cmsNewsImage);
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("/news/" + cmsNewsImage.getNewsId(), true, false, false));

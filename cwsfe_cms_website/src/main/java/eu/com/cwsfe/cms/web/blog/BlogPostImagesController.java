@@ -4,6 +4,7 @@ import eu.com.cwsfe.cms.dao.BlogPostImagesDAO;
 import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
 import eu.com.cwsfe.cms.model.BlogPostImage;
 import eu.com.cwsfe.cms.model.CmsGlobalParam;
+import eu.com.cwsfe.cms.web.images.ImageStorageService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -41,6 +42,9 @@ public class BlogPostImagesController extends JsonController {
 
     @Autowired
     private CmsGlobalParamsDAO cmsGlobalParamsDAO;
+
+    @Autowired
+    ImageStorageService imageStorageService;
 
     @RequestMapping(value = "/blogPosts/blogPostImagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -99,6 +103,7 @@ public class BlogPostImagesController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "blogPostId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));
         if (!result.hasErrors()) {
             blogPostImagesDAO.add(blogPostImage);
+            imageStorageService.storeBlogImage(blogPostImage);
             CmsGlobalParam blogImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH");
             File copiedFile = new File(blogImagesPath.getValue(), blogPostImage.getFile().getOriginalFilename());
             try {

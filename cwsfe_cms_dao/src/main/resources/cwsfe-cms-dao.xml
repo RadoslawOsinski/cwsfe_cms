@@ -18,5 +18,10 @@
             <property name="jndiName" value="java:comp/env/jdbc/cwsfe_cms"/><!--JNDI name in wildfly is different than tomcat. Java standards sucks.-->
         </bean>
     </beans>
+    <beans profile="tomcat-aws">
+        <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+            <property name="jndiName" value="java:comp/env/jdbc/cwsfe_cms"/><!--JNDI name in wildfly is different than tomcat. Java standards sucks.-->
+        </bean>
+    </beans>
 
 </beans>
