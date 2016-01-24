@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true" scanPeriod="30 seconds">
+<configuration scan="false">
 
     <jmxConfigurator/>
 
-    <configuration scan="false" scanPeriod="30 seconds" debug="false">
-        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder>
-                <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} %method %line - %msg%n</pattern>
-            </encoder>
-        </appender>
-        <logger name="testLogger" level="info">
-            <appender-ref ref="STDOUT" />
-        </logger>
-    </configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} %method %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="testLogger" level="info">
+        <appender-ref ref="STDOUT" />
+    </logger>
 
 </configuration>
