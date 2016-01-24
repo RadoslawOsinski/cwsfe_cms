@@ -83,20 +83,8 @@ jacocoTestReport {
 }
 
 flyway {
-    def props = new Properties();
-    try {
-        def propertiesFile = new File((String) project(':cwsfe_cms_dao').projectDir + "/flyway_localhost_properties.properties")
-        if (propertiesFile != null) {
-            propertiesFile.withInputStream {
-                stream -> props.load(stream)
-            }
-        }
-    } catch (FileNotFoundException e) {
-        logger.error('Property file is missing', e);
-    }
-    driver = props["cwsfe_cms.jdbc.driver"];
-    url = props["cwsfe_cms.jdbc.url"];
-    user = props["cwsfe_cms.jdbc.user"];
-    password = props["cwsfe_cms.jdbc.password"];
-    println driver;
+    driver = System.properties['cwsfe_cms.jdbc.driver'];
+    url = System.properties['cwsfe_cms.jdbc.url'];
+    user = System.properties['cwsfe_cms.jdbc.user'];
+    password = System.properties['cwsfe_cms.jdbc.password'];
 }
