@@ -12,4 +12,11 @@ public interface ImageStorageService {
 
     void storeBlogImage(BlogPostImage cmsNewsImage);
 
+    boolean isBlogImagesStorageInitialized();
+
+    boolean isNewsImagesStorageInitialized();
+
+    void initializeBlogImagesStorage();
+
+    void initializeNewsImagesStorage();
 }

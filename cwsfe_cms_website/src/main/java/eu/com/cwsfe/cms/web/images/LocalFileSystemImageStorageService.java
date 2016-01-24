@@ -38,6 +38,38 @@ public class LocalFileSystemImageStorageService implements ImageStorageService {
         storeImage(blogPostImage.getFile(), blogImagesPath.getValue());
     }
 
+    @Override
+    public boolean isBlogImagesStorageInitialized() {
+        CmsGlobalParam newsImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH");
+        File newsImagesDirectory = new File(newsImagesPath.getValue());
+        return newsImagesDirectory.exists() && newsImagesDirectory.isDirectory();
+    }
+
+    @Override
+    public boolean isNewsImagesStorageInitialized() {
+        CmsGlobalParam newsImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
+        File newsImagesDirectory = new File(newsImagesPath.getValue());
+        return newsImagesDirectory.exists() && newsImagesDirectory.isDirectory();
+    }
+
+    @Override
+    public void initializeBlogImagesStorage() {
+        CmsGlobalParam newsImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH");
+        File newsImagesDirectory = new File(newsImagesPath.getValue());
+        if (newsImagesDirectory.mkdir()) {
+            LOGGER.error("Failed to create folder: " + newsImagesPath.getValue());
+        }
+    }
+
+    @Override
+    public void initializeNewsImagesStorage() {
+        CmsGlobalParam newsImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
+        File newsImagesDirectory = new File(newsImagesPath.getValue());
+        if (newsImagesDirectory.mkdir()) {
+            LOGGER.error("Failed to create folder: " + newsImagesPath.getValue());
+        }
+    }
+
     private void storeImage(MultipartFile image, String imagePath) {
         File copiedFile = new File(imagePath, image.getOriginalFilename());
         try {
