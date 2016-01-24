@@ -90,6 +90,9 @@ dependencies {
     testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: '0.8.1'
     testCompile group: 'com.jayway.jsonpath', name: 'json-path-assert', version: '0.8.1'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '1.9.5'
+    testCompile group: 'javax.mail', name: 'mail', version: '1.4.7' //only for tomcat :(, add this jar to ${CATALINA_HOME}/lib
+    testCompile group: 'javax.activation', name: 'activation', version: '1.1.1' //only for tomcat, add this jar to ${CATALINA_HOME}/lib
+    testCompile group: 'javax.mail', name: 'javax.mail-api', version: '1.5.0'
 }
 
 war {
@@ -109,4 +112,22 @@ jacocoTestReport {
     group = "Reporting"
     description = "Generate Jacoco coverage reports after running tests."
     additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+}
+
+flyway {
+    def props = new Properties();
+    try {
+        def propertiesFile = new File((String) project(':cwsfe_cms_dao').projectDir + "/flyway_localhost_properties.properties");
+        if (propertiesFile != null) {
+            propertiesFile.withInputStream {
+                stream -> props.load(stream)
+            }
+        }
+    } catch (FileNotFoundException e) {
+        logger.error('Property file is missing', e);
+    }
+    driver = props["cwsfe_cms.jdbc.driver"];
+    url = props["cwsfe_cms.jdbc.url"];
+    user = props["cwsfe_cms.jdbc.user"];
+    password = props["cwsfe_cms.jdbc.password"];
 }

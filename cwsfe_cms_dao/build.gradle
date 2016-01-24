@@ -63,6 +63,11 @@ task testJar(type: Jar, dependsOn: testClasses) {
     from sourceSets.test.output
 }
 
+task integration_tests_local(type: Test) {
+//    systemProperty "spring.profiles.active", "integration-tests-local";
+    systemProperty "spring.profiles.test-groups", "integration-tests-local";
+}
+
 configurations {
     tests
 }
@@ -78,18 +83,20 @@ jacocoTestReport {
 }
 
 flyway {
-    def props = new Properties()
+    def props = new Properties();
     try {
-        def propertiesFile = new File("sensitive_data.properties")
+        def propertiesFile = new File((String) project(':cwsfe_cms_dao').projectDir + "/flyway_localhost_properties.properties")
         if (propertiesFile != null) {
             propertiesFile.withInputStream {
                 stream -> props.load(stream)
             }
         }
-    } catch (FileNotFoundException ignored) {
-        //file not exists in repo
+    } catch (FileNotFoundException e) {
+        logger.error('Property file is missing', e);
     }
+    driver = props["cwsfe_cms.jdbc.driver"];
     url = props["cwsfe_cms.jdbc.url"];
     user = props["cwsfe_cms.jdbc.user"];
     password = props["cwsfe_cms.jdbc.password"];
+    println driver;
 }
