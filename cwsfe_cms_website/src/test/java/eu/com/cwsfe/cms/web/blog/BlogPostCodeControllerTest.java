@@ -50,7 +50,7 @@ public class BlogPostCodeControllerTest {
         String sEcho = "1";
         int numberOfCodes = 1;
         int numberOfCodesNotDeleted = 7;
-        long id = 1l;
+        long id = 1L;
         String codeId = "codeId";
         String code = "code";
         ArrayList<BlogPostCode> blogPostCodes = new ArrayList<>();

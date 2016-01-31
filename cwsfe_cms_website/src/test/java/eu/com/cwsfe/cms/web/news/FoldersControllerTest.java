@@ -63,8 +63,8 @@ public class FoldersControllerTest {
         List<CmsFolder> cmsFolders = new ArrayList<>();
         CmsFolder cmsFolder = new CmsFolder();
         String folderName = "folderName";
-        long id = 1l;
-        long orderNumber = 2l;
+        long id = 1L;
+        long orderNumber = 2L;
         cmsFolder.setId(id);
         cmsFolder.setFolderName(folderName);
         cmsFolder.setOrderNumber(orderNumber);
@@ -100,7 +100,7 @@ public class FoldersControllerTest {
         List<CmsFolder> cmsFolders = new ArrayList<>();
         CmsFolder cmsFolder = new CmsFolder();
         String folderName = "folderName";
-        long id = 1l;
+        long id = 1L;
         cmsFolder.setId(id);
         cmsFolder.setFolderName(folderName);
         cmsFolders.add(cmsFolder);
@@ -125,10 +125,10 @@ public class FoldersControllerTest {
     public void testAddFolder() throws Exception {
         CmsFolder cmsFolder = new CmsFolder();
         String folderName = "folderName";
-        long id = 1l;
+        long id = 1L;
         cmsFolder.setId(id);
         cmsFolder.setFolderName(folderName);
-        when(cmsFoldersDAO.add(any(CmsFolder.class))).thenReturn(1l);
+        when(cmsFoldersDAO.add(any(CmsFolder.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addFolder")
                 .param("folderName", folderName))

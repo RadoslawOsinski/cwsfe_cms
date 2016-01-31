@@ -118,7 +118,7 @@ public class BlogPostsControllerTest {
     public void testListBlogPostKeywordAssignment() throws Exception {
         ArrayList<BlogKeywordAssignment> blogKeywordAssignments = new ArrayList<>();
         BlogKeywordAssignment blogKeywordAssignment = new BlogKeywordAssignment();
-        long id = 1l;
+        long id = 1L;
         String keywordName = "keywordName";
         boolean assigned = true;
         BlogKeywordStatus status = BlogKeywordStatus.NEW;
@@ -146,7 +146,7 @@ public class BlogPostsControllerTest {
 
     @Test
     public void testAddBlogPost() throws Exception {
-        when(blogPostsDAO.add(any(BlogPost.class))).thenReturn(1l);
+        when(blogPostsDAO.add(any(BlogPost.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addBlogPost")
                 .param("postAuthorId", "2")
@@ -244,7 +244,7 @@ public class BlogPostsControllerTest {
     @Test
     public void testUpdateBlogPostI18nContent() throws Exception {
         when(blogPostI18nContentsDAO.getByLanguageForPost(anyLong(), anyLong())).thenReturn(null);
-        when(blogPostI18nContentsDAO.add(any(BlogPostI18nContent.class))).thenReturn(1l);
+        when(blogPostI18nContentsDAO.add(any(BlogPostI18nContent.class))).thenReturn(1L);
         when(blogPostsDAO.get(anyLong())).thenReturn(new BlogPost());
 
         ResultActions resultActions = mockMvc.perform(post("/blogPosts/updateBlogPostI18nContent")

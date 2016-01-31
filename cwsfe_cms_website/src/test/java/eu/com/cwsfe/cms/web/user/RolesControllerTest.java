@@ -60,7 +60,7 @@ public class RolesControllerTest {
         int count = 1;
         ArrayList<CmsRole> cmsRoles = new ArrayList<>();
         CmsRole cmsRole = new CmsRole();
-        long roleId = 2l;
+        long roleId = 2L;
         String roleName = "roleName";
         String roleCode = "roleCode";
         cmsRole.setId(roleId);
@@ -96,7 +96,7 @@ public class RolesControllerTest {
         int limit = 1;
         ArrayList<CmsRole> cmsRoles = new ArrayList<>();
         CmsRole cmsRole = new CmsRole();
-        long roleId = 2l;
+        long roleId = 2L;
         String roleName = "roleName";
         String roleCode = "roleCode";
         cmsRole.setId(roleId);

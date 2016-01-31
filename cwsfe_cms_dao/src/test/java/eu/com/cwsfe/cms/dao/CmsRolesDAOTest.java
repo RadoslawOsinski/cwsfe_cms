@@ -26,7 +26,7 @@ public class CmsRolesDAOTest  extends AbstractTransactionalJUnit4SpringContextTe
     @Test
     public void testListUserRoles() throws Exception {
         //given
-        Long userId = 1l;
+        Long userId = 1L;
 
         //when
         List<CmsRole> list = dao.listUserRoles(userId);
@@ -86,7 +86,7 @@ public class CmsRolesDAOTest  extends AbstractTransactionalJUnit4SpringContextTe
     @Test
     public void testGet() throws Exception {
         //given
-        Long roleId = 1l;
+        Long roleId = 1L;
 
         //when
         CmsRole cmsRoleResult = dao.get(roleId);

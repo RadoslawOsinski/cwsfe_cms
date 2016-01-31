@@ -60,7 +60,7 @@ public class AuthorsControllerTest {
         int numberOfAuthors = 1;
         ArrayList<CmsAuthor> authors = new ArrayList<>();
         CmsAuthor cmsAuthor = new CmsAuthor();
-        long authorId = 2l;
+        long authorId = 2L;
         String lastName = "Osinski";
         String firstName = "Radoslaw";
         String googlePlusAuthorLink = "https://plus.google.com/u/0/+RadosławOsiński/";
@@ -99,7 +99,7 @@ public class AuthorsControllerTest {
         int limit = 1;
         ArrayList<CmsAuthor> authors = new ArrayList<>();
         CmsAuthor cmsAuthor = new CmsAuthor();
-        long authorId = 2l;
+        long authorId = 2L;
         String lastName = "Osinski";
         String firstName = "Radoslaw";
         String googlePlusAuthorLink = "https://plus.google.com/u/0/+RadosławOsiński/";
@@ -130,7 +130,7 @@ public class AuthorsControllerTest {
     @Test
     public void testAddAuthor() throws Exception {
         CmsAuthor cmsAuthor = new CmsAuthor();
-        long authorId = 2l;
+        long authorId = 2L;
         String lastName = "Osinski";
         String firstName = "Radoslaw";
         String googlePlusAuthorLink = "https://plus.google.com/u/0/+RadosławOsiński/";
@@ -138,7 +138,7 @@ public class AuthorsControllerTest {
         cmsAuthor.setLastName(lastName);
         cmsAuthor.setFirstName(firstName);
         cmsAuthor.setGooglePlusAuthorLink(googlePlusAuthorLink);
-        when(cmsAuthorsDAO.add(any(CmsAuthor.class))).thenReturn(1l);
+        when(cmsAuthorsDAO.add(any(CmsAuthor.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addAuthor")
                 .param("firstName", firstName)
@@ -157,7 +157,7 @@ public class AuthorsControllerTest {
     public void testDeleteAuthor() throws Exception {
         int id = 1;
         CmsAuthor cmsAuthor = new CmsAuthor();
-        long authorId = 2l;
+        long authorId = 2L;
         String lastName = "Osinski";
         String firstName = "Radoslaw";
         String googlePlusAuthorLink = "https://plus.google.com/u/0/+RadosławOsiński/";

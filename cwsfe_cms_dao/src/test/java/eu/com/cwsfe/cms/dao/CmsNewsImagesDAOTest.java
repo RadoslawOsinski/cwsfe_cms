@@ -54,7 +54,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         NEWS_TYPE.setId(newsTypesDAO.add(NEWS_TYPE));
 
         FOLDER.setFolderName("folder");
-        FOLDER.setOrderNumber(1l);
+        FOLDER.setOrderNumber(1L);
         FOLDER.setId(cmsFoldersDAO.add(FOLDER));
 
         NEWS.setAuthorId(CMS_AUTHOR.getId());
@@ -92,7 +92,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
     public void testSearchByAjaxWithoutContent() throws Exception {
         //given
         //when
-        List<CmsNewsImage> cmsNewsImages = dao.searchByAjaxWithoutContent(0, 1, 1l);
+        List<CmsNewsImage> cmsNewsImages = dao.searchByAjaxWithoutContent(0, 1, 1L);
 
         //then
         assertNotNull(cmsNewsImages);
@@ -102,7 +102,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
     public void testSearchByAjaxCountWithoutContent() throws Exception {
         //given
         //when
-        int results = dao.searchByAjaxCountWithoutContent(1l);
+        int results = dao.searchByAjaxCountWithoutContent(1L);
 
         //then
         assertNotNull(results);
@@ -116,7 +116,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         Date created = new Date();
         Date lastModified = new Date();
         String fileName = "fileName";
-        long fileSize = 1l;
+        long fileSize = 1L;
         int width = 2;
         int height = 3;
         String mimeType = "img/png";
@@ -157,7 +157,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         Date created = new Date();
         Date lastModified = new Date();
         String fileName = "fileName";
-        long fileSize = 1l;
+        long fileSize = 1L;
         int width = 2;
         int height = 3;
         String mimeType = "img/png";
@@ -198,7 +198,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         Date created = new Date();
         Date lastModified = new Date();
         String fileName = "fileName";
-        long fileSize = 1l;
+        long fileSize = 1L;
         int width = 2;
         int height = 3;
         String mimeType = "img/png";
@@ -231,7 +231,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         Date created = new Date();
         Date lastModified = new Date();
         String fileName = "fileName";
-        long fileSize = 1l;
+        long fileSize = 1L;
         int width = 2;
         int height = 3;
         String mimeType = "img/png";
@@ -261,7 +261,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
     public void testListImagesForNewsWithoutThumbnails() throws Exception {
         //given
         //when
-        List<CmsNewsImage> cmsNewsImagesWithoutThumbnails = dao.listImagesForNewsWithoutThumbnails(1l);
+        List<CmsNewsImage> cmsNewsImagesWithoutThumbnails = dao.listImagesForNewsWithoutThumbnails(1L);
 
         //then
         assertNotNull(cmsNewsImagesWithoutThumbnails);
@@ -277,7 +277,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         Date created = new Date();
         Date lastModified = new Date();
         String fileName = "fileName";
-        long fileSize = 1l;
+        long fileSize = 1L;
         int width = 2;
         int height = 3;
         String mimeType = "img/png";
@@ -319,7 +319,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         Date created = new Date();
         Date lastModified = new Date();
         String fileName = "fileName";
-        long fileSize = 1l;
+        long fileSize = 1L;
         int width = 2;
         int height = 3;
         String mimeType = "img/png";
@@ -357,7 +357,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
     public void testListImagesForNewsWithoutThumbnailsAndContent() throws Exception {
         //given
         //when
-        List<CmsNewsImage> cmsNewsImagesWithoutThumbnails = dao.listImagesForNewsWithoutThumbnails(1l);
+        List<CmsNewsImage> cmsNewsImagesWithoutThumbnails = dao.listImagesForNewsWithoutThumbnails(1L);
 
         //then
         assertNotNull(cmsNewsImagesWithoutThumbnails);
@@ -373,7 +373,7 @@ public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringConte
         Date created = new Date();
         Date lastModified = new Date();
         String fileName = "fileName";
-        long fileSize = 1l;
+        long fileSize = 1L;
         int width = 2;
         int height = 3;
         String mimeType = "img/png";

@@ -49,7 +49,7 @@ public class CmsLanguagesDAOTest extends AbstractTransactionalJUnit4SpringContex
     public void testListAjax() throws Exception {
         //given
         Language language = new Language();
-        language.setId(1l);
+        language.setId(1L);
         language.setCode("pl");
         language.setName("Polish");
         dao.add(language);
@@ -66,7 +66,7 @@ public class CmsLanguagesDAOTest extends AbstractTransactionalJUnit4SpringContex
     public void testListForDropList() throws Exception {
         //given
         Language language = new Language();
-        language.setId(1l);
+        language.setId(1L);
         language.setCode("pl");
         String name = "Polish";
         language.setName(name);
@@ -104,7 +104,7 @@ public class CmsLanguagesDAOTest extends AbstractTransactionalJUnit4SpringContex
     public void testGetByCode() throws Exception {
         //given
         Language language = new Language();
-        language.setId(1l);
+        language.setId(1L);
         String code = "pl";
         String name = "Polish";
         language.setCode(code);
@@ -124,7 +124,7 @@ public class CmsLanguagesDAOTest extends AbstractTransactionalJUnit4SpringContex
     public void testGetByCodeIgnoreCase() throws Exception {
         //given
         Language language = new Language();
-        language.setId(1l);
+        language.setId(1L);
         String code = "pl";
         String name = "Polish";
         language.setCode(code);
@@ -144,7 +144,7 @@ public class CmsLanguagesDAOTest extends AbstractTransactionalJUnit4SpringContex
     public void testAdd() throws Exception {
         //given
         Language language = new Language();
-        language.setId(1l);
+        language.setId(1L);
         String code = "pl";
         String name = "Polish";
         language.setCode(code);
@@ -164,7 +164,7 @@ public class CmsLanguagesDAOTest extends AbstractTransactionalJUnit4SpringContex
     public void testUpdate() throws Exception {
         //given
         Language language = new Language();
-        language.setId(1l);
+        language.setId(1L);
         String code = "pl";
         String name = "Polish";
         language.setCode(code);
@@ -190,7 +190,7 @@ public class CmsLanguagesDAOTest extends AbstractTransactionalJUnit4SpringContex
     public void testDelete() throws Exception {
         //given
         Language language = new Language();
-        language.setId(1l);
+        language.setId(1L);
         String code = "pl";
         String name = "Polish";
         language.setCode(code);
@@ -211,7 +211,7 @@ public class CmsLanguagesDAOTest extends AbstractTransactionalJUnit4SpringContex
     public void testUndelete() throws Exception {
         //given
         Language language = new Language();
-        language.setId(1l);
+        language.setId(1L);
         String code = "pl";
         String name = "Polish";
         language.setCode(code);

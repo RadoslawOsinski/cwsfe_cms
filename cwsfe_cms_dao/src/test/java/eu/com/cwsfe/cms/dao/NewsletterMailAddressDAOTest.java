@@ -76,7 +76,7 @@ public class NewsletterMailAddressDAOTest extends AbstractTransactionalJUnit4Spr
     public void testListByRecipientGroup() throws Exception {
         //given
         //when
-        List<NewsletterMailAddress> list = dao.listByRecipientGroup(1l);
+        List<NewsletterMailAddress> list = dao.listByRecipientGroup(1L);
 
         //then
         assertNotNull("Empty results should not return null", list);

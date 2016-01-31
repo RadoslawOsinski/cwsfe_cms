@@ -65,10 +65,10 @@ public class UsersNetAddressesControllerTest {
         int iDisplayLength = 2;
         String sEcho = "1";
         int count = 1;
-        long userId = 2l;
+        long userId = 2L;
         ArrayList<CmsUserAllowedNetAddress> netAddresses = new ArrayList<>();
         CmsUserAllowedNetAddress cmsUserAllowedNetAddress = new CmsUserAllowedNetAddress();
-        long id = 1l;
+        long id = 1L;
         cmsUserAllowedNetAddress.setId(id);
         String inetAddress = "127.0.0.1";
         cmsUserAllowedNetAddress.setId(id);
@@ -108,7 +108,7 @@ public class UsersNetAddressesControllerTest {
 
     @Test
     public void testAddNetAddress() throws Exception {
-        when(cmsUserAllowedNetAddressDAO.add(Matchers.any(CmsUserAllowedNetAddress.class))).thenReturn(1l);
+        when(cmsUserAllowedNetAddressDAO.add(Matchers.any(CmsUserAllowedNetAddress.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addNetAddress")
                 .param("userId", "1")

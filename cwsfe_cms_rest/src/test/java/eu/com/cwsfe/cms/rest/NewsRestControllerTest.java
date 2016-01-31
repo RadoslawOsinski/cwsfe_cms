@@ -59,14 +59,14 @@ public class NewsRestControllerTest {
 
     @Test
     public void testGetNewsByNewsTypeFolderAndNewsCode() throws Exception {
-        long id = 1l;
-        long authorId = 2l;
-        long newsTypeId = 3l;
-        long newsFolderId = 4l;
+        long id = 1L;
+        long authorId = 2L;
+        long newsTypeId = 3L;
+        long newsFolderId = 4L;
         CmsFolder cmsFolder = new CmsFolder();
-        cmsFolder.setId(1l);
+        cmsFolder.setId(1L);
         NewsType newsType = new NewsType();
-        newsType.setId(2l);
+        newsType.setId(2L);
         String testCode = "testCode";
         CmsNews cmsNews = new CmsNews();
         cmsNews.setId(id);
@@ -97,12 +97,12 @@ public class NewsRestControllerTest {
 
     @Test
     public void testListByFolderLangAndNewsWithPaging() throws Exception {
-        long id = 1l;
-        long id2 = 2l;
-        long authorId = 2l;
-        long newsTypeId = 3l;
-        long newsFolderId = 4l;
-        long languageId = 5l;
+        long id = 1L;
+        long id2 = 2L;
+        long authorId = 2L;
+        long newsTypeId = 3L;
+        long newsFolderId = 4L;
+        long languageId = 5L;
         String newsCode = "newsCode";
         String title = "title";
         String shortcut = "shortcut";
@@ -115,10 +115,10 @@ public class NewsRestControllerTest {
         cmsNews.setNewsCode(newsCode);
         cmsNews.setStatus(CmsNewsStatus.PUBLISHED);
         ArrayList<Object[]> values = new ArrayList<>();
-        Object[] value = {1l, 1l};
+        Object[] value = {1L, 1L};
         values.add(value);
         CmsFolder folder = new CmsFolder();
-        folder.setId(7l);
+        folder.setId(7L);
         when(cmsFoldersDAO.getByFolderName(anyString())).thenReturn(folder);
         when(cmsLanguagesDAO.getByCode(anyString())).thenReturn(new Language());
         when(cmsNewsDAO.listByFolderLangAndNewsWithPaging(anyInt(), anyLong(), anyString(), anyInt(), anyInt())).thenReturn(values);
@@ -160,7 +160,7 @@ public class NewsRestControllerTest {
     @Test
     public void testCountListByFolderLangAndNewsWithPaging() throws Exception {
         CmsFolder folder = new CmsFolder();
-        folder.setId(7l);
+        folder.setId(7L);
         int total = 1;
         when(cmsFoldersDAO.getByFolderName(anyString())).thenReturn(folder);
         when(cmsLanguagesDAO.getByCode(anyString())).thenReturn(new Language());
@@ -181,11 +181,11 @@ public class NewsRestControllerTest {
     @Test
     public void testGetByLanguageForNews() throws Exception {
         Language language = new Language();
-        language.setId(1l);
-        long id = 1l;
-        long newsId = 2l;
+        language.setId(1L);
+        long id = 1L;
+        long newsId = 2L;
         String description = "desc";
-        long languageId = 3l;
+        long languageId = 3L;
         String shortcut = "shortcut";
         String title = "title";
         CmsNewsI18nContent cmsNewsI18nContent = new CmsNewsI18nContent();
@@ -218,10 +218,10 @@ public class NewsRestControllerTest {
     @Test
     public void testGet() throws Exception {
         CmsNewsI18nContent cmsNewsI18nContent = new CmsNewsI18nContent();
-        Long id = 1l;
-        Long newsId = 2l;
+        Long id = 1L;
+        Long newsId = 2L;
         String description = "description";
-        Long languageId = 3l;
+        Long languageId = 3L;
         String shortcut = "shortcut";
         String title = "title";
         cmsNewsI18nContent.setId(id);
@@ -250,14 +250,14 @@ public class NewsRestControllerTest {
 
     @Test
     public void testGetNewsI18nContentByNews() throws Exception {
-        long id = 1l;
-        long authorId = 2l;
-        long newsTypeId = 3l;
-        long newsFolderId = 4l;
+        long id = 1L;
+        long authorId = 2L;
+        long newsTypeId = 3L;
+        long newsFolderId = 4L;
         CmsFolder cmsFolder = new CmsFolder();
-        cmsFolder.setId(1l);
+        cmsFolder.setId(1L);
         NewsType newsType = new NewsType();
-        newsType.setId(2l);
+        newsType.setId(2L);
         String testCode = "testCode";
         CmsNews cmsNews = new CmsNews();
         cmsNews.setId(id);
@@ -267,10 +267,10 @@ public class NewsRestControllerTest {
         cmsNews.setNewsCode(testCode);
         cmsNews.setStatus(CmsNewsStatus.NEW);
         Language language = new Language();
-        language.setId(1l);
-        long newsId = 2l;
+        language.setId(1L);
+        long newsId = 2L;
         String description = "desc";
-        long languageId = 3l;
+        long languageId = 3L;
         String shortcut = "shortcut";
         String title = "title";
         CmsNewsI18nContent cmsNewsI18nContent = new CmsNewsI18nContent();

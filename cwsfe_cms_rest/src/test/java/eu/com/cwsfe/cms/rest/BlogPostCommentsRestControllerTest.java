@@ -58,7 +58,7 @@ public class BlogPostCommentsRestControllerTest {
 
     @Test
     public void testAddCommentSuccessful() throws Exception {
-        when(blogPostCommentsDAO.add(anyObject())).thenReturn(1l);
+        when(blogPostCommentsDAO.add(anyObject())).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/rest/comments")
                 .param("blogPostI18nContentId", "2")

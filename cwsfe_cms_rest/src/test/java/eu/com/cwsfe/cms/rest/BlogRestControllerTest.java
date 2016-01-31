@@ -54,14 +54,14 @@ public class BlogRestControllerTest {
 
     @Test
     public void testListBlogPosts() throws Exception {
-        long blogPostId = 1l;
-        long authorId = 2l;
+        long blogPostId = 1L;
+        long authorId = 2L;
         Date postCreationDate = new Date(1);
         String postTextCode = "postTextCode";
-        long blogPostI18nContentId = 4l;
+        long blogPostI18nContentId = 4L;
         String description = "description";
         String shortcut = "shortcut";
-        long languageId = 7l;
+        long languageId = 7L;
         String postTitle = "postTitle";
         Language language = new Language();
         language.setId(languageId);
@@ -106,14 +106,14 @@ public class BlogRestControllerTest {
 
     @Test
     public void testListBlogPostsWithCategory() throws Exception {
-        long blogPostId = 1l;
-        long authorId = 2l;
+        long blogPostId = 1L;
+        long authorId = 2L;
         Date postCreationDate = new Date(1);
         String postTextCode = "postTextCode";
-        long blogPostI18nContentId = 4l;
+        long blogPostI18nContentId = 4L;
         String description = "description";
         String shortcut = "shortcut";
-        long languageId = 7l;
+        long languageId = 7L;
         String postTitle = "postTitle";
         Language language = new Language();
         language.setId(languageId);
@@ -158,8 +158,8 @@ public class BlogRestControllerTest {
 
     @Test
     public void testListBlogPostsTotal() throws Exception {
-        long total = 1l;
-        Long languageId = 2l;
+        long total = 1L;
+        Long languageId = 2L;
         Language language = new Language();
         language.setId(languageId);
         when(cmsLanguagesDAO.getByCode(anyString())).thenReturn(language);
@@ -178,8 +178,8 @@ public class BlogRestControllerTest {
 
     @Test
     public void testListBlogPostsWithCategoryTotal() throws Exception {
-        long total = 1l;
-        Long languageId = 2l;
+        long total = 1L;
+        Long languageId = 2L;
         Language language = new Language();
         language.setId(languageId);
         when(cmsLanguagesDAO.getByCode(anyString())).thenReturn(language);
@@ -198,14 +198,14 @@ public class BlogRestControllerTest {
 
     @Test
     public void testSinglePostView() throws Exception {
-        long blogPostId = 1l;
-        long authorId = 2l;
+        long blogPostId = 1L;
+        long authorId = 2L;
         Date postCreationDate = new Date(1);
         String postTextCode = "postTextCode";
-        long blogPostI18nContentId = 4l;
+        long blogPostI18nContentId = 4L;
         String description = "description";
         String shortcut = "shortcut";
-        long languageId = 7l;
+        long languageId = 7L;
         String postTitle = "postTitle";
         BlogPost blogPost = new BlogPost();
         blogPost.setId(blogPostId);

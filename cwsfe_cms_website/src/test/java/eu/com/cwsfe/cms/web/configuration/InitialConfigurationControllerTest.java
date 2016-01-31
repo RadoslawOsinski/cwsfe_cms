@@ -79,7 +79,7 @@ public class InitialConfigurationControllerTest {
         CmsGlobalParam cwsfeCmsIsConfigured = new CmsGlobalParam();
         cwsfeCmsIsConfigured.setValue("N");
         when(cmsGlobalParamsDAO.getByCode("CWSFE_CMS_IS_CONFIGURED")).thenReturn(cwsfeCmsIsConfigured);
-        when(cmsUsersDAO.add(any(CmsUser.class))).thenReturn(1l);
+        when(cmsUsersDAO.add(any(CmsUser.class))).thenReturn(1L);
         when(cmsRolesDAO.getByCode("ROLE_CWSFE_CMS_ADMIN")).thenReturn(new CmsRole());
         doNothing().when(cmsUserRolesDAO).add(any(CmsUserRole.class));
         doNothing().when(cmsGlobalParamsDAO).update(cwsfeCmsIsConfigured);

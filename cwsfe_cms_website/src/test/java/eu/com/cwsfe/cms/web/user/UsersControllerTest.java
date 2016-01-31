@@ -73,7 +73,7 @@ public class UsersControllerTest {
         int count = 1;
         List<CmsUser> users = new ArrayList<>();
         CmsUser user = new CmsUser();
-        long userId = 2l;
+        long userId = 2L;
         String userName = "userName";
         user.setId(userId);
         user.setUserName(userName);
@@ -109,7 +109,7 @@ public class UsersControllerTest {
         int limit = 1;
         List<CmsUser> users = new ArrayList<>();
         CmsUser user = new CmsUser();
-        long userId = 2l;
+        long userId = 2L;
         String userName = "userName";
         user.setId(userId);
         user.setUserName(userName);
@@ -135,7 +135,7 @@ public class UsersControllerTest {
     @Test
     public void testAddUser() throws Exception {
         CmsUser user = new CmsUser();
-        long userId = 2l;
+        long userId = 2L;
         String userName = "userName";
         String passwordHash = "passwordHash";
         user.setId(userId);
@@ -143,7 +143,7 @@ public class UsersControllerTest {
         user.setPasswordHash(passwordHash);
         user.setStatus(CmsUserStatus.NEW);
         when(cmsUsersDAO.getByUsername(anyString())).thenThrow(new EmptyResultDataAccessException(1));
-        when(cmsUsersDAO.add(Matchers.any(CmsUser.class))).thenReturn(1l);
+        when(cmsUsersDAO.add(Matchers.any(CmsUser.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addUser")
                 .param("userName", userName)
@@ -162,7 +162,7 @@ public class UsersControllerTest {
     @Test
     public void testAddAlreadyExistingUser() throws Exception {
         CmsUser user = new CmsUser();
-        long userId = 2l;
+        long userId = 2L;
         String userName = "CWSFE_CMS_ADMIN";
         String passwordHash = "passwordHash";
         user.setId(userId);
@@ -235,12 +235,12 @@ public class UsersControllerTest {
     @Test
     public void testBrowseUser() throws Exception {
         CmsUser cmsUser = new CmsUser();
-        long id = 1l;
+        long id = 1L;
         cmsUser.setId(id);
         when(cmsUsersDAO.get(anyLong())).thenReturn(cmsUser);
         List<CmsRole> cmsRoles = new ArrayList<>(1);
         CmsRole cmsRole = new CmsRole();
-        cmsRole.setId(2l);
+        cmsRole.setId(2L);
         cmsRole.setRoleCode("roleCode");
         cmsRole.setRoleName("roleName");
         cmsRoles.add(cmsRole);
@@ -262,12 +262,12 @@ public class UsersControllerTest {
     @Test
     public void testUserRolesUpdate() throws Exception {
         CmsUser cmsUser = new CmsUser();
-        long id = 1l;
+        long id = 1L;
         cmsUser.setId(id);
         when(cmsUsersDAO.get(anyLong())).thenReturn(cmsUser);
         List<CmsRole> cmsRoles = new ArrayList<>(1);
         CmsRole cmsRole = new CmsRole();
-        cmsRole.setId(2l);
+        cmsRole.setId(2L);
         cmsRole.setRoleCode("roleCode");
         cmsRole.setRoleName("roleName");
         cmsRoles.add(cmsRole);
@@ -289,7 +289,7 @@ public class UsersControllerTest {
     @Test
     public void testUpdateUserBasicInfo() throws Exception {
         CmsUser user = new CmsUser();
-        long userId = 2l;
+        long userId = 2L;
         String userName = "userName";
         String passwordHash = "passwordHash";
         user.setId(userId);

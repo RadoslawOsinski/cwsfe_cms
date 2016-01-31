@@ -59,7 +59,7 @@ public class BlogPostKeywordsDAOTest extends AbstractTransactionalJUnit4SpringCo
     public void testListForPost() throws Exception {
         //given
         //when
-        List<BlogKeyword> list = dao.listForPost(1l);
+        List<BlogKeyword> list = dao.listForPost(1L);
 
         //then
         assertNotNull("Empty results should not return null", list);
@@ -70,7 +70,7 @@ public class BlogPostKeywordsDAOTest extends AbstractTransactionalJUnit4SpringCo
     public void testListValuesForPost() throws Exception {
         //given
         //when
-        List<BlogKeywordAssignment> list = dao.listValuesForPost(1l);
+        List<BlogKeywordAssignment> list = dao.listValuesForPost(1L);
 
         //then
         assertNotNull("Empty results should not return null", list);

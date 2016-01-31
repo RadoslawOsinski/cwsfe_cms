@@ -69,11 +69,11 @@ public class CmsTextI18nControllerTest {
         int iDisplayLength = 2;
         String sEcho = "1";
         int numberOfI18ns = 1;
-        long id = 1l;
+        long id = 1L;
         List<CmsTextI18n> cmsTextI18ns = new ArrayList<>();
         CmsTextI18n cmsTextI18n = new CmsTextI18n();
-        long categoryId = 1l;
-        long langId = 3l;
+        long categoryId = 1L;
+        long langId = 3L;
         String key = "key";
         String i18nText = "i18nText";
         cmsTextI18n.setId(id);
@@ -119,7 +119,7 @@ public class CmsTextI18nControllerTest {
 
     @Test
     public void testAddTextI18n() throws Exception {
-        when(cmsTextI18nDAO.add(any(CmsTextI18n.class))).thenReturn(1l);
+        when(cmsTextI18nDAO.add(any(CmsTextI18n.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addCmsTextI18n")
                 .param("langId", "1")

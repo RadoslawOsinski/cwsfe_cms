@@ -44,7 +44,7 @@ public class BlogPostCodeRestControllerTest {
 
     @Test
     public void testGetPostCode() throws Exception {
-        Long blogPostId = 1l;
+        Long blogPostId = 1L;
         String code = "code";
         String codeId = "codeId";
         BlogPostCode blogPostCode = new BlogPostCode();

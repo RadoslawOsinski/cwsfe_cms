@@ -60,14 +60,14 @@ public class CmsNewsImagesControllerTest {
         int iDisplayStart = 0;
         int iDisplayLength = 2;
         String sEcho = "1";
-        long cmsNewsId = 1l;
+        long cmsNewsId = 1L;
         int numberOfCmsNewsImages = 1;
         int totalNumberNotDeleted = 6;
         List<CmsNewsImage> cmsNewsImages = new ArrayList<>();
         CmsNewsImage blogPostImage = new CmsNewsImage();
         String title = "title";
         String fileName = "fileName";
-        long id = 1l;
+        long id = 1L;
         blogPostImage.setId(id);
         blogPostImage.setTitle(title);
         blogPostImage.setFileName(fileName);
@@ -92,6 +92,7 @@ public class CmsNewsImagesControllerTest {
                 .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
                 .andExpect(jsonPath("$.aaData[0].title").value(title))
                 .andExpect(jsonPath("$.aaData[0].fileName").value(fileName))
+                .andExpect(jsonPath("$.aaData[0].url").value(url))
                 .andExpect(jsonPath("$.aaData[0].id").value((int) id));
         verify(cmsNewsImagesDAO, times(1)).searchByAjaxWithoutContent(anyInt(), anyInt(), anyLong());
         verify(cmsNewsImagesDAO, times(1)).searchByAjaxCountWithoutContent(anyLong());
@@ -106,7 +107,7 @@ public class CmsNewsImagesControllerTest {
         byte[] testData = Files.readAllBytes(path);
         MockMultipartFile file = new MockMultipartFile("file", "testImage.png", "image/png", testData);
 
-        when(cmsNewsImagesDAO.add(any(CmsNewsImage.class))).thenReturn(1l);
+        when(cmsNewsImagesDAO.add(any(CmsNewsImage.class))).thenReturn(1L);
         CmsGlobalParam cmsGlobalParam = mock(CmsGlobalParam.class);
         when(cmsGlobalParamsDAO.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH")).thenReturn(cmsGlobalParam);
         when(cmsGlobalParam.getValue()).thenReturn(System.getProperty("java.io.tmpdir"));

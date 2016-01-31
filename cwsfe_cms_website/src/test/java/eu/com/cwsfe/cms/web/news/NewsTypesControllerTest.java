@@ -64,7 +64,7 @@ public class NewsTypesControllerTest {
         List<NewsType> cmsNewsTypes = new ArrayList<>();
         NewsType newsType = new NewsType();
         String type = "type";
-        long id = 1l;
+        long id = 1L;
         newsType.setId(id);
         newsType.setType(type);
         cmsNewsTypes.add(newsType);
@@ -98,7 +98,7 @@ public class NewsTypesControllerTest {
         List<NewsType> cmsNewsTypes = new ArrayList<>();
         NewsType newsType = new NewsType();
         String type = "type";
-        long id = 1l;
+        long id = 1L;
         newsType.setId(id);
         newsType.setType(type);
         cmsNewsTypes.add(newsType);
@@ -122,7 +122,7 @@ public class NewsTypesControllerTest {
     @Test
     public void testAddNewsType() throws Exception {
         String type = "type";
-        when(newsTypesDAO.add(any(NewsType.class))).thenReturn(1l);
+        when(newsTypesDAO.add(any(NewsType.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addNewsType")
                 .param("type", type));

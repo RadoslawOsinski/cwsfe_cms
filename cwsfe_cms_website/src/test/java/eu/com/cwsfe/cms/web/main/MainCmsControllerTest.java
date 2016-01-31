@@ -61,7 +61,7 @@ public class MainCmsControllerTest {
         String sEcho = "1";
         int numberOfBlogPostComment = 1;
         int ajaxCountNumber = 4;
-        long id = 2l;
+        long id = 2L;
         String comment = "comment";
         String userName = "userName";
         String email = "r@w.eu";

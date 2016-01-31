@@ -47,10 +47,10 @@ public class FoldersRestControllerTest {
 
     @Test
     public void testFoldersList() throws Exception {
-        long id = 1l;
+        long id = 1L;
         String folderName = "name";
         String folderNameI18n = "folderNameI18n";
-        long orderNumber = 2l;
+        long orderNumber = 2L;
         ArrayList<CmsFolder> cmsFolders = new ArrayList<>();
         CmsFolder folder = new CmsFolder();
         folder.setId(id);

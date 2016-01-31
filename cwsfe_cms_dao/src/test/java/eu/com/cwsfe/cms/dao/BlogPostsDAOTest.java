@@ -50,7 +50,7 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
     public void testListArchiveStatisticsByLanguageId() throws Exception {
         //given
         //when
-        List<Object[]> list = dao.listArchiveStatistics(1l);
+        List<Object[]> list = dao.listArchiveStatistics(1L);
 
         //then
         assertNotNull("Empty results should not return null", list);
@@ -70,7 +70,7 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
     public void testListForPageWithPaging() throws Exception {
         //given
         //when
-        List<Object[]> list = dao.listForPageWithPaging(1l, 1, 1);
+        List<Object[]> list = dao.listForPageWithPaging(1L, 1, 1);
 
         //then
         assertNotNull("Empty results should not return null", list);
@@ -80,7 +80,7 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
     public void testListCountForPageWithPaging() throws Exception {
         //given
         //when
-        long result = dao.listCountForPageWithPaging(1l);
+        long result = dao.listCountForPageWithPaging(1L);
 
         //then
         assertNotNull("query should return non negative value", result);
@@ -91,7 +91,7 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
     public void testListForPageWithCategoryAndPaging() throws Exception {
         //given
         //when
-        List<Object[]> list = dao.listForPageWithCategoryAndPaging(1l, 1l, 1, 1);
+        List<Object[]> list = dao.listForPageWithCategoryAndPaging(1L, 1L, 1, 1);
 
         //then
         assertNotNull("Empty results should not return null", list);
@@ -101,7 +101,7 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
     public void testListCountForPageWithCategoryAndPaging() throws Exception {
         //given
         //when
-        long result = dao.listCountForPageWithCategoryAndPaging(1l, 1l);
+        long result = dao.listCountForPageWithCategoryAndPaging(1L, 1L);
 
         //then
         assertNotNull("query should return non negative value", result);
@@ -112,7 +112,7 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
     public void testListForPageWithSearchTextAndPaging() throws Exception {
         //given
         //when
-        List<Object[]> list = dao.listForPageWithSearchTextAndPaging("", 1l, 1, 1);
+        List<Object[]> list = dao.listForPageWithSearchTextAndPaging("", 1L, 1, 1);
 
         //then
         assertNotNull("Empty results should not return null", list);
@@ -122,7 +122,7 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
     public void testListCountForPageWithSearchTextAndPaging() throws Exception {
         //given
         //when
-        long result = dao.listCountForPageWithSearchTextAndPaging("", 1l);
+        long result = dao.listCountForPageWithSearchTextAndPaging("", 1L);
 
         //then
         assertNotNull("query should return non negative value", result);
@@ -133,7 +133,7 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
     public void testListForPageWithArchiveDateAndPaging() throws Exception {
         //given
         //when
-        List<Object[]> list = dao.listForPageWithArchiveDateAndPaging(new Date(), new Date(), 1l, 1, 1);
+        List<Object[]> list = dao.listForPageWithArchiveDateAndPaging(new Date(), new Date(), 1L, 1, 1);
 
         //then
         assertNotNull("Empty results should not return null", list);
@@ -143,7 +143,7 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
     public void testListCountForPageWithArchiveDateAndPaging() throws Exception {
         //given
         //when
-        long result = dao.listCountForPageWithArchiveDateAndPaging(new Date(), new Date(), 1l);
+        long result = dao.listCountForPageWithArchiveDateAndPaging(new Date(), new Date(), 1L);
 
         //then
         assertNotNull("query should return non negative value", result);
@@ -361,7 +361,7 @@ public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTe
     public void testListI18nPosts() throws Exception {
         //given
         //when
-        List<Object[]> list = dao.listI18nPosts(1l);
+        List<Object[]> list = dao.listI18nPosts(1L);
 
         //then
         assertNotNull("Empty results should not return null", list);

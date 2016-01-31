@@ -42,7 +42,7 @@ public class BlogAuthorRestControllerTest {
 
     @Test
     public void testGetAuthor() throws Exception {
-        long id = 1l;
+        long id = 1L;
         String firstName = "Radoslaw";
         String lastName = "Osinski";
         String googlePlusAuthorLink = "https://plus.google.com/+Rados%C5%82awOsi%C5%84ski/";

@@ -41,7 +41,7 @@ public class CmsUserRolesDAOTest  extends AbstractTransactionalJUnit4SpringConte
     public void testListForUser() throws Exception {
         //given
         //when
-        List<CmsUserRole> cmsUserRoles = dao.listForUser(1l);
+        List<CmsUserRole> cmsUserRoles = dao.listForUser(1L);
         //then
         assertNotNull("Roles for any user should not return null", cmsUserRoles);
     }

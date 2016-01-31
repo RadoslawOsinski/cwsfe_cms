@@ -65,7 +65,7 @@ public class BlogKeywordsControllerTest {
         List<BlogKeyword> blogKeywords = new ArrayList<>();
         BlogKeyword cmsTextI18nCategory = new BlogKeyword();
         String keywordName = "keywordName";
-        long id = 1l;
+        long id = 1L;
         cmsTextI18nCategory.setId(id);
         cmsTextI18nCategory.setKeywordName(keywordName);
         cmsTextI18nCategory.setStatus(BlogKeywordStatus.NEW);
@@ -97,7 +97,7 @@ public class BlogKeywordsControllerTest {
     @Test
     public void testAddBlogKeyword() throws Exception {
         String keywordName = "keywordName";
-        when(blogKeywordsDAO.add(any(BlogKeyword.class))).thenReturn(1l);
+        when(blogKeywordsDAO.add(any(BlogKeyword.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addBlogKeyword")
                 .param("keywordName", keywordName));

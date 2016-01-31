@@ -77,7 +77,7 @@ public class BlogPostCodesDAOTest extends AbstractTransactionalJUnit4SpringConte
         //given
         int iDisplayStart = 0;
         int iDisplayLength = 1;
-        long postId = 1l;
+        long postId = 1L;
 
         //when
         List<BlogPostCode> blogPostCodes = dao.searchByAjax(iDisplayStart, iDisplayLength, postId);
@@ -89,7 +89,7 @@ public class BlogPostCodesDAOTest extends AbstractTransactionalJUnit4SpringConte
     @Test
     public void testSearchByAjaxCount() throws Exception {
         //given
-        long postId = 1l;
+        long postId = 1L;
 
         //when
         int result = dao.searchByAjaxCount(postId);

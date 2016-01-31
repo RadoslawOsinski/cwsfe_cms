@@ -72,7 +72,7 @@ public class NewsletterTemplateControllerTest {
         List<NewsletterTemplate> newsletterTemplates = new ArrayList<>();
         NewsletterTemplate newsletterTemplate = new NewsletterTemplate();
         String newsletterTemplateSubject = "newsletterTemplateSubject";
-        long id = 1l;
+        long id = 1L;
         newsletterTemplate.setId(id);
         String name = "name";
         newsletterTemplate.setName(name);
@@ -111,7 +111,7 @@ public class NewsletterTemplateControllerTest {
 
     @Test
     public void testAddNewsletterTemplate() throws Exception {
-        when(newsletterTemplateDAO.add(any(NewsletterTemplate.class))).thenReturn(1l);
+        when(newsletterTemplateDAO.add(any(NewsletterTemplate.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addNewsletterTemplate")
                 .param("name", "name")
@@ -161,7 +161,7 @@ public class NewsletterTemplateControllerTest {
     @Test
     public void testBrowseNewsletterTemplate() throws Exception {
         NewsletterTemplate newsletterTemplate = new NewsletterTemplate();
-        newsletterTemplate.setLanguageId(1l);
+        newsletterTemplate.setLanguageId(1L);
         when(newsletterTemplateDAO.get(anyLong())).thenReturn(newsletterTemplate);
         Language language = new Language();
         String languageCode = "pl";

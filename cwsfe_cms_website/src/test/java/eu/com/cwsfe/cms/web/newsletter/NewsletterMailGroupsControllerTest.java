@@ -67,7 +67,7 @@ public class NewsletterMailGroupsControllerTest {
 
     @Test
     public void testListNewsletterMailGroupsForDropList() throws Exception {
-        long id = 1l;
+        long id = 1L;
         String name = "name";
         List<NewsletterMailGroup> newsletterMailGroups = new ArrayList<>();
         NewsletterMailGroup newsletterMailGroup = new NewsletterMailGroup();
@@ -100,10 +100,10 @@ public class NewsletterMailGroupsControllerTest {
         List<NewsletterMailGroup> newsletterMailGroups = new ArrayList<>();
         NewsletterMailGroup newsType = new NewsletterMailGroup();
         String name = "name";
-        long id = 1l;
+        long id = 1L;
         newsType.setId(id);
         newsType.setName(name);
-        newsType.setLanguageId(2l);
+        newsType.setLanguageId(2L);
         newsletterMailGroups.add(newsType);
         when(newsletterMailGroupDAO.searchByAjax(anyInt(), anyInt(), anyString(), anyLong())).thenReturn(newsletterMailGroups);
         when(newsletterMailGroupDAO.searchByAjaxCount(anyString(), anyLong())).thenReturn(numberOfNewsletterMailGroups);
@@ -136,7 +136,7 @@ public class NewsletterMailGroupsControllerTest {
 
     @Test
     public void testAddNewsletterMailGroup() throws Exception {
-        when(newsletterMailGroupDAO.add(any(NewsletterMailGroup.class))).thenReturn(1l);
+        when(newsletterMailGroupDAO.add(any(NewsletterMailGroup.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addNewsletterMailGroup")
                 .param("name", "name")
@@ -170,7 +170,7 @@ public class NewsletterMailGroupsControllerTest {
     @Test
     public void testBrowseNewsletterMailGroup() throws Exception {
         NewsletterMailGroup newsletterMailGroup = new NewsletterMailGroup();
-        newsletterMailGroup.setLanguageId(1l);
+        newsletterMailGroup.setLanguageId(1L);
         when(newsletterMailGroupDAO.get(anyLong())).thenReturn(newsletterMailGroup);
         Language language = new Language();
         String languageCode = "pl";
@@ -195,7 +195,7 @@ public class NewsletterMailGroupsControllerTest {
         List<NewsletterMailAddress> newsletterMailAddresses = new ArrayList<>();
         NewsletterMailAddress newsletterMailAddress = new NewsletterMailAddress();
         String email = "email";
-        long id = 1l;
+        long id = 1L;
         newsletterMailAddress.setId(id);
         newsletterMailAddress.setEmail(email);
         newsletterMailAddress.setStatus(NewsletterMailAddressStatus.NEW);
@@ -247,7 +247,7 @@ public class NewsletterMailGroupsControllerTest {
         when(newsletterMailAddressDAO.getByEmailAndMailGroup(anyString(), anyLong())).thenThrow(new EmptyResultDataAccessException(1));
         when(newsletterMailAddressDAO.getByConfirmString(anyString())).thenReturn(null);
         when(newsletterMailAddressDAO.getByUnSubscribeString(anyString())).thenReturn(null);
-        when(newsletterMailAddressDAO.add(any(NewsletterMailAddress.class))).thenReturn(1l);
+        when(newsletterMailAddressDAO.add(any(NewsletterMailAddress.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/newsletterMailGroups/addNewsletterMailAddresses")
                         .param("mailGroupId", "1")
@@ -270,7 +270,7 @@ public class NewsletterMailGroupsControllerTest {
         when(newsletterMailAddressDAO.getByEmailAndMailGroup(anyString(), anyLong())).thenReturn(new NewsletterMailAddress());
         when(newsletterMailAddressDAO.getByConfirmString(anyString())).thenReturn(null);
         when(newsletterMailAddressDAO.getByUnSubscribeString(anyString())).thenReturn(null);
-        when(newsletterMailAddressDAO.add(any(NewsletterMailAddress.class))).thenReturn(1l);
+        when(newsletterMailAddressDAO.add(any(NewsletterMailAddress.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/newsletterMailGroups/addNewsletterMailAddresses")
                         .param("mailGroupId", "1")

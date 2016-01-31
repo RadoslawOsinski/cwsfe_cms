@@ -49,7 +49,7 @@ public class CmsFoldersDAOTest extends AbstractTransactionalJUnit4SpringContextT
     public void testListAjax() throws Exception {
         //given
         String folderName = "test";
-        long orderNumber = 1l;
+        long orderNumber = 1L;
         CmsFolder cmsFolder = new CmsFolder();
         cmsFolder.setFolderName(folderName);
         cmsFolder.setOrderNumber(orderNumber);
@@ -67,7 +67,7 @@ public class CmsFoldersDAOTest extends AbstractTransactionalJUnit4SpringContextT
     public void testListFoldersForDropList() throws Exception {
         //given
         String folderName = "test";
-        long orderNumber = 1l;
+        long orderNumber = 1L;
         CmsFolder cmsFolder = new CmsFolder();
         cmsFolder.setFolderName(folderName);
         cmsFolder.setOrderNumber(orderNumber);
@@ -85,7 +85,7 @@ public class CmsFoldersDAOTest extends AbstractTransactionalJUnit4SpringContextT
     public void testGet() throws Exception {
         //given
         String folderName = "test";
-        long orderNumber = 1l;
+        long orderNumber = 1L;
         CmsFolder cmsFolder = new CmsFolder();
         cmsFolder.setFolderName(folderName);
         cmsFolder.setOrderNumber(orderNumber);
@@ -105,7 +105,7 @@ public class CmsFoldersDAOTest extends AbstractTransactionalJUnit4SpringContextT
     public void testGetByFolderName() throws Exception {
         //given
         String folderName = "test";
-        long orderNumber = 1l;
+        long orderNumber = 1L;
         CmsFolder cmsFolder = new CmsFolder();
         cmsFolder.setFolderName(folderName);
         cmsFolder.setOrderNumber(orderNumber);
@@ -125,7 +125,7 @@ public class CmsFoldersDAOTest extends AbstractTransactionalJUnit4SpringContextT
     public void testAdd() throws Exception {
         //given
         String folderName = "test";
-        long orderNumber = 1l;
+        long orderNumber = 1L;
         CmsFolder cmsFolder = new CmsFolder();
         cmsFolder.setFolderName(folderName);
         cmsFolder.setOrderNumber(orderNumber);
@@ -146,8 +146,8 @@ public class CmsFoldersDAOTest extends AbstractTransactionalJUnit4SpringContextT
         //given
         String folderName = "test";
         String newFolderName = "test2";
-        long orderNumber = 1l;
-        long newOrderNumber = 2l;
+        long orderNumber = 1L;
+        long newOrderNumber = 2L;
         CmsFolder cmsFolder = new CmsFolder();
         cmsFolder.setFolderName(folderName);
         cmsFolder.setOrderNumber(orderNumber);
@@ -170,7 +170,7 @@ public class CmsFoldersDAOTest extends AbstractTransactionalJUnit4SpringContextT
     public void testDelete() throws Exception {
         //given
         String folderName = "test";
-        long orderNumber = 1l;
+        long orderNumber = 1L;
         CmsFolder cmsFolder = new CmsFolder();
         cmsFolder.setFolderName(folderName);
         cmsFolder.setOrderNumber(orderNumber);
@@ -190,7 +190,7 @@ public class CmsFoldersDAOTest extends AbstractTransactionalJUnit4SpringContextT
     public void testUndelete() throws Exception {
         //given
         String folderName = "test";
-        long orderNumber = 1l;
+        long orderNumber = 1L;
         CmsFolder cmsFolder = new CmsFolder();
         cmsFolder.setFolderName(folderName);
         cmsFolder.setOrderNumber(orderNumber);

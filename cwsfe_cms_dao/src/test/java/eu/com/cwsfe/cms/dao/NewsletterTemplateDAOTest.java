@@ -105,7 +105,7 @@ public class NewsletterTemplateDAOTest extends AbstractTransactionalJUnit4Spring
     public void testGet() throws Exception {
         //given
         String name = "name";
-        Long languageId = 1l;
+        Long languageId = 1L;
         String subject = "subject";
         String content = "content";
         NewsletterTemplate newsletterTemplate = new NewsletterTemplate();
@@ -135,7 +135,7 @@ public class NewsletterTemplateDAOTest extends AbstractTransactionalJUnit4Spring
     public void testGetByName() throws Exception {
         //given
         String name = "name";
-        Long languageId = 1l;
+        Long languageId = 1L;
         String subject = "subject";
         String content = "content";
         NewsletterTemplate newsletterTemplate = new NewsletterTemplate();
@@ -165,7 +165,7 @@ public class NewsletterTemplateDAOTest extends AbstractTransactionalJUnit4Spring
     public void testAdd() throws Exception {
         //given
         String name = "name";
-        Long languageId = 1l;
+        Long languageId = 1L;
         NewsletterTemplate newsletterTemplate = new NewsletterTemplate();
         newsletterTemplate.setName(name);
         newsletterTemplate.setLanguageId(languageId);

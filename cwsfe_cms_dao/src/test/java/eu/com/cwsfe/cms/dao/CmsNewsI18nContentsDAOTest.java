@@ -58,7 +58,7 @@ public class CmsNewsI18nContentsDAOTest extends AbstractTransactionalJUnit4Sprin
         NEWS_TYPE.setId(newsTypesDAO.add(NEWS_TYPE));
 
         FOLDER.setFolderName("folder");
-        FOLDER.setOrderNumber(1l);
+        FOLDER.setOrderNumber(1L);
         FOLDER.setId(cmsFoldersDAO.add(FOLDER));
 
         NEWS.setAuthorId(CMS_AUTHOR.getId());

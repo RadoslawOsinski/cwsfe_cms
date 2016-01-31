@@ -45,12 +45,12 @@ public class NewsImagesRestControllerTest {
 
     @Test
     public void testGetImagesForNews() throws Exception {
-        long thumbnailId = 1l;
+        long thumbnailId = 1L;
         String thumbnailFileName = "thumbnailFileName";
         Integer thumbnailHeight = 2;
         Integer thumbnailWidth = 3;
         String thumbnailTitle =  "thumbnailTitle";
-        long imageId = 11l;
+        long imageId = 11L;
         String imageFileName = "imageFileName";
         Integer imageHeight = 21;
         Integer imageWidth = 31;

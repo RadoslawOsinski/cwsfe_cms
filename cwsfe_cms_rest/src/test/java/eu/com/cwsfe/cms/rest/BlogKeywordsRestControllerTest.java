@@ -55,7 +55,7 @@ public class BlogKeywordsRestControllerTest {
     @Test
     public void testBlogKeywordsList() throws Exception {
         String blogKeywordI18n = "blogKeywordI18n";
-        long id = 1l;
+        long id = 1L;
         List<BlogKeyword> blogKeywords = new ArrayList<>();
         BlogKeyword blogKeyword = new BlogKeyword();
         blogKeyword.setId(id);
@@ -79,7 +79,7 @@ public class BlogKeywordsRestControllerTest {
     @Test
     public void testBlogKeywordsListWithMissingTranslation() throws Exception {
         String keyword = "keyword";
-        long id = 1l;
+        long id = 1L;
         List<BlogKeyword> blogKeywords = new ArrayList<>();
         BlogKeyword blogKeyword = new BlogKeyword();
         blogKeyword.setId(id);
@@ -103,7 +103,7 @@ public class BlogKeywordsRestControllerTest {
     @Test
     public void testBlogKeywordsListForPost() throws Exception {
         String blogKeywordI18n = "blogKeywordI18n";
-        long id = 1l;
+        long id = 1L;
         List<BlogKeyword> blogKeywords = new ArrayList<>();
         BlogKeyword blogKeyword = new BlogKeyword();
         blogKeyword.setId(id);

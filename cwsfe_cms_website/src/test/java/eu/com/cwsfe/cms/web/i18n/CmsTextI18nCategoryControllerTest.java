@@ -63,7 +63,7 @@ public class CmsTextI18nCategoryControllerTest {
         ArrayList<CmsTextI18nCategory> cmsTextI18nCategories = new ArrayList<>();
         CmsTextI18nCategory cmsTextI18nCategory = new CmsTextI18nCategory();
         String category = "category";
-        long id = 1l;
+        long id = 1L;
         cmsTextI18nCategory.setId(id);
         cmsTextI18nCategory.setCategory(category);
         cmsTextI18nCategory.setStatus(CmsTextI18nCategoryStatus.NEW);
@@ -99,7 +99,7 @@ public class CmsTextI18nCategoryControllerTest {
         ArrayList<CmsTextI18nCategory> cmsTextI18nCategories = new ArrayList<>();
         CmsTextI18nCategory cmsTextI18nCategory = new CmsTextI18nCategory();
         String category = "category";
-        long id = 1l;
+        long id = 1L;
         cmsTextI18nCategory.setId(id);
         cmsTextI18nCategory.setCategory(category);
         cmsTextI18nCategories.add(cmsTextI18nCategory);
@@ -124,10 +124,10 @@ public class CmsTextI18nCategoryControllerTest {
     public void testAddTextI18nCategory() throws Exception {
         CmsTextI18nCategory cmsTextI18nCategory = new CmsTextI18nCategory();
         String category = "category";
-        long id = 1l;
+        long id = 1L;
         cmsTextI18nCategory.setId(id);
         cmsTextI18nCategory.setCategory(category);
-        when(cmsTextI18nCategoryDAO.add(any(CmsTextI18nCategory.class))).thenReturn(1l);
+        when(cmsTextI18nCategoryDAO.add(any(CmsTextI18nCategory.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addCmsTextI18nCategory")
                 .param("category", category))

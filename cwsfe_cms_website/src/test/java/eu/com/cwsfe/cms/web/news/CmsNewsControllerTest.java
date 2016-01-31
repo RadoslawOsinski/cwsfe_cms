@@ -112,7 +112,7 @@ public class CmsNewsControllerTest {
 
     @Test
     public void testAddNews() throws Exception {
-        when(cmsNewsDAO.add(any(CmsNews.class))).thenReturn(1l);
+        when(cmsNewsDAO.add(any(CmsNews.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addNews")
                 .param("authorId", "2")
@@ -218,7 +218,7 @@ public class CmsNewsControllerTest {
 
     @Test
     public void testAddNewsI18nContent() throws Exception {
-        when(cmsNewsI18nContentsDAO.add(any(CmsNewsI18nContent.class))).thenReturn(1l);
+        when(cmsNewsI18nContentsDAO.add(any(CmsNewsI18nContent.class))).thenReturn(1L);
         when(cmsNewsDAO.get(anyLong())).thenReturn(new CmsNews());
         when(cmsAuthorsDAO.get(anyLong())).thenReturn(new CmsAuthor());
         when(newsTypesDAO.get(anyLong())).thenReturn(new NewsType());
@@ -245,7 +245,7 @@ public class CmsNewsControllerTest {
     @Test
     public void testUpdateNewsI18nContent() throws Exception {
         when(cmsNewsI18nContentsDAO.getByLanguageForNews(anyLong(), anyLong())).thenReturn(null);
-        when(cmsNewsI18nContentsDAO.add(any(CmsNewsI18nContent.class))).thenReturn(1l);
+        when(cmsNewsI18nContentsDAO.add(any(CmsNewsI18nContent.class))).thenReturn(1L);
         when(cmsNewsDAO.get(anyLong())).thenReturn(new CmsNews());
         when(cmsLanguagesDAO.listAll()).thenReturn(new ArrayList<>());
         when(cmsAuthorsDAO.get(anyLong())).thenReturn(new CmsAuthor());

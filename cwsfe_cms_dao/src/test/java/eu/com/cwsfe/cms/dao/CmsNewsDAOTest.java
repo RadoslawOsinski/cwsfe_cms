@@ -62,11 +62,11 @@ public class CmsNewsDAOTest extends AbstractTransactionalJUnit4SpringContextTest
         NEWS_TYPE2.setId(newsTypesDAO.add(NEWS_TYPE2));
 
         FOLDER.setFolderName("folder");
-        FOLDER.setOrderNumber(1l);
+        FOLDER.setOrderNumber(1L);
         FOLDER.setId(cmsFoldersDAO.add(FOLDER));
 
         FOLDER2.setFolderName("folder2");
-        FOLDER2.setOrderNumber(2l);
+        FOLDER2.setOrderNumber(2L);
         FOLDER2.setId(cmsFoldersDAO.add(FOLDER2));
 
         LANGUAGE_EN.setId(cmsLanguagesDAO.getByCode("en").getId());
@@ -342,7 +342,7 @@ public class CmsNewsDAOTest extends AbstractTransactionalJUnit4SpringContextTest
         //given
 
         //when
-        int result = dao.countListByFolderLangAndNewsWithPaging(1, 2l, "3");
+        int result = dao.countListByFolderLangAndNewsWithPaging(1, 2L, "3");
 
         //then
         assertNotNull("query should return non negative value", result);

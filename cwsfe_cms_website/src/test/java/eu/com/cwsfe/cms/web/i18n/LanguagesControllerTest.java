@@ -65,7 +65,7 @@ public class LanguagesControllerTest {
         Language language = new Language();
         String code = "code";
         String name = "name";
-        long id = 1l;
+        long id = 1L;
         language.setId(id);
         language.setCode(code);
         language.setName(name);
@@ -102,7 +102,7 @@ public class LanguagesControllerTest {
         Language cmsTextI18nCategory = new Language();
         String code = "code";
         String name = "name";
-        long id = 1l;
+        long id = 1L;
         cmsTextI18nCategory.setId(id);
         cmsTextI18nCategory.setCode(code);
         cmsTextI18nCategory.setName(name);
@@ -129,7 +129,7 @@ public class LanguagesControllerTest {
     public void testAddLanguage() throws Exception {
         String code = "code";
         String name = "name";
-        when(cmsLanguagesDAO.add(any(Language.class))).thenReturn(1l);
+        when(cmsLanguagesDAO.add(any(Language.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addLanguage")
                 .param("code", code)
