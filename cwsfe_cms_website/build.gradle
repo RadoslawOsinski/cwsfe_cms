@@ -78,7 +78,7 @@ dependencies {
     compile group: 'commons-pool', name: 'commons-pool', version: '1.6'
     compile group: 'net.sf.ezmorph', name: 'ezmorph', version: '1.0.6'
     compile group: 'net.sf.json-lib', name: 'json-lib', version: '2.4', classifier: 'jdk15'
-    compile group: 'org.postgresql', name: 'postgresql', version: '9.3-1102-jdbc4'
+    compile group: 'org.postgresql', name: 'postgresql', version: '9.4-1206-jdbc41'
     compile group: 'net.java.dev.rome', name: 'rome', version: '1.0.0'
     compile group: 'org.flywaydb', name: 'flyway-core', version: '3.2.1'
     compile group: 'com.amazonaws', name: 'aws-java-sdk-ec2', version: '1.10.49'
