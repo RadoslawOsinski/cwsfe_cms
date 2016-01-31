@@ -43,7 +43,7 @@ public class CmsNewsImagesDAO {
         String query =
                 "SELECT " +
                         " id, news_id, title, file_name, file_size, width, height, " +
-                        " mime_type, created, last_modified, status " +
+                        " mime_type, created, last_modified, status, url " +
                         " FROM CMS_NEWS_IMAGES" +
                         " WHERE status <> 'D' AND news_id = ?" +
                         " ORDER BY created DESC" +
@@ -71,6 +71,7 @@ public class CmsNewsImagesDAO {
         cmsNewsImage.setCreated(resultSet.getTimestamp("CREATED"));
         cmsNewsImage.setLastModified(resultSet.getTimestamp("last_modified"));
         cmsNewsImage.setStatus(CmsNewsImageStatus.fromCode(resultSet.getString("STATUS")));
+        cmsNewsImage.setUrl(resultSet.getString("url"));
         return cmsNewsImage;
     }
 
@@ -81,7 +82,7 @@ public class CmsNewsImagesDAO {
                 "SELECT count(*) FROM (" +
                         "SELECT " +
                         " id, news_id, title, file_name, file_size, width, height, " +
-                        " mime_type, created, last_modified, status " +
+                        " mime_type, created, last_modified, status, url " +
                         " FROM CMS_NEWS_IMAGES" +
                         " WHERE status <> 'D' AND news_id = ?" +
                         " ORDER BY created DESC" +
@@ -96,14 +97,14 @@ public class CmsNewsImagesDAO {
         String query =
                 "SELECT " +
                         " id, news_id, title, file_name, file_size, width, height, " +
-                        " mime_type, created, last_modified, status " +
+                        " mime_type, created, last_modified, status, url " +
                         " FROM CMS_NEWS_IMAGES " +
                         " WHERE id = ? ";
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapCmsNewsImage(resultSet));
     }
 
     public Long add(CmsNewsImage cmsNewsImage) {
-        Object[] dbParams = new Object[10];
+        Object[] dbParams = new Object[11];
         Long id = jdbcTemplate.queryForObject("SELECT nextval('CMS_NEWS_IMAGES_S')", Long.class);
         dbParams[0] = id;
         dbParams[1] = cmsNewsImage.getNewsId();
@@ -115,9 +116,10 @@ public class CmsNewsImagesDAO {
         dbParams[7] = cmsNewsImage.getMimeType();
         dbParams[8] = cmsNewsImage.getCreated();
         dbParams[9] = cmsNewsImage.getLastModified();
+        dbParams[10] = cmsNewsImage.getUrl();
         jdbcTemplate.update("INSERT INTO CMS_NEWS_IMAGES(id, news_id, title, file_name, file_size, width, height," +
-                "mime_type, created, last_modified, status)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'N')", dbParams);
+                "mime_type, created, last_modified, status, url)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'N', ?)", dbParams);
         return id;
     }
 
@@ -136,7 +138,7 @@ public class CmsNewsImagesDAO {
         String query =
                 "SELECT " +
                         " id, news_id, title, file_name, file_size, width, height," +
-                        " mime_type, created, last_modified, status" +
+                        " mime_type, created, last_modified, status, url" +
                         " FROM CMS_NEWS_IMAGES " +
                         "WHERE news_id = ? AND status = 'N' AND title NOT LIKE 'thumbnail_%'";
         Object[] dbParams = new Object[1];
@@ -155,7 +157,7 @@ public class CmsNewsImagesDAO {
         String query =
                 "SELECT " +
                         " id, news_id, title, file_name, file_size, width, height," +
-                        " mime_type, created, last_modified, status" +
+                        " mime_type, created, last_modified, status, url" +
                         " FROM CMS_NEWS_IMAGES " +
                         "WHERE news_id = ? AND status = 'N' AND title LIKE 'thumbnail_%'";
         Object[] dbParams = new Object[1];
@@ -168,7 +170,7 @@ public class CmsNewsImagesDAO {
         String query =
                 "SELECT " +
                         " id, news_id, title, file_name, file_size, width, height," +
-                        " mime_type, created, last_modified, status" +
+                        " mime_type, created, last_modified, status, url" +
                         " FROM CMS_NEWS_IMAGES " +
                         "WHERE id = ?";
         Object[] dbParams = new Object[1];
@@ -183,4 +185,8 @@ public class CmsNewsImagesDAO {
         return cmsNewsImage;
     }
 
+    @CacheEvict(value = {"cmsNewsImageWithContentById", "cmsNewsImageById"})
+    public void updateUrl(CmsNewsImage cmsNewsImage) {
+        jdbcTemplate.update("UPDATE CMS_NEWS_IMAGES SET URL = ? WHERE id = ?", cmsNewsImage.getUrl(), cmsNewsImage.getId());
+    }
 }

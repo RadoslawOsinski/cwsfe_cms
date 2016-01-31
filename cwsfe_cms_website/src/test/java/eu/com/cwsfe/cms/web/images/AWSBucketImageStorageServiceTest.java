@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -75,10 +76,11 @@ public class AWSBucketImageStorageServiceTest {
         MultipartFile multipartFile = new MockMultipartFile("file",
                 file.getName(), "image/png", IOUtils.toByteArray(input));
         CmsNewsImage cmsNewsImage = new CmsNewsImage();
+        cmsNewsImage.setFileName("CWSFE_logo.png");
         cmsNewsImage.setFile(multipartFile);
 
         //when
-        awsBucketImageStorageService.storeNewsImage(cmsNewsImage);
+        String imageUrl = awsBucketImageStorageService.storeNewsImage(cmsNewsImage);
 
         //then
         CmsGlobalParam rootBucket = cmsGlobalParamsDAO.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
@@ -91,6 +93,7 @@ public class AWSBucketImageStorageServiceTest {
             LOGGER.error("File upload error: ", e);
         }
         assertTrue("File should be persisted in S3", fileUploaded);
+        assertNotNull("File should have a url for download", imageUrl);
     }
 
     @Test
@@ -101,10 +104,11 @@ public class AWSBucketImageStorageServiceTest {
         MultipartFile multipartFile = new MockMultipartFile("file",
                 file.getName(), "image/png", IOUtils.toByteArray(input));
         BlogPostImage blogPostImage = new BlogPostImage();
+        blogPostImage.setFileName("CWSFE_logo.png");
         blogPostImage.setFile(multipartFile);
 
         //when
-        awsBucketImageStorageService.storeBlogImage(blogPostImage);
+        String imageUrl = awsBucketImageStorageService.storeBlogImage(blogPostImage);
 
         //then
         CmsGlobalParam rootBucket = cmsGlobalParamsDAO.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
@@ -117,5 +121,6 @@ public class AWSBucketImageStorageServiceTest {
             LOGGER.error("File upload error: ", e);
         }
         assertTrue("File should be persisted in S3", fileUploaded);
+        assertNotNull("File should have a url for download", imageUrl);
     }
 }

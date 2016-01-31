@@ -64,6 +64,7 @@ public class CmsNewsImagesController extends JsonController {
             formDetailsJson.put("image", object.getId());
             formDetailsJson.put("title", object.getTitle());
             formDetailsJson.put("fileName", object.getFileName());
+            formDetailsJson.put("url", object.getUrl());
             formDetailsJson.put("id", object.getId());
             jsonArray.add(formDetailsJson);
         }
@@ -95,8 +96,9 @@ public class CmsNewsImagesController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "title", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TitleMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "newsId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CmsNewsMustBeSet"));
         if (!result.hasErrors()) {
-            cmsNewsImagesDAO.add(cmsNewsImage);
-            imageStorageService.storeNewsImage(cmsNewsImage);
+            cmsNewsImage.setId(cmsNewsImagesDAO.add(cmsNewsImage));
+            cmsNewsImage.setUrl(imageStorageService.storeNewsImage(cmsNewsImage));
+            cmsNewsImagesDAO.updateUrl(cmsNewsImage);
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("/news/" + cmsNewsImage.getNewsId(), true, false, false));

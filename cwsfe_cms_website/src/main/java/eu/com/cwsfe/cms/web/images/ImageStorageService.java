@@ -8,9 +8,9 @@ import eu.com.cwsfe.cms.model.CmsNewsImage;
  */
 public interface ImageStorageService {
 
-    void storeNewsImage(CmsNewsImage cmsNewsImage);
+    String storeNewsImage(CmsNewsImage cmsNewsImage);
 
-    void storeBlogImage(BlogPostImage cmsNewsImage);
+    String storeBlogImage(BlogPostImage cmsNewsImage);
 
     boolean isBlogImagesStorageInitialized();
 

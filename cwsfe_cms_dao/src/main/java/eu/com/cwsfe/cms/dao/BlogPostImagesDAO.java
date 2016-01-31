@@ -43,7 +43,7 @@ public class BlogPostImagesDAO {
         String query =
                 "SELECT " +
                         " id, blog_post_id, title, file_name, file_size, width, height, " +
-                        " mime_type, created, last_modified, status " +
+                        " mime_type, created, last_modified, status, url " +
                         " FROM BLOG_POST_IMAGES" +
                         " WHERE status <> 'D' AND blog_post_id = ?" +
                         " ORDER BY created DESC" +
@@ -70,6 +70,7 @@ public class BlogPostImagesDAO {
         blogPostImage.setCreated(resultSet.getTimestamp("created"));
         blogPostImage.setLastModified(resultSet.getTimestamp("last_modified"));
         blogPostImage.setStatus(BlogPostImageStatus.fromCode(resultSet.getString("STATUS")));
+        blogPostImage.setUrl(resultSet.getString("url"));
         return blogPostImage;
     }
 
@@ -94,7 +95,7 @@ public class BlogPostImagesDAO {
         String query =
                 "SELECT " +
                         " id, blog_post_id, title, file_name, file_size, width, height, " +
-                        " mime_type, created, last_modified, status " +
+                        " mime_type, created, last_modified, status, url " +
                         " FROM BLOG_POST_IMAGES" +
                         " WHERE status <> 'D' AND blog_post_id = ?" +
                         " ORDER BY created DESC";
@@ -111,7 +112,7 @@ public class BlogPostImagesDAO {
         String query =
                 "SELECT " +
                         " id, blog_post_id, title, file_name, file_size, width, height, " +
-                        " mime_type, created, last_modified, status " +
+                        " mime_type, created, last_modified, status, url " +
                         " FROM BLOG_POST_IMAGES" +
                         " WHERE status <> 'D'" +
                         " ORDER BY created DESC";
@@ -131,14 +132,14 @@ public class BlogPostImagesDAO {
         String query =
                 "SELECT " +
                         " id, blog_post_id, title, file_name, file_size, width, height, " +
-                        " mime_type, created, last_modified, status " +
+                        " mime_type, created, last_modified, status, url " +
                         " FROM BLOG_POST_IMAGES " +
                         " WHERE id = ? ";
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPostImage(resultSet));
     }
 
     public Long add(BlogPostImage blogPostImage) {
-        Object[] dbParams = new Object[10];
+        Object[] dbParams = new Object[11];
         Long id = jdbcTemplate.queryForObject("SELECT nextval('BLOG_POST_IMAGES_S')", Long.class);
         dbParams[0] = id;
         dbParams[1] = blogPostImage.getBlogPostId();
@@ -150,15 +151,16 @@ public class BlogPostImagesDAO {
         dbParams[7] = blogPostImage.getMimeType();
         dbParams[8] = blogPostImage.getCreated();
         dbParams[9] = blogPostImage.getLastModified();
+        dbParams[10] = blogPostImage.getUrl();
         jdbcTemplate.update("INSERT INTO BLOG_POST_IMAGES(id, blog_post_id, title, file_name, file_size, width, height," +
-                " mime_type, created, last_modified, status)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'N')", dbParams);
+                " mime_type, created, last_modified, status, url)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'N', ?)", dbParams);
         return id;
     }
 
     @CacheEvict(value = {"blogPostImageWithContentById"})
     public void update(BlogPostImage blogPostImage) {
-        Object[] dbParams = new Object[9];
+        Object[] dbParams = new Object[10];
         dbParams[0] = blogPostImage.getBlogPostId();
         dbParams[1] = blogPostImage.getTitle();
         dbParams[2] = blogPostImage.getFileName();
@@ -167,10 +169,11 @@ public class BlogPostImagesDAO {
         dbParams[5] = blogPostImage.getHeight();
         dbParams[6] = blogPostImage.getMimeType();
         dbParams[7] = blogPostImage.getCreated();
-        dbParams[8] = blogPostImage.getId();
+        dbParams[8] = blogPostImage.getUrl();
+        dbParams[9] = blogPostImage.getId();
         jdbcTemplate.update("UPDATE BLOG_POST_IMAGES SET" +
                 " blog_post_id = ?, title = ?, file_name = ?, file_size = ?, width = ?, height = ?, " +
-                " mime_type = ?, created = ? " +
+                " mime_type = ?, created = ?, url = ? " +
                 " WHERE id = ?", dbParams);
     }
 
@@ -182,6 +185,11 @@ public class BlogPostImagesDAO {
     @CacheEvict(value = {"blogPostImageWithContentById"})
     public void undelete(BlogPostImage blogPostImage) {
         jdbcTemplate.update("UPDATE BLOG_POST_IMAGES SET status = 'N' WHERE id = ?", blogPostImage.getId());
+    }
+
+    @CacheEvict(value = {"blogPostImageWithContentById"})
+    public void updateUrl(BlogPostImage blogPostImage) {
+        jdbcTemplate.update("UPDATE BLOG_POST_IMAGES SET URL = ? WHERE id = ?", blogPostImage.getUrl(), blogPostImage.getId());
     }
 
 }

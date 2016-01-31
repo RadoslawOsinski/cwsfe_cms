@@ -28,14 +28,18 @@ public class LocalFileSystemImageStorageService implements ImageStorageService {
     @Autowired
     private CmsGlobalParamsDAO cmsGlobalParamsDAO;
 
-    public void storeNewsImage(CmsNewsImage cmsNewsImage) {
+    public String storeNewsImage(CmsNewsImage cmsNewsImage) {
         CmsGlobalParam newsImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
         storeImage(cmsNewsImage.getFile(), newsImagesPath.getValue());
+        CmsGlobalParam cmsMainUrl = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_MAIN_URL");
+        return cmsMainUrl.getValue() + "/newsImages/" + cmsNewsImage.getFileName();   //todo extract in spring security hardcoded /newsImages
     }
 
-    public void storeBlogImage(BlogPostImage blogPostImage) {
+    public String storeBlogImage(BlogPostImage blogPostImage) {
         CmsGlobalParam blogImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH");
         storeImage(blogPostImage.getFile(), blogImagesPath.getValue());
+        CmsGlobalParam cmsMainUrl = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_MAIN_URL");
+        return cmsMainUrl.getValue() + "/blogPostImages/" + blogPostImage.getFileName();  //todo extract in spring security hardcoded /blogPostImages
     }
 
     @Override

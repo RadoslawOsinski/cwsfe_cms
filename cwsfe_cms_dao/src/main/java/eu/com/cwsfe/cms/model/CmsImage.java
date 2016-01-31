@@ -19,6 +19,7 @@ public abstract class CmsImage implements Serializable {
     protected Date created;
     protected Date lastModified;
     protected MultipartFile file;
+    protected String url;
 
     public Long getId() {
         return id;
@@ -100,5 +101,12 @@ public abstract class CmsImage implements Serializable {
         this.file = file;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }
 

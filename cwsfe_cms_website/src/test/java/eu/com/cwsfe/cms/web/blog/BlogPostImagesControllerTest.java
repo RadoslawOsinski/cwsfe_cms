@@ -4,6 +4,7 @@ import eu.com.cwsfe.cms.dao.BlogPostImagesDAO;
 import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
 import eu.com.cwsfe.cms.model.BlogPostImage;
 import eu.com.cwsfe.cms.model.CmsGlobalParam;
+import eu.com.cwsfe.cms.web.images.ImageStorageService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,6 +44,8 @@ public class BlogPostImagesControllerTest {
     @Mock
     private BlogPostImagesDAO blogPostImagesDAO;
     @Mock
+    private ImageStorageService imageStorageService;
+    @Mock
     private CmsGlobalParamsDAO cmsGlobalParamsDAO;
 
     @InjectMocks
@@ -59,17 +62,19 @@ public class BlogPostImagesControllerTest {
         int iDisplayStart = 0;
         int iDisplayLength = 2;
         String sEcho = "1";
-        long blogPostId = 1l;
+        long blogPostId = 1L;
         int numberOfBlogPostImages = 1;
         int totalNumberNotDeleted = 6;
         List<BlogPostImage> blogPostImages = new ArrayList<>();
         BlogPostImage blogPostImage = new BlogPostImage();
         String title = "title";
         String fileName = "fileName";
-        long id = 1l;
+        String url = "http://path to blog image";
+        long id = 1L;
         blogPostImage.setId(id);
         blogPostImage.setTitle(title);
         blogPostImage.setFileName(fileName);
+        blogPostImage.setUrl(url);
         blogPostImages.add(blogPostImage);
         when(blogPostImagesDAO.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, blogPostId)).thenReturn(blogPostImages);
         when(blogPostImagesDAO.searchByAjaxCountWithoutContent(blogPostId)).thenReturn(numberOfBlogPostImages);
@@ -91,6 +96,7 @@ public class BlogPostImagesControllerTest {
                 .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
                 .andExpect(jsonPath("$.aaData[0].title").value(title))
                 .andExpect(jsonPath("$.aaData[0].fileName").value(fileName))
+                .andExpect(jsonPath("$.aaData[0].url").value(url))
                 .andExpect(jsonPath("$.aaData[0].id").value((int) id));
         verify(blogPostImagesDAO, times(1)).searchByAjaxWithoutContent(anyInt(), anyInt(), anyLong());
         verify(blogPostImagesDAO, times(1)).searchByAjaxCountWithoutContent(anyLong());
@@ -105,7 +111,9 @@ public class BlogPostImagesControllerTest {
         byte[] testData = Files.readAllBytes(path);
         MockMultipartFile file = new MockMultipartFile("file", "testImage.png", "image/png", testData);
 
-        when(blogPostImagesDAO.add(any(BlogPostImage.class))).thenReturn(1l);
+        when(blogPostImagesDAO.add(any(BlogPostImage.class))).thenReturn(1L);
+        doNothing().when(blogPostImagesDAO).updateUrl(any(BlogPostImage.class));
+        when(imageStorageService.storeBlogImage(any(BlogPostImage.class))).thenReturn("http://url to image");
         CmsGlobalParam cmsGlobalParam = mock(CmsGlobalParam.class);
         when(cmsGlobalParamsDAO.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH")).thenReturn(cmsGlobalParam);
         when(cmsGlobalParam.getValue()).thenReturn(System.getProperty("java.io.tmpdir"));

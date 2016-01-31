@@ -3,7 +3,6 @@ package eu.com.cwsfe.cms.web.blog;
 import eu.com.cwsfe.cms.dao.BlogPostImagesDAO;
 import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
 import eu.com.cwsfe.cms.model.BlogPostImage;
-import eu.com.cwsfe.cms.model.CmsGlobalParam;
 import eu.com.cwsfe.cms.web.images.ImageStorageService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
@@ -41,9 +40,6 @@ public class BlogPostImagesController extends JsonController {
     private BlogPostImagesDAO blogPostImagesDAO;
 
     @Autowired
-    private CmsGlobalParamsDAO cmsGlobalParamsDAO;
-
-    @Autowired
     ImageStorageService imageStorageService;
 
     @RequestMapping(value = "/blogPosts/blogPostImagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
@@ -71,6 +67,7 @@ public class BlogPostImagesController extends JsonController {
             formDetailsJson.put("image", object.getId());
             formDetailsJson.put("title", object.getTitle());
             formDetailsJson.put("fileName", object.getFileName());
+            formDetailsJson.put("url", object.getUrl());
             formDetailsJson.put("id", object.getId());
             jsonArray.add(formDetailsJson);
         }
@@ -102,16 +99,9 @@ public class BlogPostImagesController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "title", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TitleMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "blogPostId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));
         if (!result.hasErrors()) {
-            blogPostImagesDAO.add(blogPostImage);
-            imageStorageService.storeBlogImage(blogPostImage);
-            CmsGlobalParam blogImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH");
-            File copiedFile = new File(blogImagesPath.getValue(), blogPostImage.getFile().getOriginalFilename());
-            try {
-                copiedFile.setExecutable(false);
-                Files.copy(blogPostImage.getFile().getInputStream(), copiedFile.toPath());
-            } catch (IOException e) {
-                LOGGER.error("Cannot save image to " + copiedFile.getAbsolutePath(), e);
-            }
+            blogPostImage.setId(blogPostImagesDAO.add(blogPostImage));
+            blogPostImage.setUrl(imageStorageService.storeBlogImage(blogPostImage));
+            blogPostImagesDAO.updateUrl(blogPostImage);
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("/blogPosts/" + blogPostImage.getBlogPostId(), true, false, false));

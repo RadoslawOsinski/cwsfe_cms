@@ -3,9 +3,8 @@ package eu.com.cwsfe.cms.web.images;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.*;
 import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
 import eu.com.cwsfe.cms.model.BlogPostImage;
 import eu.com.cwsfe.cms.model.CmsGlobalParam;
@@ -35,14 +34,18 @@ public class AWSBucketImageStorageService implements ImageStorageService {
     @Autowired
     private AmazonS3 amazonS3;
 
-    public void storeNewsImage(CmsNewsImage cmsNewsImage) {
+    public String storeNewsImage(CmsNewsImage cmsNewsImage) {
         CmsGlobalParam newsImagesBucket = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_S3_NEWS_IMAGES_PATH");
         storeImage(cmsNewsImage.getFile(), newsImagesBucket.getValue());
+        CmsGlobalParam rootBucketName = cmsGlobalParamsDAO.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
+        return ((AmazonS3Client) amazonS3).getUrl(rootBucketName.getValue(), newsImagesBucket.getValue() + "/" + cmsNewsImage.getFileName()).toString();
     }
 
-    public void storeBlogImage(BlogPostImage blogPostImage) {
+    public String storeBlogImage(BlogPostImage blogPostImage) {
         CmsGlobalParam blogImagesBucket = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_S3_BLOG_IMAGES_PATH");
         storeImage(blogPostImage.getFile(), blogImagesBucket.getValue());
+        CmsGlobalParam rootBucketName = cmsGlobalParamsDAO.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
+        return ((AmazonS3Client) amazonS3).getUrl(rootBucketName.getValue(), blogImagesBucket.getValue() + "/" + blogPostImage.getFileName()).toString();
     }
 
     @Override

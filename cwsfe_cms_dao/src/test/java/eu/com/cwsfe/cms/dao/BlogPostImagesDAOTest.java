@@ -76,7 +76,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
     public void testSearchByAjaxWithoutContent() throws Exception {
         //given
         //when
-        List<BlogPostImage> blogPostImages = dao.searchByAjaxWithoutContent(0, 1, 1l);
+        List<BlogPostImage> blogPostImages = dao.searchByAjaxWithoutContent(0, 1, 1L);
 
         //then
         assertNotNull(blogPostImages);
@@ -86,7 +86,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
     public void testSearchByAjaxCountWithoutContent() throws Exception {
         //given
         //when
-        int results = dao.searchByAjaxCountWithoutContent(1l);
+        int results = dao.searchByAjaxCountWithoutContent(1L);
 
         //then
         assertNotNull(results);
@@ -97,7 +97,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
     public void testListForPost() throws Exception {
         //given
         //when
-        List<BlogPostImage> blogPostImages = dao.listForPost(1l);
+        List<BlogPostImage> blogPostImages = dao.listForPost(1L);
 
         //then
         assertNotNull(blogPostImages);
@@ -120,7 +120,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         Date created = new Date();
         Date lastModified = new Date();
         String fileName = "fileName";
-        long fileSize = 1l;
+        long fileSize = 1L;
         int width = 2;
         int height = 3;
         String mimeType = "img/png";
@@ -161,7 +161,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         Date created = new Date();
         Date lastModified = new Date();
         String fileName = "fileName";
-        long fileSize = 1l;
+        long fileSize = 1L;
         int width = 2;
         int height = 3;
         String mimeType = "img/png";
@@ -201,7 +201,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         String title = "title";
         Date created = new Date();
         String fileName = "fileName";
-        long fileSize = 1l;
+        long fileSize = 1L;
         int width = 2;
         int height = 3;
         String mimeType = "img/png";
@@ -233,7 +233,7 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         String title = "title";
         Date created = new Date();
         String fileName = "fileName";
-        long fileSize = 1l;
+        long fileSize = 1L;
         int width = 2;
         int height = 3;
         String mimeType = "img/png";

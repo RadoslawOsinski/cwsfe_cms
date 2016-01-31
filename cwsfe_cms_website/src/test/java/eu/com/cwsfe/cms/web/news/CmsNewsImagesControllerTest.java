@@ -4,6 +4,7 @@ import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
 import eu.com.cwsfe.cms.dao.CmsNewsImagesDAO;
 import eu.com.cwsfe.cms.model.CmsGlobalParam;
 import eu.com.cwsfe.cms.model.CmsNewsImage;
+import eu.com.cwsfe.cms.web.images.ImageStorageService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +45,8 @@ public class CmsNewsImagesControllerTest {
     @Mock
     private CmsNewsImagesDAO cmsNewsImagesDAO;
     @Mock
+    private ImageStorageService imageStorageService;
+    @Mock
     private CmsGlobalParamsDAO cmsGlobalParamsDAO;
 
     @InjectMocks
@@ -67,10 +70,12 @@ public class CmsNewsImagesControllerTest {
         CmsNewsImage blogPostImage = new CmsNewsImage();
         String title = "title";
         String fileName = "fileName";
+        String url = "http://...path to image";
         long id = 1L;
         blogPostImage.setId(id);
         blogPostImage.setTitle(title);
         blogPostImage.setFileName(fileName);
+        blogPostImage.setUrl(url);
         cmsNewsImages.add(blogPostImage);
         when(cmsNewsImagesDAO.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, cmsNewsId)).thenReturn(cmsNewsImages);
         when(cmsNewsImagesDAO.searchByAjaxCountWithoutContent(cmsNewsId)).thenReturn(numberOfCmsNewsImages);
@@ -108,6 +113,8 @@ public class CmsNewsImagesControllerTest {
         MockMultipartFile file = new MockMultipartFile("file", "testImage.png", "image/png", testData);
 
         when(cmsNewsImagesDAO.add(any(CmsNewsImage.class))).thenReturn(1L);
+        doNothing().when(cmsNewsImagesDAO).updateUrl(any(CmsNewsImage.class));
+        when(imageStorageService.storeNewsImage(any(CmsNewsImage.class))).thenReturn("http://url to image");
         CmsGlobalParam cmsGlobalParam = mock(CmsGlobalParam.class);
         when(cmsGlobalParamsDAO.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH")).thenReturn(cmsGlobalParam);
         when(cmsGlobalParam.getValue()).thenReturn(System.getProperty("java.io.tmpdir"));
