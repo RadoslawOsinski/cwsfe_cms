@@ -41,12 +41,18 @@ compileJava {
     options.compilerArgs = ['-Xlint', '-Xlint:-serial', '-Xlint:-path']
 }
 
+configurations {
+    tomcatLibs
+}
+
 dependencies {
     compile project(':cwsfe_cms_rest')
     providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version: '2.2.1-b03'
     providedCompile group: 'javax.servlet', name: 'servlet-api', version: '2.5'
-    providedCompile group: 'javax.mail', name: 'mail', version: '1.4.7' //only for tomcat :(, add this jar to ${CATALINA_HOME}/lib
-    providedCompile group: 'javax.activation', name: 'activation', version: '1.1.1' //only for tomcat, add this jar to ${CATALINA_HOME}/lib
+    providedCompile group: 'javax.mail', name: 'mail', version: '1.4.7' //provided for wildfly
+    providedCompile group: 'javax.activation', name: 'activation', version: '1.1.1' //provided for wildfly
+    tomcatLibs group: 'javax.mail', name: 'mail', version: '1.4.7' //only for tomcat
+    tomcatLibs group: 'javax.activation', name: 'activation', version: '1.1.1' //only for tomcat
     providedCompile group: 'javax.mail', name: 'javax.mail-api', version: '1.5.0'
     compile group: 'org.springframework.security', name: 'spring-security-web', version: '4.0.0.M2'
     compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.0.0.M2'
@@ -97,6 +103,7 @@ dependencies {
     testCompile group: 'javax.mail', name: 'javax.mail-api', version: '1.5.0'
 }
 
+//default war for wildfly
 war {
     from (project(':cwsfe_cms_dao').file('src/main/resources/'));
     exclude "resources-cwsfe-cms/css";
@@ -109,6 +116,11 @@ war {
     }
 }
 war.archiveName = 'CWSFE_CMS-' + version + '.war';
+
+task createTomcatWar(type: War, dependsOn: classes) {
+    archiveName = 'CWSFE_CMS-tomcat-' + version + '.war';
+    classpath configurations.tomcatLibs // adds a configuration to the WEB-INF/lib dir
+}
 
 jacocoTestReport {
     group = "Reporting"
