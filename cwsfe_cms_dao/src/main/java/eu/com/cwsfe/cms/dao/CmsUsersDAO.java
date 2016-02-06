@@ -29,7 +29,7 @@ public class CmsUsersDAO {
     public boolean isActiveUsernameInDatabase(String username) {
         Object[] dbParams = new Object[1];
         dbParams[0] = username;
-        String query = "SELECT COUNT(*) FROM CMS_USERS WHERE USERNAME = ?";
+        String query = "SELECT COUNT(*) FROM CMS_USERS WHERE USERNAME = ? and status in ('N')";
         Integer numberOfUsers = jdbcTemplate.queryForObject(query, dbParams, Integer.class);
         return numberOfUsers == 1;
     }

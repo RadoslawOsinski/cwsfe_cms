@@ -46,7 +46,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
     }
 
     @Test
-    public void testIsNotActiveUsernameInDatabase() throws Exception {
+    public void testNotExistingUserIsNotActiveUsernameInDatabase() throws Exception {
         //given
         //when
         boolean activeUsernameInDatabase = dao.isActiveUsernameInDatabase("abc");
@@ -54,6 +54,50 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
         //then
         assertNotNull(activeUsernameInDatabase);
         assertFalse("Non existing user should not be active", activeUsernameInDatabase);
+    }
+
+    @Test
+    public void testLockedUserIsNotActiveUsernameInDatabase() throws Exception {
+        //given
+        String username = "testLocked";
+        String password = "password";
+        String hash = "hash";
+        CmsUser cmsUser = new CmsUser();
+        cmsUser.setUserName(username);
+        cmsUser.setPassword(password);
+        cmsUser.setStatus(CmsUserStatus.LOCKED);
+        cmsUser.setPasswordHash(hash);
+        cmsUser.setId(dao.add(cmsUser));
+        dao.lock(cmsUser);
+
+        //when
+        boolean activeUsernameInDatabase = dao.isActiveUsernameInDatabase(username);
+
+        //then
+        assertNotNull(activeUsernameInDatabase);
+        assertFalse("Locked user should not be active", activeUsernameInDatabase);
+    }
+
+    @Test
+    public void testDeletedUserIsNotActiveUsernameInDatabase() throws Exception {
+        //given
+        String username = "testDeleted";
+        String password = "password";
+        String hash = "hash";
+        CmsUser cmsUser = new CmsUser();
+        cmsUser.setUserName(username);
+        cmsUser.setPassword(password);
+        cmsUser.setStatus(CmsUserStatus.DELETED);
+        cmsUser.setPasswordHash(hash);
+        cmsUser.setId(dao.add(cmsUser));
+        dao.delete(cmsUser);
+
+        //when
+        boolean activeUsernameInDatabase = dao.isActiveUsernameInDatabase(username);
+
+        //then
+        assertNotNull(activeUsernameInDatabase);
+        assertFalse("Locked user should not be active", activeUsernameInDatabase);
     }
 
     @Test
