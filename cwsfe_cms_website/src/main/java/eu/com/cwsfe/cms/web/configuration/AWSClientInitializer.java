@@ -40,7 +40,9 @@ public class AWSClientInitializer {
     public void initializeRootBucket() {
         CmsGlobalParam rootBucketName = cmsGlobalParamsDAO.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
         try {
-            getAmazonS3().createBucket(new CreateBucketRequest(rootBucketName.getValue()));
+            if (!getAmazonS3().doesBucketExist(rootBucketName.getValue())) {
+                getAmazonS3().createBucket(new CreateBucketRequest(rootBucketName.getValue()));
+            }
         } catch (AmazonServiceException ase) {
             LOGGER.error("Problem with creating root cwsfe cms bucket", ase);
         } catch (AmazonClientException ace) {

@@ -1,5 +1,8 @@
 #CHANGELOG
 
+##v3.0 (2016.02.06)
+- Amazon AWS support 
+
 ##v2.0 (2015.05.31)
 - Lot of bugfixes after introducing tests
 - JavaScript validation in forms
