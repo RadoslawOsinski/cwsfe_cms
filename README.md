@@ -28,9 +28,3 @@ Used technologies - 100% open source
 - JavaScript: JQuery, Knockout, RequireJs, DataTables
 - Tested with selenium, mockito, junit
 - Sonar for improving code quality.
-
-Donations
----
-You can buy additional support by reporting an issue and sending bitcoins to this address: <b>1JJskw6s3p1eRuCW1cHWMwTuVr1yvbgWvL</b>
-<br/>
-You can also scan this image for shortcut <img style="width: 24px; height 24px;" src="donations/BitcoinPublicKey_50x50_1JJskw6s3p1eRuCW1cHWMwTuVr1yvbgWvL.png">
