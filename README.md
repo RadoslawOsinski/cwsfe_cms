@@ -1,7 +1,8 @@
 cwsfe_cms
 =========
-[![Build Status](https://travis-ci.org/RadoslawOsinski/cwsfe_cms.svg?branch=master)](https://travis-ci.org/RadoslawOsinski/cwsfe_cms)
 Just another CMS.
+[![Build Status](https://travis-ci.org/RadoslawOsinski/cwsfe_cms.svg?branch=master)](https://travis-ci.org/RadoslawOsinski/cwsfe_cms)
+[![Stack Share](http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](http://stackshare.io/RadoslawOsinski/cwsfe-cms)
 
 [Changelog](CHANGELOG.md)
 
@@ -19,12 +20,13 @@ Developer guide
 
 Used technologies - 100% open source
 ---
-- Spring 4
+- Spring
 - Flyway
-- Postgres 9.4
+- Postgres
 - JDK 8
-- Wildfly 8
+- Wildfly 8, Tomcat 8 or Amazon cloud
 - Foundation for website theme
 - JavaScript: JQuery, Knockout, RequireJs, DataTables
-- Tested with selenium, mockito, junit
+- Tested with selenium, mockito, junit and spring-test
 - Sonar for improving code quality.
+- Code delivery by jenkins (TeamCity was too expensive)
