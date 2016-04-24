@@ -43,7 +43,7 @@ public class AWSBucketImageStorageServiceTest {
     private CmsGlobalParamsDAO cmsGlobalParamsDAO;
 
     @Autowired
-    AmazonS3 amazonS3;
+    private AmazonS3 amazonS3;
 
     @Autowired
     private AWSBucketImageStorageService awsBucketImageStorageService;

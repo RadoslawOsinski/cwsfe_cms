@@ -26,7 +26,7 @@ public class CmsMailSenderTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsMailSenderTest.class);
 
     @Autowired
-    CmsMailSender cmsMailSender;
+    private CmsMailSender cmsMailSender;
 
     @Test
     public void testSendingMails() {
