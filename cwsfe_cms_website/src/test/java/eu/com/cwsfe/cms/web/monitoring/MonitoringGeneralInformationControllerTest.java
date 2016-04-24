@@ -26,7 +26,7 @@ public class MonitoringGeneralInformationControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    ServerWatch serverWatch;
+    private ServerWatch serverWatch;
 
     @InjectMocks
     private MonitoringGeneralInformationController monitoringGeneralInformationController;

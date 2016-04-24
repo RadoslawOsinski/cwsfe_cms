@@ -36,55 +36,6 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'foundatio
         newsletterTestSendAlerts: new formAlertsModule.formAlerts()
     };
 
-    $(document).ready(function () {
-        ko.applyBindings(viewModel);
-
-        $('#recipientGroup').autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: '../newsletterMailGroupsDropList',
-                    data: {
-                        limit: 5,
-                        term: request.term
-                    },
-                    success: function (data) {
-                        response($.map(data.data, function (item) {
-                            return {
-                                value: item.newsletterMailGroupName,
-                                id: item.id
-                            };
-                        }));
-                    }
-                });
-            },
-            minLength: 0,
-            select: function (event, ui) {
-                $('#recipientGroupId').val(ui.item.id);
-            }
-        }).focus(function () {
-            $(this).autocomplete("search", "");
-        });
-
-        $('#confirmSendButton').click(function() {
-            confirmNewsletterSend();
-        });
-
-        $('#newsletterTestSendButton').click(function() {
-            newsletterTestSend();
-        });
-
-        $('#confirmSendNewsletterButton').click(function() {
-            newsletterSend();
-            $('#confirmSendNewsletterModal').foundation('reveal', 'close');
-        });
-
-        $('#cancelSendNewsletterButton').click(function() {
-            $('#confirmSendNewsletterModal').foundation('reveal', 'close');
-        });
-
-        $('.ui-autocomplete').addClass('f-dropdown');
-    });
-
     $('#resetUpdateNewsletterMail').click(function() {
         viewModel.singleNewsletterMailViewModel.recipientGroupId = $('#recipientGroupId').val();
         viewModel.singleNewsletterMailViewModel.newsletterMailGroupName($('#recipientGroup').val());
@@ -147,5 +98,54 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'foundatio
             }
         });
     }
+
+    $(document).ready(function () {
+        ko.applyBindings(viewModel);
+
+        $('#recipientGroup').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '../newsletterMailGroupsDropList',
+                    data: {
+                        limit: 5,
+                        term: request.term
+                    },
+                    success: function (data) {
+                        response($.map(data.data, function (item) {
+                            return {
+                                value: item.newsletterMailGroupName,
+                                id: item.id
+                            };
+                        }));
+                    }
+                });
+            },
+            minLength: 0,
+            select: function (event, ui) {
+                $('#recipientGroupId').val(ui.item.id);
+            }
+        }).focus(function () {
+            $(this).autocomplete("search", "");
+        });
+
+        $('#confirmSendButton').click(function() {
+            confirmNewsletterSend();
+        });
+
+        $('#newsletterTestSendButton').click(function() {
+            newsletterTestSend();
+        });
+
+        $('#confirmSendNewsletterButton').click(function() {
+            newsletterSend();
+            $('#confirmSendNewsletterModal').foundation('reveal', 'close');
+        });
+
+        $('#cancelSendNewsletterButton').click(function() {
+            $('#confirmSendNewsletterModal').foundation('reveal', 'close');
+        });
+
+        $('.ui-autocomplete').addClass('f-dropdown');
+    });
 
 });

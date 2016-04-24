@@ -78,14 +78,6 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         $('.ui-autocomplete').addClass('f-dropdown');
     });
 
-    $('#addNetAddressButton').click(function () {
-        addNetAddress();
-    });
-
-    $('body').on('click', 'button[name="removeNetAddressButton"]', function () {
-        removeNetAddress($(this).val());
-    });
-
     $('#resetAddNetAddressButton').click(function() {
         viewModel.userNetAddressesModel.userId(null);
         viewModel.userNetAddressesModel.netAddress(null);
@@ -135,4 +127,13 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
             }
         });
     }
+
+    $('#addNetAddressButton').click(function () {
+        addNetAddress();
+    });
+
+    $('body').on('click', 'button[name="removeNetAddressButton"]', function () {
+        removeNetAddress($(this).val());
+    });
+    
 });

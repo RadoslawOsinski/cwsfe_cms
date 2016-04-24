@@ -68,10 +68,6 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
 
     });
 
-    $('#addUserButton').click(function() {
-        addUser();
-    });
-
     $('#resetAddUser').click(function() {
         viewModel.usersViewModel.userName(null);
         viewModel.usersViewModel.passwordHash(null);
@@ -149,4 +145,9 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
             }
         });
     }
+
+    $('#addUserButton').click(function() {
+        addUser();
+    });
+
 });

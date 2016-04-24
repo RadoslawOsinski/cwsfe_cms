@@ -50,14 +50,6 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
 
     });
 
-    $('#addLanguageButton').click(function() {
-        addLanguage();
-    });
-
-    $('body').on('click', 'button[name="removeLanguageButton"]', function() {
-        removeLanguage($(this).val());
-    });
-
     $('#resetAddLanguages').click(function() {
         viewModel.languagesViewModel.code(null);
         viewModel.languagesViewModel.name(null);
@@ -108,5 +100,13 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
             }
         });
     }
+
+    $('#addLanguageButton').click(function() {
+        addLanguage();
+    });
+
+    $('body').on('click', 'button[name="removeLanguageButton"]', function() {
+        removeLanguage($(this).val());
+    });
 
 });

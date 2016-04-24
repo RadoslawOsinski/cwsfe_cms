@@ -55,22 +55,6 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
 
     var $body = $('body');
 
-    $body.on('click', 'button[name="publishBlogCommentButton"]', function() {
-        publishBlogComment($(this).val());
-    });
-
-    $body.on('click', 'button[name="blockBlogCommentButton"]', function() {
-        blockBlogComment($(this).val());
-    });
-
-    $body.on('click', 'button[name="markAsSpamBlogPostCommentButton"]', function() {
-        markAsSpamBlogPostComment($(this).val());
-    });
-
-    $body.on('click', 'button[name="deleteBlogCommentButton"]', function() {
-        deleteBlogComment($(this).val());
-    });
-
     function publishBlogComment(idValue) {
         $.ajax({
             type: 'POST',
@@ -162,5 +146,21 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             }
         });
     }
+
+    $body.on('click', 'button[name="publishBlogCommentButton"]', function() {
+        publishBlogComment($(this).val());
+    });
+
+    $body.on('click', 'button[name="blockBlogCommentButton"]', function() {
+        blockBlogComment($(this).val());
+    });
+
+    $body.on('click', 'button[name="markAsSpamBlogPostCommentButton"]', function() {
+        markAsSpamBlogPostComment($(this).val());
+    });
+
+    $body.on('click', 'button[name="deleteBlogCommentButton"]', function() {
+        deleteBlogComment($(this).val());
+    });
 
 });

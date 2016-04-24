@@ -54,14 +54,6 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         });
     });
 
-    $('#addCmsTextI18nCategoryButton').click(function() {
-        addCmsTextI18nCategory();
-    });
-
-    $('body').on('click', 'button[name="removeCmsTextI18nCategoryButton"]', function() {
-        removeCmsTextI18nCategory($(this).val());
-    });
-
     $('#resetAddUser').click(function() {
         viewModel.categoryViewModel.category(null);
         viewModel.formAlerts.cleanAllMessages();
@@ -110,5 +102,13 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
             }
         });
     }
+
+    $('#addCmsTextI18nCategoryButton').click(function() {
+        addCmsTextI18nCategory();
+    });
+
+    $('body').on('click', 'button[name="removeCmsTextI18nCategoryButton"]', function() {
+        removeCmsTextI18nCategory($(this).val());
+    });
 
 });
