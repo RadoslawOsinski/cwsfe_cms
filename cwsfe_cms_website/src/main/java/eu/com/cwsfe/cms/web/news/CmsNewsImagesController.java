@@ -37,7 +37,7 @@ public class CmsNewsImagesController extends JsonController {
     private CmsNewsImagesDAO cmsNewsImagesDAO;
 
     @Autowired
-    ImageStorageService imageStorageService;
+    private ImageStorageService imageStorageService;
 
     @RequestMapping(value = "/news/cmsNewsImagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody

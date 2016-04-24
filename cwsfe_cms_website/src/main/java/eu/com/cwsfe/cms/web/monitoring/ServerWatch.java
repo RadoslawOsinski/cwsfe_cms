@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
  * Created by Radosław Osiński
  */
 @Component
-public class ServerWatch {
+class ServerWatch {
 
     private ZonedDateTime startTime;
     private MemoryMXBean memoryMxBean;
@@ -25,7 +25,7 @@ public class ServerWatch {
         osBean = ManagementFactory.getOperatingSystemMXBean();
     }
 
-    void initializeStartTime() {
+    private void initializeStartTime() {
         this.startTime = ZonedDateTime.now();
     }
 
@@ -62,7 +62,7 @@ public class ServerWatch {
         return osBean.getSystemLoadAverage();
     }
 
-    double asMb(long bytes) {
+    private double asMb(long bytes) {
         return bytes / (double) 1024 / (double) 1024;
     }
 

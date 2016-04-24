@@ -1,8 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
-import eu.com.cwsfe.cms.domains.CmsNewsStatus;
 import eu.com.cwsfe.cms.domains.NewsletterMailStatus;
-import eu.com.cwsfe.cms.model.CmsAuthor;
 import eu.com.cwsfe.cms.model.NewsletterMail;
 import eu.com.cwsfe.cms.model.NewsletterMailGroup;
 import org.junit.Before;
@@ -15,7 +13,6 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;

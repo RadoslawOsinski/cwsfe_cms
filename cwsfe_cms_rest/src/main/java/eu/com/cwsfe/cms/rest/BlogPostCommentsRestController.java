@@ -64,10 +64,12 @@ public class BlogPostCommentsRestController {
     @ExceptionHandler(value = CmsValidationRestException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public void handleParameterValidation() {
+        //handling error code 400
     }
 
     @ExceptionHandler(value = EmptyResultDataAccessException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public void handleEmptyResult() {
+        //handling error code 404
     }
 }

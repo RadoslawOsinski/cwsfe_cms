@@ -1,7 +1,6 @@
 package eu.com.cwsfe.cms.web.blog;
 
 import eu.com.cwsfe.cms.dao.BlogPostImagesDAO;
-import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
 import eu.com.cwsfe.cms.model.BlogPostImage;
 import eu.com.cwsfe.cms.web.images.ImageStorageService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
@@ -20,9 +19,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;

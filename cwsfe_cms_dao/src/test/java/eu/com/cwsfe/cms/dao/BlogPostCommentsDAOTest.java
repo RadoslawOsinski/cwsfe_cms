@@ -4,7 +4,6 @@ import eu.com.cwsfe.cms.domains.BlogPostCommentStatus;
 import eu.com.cwsfe.cms.domains.BlogPostI18nContentStatus;
 import eu.com.cwsfe.cms.domains.BlogPostStatus;
 import eu.com.cwsfe.cms.model.*;
-import eu.com.cwsfe.cms.model.BlogPostComment;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

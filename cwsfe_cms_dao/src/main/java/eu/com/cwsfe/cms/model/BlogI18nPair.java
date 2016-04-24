@@ -6,14 +6,14 @@ public class BlogI18nPair implements Serializable {
 
     private static final long serialVersionUID = 1036970556866188319L;
 
+    private BlogPost blogPost;
+
+    private BlogPostI18nContent blogPostI18nContent;
+
     public BlogI18nPair(BlogPost blogPost, BlogPostI18nContent blogPostI18nContent) {
         this.blogPost = blogPost;
         this.blogPostI18nContent = blogPostI18nContent;
     }
-
-    private BlogPost blogPost;
-
-    private BlogPostI18nContent blogPostI18nContent;
 
     public BlogPost getBlogPost() {
         return blogPost;
