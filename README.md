@@ -3,6 +3,7 @@ cwsfe_cms
 Just another CMS.
 [![Build Status](https://travis-ci.org/RadoslawOsinski/cwsfe_cms.svg?branch=master)](https://travis-ci.org/RadoslawOsinski/cwsfe_cms)
 [![Stack Share](http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](http://stackshare.io/RadoslawOsinski/cwsfe-cms)
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/82efd10afc724499bf1a98bd0ffe4a39)](https://www.codacy.com/app/radoslaw-osinski/cwsfe_cms)
 
 [Changelog](CHANGELOG.md)
 
