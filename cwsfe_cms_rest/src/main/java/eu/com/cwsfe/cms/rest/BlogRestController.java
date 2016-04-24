@@ -91,5 +91,6 @@ public class BlogRestController {
     @ExceptionHandler(value = EmptyResultDataAccessException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public void handleEmptyResult() {
+        //handling 404 error
     }
 }

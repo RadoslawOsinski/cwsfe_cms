@@ -6,14 +6,14 @@ public class CmsNewsI18nPair implements Serializable {
 
     private static final long serialVersionUID = -2521708732548778417L;
 
+    private CmsNews cmsNews;
+
+    private CmsNewsI18nContent cmsNewsI18nContent;
+
     public CmsNewsI18nPair(CmsNews cmsNews, CmsNewsI18nContent cmsNewsI18nContent) {
         this.cmsNews = cmsNews;
         this.cmsNewsI18nContent = cmsNewsI18nContent;
     }
-
-    private CmsNews cmsNews;
-
-    private CmsNewsI18nContent cmsNewsI18nContent;
 
     public CmsNews getCmsNews() {
         return cmsNews;

@@ -37,7 +37,7 @@ public class BlogPostImagesController extends JsonController {
     private BlogPostImagesDAO blogPostImagesDAO;
 
     @Autowired
-    ImageStorageService imageStorageService;
+    private ImageStorageService imageStorageService;
 
     @RequestMapping(value = "/blogPosts/blogPostImagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody

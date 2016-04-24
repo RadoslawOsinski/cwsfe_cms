@@ -51,14 +51,6 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
 
     });
 
-    $('#addAuthorButton').click(function() {
-        addAuthor();
-    });
-
-    $('body').on('click', 'button[name="removeAuthorButton"]', function() {
-        removeAuthor($(this).val());
-    });
-
     $('#resetAuthorButton').click(function() {
         viewModel.authorsViewModel.firstName(null);
         viewModel.authorsViewModel.lastName(null);
@@ -112,4 +104,12 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         });
     }
 
+    $('#addAuthorButton').click(function() {
+        addAuthor();
+    });
+
+    $('body').on('click', 'button[name="removeAuthorButton"]', function() {
+        removeAuthor($(this).val());
+    });
+    
 });

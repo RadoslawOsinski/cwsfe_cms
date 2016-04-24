@@ -122,14 +122,6 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         $("#blogPostsList").dataTable().fnDraw();
     }
 
-    $('#addBlogPostButton').click(function() {
-        addBlogPost();
-    });
-
-    $('body').on('click', 'button[name="removeBlogPostButton"]', function() {
-        removeBlogPost($(this).val());
-    });
-
     $('#resetAddBlogPost').click(function() {
         viewModel.blogPostsViewModel.authorId = null;
         viewModel.blogPostsViewModel.author(null);
@@ -183,4 +175,12 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         });
     }
 
+    $('#addBlogPostButton').click(function() {
+        addBlogPost();
+    });
+
+    $('body').on('click', 'button[name="removeBlogPostButton"]', function() {
+        removeBlogPost($(this).val());
+    });
+    
 });

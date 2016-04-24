@@ -206,10 +206,10 @@ class NewsletterTemplateController extends JsonController {
         if (!EmailValidator.isValidEmailAddress(newsletterMailAddress.getEmail())) {
             result.rejectValue("email", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("EmailIsInvalid"));
         }
-        newsletterTemplate = newsletterTemplateDAO.get(newsletterTemplate.getId());
+        NewsletterTemplate fullNewsletterTemplate = newsletterTemplateDAO.get(newsletterTemplate.getId());
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            sendTestTemplateEmail(newsletterTemplate, newsletterMailAddress);
+            sendTestTemplateEmail(fullNewsletterTemplate, newsletterMailAddress);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -217,7 +217,7 @@ class NewsletterTemplateController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    protected void sendTestTemplateEmail(NewsletterTemplate newsletterTemplate, NewsletterMailAddress newsletterMailAddress) {
+    private void sendTestTemplateEmail(NewsletterTemplate newsletterTemplate, NewsletterMailAddress newsletterMailAddress) {
         MimeMessage mimeMessage = cmsMailSender.createMimeMessage();
         MimeMessageHelper helper;
         try {
