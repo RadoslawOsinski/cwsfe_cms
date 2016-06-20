@@ -1,9 +1,7 @@
 buildscript {
     repositories {
-        mavenLocal()
-        maven {
-            url "http://repo1.maven.org/maven2/"
-        }
+        mavenLocal();
+        mavenCentral();
     }
     dependencies {
         classpath "org.flywaydb:flyway-gradle-plugin:3.0"
@@ -22,16 +20,8 @@ group = "eu.com.cwsfe.cms"
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
-    mavenLocal()
-    maven {
-        url "http://repo1.maven.org/maven2/"
-    }
-    maven { url "http://repo.spring.io/libs-release" }
-    maven { url "http://repo.springsource.org/plugins-release" }
-    maven { url "http://repo.spring.io/milestone" }  // for AspectJ 1.8.0.M1
-    maven { url "https://repository.apache.org/content/repositories/releases" }  // tomcat 8
-    maven { url "https://maven.java.net/content/repositories/releases" }  // javax.websocket, tyrus
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }  // javax.cache
+    mavenLocal();
+    mavenCentral();
 }
 
 compileJava {
@@ -54,17 +44,17 @@ dependencies {
     tomcatLibs group: 'javax.mail', name: 'mail', version: '1.4.7' //only for tomcat
     tomcatLibs group: 'javax.activation', name: 'activation', version: '1.1.1' //only for tomcat
     providedCompile group: 'javax.mail', name: 'javax.mail-api', version: '1.5.0'
-    compile group: 'org.springframework.security', name: 'spring-security-web', version: '4.0.0.M2'
-    compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.0.0.M2'
-    compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.0.0.M2'
-    compile group: 'org.springframework', name: 'spring-webmvc', version: '4.2.4.RELEASE'
-    compile group: 'org.springframework', name: 'spring-tx', version: '4.2.4.RELEASE'
-    compile group: 'org.springframework', name: 'spring-core', version: '4.2.4.RELEASE'
-    compile group: 'org.springframework', name: 'spring-beans', version: '4.2.4.RELEASE'
-    compile group: 'org.springframework', name: 'spring-expression', version: '4.2.4.RELEASE'
-    compile group: 'org.springframework', name: 'spring-context', version: '4.2.4.RELEASE'
-    compile group: 'org.springframework', name: 'spring-aop', version: '4.2.4.RELEASE'
-    compile group: 'org.springframework', name: 'spring-jms', version: '4.2.4.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-web', version: '4.1.0.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.1.0.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.1.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-webmvc', version: '4.3.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-tx', version: '4.3.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-core', version: '4.3.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-beans', version: '4.3.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-expression', version: '4.3.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context', version: '4.3.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-aop', version: '4.3.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-jms', version: '4.3.0.RELEASE'
     compile group: 'javax.ejb', name: 'ejb-api', version: '3.0'
     compile group: 'javax.annotation', name: 'javax.annotation-api', version: '1.2'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.2'
@@ -92,7 +82,7 @@ dependencies {
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.6.0'
     testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
     testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile group: 'org.springframework', name: 'spring-test', version: '4.2.4.RELEASE'
+    testCompile group: 'org.springframework', name: 'spring-test', version: '4.3.0.RELEASE'
     testCompile group: 'org.springframework', name: 'spring-test-mvc', version: '1.0.0.M2'
     testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.45.0'
     testCompile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '2.45.0'

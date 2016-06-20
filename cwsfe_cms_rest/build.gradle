@@ -1,9 +1,7 @@
 buildscript {
     repositories {
-        mavenLocal()
-        maven {
-            url "http://repo1.maven.org/maven2/"
-        }
+        mavenLocal();
+        mavenCentral();
     }
 }
 
@@ -17,16 +15,8 @@ group = "eu.com.cwsfe.cms"
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
-    mavenLocal()
-    maven {
-        url "http://repo1.maven.org/maven2/"
-    }
-    maven { url "http://repo.spring.io/libs-release" }
-    maven { url "http://repo.springsource.org/plugins-release" }
-    maven { url "http://repo.spring.io/milestone" }  // for AspectJ 1.8.0.M1
-    maven { url "https://repository.apache.org/content/repositories/releases" }  // tomcat 8
-    maven { url "https://maven.java.net/content/repositories/releases" }  // javax.websocket, tyrus
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }  // javax.cache
+    mavenLocal();
+    mavenCentral();
 }
 
 compileJava {
@@ -38,14 +28,14 @@ compileJava {
 
 dependencies {
     compile project(':cwsfe_cms_dao')
-    compile group: 'org.springframework', name: 'spring-webmvc', version: '4.2.4.RELEASE'
-    compile group: 'org.springframework', name: 'spring-tx', version: '4.2.4.RELEASE'
-    compile group: 'org.springframework', name: 'spring-jdbc', version: '4.2.4.RELEASE'
-    compile group: 'org.springframework', name: 'spring-core', version: '4.2.4.RELEASE'
-    compile group: 'org.springframework', name: 'spring-beans', version: '4.2.4.RELEASE'
-    compile group: 'org.springframework', name: 'spring-context', version: '4.2.4.RELEASE'
-    compile group: 'org.springframework', name: 'spring-context-support', version: '4.2.4.RELEASE'
-    compile group: 'org.springframework', name: 'spring-web', version: '4.2.4.RELEASE'  //dla CommonsMultipartFile
+    compile group: 'org.springframework', name: 'spring-webmvc', version: '4.3.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-tx', version: '4.3.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-core', version: '4.3.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-beans', version: '4.3.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context', version: '4.3.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context-support', version: '4.3.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-web', version: '4.3.0.RELEASE'  //dla CommonsMultipartFile
     compile group: 'javax.ejb', name: 'ejb-api', version: '3.0'
     compile group: 'javax.annotation', name: 'javax.annotation-api', version: '1.2'
     compile group: 'net.sf.ehcache', name: 'ehcache', version: '2.8.1'
@@ -57,7 +47,7 @@ dependencies {
     testCompile project(path: ':cwsfe_cms_dao', configuration: 'tests')
     testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1' //3.1.0 -newer version has problems with tests
     testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile group: 'org.springframework', name: 'spring-test', version: '4.2.4.RELEASE'
+    testCompile group: 'org.springframework', name: 'spring-test', version: '4.3.0.RELEASE'
     testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: '0.8.1'
     testCompile group: 'com.jayway.jsonpath', name: 'json-path-assert', version: '0.8.1'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '1.9.5'
