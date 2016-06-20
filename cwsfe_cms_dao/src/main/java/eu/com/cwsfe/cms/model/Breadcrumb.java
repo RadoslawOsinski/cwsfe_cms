@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class Breadcrumb implements Serializable {
 
+    private static final long serialVersionUID = -4442521382899438621L;
+
     private Long id;
     private String url;
     private String text;

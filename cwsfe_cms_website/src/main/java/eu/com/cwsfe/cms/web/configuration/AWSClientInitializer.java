@@ -26,8 +26,12 @@ public class AWSClientInitializer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AWSClientInitializer.class);
 
+    private final CmsGlobalParamsDAO cmsGlobalParamsDAO;
+
     @Autowired
-    private CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    public AWSClientInitializer(CmsGlobalParamsDAO cmsGlobalParamsDAO) {
+        this.cmsGlobalParamsDAO = cmsGlobalParamsDAO;
+    }
 
     @Bean
     public AmazonS3 getAmazonS3() {
