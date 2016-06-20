@@ -27,8 +27,12 @@ import java.util.ResourceBundle;
 @Controller
 class LanguagesController extends JsonController {
 
+    private final CmsLanguagesDAO cmsLanguagesDAO;
+
     @Autowired
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    public LanguagesController(CmsLanguagesDAO cmsLanguagesDAO) {
+        this.cmsLanguagesDAO = cmsLanguagesDAO;
+    }
 
     @RequestMapping(value = "/languages", method = RequestMethod.GET)
     public String defaultView(ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {

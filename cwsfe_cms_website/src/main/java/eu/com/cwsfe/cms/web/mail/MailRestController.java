@@ -24,15 +24,27 @@ public class MailRestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailRestController.class);
 
-    @Lazy
-    @Autowired
     private JavaMailSender cmsMailSender;
 
-    @Autowired
     private JWTDecoratorService jwtDecoratorService;
 
-    @Autowired
     private CmsGlobalParamsDAO cmsGlobalParamsDAO;
+
+    @Lazy
+    @Autowired
+    public void setCmsMailSender(JavaMailSender cmsMailSender) {
+        this.cmsMailSender = cmsMailSender;
+    }
+
+    @Autowired
+    public void setJwtDecoratorService(JWTDecoratorService jwtDecoratorService) {
+        this.jwtDecoratorService = jwtDecoratorService;
+    }
+
+    @Autowired
+    public void setCmsGlobalParamsDAO(CmsGlobalParamsDAO cmsGlobalParamsDAO) {
+        this.cmsGlobalParamsDAO = cmsGlobalParamsDAO;
+    }
 
     @RequestMapping(value = "/rest/sendEmail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public void getTranslation(

@@ -12,8 +12,12 @@ import java.util.List;
 @Repository
 public class CmsUserRolesDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public CmsUserRolesDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     private CmsUserRole mapCmsUserRole(ResultSet resultSet) throws SQLException {
         return new CmsUserRole(

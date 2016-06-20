@@ -23,8 +23,12 @@ public class NewsletterMailDAO {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NewsletterMailDAO.class);
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public NewsletterMailDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public int countForAjax() {
         String query = "SELECT count(id) FROM NEWSLETTER_MAIL WHERE status <> 'D'";

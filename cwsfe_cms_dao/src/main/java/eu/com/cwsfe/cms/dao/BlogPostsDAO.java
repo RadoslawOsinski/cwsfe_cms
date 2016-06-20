@@ -15,8 +15,12 @@ import java.util.List;
 @Repository
 public class BlogPostsDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public BlogPostsDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public List<Object[]> listArchiveStatistics(Long languageId) {
         Object[] dbParams = new Object[1];

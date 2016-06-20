@@ -16,11 +16,15 @@ import java.util.List;
 @RestController
 public class FoldersRestController {
 
-    @Autowired
-    private CmsFoldersDAO cmsFoldersDAO;
+    private final CmsFoldersDAO cmsFoldersDAO;
+
+    private final CmsTextI18nDAO cmsTextI18nDAO;
 
     @Autowired
-    private CmsTextI18nDAO cmsTextI18nDAO;
+    public FoldersRestController(CmsTextI18nDAO cmsTextI18nDAO, CmsFoldersDAO cmsFoldersDAO) {
+        this.cmsTextI18nDAO = cmsTextI18nDAO;
+        this.cmsFoldersDAO = cmsFoldersDAO;
+    }
 
     /**
      * @param languageCode language code

@@ -15,8 +15,12 @@ import java.util.List;
 @Repository
 public class BlogPostCommentsDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public BlogPostCommentsDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public int getTotalNumberNotDeleted() {
         String query = "SELECT count(*) FROM CMS_BLOG_POST_COMMENTS WHERE status <> 'D'";

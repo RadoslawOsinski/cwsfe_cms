@@ -12,8 +12,12 @@ import java.sql.SQLException;
 @Repository
 public class BlogPostI18nContentsDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public BlogPostI18nContentsDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public BlogPostI18nContent get(Long id) {
         String query =

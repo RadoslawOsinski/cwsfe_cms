@@ -12,8 +12,12 @@ import javax.annotation.PostConstruct;
 @Service
 public class ImageStorageInitializer {
 
+    final ImageStorageService imageStorageService;
+
     @Autowired
-    ImageStorageService imageStorageService;
+    public ImageStorageInitializer(ImageStorageService imageStorageService) {
+        this.imageStorageService = imageStorageService;
+    }
 
     @PostConstruct
     public void initializeImageStorage() {

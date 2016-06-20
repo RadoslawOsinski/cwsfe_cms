@@ -13,8 +13,12 @@ import java.util.List;
 @Repository
 public class NewsTypesDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public NewsTypesDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public int countForAjax() {
         String query = "SELECT count(id) FROM CMS_NEWS_TYPES WHERE status <> 'D'";

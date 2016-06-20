@@ -27,8 +27,12 @@ import java.util.ResourceBundle;
 @Controller
 public class RolesController extends JsonController {
 
+    private final CmsRolesDAO cmsRolesDAO;
+
     @Autowired
-    private CmsRolesDAO cmsRolesDAO;
+    public RolesController(CmsRolesDAO cmsRolesDAO) {
+        this.cmsRolesDAO = cmsRolesDAO;
+    }
 
     @RequestMapping(value = "/roles", method = RequestMethod.GET)
     public String defaultView(ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {

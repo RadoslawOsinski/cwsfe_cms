@@ -15,8 +15,12 @@ import java.util.List;
 @Repository
 public class BlogPostKeywordsDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public BlogPostKeywordsDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public List<BlogKeyword> listForPost(Long postId) {
         String query =

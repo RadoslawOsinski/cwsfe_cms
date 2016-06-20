@@ -23,8 +23,12 @@ import java.util.ResourceBundle;
 @Controller
 public class MonitoringGeneralInformationController extends JsonController {
 
+    private final ServerWatch serverWatch;
+
     @Autowired
-    private ServerWatch serverWatch;
+    public MonitoringGeneralInformationController(ServerWatch serverWatch) {
+        this.serverWatch = serverWatch;
+    }
 
     @RequestMapping(value = "/monitoring/generalInformation", method = RequestMethod.GET)
     public String defaultView(ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {

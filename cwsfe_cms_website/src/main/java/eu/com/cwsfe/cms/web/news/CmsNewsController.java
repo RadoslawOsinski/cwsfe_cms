@@ -33,18 +33,22 @@ public class CmsNewsController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsNewsController.class);
 
+    private final CmsNewsDAO cmsNewsDAO;
+    private final CmsNewsI18nContentsDAO cmsNewsI18nContentsDAO;
+    private final CmsAuthorsDAO cmsAuthorsDAO;
+    private final CmsFoldersDAO cmsFoldersDAO;
+    private final NewsTypesDAO newsTypesDAO;
+    private final CmsLanguagesDAO cmsLanguagesDAO;
+
     @Autowired
-    private CmsNewsDAO cmsNewsDAO;
-    @Autowired
-    private CmsNewsI18nContentsDAO cmsNewsI18nContentsDAO;
-    @Autowired
-    private CmsAuthorsDAO cmsAuthorsDAO;
-    @Autowired
-    private CmsFoldersDAO cmsFoldersDAO;
-    @Autowired
-    private NewsTypesDAO newsTypesDAO;
-    @Autowired
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    public CmsNewsController(CmsLanguagesDAO cmsLanguagesDAO, CmsNewsDAO cmsNewsDAO, CmsAuthorsDAO cmsAuthorsDAO, CmsFoldersDAO cmsFoldersDAO, NewsTypesDAO newsTypesDAO, CmsNewsI18nContentsDAO cmsNewsI18nContentsDAO) {
+        this.cmsLanguagesDAO = cmsLanguagesDAO;
+        this.cmsNewsDAO = cmsNewsDAO;
+        this.cmsAuthorsDAO = cmsAuthorsDAO;
+        this.cmsFoldersDAO = cmsFoldersDAO;
+        this.newsTypesDAO = newsTypesDAO;
+        this.cmsNewsI18nContentsDAO = cmsNewsI18nContentsDAO;
+    }
 
     @RequestMapping(value = "/news", method = RequestMethod.GET)
     public String defaultView(ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {

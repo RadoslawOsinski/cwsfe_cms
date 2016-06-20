@@ -12,8 +12,12 @@ import java.util.List;
 @Repository
 public class CmsUserAllowedNetAddressDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public CmsUserAllowedNetAddressDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     private CmsUserAllowedNetAddress mapCmsUserAllowedNetAddress(ResultSet resultSet) throws SQLException {
         CmsUserAllowedNetAddress cmsUserAllowedNetAddress = new CmsUserAllowedNetAddress();

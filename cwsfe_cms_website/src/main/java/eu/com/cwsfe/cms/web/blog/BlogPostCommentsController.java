@@ -22,8 +22,12 @@ import java.util.ResourceBundle;
 @Controller
 public class BlogPostCommentsController extends JsonController {
 
+    private final BlogPostCommentsDAO blogPostCommentsDAO;
+
     @Autowired
-    private BlogPostCommentsDAO blogPostCommentsDAO;
+    public BlogPostCommentsController(BlogPostCommentsDAO blogPostCommentsDAO) {
+        this.blogPostCommentsDAO = blogPostCommentsDAO;
+    }
 
     @RequestMapping(value = "/publishBlogPostComment", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody

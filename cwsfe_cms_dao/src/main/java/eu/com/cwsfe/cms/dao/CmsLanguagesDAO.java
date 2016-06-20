@@ -13,8 +13,12 @@ import java.util.List;
 @Repository
 public class CmsLanguagesDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public CmsLanguagesDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public int countForAjax() {
         String query = "SELECT count(*) from CMS_LANGUAGES";

@@ -14,8 +14,12 @@ import java.util.List;
 @Repository
 public class NewsletterMailGroupDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public NewsletterMailGroupDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public int countForAjax() {
         String query = "SELECT count(id) FROM NEWSLETTER_MAIL_GROUPS WHERE status <> 'D'";

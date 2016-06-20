@@ -21,8 +21,12 @@ import java.util.*;
 @RestController
 public class BlogPostCommentsRestController {
 
+    private final BlogPostCommentsDAO blogPostCommentsDAO;
+
     @Autowired
-    private BlogPostCommentsDAO blogPostCommentsDAO;
+    public BlogPostCommentsRestController(BlogPostCommentsDAO blogPostCommentsDAO) {
+        this.blogPostCommentsDAO = blogPostCommentsDAO;
+    }
 
     /**
      * @return internationalized blog keywords list

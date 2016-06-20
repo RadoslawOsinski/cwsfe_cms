@@ -33,11 +33,15 @@ public class BlogPostImagesController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BlogPostImagesController.class);
 
-    @Autowired
-    private BlogPostImagesDAO blogPostImagesDAO;
+    private final BlogPostImagesDAO blogPostImagesDAO;
+
+    private final ImageStorageService imageStorageService;
 
     @Autowired
-    private ImageStorageService imageStorageService;
+    public BlogPostImagesController(ImageStorageService imageStorageService, BlogPostImagesDAO blogPostImagesDAO) {
+        this.imageStorageService = imageStorageService;
+        this.blogPostImagesDAO = blogPostImagesDAO;
+    }
 
     @RequestMapping(value = "/blogPosts/blogPostImagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody

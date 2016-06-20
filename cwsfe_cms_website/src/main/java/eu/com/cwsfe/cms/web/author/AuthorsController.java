@@ -26,8 +26,12 @@ import java.util.ResourceBundle;
 @Controller
 public class AuthorsController extends JsonController {
 
+    private final CmsAuthorsDAO cmsAuthorsDAO;
+
     @Autowired
-    private CmsAuthorsDAO cmsAuthorsDAO;
+    public AuthorsController(CmsAuthorsDAO cmsAuthorsDAO) {
+        this.cmsAuthorsDAO = cmsAuthorsDAO;
+    }
 
     @RequestMapping(value = "/authors", method = RequestMethod.GET)
     public String defaultView(ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {

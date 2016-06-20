@@ -34,17 +34,21 @@ class InitialConfigurationController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InitialConfigurationController.class);
 
-    @Autowired
-    private CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    private final CmsGlobalParamsDAO cmsGlobalParamsDAO;
+
+    private final CmsUsersDAO cmsUsersDAO;
+
+    private final CmsRolesDAO cmsRolesDAO;
+
+    private final CmsUserRolesDAO cmsUserRolesDAO;
 
     @Autowired
-    private CmsUsersDAO cmsUsersDAO;
-
-    @Autowired
-    private CmsRolesDAO cmsRolesDAO;
-
-    @Autowired
-    private CmsUserRolesDAO cmsUserRolesDAO;
+    public InitialConfigurationController(CmsUsersDAO cmsUsersDAO, CmsUserRolesDAO cmsUserRolesDAO, CmsRolesDAO cmsRolesDAO, CmsGlobalParamsDAO cmsGlobalParamsDAO) {
+        this.cmsUsersDAO = cmsUsersDAO;
+        this.cmsUserRolesDAO = cmsUserRolesDAO;
+        this.cmsRolesDAO = cmsRolesDAO;
+        this.cmsGlobalParamsDAO = cmsGlobalParamsDAO;
+    }
 
     @RequestMapping(value = "/configuration/initialConfiguration", method = RequestMethod.GET)
     public String showInitialConfiguration() {

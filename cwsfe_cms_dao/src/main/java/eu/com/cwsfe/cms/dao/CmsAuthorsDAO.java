@@ -15,8 +15,12 @@ import java.util.List;
 @Repository
 public class CmsAuthorsDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public CmsAuthorsDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public int countForAjax() {
         String query = "SELECT count(id) FROM CMS_AUTHORS WHERE status <> 'D'";

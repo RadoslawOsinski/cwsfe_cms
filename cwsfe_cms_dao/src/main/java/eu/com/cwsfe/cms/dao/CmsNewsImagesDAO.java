@@ -22,8 +22,12 @@ public class CmsNewsImagesDAO {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsNewsImagesDAO.class);
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public CmsNewsImagesDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public int getTotalNumberNotDeleted() {
         String query = "SELECT count(*) FROM CMS_NEWS_IMAGES WHERE status <> 'D'";

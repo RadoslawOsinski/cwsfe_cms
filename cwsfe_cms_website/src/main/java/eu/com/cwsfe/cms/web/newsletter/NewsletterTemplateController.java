@@ -37,13 +37,25 @@ class NewsletterTemplateController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NewsletterTemplateController.class);
 
-    @Autowired
     private NewsletterTemplateDAO newsletterTemplateDAO;
-    @Autowired
     private CmsLanguagesDAO cmsLanguagesDAO;
+    private JavaMailSender cmsMailSender;
+
+    @Autowired
+    public void setNewsletterTemplateDAO(NewsletterTemplateDAO newsletterTemplateDAO) {
+        this.newsletterTemplateDAO = newsletterTemplateDAO;
+    }
+
+    @Autowired
+    public void setCmsLanguagesDAO(CmsLanguagesDAO cmsLanguagesDAO) {
+        this.cmsLanguagesDAO = cmsLanguagesDAO;
+    }
+
     @Lazy
     @Autowired
-    private JavaMailSender cmsMailSender;
+    public void setCmsMailSender(JavaMailSender cmsMailSender) {
+        this.cmsMailSender = cmsMailSender;
+    }
 
     @RequestMapping(value = "/newsletterTemplates", method = RequestMethod.GET)
     public String defaultView(ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {

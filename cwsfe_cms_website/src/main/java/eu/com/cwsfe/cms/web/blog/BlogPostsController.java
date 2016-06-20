@@ -33,16 +33,20 @@ public class BlogPostsController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BlogPostsController.class);
 
+    private final BlogPostKeywordsDAO blogPostKeywordsDAO;
+    private final BlogPostI18nContentsDAO blogPostI18nContentsDAO;
+    private final BlogPostsDAO blogPostsDAO;
+    private final CmsAuthorsDAO cmsAuthorsDAO;
+    private final CmsLanguagesDAO cmsLanguagesDAO;
+
     @Autowired
-    private BlogPostKeywordsDAO blogPostKeywordsDAO;
-    @Autowired
-    private BlogPostI18nContentsDAO blogPostI18nContentsDAO;
-    @Autowired
-    private BlogPostsDAO blogPostsDAO;
-    @Autowired
-    private CmsAuthorsDAO cmsAuthorsDAO;
-    @Autowired
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    public BlogPostsController(CmsAuthorsDAO cmsAuthorsDAO, BlogPostsDAO blogPostsDAO, CmsLanguagesDAO cmsLanguagesDAO, BlogPostI18nContentsDAO blogPostI18nContentsDAO, BlogPostKeywordsDAO blogPostKeywordsDAO) {
+        this.cmsAuthorsDAO = cmsAuthorsDAO;
+        this.blogPostsDAO = blogPostsDAO;
+        this.cmsLanguagesDAO = cmsLanguagesDAO;
+        this.blogPostI18nContentsDAO = blogPostI18nContentsDAO;
+        this.blogPostKeywordsDAO = blogPostKeywordsDAO;
+    }
 
     @RequestMapping(value = "/blogPosts", method = RequestMethod.GET)
     public String defaultView(ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {

@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class CmsTextI18nRestController {
 
+    private final CmsTextI18nDAO cmsTextI18nDAO;
+
     @Autowired
-    private CmsTextI18nDAO cmsTextI18nDAO;
+    public CmsTextI18nRestController(CmsTextI18nDAO cmsTextI18nDAO) {
+        this.cmsTextI18nDAO = cmsTextI18nDAO;
+    }
 
     @RequestMapping(value = "/rest/getTranslation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public String getTranslation(

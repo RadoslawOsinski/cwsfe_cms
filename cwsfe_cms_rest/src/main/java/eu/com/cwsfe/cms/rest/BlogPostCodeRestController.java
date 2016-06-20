@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class BlogPostCodeRestController {
 
+    private final BlogPostCodesDAO blogPostCodesDAO;
+
     @Autowired
-    private BlogPostCodesDAO blogPostCodesDAO;
+    public BlogPostCodeRestController(BlogPostCodesDAO blogPostCodesDAO) {
+        this.blogPostCodesDAO = blogPostCodesDAO;
+    }
 
     /**
      * @param postId blog post id

@@ -18,8 +18,12 @@ import java.util.Map;
 @RestController
 public class NewsImagesRestController {
 
+    private final CmsNewsImagesDAO cmsNewsImagesDAO;
+
     @Autowired
-    private CmsNewsImagesDAO cmsNewsImagesDAO;
+    public NewsImagesRestController(CmsNewsImagesDAO cmsNewsImagesDAO) {
+        this.cmsNewsImagesDAO = cmsNewsImagesDAO;
+    }
 
     @RequestMapping(value = "/rest/newsImages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public Map<String, Object> getImagesForNewsWithoutContent(

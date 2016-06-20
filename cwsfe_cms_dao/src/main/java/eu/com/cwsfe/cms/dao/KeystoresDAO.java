@@ -20,8 +20,12 @@ public class KeystoresDAO {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KeystoresDAO.class);
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public KeystoresDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     private Keystore mapKeystore(ResultSet resultSet) throws SQLException {
         Keystore keystore = new Keystore();

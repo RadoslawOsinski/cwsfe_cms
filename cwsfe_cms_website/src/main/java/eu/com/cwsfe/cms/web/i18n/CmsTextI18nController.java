@@ -29,12 +29,16 @@ import java.util.ResourceBundle;
 @Controller
 public class CmsTextI18nController extends JsonController {
 
+    private final CmsTextI18nDAO cmsTextI18nDAO;
+    private final CmsTextI18nCategoryDAO cmsTextI18nCategoryDAO;
+    private final CmsLanguagesDAO cmsLanguagesDAO;
+
     @Autowired
-    private CmsTextI18nDAO cmsTextI18nDAO;
-    @Autowired
-    private CmsTextI18nCategoryDAO cmsTextI18nCategoryDAO;
-    @Autowired
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    public CmsTextI18nController(CmsTextI18nCategoryDAO cmsTextI18nCategoryDAO, CmsLanguagesDAO cmsLanguagesDAO, CmsTextI18nDAO cmsTextI18nDAO) {
+        this.cmsTextI18nCategoryDAO = cmsTextI18nCategoryDAO;
+        this.cmsLanguagesDAO = cmsLanguagesDAO;
+        this.cmsTextI18nDAO = cmsTextI18nDAO;
+    }
 
     @RequestMapping(value = "/cmsTextI18n", method = RequestMethod.GET)
     public String defaultView(ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {

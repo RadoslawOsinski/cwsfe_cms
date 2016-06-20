@@ -15,8 +15,12 @@ import java.util.List;
 @Repository
 public class CmsFoldersDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public CmsFoldersDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public int countForAjax() {
         String query = "SELECT count(id) FROM cms_folders WHERE status <> 'D'";

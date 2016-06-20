@@ -27,8 +27,12 @@ import java.util.ResourceBundle;
 @Controller
 public class BlogKeywordsController extends JsonController {
 
+    private final BlogKeywordsDAO blogKeywordsDAO;
+
     @Autowired
-    private BlogKeywordsDAO blogKeywordsDAO;
+    public BlogKeywordsController(BlogKeywordsDAO blogKeywordsDAO) {
+        this.blogKeywordsDAO = blogKeywordsDAO;
+    }
 
     @RequestMapping(value = "/blogKeywords", method = RequestMethod.GET)
     public String defaultView(ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {

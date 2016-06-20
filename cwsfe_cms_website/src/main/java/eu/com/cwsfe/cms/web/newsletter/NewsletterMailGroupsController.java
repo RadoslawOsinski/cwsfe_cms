@@ -30,12 +30,16 @@ import java.util.ResourceBundle;
 @Controller
 class NewsletterMailGroupsController extends JsonController {
 
+    private final NewsletterMailGroupDAO newsletterMailGroupDAO;
+    private final NewsletterMailAddressDAO newsletterMailAddressDAO;
+    private final CmsLanguagesDAO cmsLanguagesDAO;
+
     @Autowired
-    private NewsletterMailGroupDAO newsletterMailGroupDAO;
-    @Autowired
-    private NewsletterMailAddressDAO newsletterMailAddressDAO;
-    @Autowired
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    public NewsletterMailGroupsController(NewsletterMailAddressDAO newsletterMailAddressDAO, CmsLanguagesDAO cmsLanguagesDAO, NewsletterMailGroupDAO newsletterMailGroupDAO) {
+        this.newsletterMailAddressDAO = newsletterMailAddressDAO;
+        this.cmsLanguagesDAO = cmsLanguagesDAO;
+        this.newsletterMailGroupDAO = newsletterMailGroupDAO;
+    }
 
     @RequestMapping(value = "/newsletterMailGroups", method = RequestMethod.GET)
     public String defaultView(ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {

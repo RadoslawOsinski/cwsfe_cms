@@ -22,8 +22,12 @@ public class BlogPostImagesDAO {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BlogPostImagesDAO.class);
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public BlogPostImagesDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public int getTotalNumberNotDeleted() {
         String query = "SELECT count(*) FROM BLOG_POST_IMAGES WHERE status <> 'D'";

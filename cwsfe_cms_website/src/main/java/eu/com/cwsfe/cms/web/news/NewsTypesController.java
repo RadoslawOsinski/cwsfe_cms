@@ -27,8 +27,12 @@ import java.util.ResourceBundle;
 @Controller
 class NewsTypesController extends JsonController {
 
+    private final NewsTypesDAO newsTypesDAO;
+
     @Autowired
-    private NewsTypesDAO newsTypesDAO;
+    public NewsTypesController(NewsTypesDAO newsTypesDAO) {
+        this.newsTypesDAO = newsTypesDAO;
+    }
 
     @RequestMapping(value = "/newsTypes", method = RequestMethod.GET)
     public String defaultView(ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {

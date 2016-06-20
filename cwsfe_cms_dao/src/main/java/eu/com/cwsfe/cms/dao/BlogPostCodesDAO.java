@@ -38,8 +38,12 @@ public class BlogPostCodesDAO {
     public static final String UPDATE_QUERY = "UPDATE BLOG_POST_CODE SET blog_post_id = ?, code = ? WHERE code_id = ?";
     public static final String DELETE_QUERY = "DELETE FROM BLOG_POST_CODE WHERE blog_post_id = ? AND code_id = ?";
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public BlogPostCodesDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public int getTotalNumberNotDeleted() {
         return jdbcTemplate.queryForObject(TOTAL_NUMBER_NOT_DELETED_QUERY, Integer.class);

@@ -14,8 +14,12 @@ import java.util.List;
 @Repository
 public class CmsNewsDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public CmsNewsDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public int getTotalNumberNotDeleted() {
         String query = "SELECT count(*) FROM CMS_NEWS WHERE status <> 'D'";

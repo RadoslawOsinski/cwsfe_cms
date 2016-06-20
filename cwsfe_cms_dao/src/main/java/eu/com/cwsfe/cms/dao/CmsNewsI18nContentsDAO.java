@@ -22,8 +22,12 @@ public class CmsNewsI18nContentsDAO {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsNewsI18nContentsDAO.class);
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public CmsNewsI18nContentsDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public List<CmsNewsI18nContent> list() {
         String query =

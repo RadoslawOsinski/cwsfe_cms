@@ -22,14 +22,18 @@ public class BlogKeywordsRestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BlogKeywordsRestController.class);
 
-    @Autowired
-    private BlogKeywordsDAO blogKeywordsDAO;
+    private final BlogKeywordsDAO blogKeywordsDAO;
+
+    private final BlogPostKeywordsDAO blogPostKeywordsDAO;
+
+    private final CmsTextI18nDAO cmsTextI18nDAO;
 
     @Autowired
-    private BlogPostKeywordsDAO blogPostKeywordsDAO;
-
-    @Autowired
-    private CmsTextI18nDAO cmsTextI18nDAO;
+    public BlogKeywordsRestController(BlogKeywordsDAO blogKeywordsDAO, CmsTextI18nDAO cmsTextI18nDAO, BlogPostKeywordsDAO blogPostKeywordsDAO) {
+        this.blogKeywordsDAO = blogKeywordsDAO;
+        this.cmsTextI18nDAO = cmsTextI18nDAO;
+        this.blogPostKeywordsDAO = blogPostKeywordsDAO;
+    }
 
     /**
      * @param languageCode language code

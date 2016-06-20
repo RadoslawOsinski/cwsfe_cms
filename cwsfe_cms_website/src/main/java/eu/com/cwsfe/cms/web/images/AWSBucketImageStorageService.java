@@ -28,11 +28,15 @@ public class AWSBucketImageStorageService implements ImageStorageService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsNewsImagesController.class);
 
-    @Autowired
-    private CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    private final CmsGlobalParamsDAO cmsGlobalParamsDAO;
+
+    private final AmazonS3 amazonS3;
 
     @Autowired
-    private AmazonS3 amazonS3;
+    public AWSBucketImageStorageService(CmsGlobalParamsDAO cmsGlobalParamsDAO, AmazonS3 amazonS3) {
+        this.cmsGlobalParamsDAO = cmsGlobalParamsDAO;
+        this.amazonS3 = amazonS3;
+    }
 
     public String storeNewsImage(CmsNewsImage cmsNewsImage) {
         CmsGlobalParam newsImagesBucket = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_S3_NEWS_IMAGES_PATH");

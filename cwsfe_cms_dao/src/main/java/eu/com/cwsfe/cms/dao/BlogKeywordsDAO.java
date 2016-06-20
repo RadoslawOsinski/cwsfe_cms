@@ -15,8 +15,12 @@ import java.util.List;
 @Repository
 public class BlogKeywordsDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public BlogKeywordsDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public int countForAjax() {
         String query = "SELECT count(id) FROM blog_keywords WHERE status <> 'D'";

@@ -19,16 +19,20 @@ import java.util.Map;
 @RestController
 public class NewsRestController {
 
+    private final CmsNewsDAO cmsNewsDAO;
+    private final CmsFoldersDAO cmsFoldersDAO;
+    private final NewsTypesDAO newsTypesDAO;
+    private final CmsLanguagesDAO cmsLanguagesDAO;
+    private final CmsNewsI18nContentsDAO cmsNewsI18nContentsDAO;
+
     @Autowired
-    private CmsNewsDAO cmsNewsDAO;
-    @Autowired
-    private CmsFoldersDAO cmsFoldersDAO;
-    @Autowired
-    private NewsTypesDAO newsTypesDAO;
-    @Autowired
-    private CmsLanguagesDAO cmsLanguagesDAO;
-    @Autowired
-    private CmsNewsI18nContentsDAO cmsNewsI18nContentsDAO;
+    public NewsRestController(CmsLanguagesDAO cmsLanguagesDAO, CmsNewsI18nContentsDAO cmsNewsI18nContentsDAO, CmsFoldersDAO cmsFoldersDAO, NewsTypesDAO newsTypesDAO, CmsNewsDAO cmsNewsDAO) {
+        this.cmsLanguagesDAO = cmsLanguagesDAO;
+        this.cmsNewsI18nContentsDAO = cmsNewsI18nContentsDAO;
+        this.cmsFoldersDAO = cmsFoldersDAO;
+        this.newsTypesDAO = newsTypesDAO;
+        this.cmsNewsDAO = cmsNewsDAO;
+    }
 
     @RequestMapping(value = "/rest/news", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public CmsNews getNewsByNewsTypeFolderAndNewsCode(

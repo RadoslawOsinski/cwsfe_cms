@@ -28,12 +28,16 @@ public class CmsAuthProvider implements AuthenticationProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsAuthProvider.class);
 
+    private final CmsUsersDAO cmsUsersDAO;
+    private final CmsRolesDAO cmsRolesDAO;
+    private final CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO;
+
     @Autowired
-    private CmsUsersDAO cmsUsersDAO;
-    @Autowired
-    private CmsRolesDAO cmsRolesDAO;
-    @Autowired
-    private CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO;
+    public CmsAuthProvider(CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO, CmsUsersDAO cmsUsersDAO, CmsRolesDAO cmsRolesDAO) {
+        this.cmsUserAllowedNetAddressDAO = cmsUserAllowedNetAddressDAO;
+        this.cmsUsersDAO = cmsUsersDAO;
+        this.cmsRolesDAO = cmsRolesDAO;
+    }
 
     @Override
     public boolean supports(Class<?> authentication) {

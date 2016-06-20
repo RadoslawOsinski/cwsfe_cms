@@ -22,14 +22,18 @@ import java.util.*;
 @RestController
 public class BlogRestController {
 
-    @Autowired
-    private BlogPostsDAO blogPostsDAO;
+    private final BlogPostsDAO blogPostsDAO;
+
+    private final BlogPostI18nContentsDAO blogPostI18nContentsDAO;
+
+    private final CmsLanguagesDAO cmsLanguagesDAO;
 
     @Autowired
-    private BlogPostI18nContentsDAO blogPostI18nContentsDAO;
-
-    @Autowired
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    public BlogRestController(BlogPostI18nContentsDAO blogPostI18nContentsDAO, BlogPostsDAO blogPostsDAO, CmsLanguagesDAO cmsLanguagesDAO) {
+        this.blogPostI18nContentsDAO = blogPostI18nContentsDAO;
+        this.blogPostsDAO = blogPostsDAO;
+        this.cmsLanguagesDAO = cmsLanguagesDAO;
+    }
 
     @RequestMapping(value = "/rest/blogI18nPairs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public List<BlogI18nPair> listBlogPosts(

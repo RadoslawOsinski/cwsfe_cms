@@ -28,11 +28,15 @@ import java.util.ResourceBundle;
 @Controller
 class UsersNetAddressesController extends JsonController {
 
-    @Autowired
-    private CmsUsersDAO cmsUsersDAO;
+    private final CmsUsersDAO cmsUsersDAO;
+
+    private final CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO;
 
     @Autowired
-    private CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO;
+    public UsersNetAddressesController(CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO, CmsUsersDAO cmsUsersDAO) {
+        this.cmsUserAllowedNetAddressDAO = cmsUserAllowedNetAddressDAO;
+        this.cmsUsersDAO = cmsUsersDAO;
+    }
 
     @RequestMapping(value = "/usersNetAddresses", method = RequestMethod.GET)
     public String defaultView(ModelMap model, Locale locale, HttpServletRequest httpServletRequest) {

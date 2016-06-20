@@ -16,8 +16,12 @@ import java.util.List;
 @Repository
 public class CmsRolesDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public CmsRolesDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public List<CmsRole> listUserRoles(Long userId) {
         Object[] dbParams = new Object[1];

@@ -23,8 +23,12 @@ public class CmsUsersDAO {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsUsersDAO.class);
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public CmsUsersDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public boolean isActiveUsernameInDatabase(String username) {
         Object[] dbParams = new Object[1];

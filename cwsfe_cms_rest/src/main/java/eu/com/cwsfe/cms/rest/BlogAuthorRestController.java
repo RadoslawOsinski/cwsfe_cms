@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class BlogAuthorRestController {
 
+    private final CmsAuthorsDAO cmsAuthorsDAO;
+
     @Autowired
-    private CmsAuthorsDAO cmsAuthorsDAO;
+    public BlogAuthorRestController(CmsAuthorsDAO cmsAuthorsDAO) {
+        this.cmsAuthorsDAO = cmsAuthorsDAO;
+    }
 
     /**
      * @return internationalized blog keywords list
