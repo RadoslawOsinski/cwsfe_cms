@@ -3,18 +3,30 @@ buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.1.6'
+        classpath 'gradle.plugin.com.boxfuse.client:flyway-release:4.0.3'
     }
 }
 
 subprojects {
+    apply plugin: 'org.flywaydb.flyway'
     apply plugin: 'info.solidsoft.pitest'
     pitest {
         threads = 4
         if (project.name in ['module-without-any-test']) {
             failWhenNoMutations = false
         }
+    }
+    flyway {
+        //values in ~/.gradle/gradle.properties file
+        driver = System.properties['cwsfe_cms.jdbc.driver'];
+        url = System.properties['cwsfe_cms.jdbc.url'];
+        user = System.properties['cwsfe_cms.jdbc.user'];
+        password = System.properties['cwsfe_cms.jdbc.password'];
     }
 }
