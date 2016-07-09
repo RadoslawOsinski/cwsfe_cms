@@ -77,7 +77,7 @@
 
     <import resource="classpath*:cwsfe-cms-rest.xml"/>
 
-    <import resource="cwsfe-cms-spring-security.xml"/>
+    <bean class="eu.com.cwsfe.cms.rest.config.SwaggerConfig"/>
 
     <bean id="dbMigrationManager" class="eu.com.cwsfe.cms.version.DbMigrationManager" init-method="updateCmsDatabaseSchema">
         <constructor-arg name="migrationDataSource" ref="dataSource"/>

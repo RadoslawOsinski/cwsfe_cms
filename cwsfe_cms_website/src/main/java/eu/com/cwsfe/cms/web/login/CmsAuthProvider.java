@@ -16,6 +16,7 @@ import eu.com.cwsfe.cms.dao.CmsUsersDAO;
 import eu.com.cwsfe.cms.model.CmsRole;
 import eu.com.cwsfe.cms.model.CmsUser;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,19 +25,28 @@ import java.util.stream.Collectors;
 /**
  * @author Radoslaw Osinski
  */
+@Component
 public class CmsAuthProvider implements AuthenticationProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsAuthProvider.class);
 
-    private final CmsUsersDAO cmsUsersDAO;
-    private final CmsRolesDAO cmsRolesDAO;
-    private final CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO;
+    private CmsUsersDAO cmsUsersDAO;
+    private CmsRolesDAO cmsRolesDAO;
+    private CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO;
 
     @Autowired
-    public CmsAuthProvider(CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO, CmsUsersDAO cmsUsersDAO, CmsRolesDAO cmsRolesDAO) {
-        this.cmsUserAllowedNetAddressDAO = cmsUserAllowedNetAddressDAO;
+    public void setCmsUsersDAO(CmsUsersDAO cmsUsersDAO) {
         this.cmsUsersDAO = cmsUsersDAO;
+    }
+
+    @Autowired
+    public void setCmsRolesDAO(CmsRolesDAO cmsRolesDAO) {
         this.cmsRolesDAO = cmsRolesDAO;
+    }
+
+    @Autowired
+    public void setCmsUserAllowedNetAddressDAO(CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO) {
+        this.cmsUserAllowedNetAddressDAO = cmsUserAllowedNetAddressDAO;
     }
 
     @Override
