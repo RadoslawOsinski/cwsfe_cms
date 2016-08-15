@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.rest;
 
+import eu.com.cwsfe.cms.configuration.RestTestConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:cwsfe-cms-rest-test.xml"})
+@ContextConfiguration(classes = {RestTestConfiguration.class})
 @WebAppConfiguration
 public class CwsfeCmsRestControllerTest {
 

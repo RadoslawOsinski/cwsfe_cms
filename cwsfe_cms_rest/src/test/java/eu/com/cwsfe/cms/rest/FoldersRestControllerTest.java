@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.rest;
 
+import eu.com.cwsfe.cms.configuration.RestTestConfiguration;
 import eu.com.cwsfe.cms.dao.CmsFoldersDAO;
 import eu.com.cwsfe.cms.dao.CmsTextI18nDAO;
 import eu.com.cwsfe.cms.model.CmsFolder;
@@ -25,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:cwsfe-cms-rest-test.xml"})
+@ContextConfiguration(classes = {RestTestConfiguration.class})
 @WebAppConfiguration
 public class FoldersRestControllerTest {
 

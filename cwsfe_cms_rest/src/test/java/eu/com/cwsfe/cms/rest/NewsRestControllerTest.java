@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.rest;
 
+import eu.com.cwsfe.cms.configuration.RestTestConfiguration;
 import eu.com.cwsfe.cms.dao.*;
 import eu.com.cwsfe.cms.domains.CmsNewsI18nContentStatus;
 import eu.com.cwsfe.cms.domains.CmsNewsStatus;
@@ -31,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:cwsfe-cms-rest-test.xml"})
+@ContextConfiguration(classes = {RestTestConfiguration.class})
 @WebAppConfiguration
 public class NewsRestControllerTest {
 

@@ -75,9 +75,9 @@
     <!-- Handles HTTP GET requests for /resources-cwsfe-cms/** by efficiently serving up static resources in the ${webappRoot}/resources-cwsfe-cms/ directory -->
     <mvc:resources mapping="/resources-cwsfe-cms/**" location="/resources-cwsfe-cms/"/>
 
-    <import resource="classpath*:cwsfe-cms-rest.xml"/>
+    <bean class="eu.com.cwsfe.cms.configuration.RestConfiguration"/>
 
-    <bean class="eu.com.cwsfe.cms.rest.config.SwaggerConfig"/>
+    <bean class="eu.com.cwsfe.cms.configuration.SwaggerConfig"/>
 
     <bean id="dbMigrationManager" class="eu.com.cwsfe.cms.version.DbMigrationManager" init-method="updateCmsDatabaseSchema">
         <constructor-arg name="migrationDataSource" ref="dataSource"/>
