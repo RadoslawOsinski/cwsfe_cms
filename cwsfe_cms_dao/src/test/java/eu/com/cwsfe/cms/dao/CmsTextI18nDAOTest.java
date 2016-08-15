@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.DaoTestsConfiguration;
 import eu.com.cwsfe.cms.model.CmsTextI18n;
 import eu.com.cwsfe.cms.model.CmsTextI18nCategory;
 import eu.com.cwsfe.cms.model.Language;
@@ -9,18 +10,18 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.IfProfileValue;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration
-@ContextConfiguration(locations = {"classpath:cwsfe-cms-dao-test.xml", "classpath:cwsfe-cms-cache-test.xml"})
+@Rollback
+@ContextConfiguration(classes = {DaoTestsConfiguration.class, CmsTextI18nDAO.class, CmsLanguagesDAO.class, CmsTextI18nCategoryDAO.class})
 @IfProfileValue(name = "test-groups", values = {"integration-tests-local"})
 public class CmsTextI18nDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
@@ -33,9 +34,10 @@ public class CmsTextI18nDAOTest extends AbstractTransactionalJUnit4SpringContext
     @Autowired
     private CmsTextI18nCategoryDAO cmsTextI18nCategoryDAO;
 
-    public static final Language LANGUAGE_EN = new Language();
-    public static final CmsTextI18nCategory CATEGORY = new CmsTextI18nCategory();
-    public static final CmsTextI18nCategory CATEGORY2 = new CmsTextI18nCategory();
+    private static final Language LANGUAGE_EN = new Language();
+    private static final CmsTextI18nCategory CATEGORY = new CmsTextI18nCategory();
+    private static final CmsTextI18nCategory CATEGORY2 = new CmsTextI18nCategory();
+
     @Before
     public void setUp() throws Exception {
         CATEGORY.setCategory("category");

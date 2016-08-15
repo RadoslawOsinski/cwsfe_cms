@@ -173,7 +173,7 @@ public class BlogRestControllerTest {
         resultActions
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$total").value((int) total));
+                .andExpect(jsonPath("$.total").value((int) total));
     }
 
     @Test
@@ -193,7 +193,7 @@ public class BlogRestControllerTest {
         resultActions
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$total").value((int) total));
+                .andExpect(jsonPath("$.total").value((int) total));
     }
 
     @Test

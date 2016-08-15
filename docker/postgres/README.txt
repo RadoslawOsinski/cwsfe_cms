@@ -2,7 +2,7 @@
 docker rm cwsfe_cms;
 
 0. Optional: enter folder with Dockerfile
-cd 9.4
+cd 9.6
 
 1. Build postgres image in docker
 docker build -t cwsfe_cms .

@@ -1,31 +1,30 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.DaoTestsConfiguration;
 import eu.com.cwsfe.cms.model.Keystore;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.IfProfileValue;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * @author Radoslaw Osinski
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration
-@ContextConfiguration(locations = {"classpath:cwsfe-cms-dao-test.xml", "classpath:cwsfe-cms-cache-test.xml"})
+@Rollback
+@ContextConfiguration(classes = {DaoTestsConfiguration.class, KeystoresDAO.class})
 @IfProfileValue(name = "test-groups", values = {"integration-tests-local"})
 public class KeystoresDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 

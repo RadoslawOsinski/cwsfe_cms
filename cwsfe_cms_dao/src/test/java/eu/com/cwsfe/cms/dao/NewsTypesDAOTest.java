@@ -1,24 +1,25 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.DaoTestsConfiguration;
 import eu.com.cwsfe.cms.domains.NewsTypeStatus;
 import eu.com.cwsfe.cms.model.NewsType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.IfProfileValue;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration
-@ContextConfiguration(locations = {"classpath:cwsfe-cms-dao-test.xml", "classpath:cwsfe-cms-cache-test.xml"})
-@IfProfileValue(name = "test-groups", values = {"integration_tests_local"})
+@Rollback
+@ContextConfiguration(classes = {DaoTestsConfiguration.class, NewsTypesDAO.class})
+@IfProfileValue(name = "test-groups", values = {"integration-tests-local"})
 public class NewsTypesDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired

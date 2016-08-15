@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.DaoTestsConfiguration;
 import eu.com.cwsfe.cms.domains.CmsNewsImageStatus;
 import eu.com.cwsfe.cms.domains.CmsNewsStatus;
 import eu.com.cwsfe.cms.model.*;
@@ -8,10 +9,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.IfProfileValue;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import java.util.Date;
 import java.util.List;
@@ -19,8 +20,10 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration
-@ContextConfiguration(locations = {"classpath:cwsfe-cms-dao-test.xml", "classpath:cwsfe-cms-cache-test.xml"})
+@Rollback
+@ContextConfiguration(classes = {DaoTestsConfiguration.class, CmsNewsImagesDAO.class, CmsNewsDAO.class,
+        NewsTypesDAO.class, CmsFoldersDAO.class, CmsAuthorsDAO.class
+})
 @IfProfileValue(name = "test-groups", values = {"integration-tests-local"})
 public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 

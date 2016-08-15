@@ -1,23 +1,30 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.DaoTestsConfiguration;
 import eu.com.cwsfe.cms.domains.BlogPostI18nContentStatus;
 import eu.com.cwsfe.cms.domains.BlogPostStatus;
-import eu.com.cwsfe.cms.model.*;
+import eu.com.cwsfe.cms.model.BlogPost;
+import eu.com.cwsfe.cms.model.BlogPostI18nContent;
+import eu.com.cwsfe.cms.model.CmsAuthor;
+import eu.com.cwsfe.cms.model.Language;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.IfProfileValue;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration
-@ContextConfiguration(locations = {"classpath:cwsfe-cms-dao-test.xml", "classpath:cwsfe-cms-cache-test.xml"})
+@Rollback
+@ContextConfiguration(classes = {DaoTestsConfiguration.class,
+        BlogPostI18nContentsDAO.class, BlogPostsDAO.class, CmsAuthorsDAO.class, CmsLanguagesDAO.class
+})
 @IfProfileValue(name = "test-groups", values = {"integration-tests-local"})
 public class BlogPostI18nContentsDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 

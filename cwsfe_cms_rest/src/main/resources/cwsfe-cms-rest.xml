@@ -32,7 +32,6 @@
         </property>
     </bean>
 
-    <import resource="classpath*:cwsfe-cms-dao.xml"/>
-    <import resource="classpath*:cwsfe-cms-cache.xml"/>
+    <bean name="daoConfiguration" class="eu.com.cwsfe.cms.configuration.DaoConfiguration" />
 
 </beans>

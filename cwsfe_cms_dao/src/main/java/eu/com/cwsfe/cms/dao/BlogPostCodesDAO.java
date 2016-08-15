@@ -15,28 +15,28 @@ import java.util.List;
 @Repository
 public class BlogPostCodesDAO {
 
-    public static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "SELECT count(*) FROM BLOG_POST_CODE WHERE status <> 'D'";
-    public static final String COUNT_FOR_AJAX_QUERY = "SELECT count(*) FROM BLOG_POST_CODE WHERE status <> 'D'";
-    public static final String SEARCH_BY_AJAX_QUERY = "SELECT " +
+    private static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "SELECT count(*) FROM BLOG_POST_CODE WHERE status <> 'D'";
+    private static final String COUNT_FOR_AJAX_QUERY = "SELECT count(*) FROM BLOG_POST_CODE WHERE status <> 'D'";
+    private static final String SEARCH_BY_AJAX_QUERY = "SELECT " +
             " code_id, blog_post_id, code, status" +
             " FROM BLOG_POST_CODE" +
             " WHERE status <> 'D' AND blog_post_id = ?" +
             " ORDER BY code_id DESC" +
             " LIMIT ? OFFSET ?";
-    public static final String SEARCH_BY_AJAX_COUNT_QUERY = "SELECT count(*) FROM (" +
+    private static final String SEARCH_BY_AJAX_COUNT_QUERY = "SELECT count(*) FROM (" +
             "SELECT " +
             " code_id, blog_post_id, code, status" +
             " FROM BLOG_POST_CODE" +
             " WHERE status <> 'D' AND blog_post_id = ?" +
             " ORDER BY code_id DESC" +
             ") AS results";
-    public static final String CODE_FOR_POST_BY_CODE_ID_QUERY = "SELECT " +
+    private static final String CODE_FOR_POST_BY_CODE_ID_QUERY = "SELECT " +
             " code_id, blog_post_id, code, status" +
             " FROM BLOG_POST_CODE " +
             "WHERE blog_post_id = ? AND code_id = ?";
-    public static final String ADD_QUERY = "INSERT INTO BLOG_POST_CODE(code_id, blog_post_id, code, status) VALUES (?, ?, ?, 'N')";
-    public static final String UPDATE_QUERY = "UPDATE BLOG_POST_CODE SET blog_post_id = ?, code = ? WHERE code_id = ?";
-    public static final String DELETE_QUERY = "DELETE FROM BLOG_POST_CODE WHERE blog_post_id = ? AND code_id = ?";
+    private static final String ADD_QUERY = "INSERT INTO BLOG_POST_CODE(code_id, blog_post_id, code, status) VALUES (?, ?, ?, 'N')";
+    private static final String UPDATE_QUERY = "UPDATE BLOG_POST_CODE SET blog_post_id = ?, code = ? WHERE code_id = ?";
+    private static final String DELETE_QUERY = "DELETE FROM BLOG_POST_CODE WHERE blog_post_id = ? AND code_id = ?";
 
     private final JdbcTemplate jdbcTemplate;
 

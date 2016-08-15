@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
+import eu.com.cwsfe.cms.DaoTestsConfiguration;
 import eu.com.cwsfe.cms.model.CmsUser;
 import eu.com.cwsfe.cms.model.CmsUserAllowedNetAddress;
 import org.junit.Before;
@@ -8,18 +9,18 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.IfProfileValue;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration
-@ContextConfiguration(locations = {"classpath:cwsfe-cms-dao-test.xml", "classpath:cwsfe-cms-cache-test.xml"})
+@Rollback
+@ContextConfiguration(classes = {DaoTestsConfiguration.class, CmsUserAllowedNetAddressDAO.class, CmsUsersDAO.class})
 @IfProfileValue(name = "test-groups", values = {"integration-tests-local"})
 public class CmsUserAllowedNetAddressDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
@@ -29,7 +30,7 @@ public class CmsUserAllowedNetAddressDAOTest extends AbstractTransactionalJUnit4
     @Autowired
     private CmsUsersDAO userDao;
 
-    public static final CmsUser CMS_USER = new CmsUser();
+    private static final CmsUser CMS_USER = new CmsUser();
 
     @Before
     public void setUp() throws Exception {
