@@ -6,6 +6,7 @@ import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,7 +49,7 @@ class MainCmsController extends JsonController {
         return httpServletRequest.getContextPath() + "/resources-cwsfe-cms/js/cms/main/Dashboard";
     }
 
-    @RequestMapping(value = "/blogPostCommentsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/blogPostCommentsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listBlogPostComments(
             @RequestParam int iDisplayStart,

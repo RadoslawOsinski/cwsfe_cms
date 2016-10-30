@@ -8,6 +8,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -53,7 +54,7 @@ class LanguagesController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/languagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/languagesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listLanguages(
             @RequestParam int iDisplayStart,
@@ -79,7 +80,7 @@ class LanguagesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/cmsLanguagesDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/cmsLanguagesDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listCmsLanguagesForDropList(
             @RequestParam String term,
@@ -99,7 +100,7 @@ class LanguagesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addLanguage", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/addLanguage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addLanguage(
             @ModelAttribute(value = "cmsLanguage") Language cmsLanguage,
@@ -124,7 +125,7 @@ class LanguagesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteLanguage", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/deleteLanguage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteLanguage(
             @ModelAttribute(value = "cmsLanguage") Language cmsLanguage,

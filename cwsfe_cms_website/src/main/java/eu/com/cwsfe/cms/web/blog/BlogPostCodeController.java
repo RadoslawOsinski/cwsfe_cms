@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ValidationUtils;
@@ -34,7 +35,7 @@ public class BlogPostCodeController extends JsonController {
         this.blogPostCodesDAO = blogPostCodesDAO;
     }
 
-    @RequestMapping(value = "/blogPosts/blogPostCodesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/blogPosts/blogPostCodesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listBlogPostCodes(
             @RequestParam int iDisplayStart,
@@ -72,7 +73,7 @@ public class BlogPostCodeController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/blogPosts/addBlogPostCode", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/blogPosts/addBlogPostCode", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addBlogPostCode(
             @ModelAttribute(value = "blogPostCode") BlogPostCode blogPostCode,
@@ -100,7 +101,7 @@ public class BlogPostCodeController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/blogPosts/deleteBlogPostCode", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/blogPosts/deleteBlogPostCode", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String blogPostCodeDelete(
             @ModelAttribute(value = "blogPostCode") BlogPostCode blogPostCode,

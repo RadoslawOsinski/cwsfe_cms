@@ -8,6 +8,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -53,7 +54,7 @@ class NewsTypesController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/newsTypesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/newsTypesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listNewsTypes(
             @RequestParam int iDisplayStart,
@@ -78,7 +79,7 @@ class NewsTypesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/news/newsTypesDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/news/newsTypesDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listNewsTypesForDropList(
             @RequestParam String term,
@@ -97,7 +98,7 @@ class NewsTypesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addNewsType", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/addNewsType", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addNewsType(
             @ModelAttribute(value = "newsType") NewsType newsType,
@@ -118,7 +119,7 @@ class NewsTypesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteNewsType", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/deleteNewsType", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteNewsType(
             @ModelAttribute(value = "cmsNewsType") NewsType cmsNewsType,

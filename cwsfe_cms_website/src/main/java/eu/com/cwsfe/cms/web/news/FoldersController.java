@@ -8,6 +8,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -53,7 +54,7 @@ public class FoldersController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/foldersList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/foldersList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listFolders(
             @RequestParam int iDisplayStart,
@@ -79,7 +80,7 @@ public class FoldersController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/news/foldersDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/news/foldersDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listFoldersForDropList(
             @RequestParam String term,
@@ -98,7 +99,7 @@ public class FoldersController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addFolder", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/addFolder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addFolder(
             @ModelAttribute(value = "cmsFolder") CmsFolder cmsFolder,
@@ -119,7 +120,7 @@ public class FoldersController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteFolder", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/deleteFolder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteFolder(
             @ModelAttribute(value = "cmsFolder") CmsFolder cmsFolder,

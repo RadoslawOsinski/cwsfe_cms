@@ -9,6 +9,7 @@ import eu.com.cwsfe.cms.model.CmsUserAllowedNetAddress;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -57,7 +58,7 @@ class UsersNetAddressesController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/usersNetAddressesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/usersNetAddressesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listUsers(
             @RequestParam int iDisplayStart,
@@ -84,7 +85,7 @@ class UsersNetAddressesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addNetAddress", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/addNetAddress", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addNetAddress(
             @ModelAttribute(value = "cmsUserAllowedNetAddress") CmsUserAllowedNetAddress cmsUserAllowedNetAddress,
@@ -106,7 +107,7 @@ class UsersNetAddressesController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteNetAddress", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/deleteNetAddress", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteUser(
             @ModelAttribute(value = "cmsUserAllowedNetAddress") CmsUserAllowedNetAddress cmsUserAllowedNetAddress,

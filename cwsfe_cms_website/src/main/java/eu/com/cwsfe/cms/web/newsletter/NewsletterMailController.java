@@ -14,6 +14,7 @@ import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -85,7 +86,7 @@ public class NewsletterMailController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/newsletterMailsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/newsletterMailsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listNewsletterMails(
             @RequestParam int iDisplayStart,
@@ -116,7 +117,7 @@ public class NewsletterMailController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addNewsletterMail", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/addNewsletterMail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addNewsletterMail(
             @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
@@ -136,7 +137,7 @@ public class NewsletterMailController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteNewsletterMail", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/deleteNewsletterMail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteNewsletterMail(
             @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
@@ -153,7 +154,7 @@ public class NewsletterMailController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/unDeleteNewsletterMail", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/unDeleteNewsletterMail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String unDeleteNewsletterMail(
             @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
@@ -205,7 +206,7 @@ public class NewsletterMailController extends JsonController {
         return browseNewsletterMail(model, locale, newsletterMail.getId(), httpServletRequest);
     }
 
-    @RequestMapping(value = "/newsletterMails/newsletterSend", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/newsletterMails/newsletterSend", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String newsletterSend(
             @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
@@ -223,7 +224,7 @@ public class NewsletterMailController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/newsletterMails/newsletterTestSend", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/newsletterMails/newsletterTestSend", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String newsletterTestSend(
             @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,

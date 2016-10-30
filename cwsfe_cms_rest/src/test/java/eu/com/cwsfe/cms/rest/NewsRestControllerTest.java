@@ -175,7 +175,7 @@ public class NewsRestControllerTest {
 
         resultActions
                 .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.total").value(total));
     }
 

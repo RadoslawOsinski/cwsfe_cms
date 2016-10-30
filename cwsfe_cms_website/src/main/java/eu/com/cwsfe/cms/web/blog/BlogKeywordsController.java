@@ -8,6 +8,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -53,7 +54,7 @@ public class BlogKeywordsController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/blogKeywordsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/blogKeywordsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listBlogKeywords(
             @RequestParam int iDisplayStart,
@@ -78,7 +79,7 @@ public class BlogKeywordsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addBlogKeyword", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/addBlogKeyword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addBlogKeyword(
             @ModelAttribute(value = "blogKeyword") BlogKeyword blogKeyword,
@@ -99,7 +100,7 @@ public class BlogKeywordsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteBlogKeyword", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/deleteBlogKeyword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteFolder(
             @ModelAttribute(value = "blogKeyword") BlogKeyword blogKeyword,

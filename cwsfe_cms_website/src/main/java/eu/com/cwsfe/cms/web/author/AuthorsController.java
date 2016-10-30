@@ -7,6 +7,7 @@ import eu.com.cwsfe.cms.model.CmsAuthor;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -52,7 +53,7 @@ public class AuthorsController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/authorsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/authorsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listAuthors(
             @RequestParam int iDisplayStart,
@@ -79,7 +80,7 @@ public class AuthorsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/authorsDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/authorsDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listAuthorsForDropList(
             @RequestParam String term,
@@ -100,7 +101,7 @@ public class AuthorsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addAuthor", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/addAuthor", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addAuthor(
             @ModelAttribute(value = "cmsAuthor") CmsAuthor cmsAuthor,
@@ -118,7 +119,7 @@ public class AuthorsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteAuthor", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/deleteAuthor", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteAuthor(
             @ModelAttribute(value = "cmsAuthor") CmsAuthor cmsAuthor,

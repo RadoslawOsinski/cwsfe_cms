@@ -29,7 +29,7 @@ public class RestConfiguration extends WebMvcConfigurationSupport {
     public org.springframework.http.converter.json.MappingJackson2HttpMessageConverter getMappingJackson2HttpMessageConverter() {
         MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
         ArrayList<MediaType> supportedMediaTypes = new ArrayList<>();
-        supportedMediaTypes.add(new MediaType("application/json;charset=UTF-8;"));
+        supportedMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
         mappingJackson2HttpMessageConverter.setSupportedMediaTypes(supportedMediaTypes);
         return mappingJackson2HttpMessageConverter;
     }

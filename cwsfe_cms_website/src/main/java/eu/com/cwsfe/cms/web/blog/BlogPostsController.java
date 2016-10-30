@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -78,7 +79,7 @@ public class BlogPostsController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/blogPostsList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/blogPostsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listBlogPosts(
             @RequestParam int iDisplayStart,
@@ -122,7 +123,7 @@ public class BlogPostsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/blogPostKeywordAssignment", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/blogPostKeywordAssignment", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listBlogPostKeywordAssignment(
             @RequestParam long blogPostId,
@@ -143,7 +144,7 @@ public class BlogPostsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addBlogPost", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/addBlogPost", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addBlogPost(
             @ModelAttribute(value = "blogPost") BlogPost blogPost,
@@ -164,7 +165,7 @@ public class BlogPostsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteBlogPost", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/deleteBlogPost", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String delete(
             @ModelAttribute(value = "blogPost") BlogPost blogPost,
@@ -192,7 +193,7 @@ public class BlogPostsController extends JsonController {
         return "cms/blog/SingleBlogPost";
     }
 
-    @RequestMapping(value = "/blogPosts/{id}/{langId}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/blogPosts/{id}/{langId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String getBlogPostI18n(ModelMap model, @PathVariable("id") Long blogPostId, @PathVariable("langId") Long langId, Locale locale) {
         BindingResult result = new BeanPropertyBindingResult(null, "getNewsI18n");
@@ -229,7 +230,7 @@ public class BlogPostsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/blogPosts/updatePostBasicInfo", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/blogPosts/updatePostBasicInfo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updatePostBasicInfo(
             @ModelAttribute(value = "blogPost") BlogPost blogPost,
@@ -248,7 +249,7 @@ public class BlogPostsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/blogPosts/updateBlogPostI18nContent", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/blogPosts/updateBlogPostI18nContent", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updateBlogPostI18nContent(
             @ModelAttribute(value = "BlogPostI18nContent") BlogPostI18nContent blogPostI18nContent,
@@ -289,7 +290,7 @@ public class BlogPostsController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/postCategoryUpdate", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/postCategoryUpdate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String postCategoriesUpdate(
             @ModelAttribute(value = "blogKeywordAssignment") BlogKeywordAssignment blogKeywordAssignment,

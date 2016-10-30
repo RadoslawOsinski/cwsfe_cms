@@ -79,7 +79,7 @@ public class NewsImagesRestControllerTest {
 
         resultActions
                 .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andDo(print())
                 .andExpect(jsonPath("$.thumbnailImage.id").value((int) thumbnailId))
                 .andExpect(jsonPath("$.thumbnailImage.fileName").value(thumbnailFileName))

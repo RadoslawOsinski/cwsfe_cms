@@ -10,6 +10,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -59,7 +60,7 @@ public class CmsTextI18nController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/cmsTextI18nList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/cmsTextI18nList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listCmsTextI18n(
             @RequestParam int iDisplayStart,
@@ -87,7 +88,7 @@ public class CmsTextI18nController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/addCmsTextI18n", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/addCmsTextI18n", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addTextI18n(
             @ModelAttribute(value = "cmsTextI18n") CmsTextI18n cmsTextI18n,
@@ -111,7 +112,7 @@ public class CmsTextI18nController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteCmsTextI18n", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/deleteCmsTextI18n", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteTextI18n(
             @ModelAttribute(value = "cmsTextI18n") CmsTextI18n cmsTextI18n,

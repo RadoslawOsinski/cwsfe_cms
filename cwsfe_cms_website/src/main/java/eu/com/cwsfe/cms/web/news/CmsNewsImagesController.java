@@ -9,6 +9,7 @@ import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ValidationUtils;
@@ -43,7 +44,7 @@ public class CmsNewsImagesController extends JsonController {
         this.cmsNewsImagesDAO = cmsNewsImagesDAO;
     }
 
-    @RequestMapping(value = "/news/cmsNewsImagesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/news/cmsNewsImagesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String list(
             @RequestParam int iDisplayStart,
@@ -109,7 +110,7 @@ public class CmsNewsImagesController extends JsonController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/news/deleteCmsNewsImage", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/news/deleteCmsNewsImage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteCmsNewsImage(
             @ModelAttribute(value = "cmsNewsImage") CmsNewsImage cmsNewsImage,

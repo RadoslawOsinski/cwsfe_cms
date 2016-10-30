@@ -7,6 +7,7 @@ import eu.com.cwsfe.cms.model.CmsTextI18nCategory;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -52,7 +53,7 @@ public class CmsTextI18nCategoryController extends JsonController {
         return breadcrumbs;
     }
 
-    @RequestMapping(value = "/cmsTextI18nCategoriesList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/cmsTextI18nCategoriesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listCmsTextI18nCategories(
             @RequestParam int iDisplayStart,
@@ -78,7 +79,7 @@ public class CmsTextI18nCategoryController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/cmsTextI18nCategoryDropList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/cmsTextI18nCategoryDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listCmsLanguagesForDropList(
             @RequestParam String term,
@@ -98,7 +99,7 @@ public class CmsTextI18nCategoryController extends JsonController {
     }
 
 
-    @RequestMapping(value = "/addCmsTextI18nCategory", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/addCmsTextI18nCategory", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addTextI18nCategory(
             @ModelAttribute(value = "cmsTextI18nCategory") CmsTextI18nCategory cmsTextI18nCategory,
@@ -115,7 +116,7 @@ public class CmsTextI18nCategoryController extends JsonController {
         return responseDetailsJson.toString();
     }
 
-    @RequestMapping(value = "/deleteCmsTextI18nCategory", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/deleteCmsTextI18nCategory", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteTextI18nCategory(
             @ModelAttribute(value = "cmsTextI18nCategory") CmsTextI18nCategory cmsTextI18nCategory,
