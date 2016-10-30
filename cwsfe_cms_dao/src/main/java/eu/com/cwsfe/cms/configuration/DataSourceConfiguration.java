@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.configuration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +19,8 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfiguration {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataSourceConfiguration.class);
+
     private Environment environment;
 
     @Autowired
@@ -29,11 +33,14 @@ public class DataSourceConfiguration {
      * @return data source
      */
     @Profile("wildfly")
-    @Bean
+    @Bean(name = "dataSource", value = "dataSource")
     public DataSource getWildflyDataSource() {
+        LOGGER.info("Attaching to wildfly data source");
         JndiObjectFactoryBean jndiObjectFactoryBean = new JndiObjectFactoryBean();
         jndiObjectFactoryBean.setJndiName("jdbc/cwsfe_cms");
-        return (DataSource) jndiObjectFactoryBean.getObject();
+        DataSource dataSource = (DataSource) jndiObjectFactoryBean.getObject();
+        LOGGER.info("Wildfly data source attachment success status: {}", dataSource != null);
+        return dataSource;
     }
 
     /**
@@ -41,24 +48,28 @@ public class DataSourceConfiguration {
      * @return data source
      */
     @Profile("tomcat")
-    @Bean
+    @Bean(name = "dataSource", value = "dataSource")
     public DataSource getTomcatDataSource() {
+        LOGGER.info("Attaching to tomcat data source");
         JndiObjectFactoryBean jndiObjectFactoryBean = new JndiObjectFactoryBean();
         jndiObjectFactoryBean.setJndiName("java:comp/env/jdbc/cwsfe_cms");
-        return (DataSource) jndiObjectFactoryBean.getObject();
+        DataSource dataSource = (DataSource) jndiObjectFactoryBean.getObject();
+        LOGGER.info("Tomcat data source attachment success status: {}", dataSource != null);
+        return dataSource;
     }
 
     @Profile("tomcat-aws")
-    @Bean
     public PropertyPlaceholderConfigurer getAwsPropertyPlaceholderConfigurer() {
+        LOGGER.info("Turning on aws environment property placeholders");
         PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
         propertyPlaceholderConfigurer.setSearchSystemEnvironment(true);
         return propertyPlaceholderConfigurer;
     }
 
     @Profile("tomcat-aws")
-    @Bean
+    @Bean(name = "dataSource", value = "dataSource")
     public DataSource getTomcatAwsDataSource() {
+        LOGGER.info("Attaching to tomcat aws data source");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(environment.getProperty("dataSource.driverClassName"));
         dataSource.setUrl(environment.getProperty("dataSource.url"));
