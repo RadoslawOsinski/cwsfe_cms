@@ -1,9 +1,10 @@
-package integration.page.roles;
+package integration.page.users;
 
 import integration.page.layout.MenuPage;
 import integration.page.login.LoginPage;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -13,19 +14,32 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Radosław Osiński
  */
-public class RolesPageTest {
+@Ignore("Automate this test with profile usage on jenkins+gradle+sonarqube")
+public class UsersListPageTest {
 
     private static WebDriver driver;
 
     private static MenuPage menuPage;
 
     @Test
-    public void shouldOpenRolesPage() {
+    public void shouldOpenUserListPage() {
         //when
-        RolesPage rolesPage = menuPage.goToRolesPage();
+        UsersListPage userListPage = menuPage.goToUsersListPage();
 
         //then
-        assertTrue(rolesPage.isOpened());
+        assertTrue(userListPage.isOpened());
+    }
+
+    @Test
+    public void shouldAddUser() {
+        //given
+        UsersListPage userListPage = menuPage.goToUsersListPage();
+
+        //when
+        userListPage = userListPage.addUser();
+
+        //then
+        assertTrue(userListPage.isUserAdded());
     }
 
     @BeforeClass

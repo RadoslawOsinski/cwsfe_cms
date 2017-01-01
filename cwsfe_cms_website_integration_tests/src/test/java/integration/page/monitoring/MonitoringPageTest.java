@@ -1,43 +1,33 @@
-package integration.page.users;
+package integration.page.monitoring;
 
-import integration.page.layout.MenuPage;
 import integration.page.login.LoginPage;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import integration.page.layout.MenuPage;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Radosław Osiński
  */
-public class UsersListPageTest {
+@Ignore("Automate this test with profile usage on jenkins+gradle+sonarqube")
+public class MonitoringPageTest {
 
     private static WebDriver driver;
 
     private static MenuPage menuPage;
 
     @Test
-    public void shouldOpenUserListPage() {
+    public void shouldOpenMonitoringPage() {
         //when
-        UsersListPage userListPage = menuPage.goToUsersListPage();
+        MonitoringPage monitoringPage = menuPage.goToMonitoringPage();
 
         //then
-        assertTrue(userListPage.isOpened());
-    }
-
-    @Test
-    public void shouldAddUser() {
-        //given
-        UsersListPage userListPage = menuPage.goToUsersListPage();
-
-        //when
-        userListPage = userListPage.addUser();
-
-        //then
-        assertTrue(userListPage.isUserAdded());
+        assertTrue(monitoringPage.isOpened());
     }
 
     @BeforeClass

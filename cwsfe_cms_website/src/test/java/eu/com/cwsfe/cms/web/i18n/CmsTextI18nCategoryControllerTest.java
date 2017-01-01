@@ -4,6 +4,7 @@ import eu.com.cwsfe.cms.dao.CmsTextI18nCategoryDAO;
 import eu.com.cwsfe.cms.domains.CmsTextI18nCategoryStatus;
 import eu.com.cwsfe.cms.model.CmsTextI18nCategory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -28,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:cwsfe-cms-controller-test.xml"})
 @WebAppConfiguration
+@Ignore("Automate this test with profile usage on jenkins+gradle+sonarqube")
 public class CmsTextI18nCategoryControllerTest {
 
     private MockMvc mockMvc;

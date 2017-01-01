@@ -11,6 +11,7 @@ buildscript {
         classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.1.6'
         classpath 'gradle.plugin.com.boxfuse.client:flyway-release:4.0.3'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1'
     }
 }
 
@@ -18,6 +19,7 @@ subprojects {
     apply plugin: 'org.flywaydb.flyway'
     apply plugin: 'info.solidsoft.pitest'
     apply plugin: 'com.github.ben-manes.versions'
+    apply plugin: 'org.sonarqube'
     pitest {
         threads = 4
         if (project.name in ['module-without-any-test']) {
@@ -30,5 +32,17 @@ subprojects {
         url = System.properties['cwsfe_cms.jdbc.url'];
         user = System.properties['cwsfe_cms.jdbc.user'];
         password = System.properties['cwsfe_cms.jdbc.password'];
+    }
+    sonarqube {
+        properties {
+            property 'sonar.host.url', System.properties['cwsfe_cms.sonar.host.url']
+            property 'sonar.sourceEncoding', 'UTF-8'
+            property 'sonar.login', System.properties['cwsfe_cms.sonar.login']
+            property 'sonar.password', System.properties['cwsfe_cms.sonar.password']
+
+            //for code coverage in integration tests
+            property 'spring.profiles.test-groups', 'integration-tests-local'
+            property 'spring.profiles.active', 'tomcat'
+        }
     }
 }

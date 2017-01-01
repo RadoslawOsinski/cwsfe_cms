@@ -7,6 +7,7 @@ import eu.com.cwsfe.cms.model.CmsTextI18n;
 import eu.com.cwsfe.cms.model.CmsTextI18nCategory;
 import eu.com.cwsfe.cms.model.Language;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -33,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:cwsfe-cms-controller-test.xml"})
 @WebAppConfiguration
+@Ignore("Automate this test with profile usage on jenkins+gradle+sonarqube")
 public class CmsTextI18nControllerTest {
 
     private MockMvc mockMvc;
@@ -52,7 +54,7 @@ public class CmsTextI18nControllerTest {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(cmsTextI18nController).build();
     }
-    
+
     @Test
     public void testDefaultView() throws Exception {
         mockMvc.perform(get("/cmsTextI18n"))

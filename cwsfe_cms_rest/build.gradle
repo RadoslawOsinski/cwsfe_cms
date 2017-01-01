@@ -59,3 +59,13 @@ jacocoTestReport {
     description = "Generate Jacoco coverage reports after running tests."
     additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
 }
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", 'cwsfe_cms_rest'
+        property "sonar.projectName", 'CWSFE cms rest'
+        property "sonar.sources", 'src/main'
+        property "sonar.tests", 'src/test'
+        property "sonar.sourceEncoding", 'UTF-8'
+    }
+}

@@ -4,6 +4,7 @@ import eu.com.cwsfe.cms.dao.BlogPostCommentsDAO;
 import eu.com.cwsfe.cms.domains.BlogPostCommentStatus;
 import eu.com.cwsfe.cms.model.BlogPostComment;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -29,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:cwsfe-cms-controller-test.xml"})
 @WebAppConfiguration
+@Ignore("Automate this test with profile usage on jenkins+gradle+sonarqube")
 public class MainCmsControllerTest {
 
     private MockMvc mockMvc;

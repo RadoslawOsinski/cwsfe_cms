@@ -1,7 +1,7 @@
 buildscript {
     repositories {
-        mavenLocal();
-        mavenCentral();
+        mavenLocal()
+        mavenCentral()
     }
 }
 
@@ -16,8 +16,8 @@ group = "eu.com.cwsfe.cms"
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
-    mavenLocal();
-    mavenCentral();
+    mavenLocal()
+    mavenCentral()
 }
 
 compileJava {
@@ -44,7 +44,7 @@ dependencies {
     testCompile group: 'org.springframework', name: 'spring-test', version: '4.3.3.RELEASE'
 }
 
-jar.archiveName = "CWSFE_CMS_DAO-" + version + ".jar";
+jar.archiveName = "CWSFE_CMS_DAO-" + version + ".jar"
 
 task testJar(type: Jar, dependsOn: testClasses) {
     baseName = "TEST-${project.archivesBaseName}".toUpperCase()
@@ -53,7 +53,8 @@ task testJar(type: Jar, dependsOn: testClasses) {
 
 task integration_tests_local(type: Test) {
 //    systemProperty "spring.profiles.active", "integration-tests-local";
-    systemProperty "spring.profiles.test-groups", "integration-tests-local";
+    systemProperty "spring.profiles.test-groups", "integration-tests-local"
+    systemProperty "spring.profiles.active", "tomcat"
 }
 
 configurations {
@@ -68,4 +69,14 @@ jacocoTestReport {
     group = "Reporting"
     description = "Generate Jacoco coverage reports after running tests."
     additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+}
+
+sonarqube {
+    properties {
+        property 'sonar.projectKey', 'cwsfe_cms_dao'
+        property 'sonar.projectName', 'CWSFE cms dao'
+        property 'sonar.sources', 'src/main'
+        property 'sonar.tests', 'src/test'
+        property 'sonar.sourceEncoding', 'UTF-8'
+    }
 }

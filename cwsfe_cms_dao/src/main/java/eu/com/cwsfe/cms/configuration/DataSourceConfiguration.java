@@ -11,6 +11,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jndi.JndiObjectFactoryBean;
 
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 /**
@@ -37,8 +38,14 @@ public class DataSourceConfiguration {
     public DataSource getWildflyDataSource() {
         LOGGER.info("Attaching to wildfly data source");
         JndiObjectFactoryBean jndiObjectFactoryBean = new JndiObjectFactoryBean();
-        jndiObjectFactoryBean.setJndiName("jdbc/cwsfe_cms");
-        DataSource dataSource = (DataSource) jndiObjectFactoryBean.getObject();
+        String jndiName = "jdbc/cwsfe_cms";
+        jndiObjectFactoryBean.setJndiName(jndiName);
+        DataSource dataSource = null;
+        try {
+            dataSource = (DataSource) jndiObjectFactoryBean.getJndiTemplate().getContext().lookup(jndiName);
+        } catch (NamingException e) {
+            LOGGER.error("Data source problem with with jndiName: {}", jndiName);
+        }
         LOGGER.info("Wildfly data source attachment success status: {}", dataSource != null);
         return dataSource;
     }

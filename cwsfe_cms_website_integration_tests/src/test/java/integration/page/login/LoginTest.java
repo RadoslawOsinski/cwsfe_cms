@@ -3,6 +3,7 @@ package integration.page.login;
 import integration.page.layout.MainPage;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -12,6 +13,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Radosław Osiński
  */
+@Ignore("Automate this test with profile usage on jenkins+gradle+sonarqube")
 public class LoginTest {
 
     private static WebDriver driver;

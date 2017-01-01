@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        mavenLocal();
+        mavenCentral();
+    }
+}
+
+apply plugin: 'maven'
+apply plugin: 'java'
+apply plugin: 'base'
+apply plugin: 'jacoco'
+
+version = '3.0.1'
+group = "eu.com.cwsfe.cms"
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenLocal();
+    mavenCentral();
+}
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+    options.encoding = 'UTF-8'
+    options.compilerArgs = ['-Xlint', '-Xlint:-serial', '-Xlint:-path']
+}
+
+configurations {
+    tomcatLibs
+}
+
+dependencies {
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.0.1'
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '3.0.1'
+}
+
+
+jacocoTestReport {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports after running tests."
+    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", 'cwsfe_cms_website_integration_tests'
+        property "sonar.projectName", 'CWSFE cms website integration tests'
+        property "sonar.sources", 'src/main'
+        property "sonar.tests", 'src/test'
+        property "sonar.sourceEncoding", 'UTF-8'
+    }
+}
