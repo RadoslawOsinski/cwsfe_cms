@@ -5,9 +5,12 @@
     stage('Init gradle if not available') {
         sh './gradlew wrapper'
     }
-    stage('Build and Test') {
+    stage('Build') {
         sh './gradlew war'
         sh './gradlew createTomcatWar'
+    }
+    stage('Integration testing') {
+        sh './gradlew integration_tests_local'
     }
     //stage('SonarQube analysis') {
         // requires SonarQube Scanner 2.8+
