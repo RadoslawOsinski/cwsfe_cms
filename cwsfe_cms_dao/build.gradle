@@ -52,9 +52,9 @@ task testJar(type: Jar, dependsOn: testClasses) {
 }
 
 task integration_tests_local(type: Test) {
-//    systemProperty "spring.profiles.active", "integration-tests-local";
-    systemProperty "spring.profiles.test-groups", "integration-tests-local"
-    systemProperty "spring.profiles.active", "tomcat"
+//    systemProperty "spring.profiles.test-groups", "integration-tests-local"
+//    systemProperty "spring.profiles.active", "tomcat";
+    systemProperty "test-groups", "integration-tests-local";
 }
 
 configurations {

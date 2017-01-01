@@ -10,20 +10,11 @@
         sh './gradlew --no-daemon createTomcatWar'
     }
     stage('Integration testing') {
-        sh './gradlew --no-daemon integration_tests_local'
+        //sh './gradlew --no-daemon integration_tests_local'
     }
-    //stage('SonarQube analysis') {
-        // requires SonarQube Scanner 2.8+
-        //def scannerHome = tool 'SonarQube Scanner 2.8';
-        //withSonarQubeEnv('CWSFE_CMS_SONAR') {
-        //            sh "${scannerHome}/bin/sonar-scanner"
-        //}
-        //withSonarQubeEnv('CWSFE_CMS_SONAR') {
-            // requires SonarQube Scanner for Gradle 2.1+
-          //  sh './gradlew sonarqube'
-        //}
-    //
-    //}
+    stage('SonarQube analysis') {
+        sh './gradlew --no-daemon sonarqube'
+    }
     stage('Archive results') {
         archiveArtifacts artifacts: '**/build/libs/*.jar,**/build/libs/*.war', fingerprint: true
     }
