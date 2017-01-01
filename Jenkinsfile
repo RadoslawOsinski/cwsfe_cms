@@ -1,4 +1,7 @@
  node {
+    stage('Init gradle if not available') {
+        sh './gradlew wrapper'
+    }
     stage('Build and Test') {
         sh './gradlew war'
         sh './gradlew createTomcatWar'
