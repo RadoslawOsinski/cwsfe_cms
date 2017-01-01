@@ -1,4 +1,7 @@
  node {
+
+    checkout scm
+
     stage('Init gradle if not available') {
         sh './gradlew wrapper'
     }
