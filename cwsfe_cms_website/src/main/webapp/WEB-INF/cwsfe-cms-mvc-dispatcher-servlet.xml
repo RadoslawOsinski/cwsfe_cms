@@ -11,7 +11,11 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="eu.com.cwsfe.cms"/>
+    <context:component-scan base-package="eu.com.cwsfe.cms">
+        <context:exclude-filter type="assignable" expression="eu.com.cwsfe.cms.configuration.DataSourceConfiguration"/>
+        <context:exclude-filter type="assignable" expression="eu.com.cwsfe.cms.configuration.DaoConfiguration"/>
+    </context:component-scan>
+
     <context:annotation-config/>
     <mvc:annotation-driven>
         <!-- register custom converter that returns UTF-8 encoded response-body by defualt -->
