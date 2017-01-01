@@ -3,14 +3,14 @@
     checkout scm
 
     stage('Init gradle if not available') {
-        sh './gradlew wrapper'
+        sh './gradlew --no-daemon wrapper'
     }
     stage('Build') {
-        sh './gradlew war'
-        sh './gradlew createTomcatWar'
+        sh './gradlew --no-daemon war'
+        sh './gradlew --no-daemon createTomcatWar'
     }
     stage('Integration testing') {
-        sh './gradlew integration_tests_local'
+        sh './gradlew --no-daemon integration_tests_local'
     }
     //stage('SonarQube analysis') {
         // requires SonarQube Scanner 2.8+
