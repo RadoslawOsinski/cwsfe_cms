@@ -2,6 +2,9 @@
 
     checkout scm
 
+    //Properties for gradle are stored in ($JENKINS_HOME directory, cd ~/):
+    //----->  /var/lib/jenkins/.gradle/gradle.properties
+
     stage('Init gradle if not available') {
         sh './gradlew --no-daemon wrapper'
     }
