@@ -26,8 +26,8 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Rollback
 @ContextConfiguration(classes = {DaoTestsConfiguration.class, BlogPostCommentsDAO.class,
-        BlogPostsDAO.class,
-        BlogPostI18nContentsDAO.class, CmsAuthorsDAO.class, CmsLanguagesDAO.class
+    BlogPostsDAO.class,
+    BlogPostI18nContentsDAO.class, CmsAuthorsDAO.class, CmsLanguagesDAO.class
 })
 @IfProfileValue(name = "test-groups", values = {"integration-tests-local"})
 public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringContextTests {

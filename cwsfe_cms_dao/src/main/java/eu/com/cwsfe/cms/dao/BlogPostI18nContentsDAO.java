@@ -21,10 +21,10 @@ public class BlogPostI18nContentsDAO {
 
     public BlogPostI18nContent get(Long id) {
         String query =
-                "SELECT " +
-                        " id, post_id, language_id, post_title, post_shortcut, post_description, status" +
-                        " FROM BLOG_POST_I18N_CONTENTS " +
-                        "WHERE id = ?";
+            "SELECT " +
+                " id, post_id, language_id, post_title, post_shortcut, post_description, status" +
+                " FROM BLOG_POST_I18N_CONTENTS " +
+                "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPostI18nContent(resultSet));
@@ -47,10 +47,10 @@ public class BlogPostI18nContentsDAO {
         dbParams[0] = postId;
         dbParams[1] = languageId;
         String query =
-                "SELECT " +
-                        " id, post_id, language_id, post_title, post_shortcut, post_description, status" +
-                        " FROM BLOG_POST_I18N_CONTENTS " +
-                        "WHERE post_id = ? and language_id = ?";
+            "SELECT " +
+                " id, post_id, language_id, post_title, post_shortcut, post_description, status" +
+                " FROM BLOG_POST_I18N_CONTENTS " +
+                "WHERE post_id = ? and language_id = ?";
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPostI18nContent(resultSet));
     }
 
@@ -64,7 +64,7 @@ public class BlogPostI18nContentsDAO {
         dbParams[4] = blogPostI18nContent.getPostShortcut();
         dbParams[5] = blogPostI18nContent.getPostDescription();
         jdbcTemplate.update("INSERT INTO BLOG_POST_I18N_CONTENTS(id, post_id, language_id, post_title, post_shortcut, post_description, status)" +
-                " VALUES (?, ?, ?, ?, ?, ?, 'H')", dbParams);
+            " VALUES (?, ?, ?, ?, ?, ?, 'H')", dbParams);
         return id;
     }
 

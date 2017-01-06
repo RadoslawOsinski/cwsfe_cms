@@ -10,7 +10,7 @@
             </encoder>
         </appender>
         <logger name="testLogger" level="info">
-            <appender-ref ref="STDOUT" />
+            <appender-ref ref="STDOUT"/>
         </logger>
     </configuration>
 

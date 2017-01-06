@@ -29,11 +29,11 @@ public class CmsLanguagesDAO {
 
     public List<Language> listAll() {
         String query =
-                "SELECT " +
-                        COLUMNS +
-                        "FROM CMS_LANGUAGES " +
-                        " where status = 'N'" +
-                        "order by code";
+            "SELECT " +
+                COLUMNS +
+                "FROM CMS_LANGUAGES " +
+                " where status = 'N'" +
+                "order by code";
         return jdbcTemplate.query(query, (resultSet, rowNum) -> mapLang(resultSet));
     }
 
@@ -51,14 +51,14 @@ public class CmsLanguagesDAO {
         dbParams[0] = limit;
         dbParams[1] = offset;
         String query =
-                "SELECT " +
-                        COLUMNS +
-                        "FROM CMS_LANGUAGES " +
-                        " where status = 'N'" +
-                        " order by code" +
-                        " limit ? offset ?";
+            "SELECT " +
+                COLUMNS +
+                "FROM CMS_LANGUAGES " +
+                " where status = 'N'" +
+                " order by code" +
+                " limit ? offset ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapLang(resultSet));
+            mapLang(resultSet));
     }
 
     public List<Language> listForDropList(String term, int limit) {
@@ -67,41 +67,41 @@ public class CmsLanguagesDAO {
         dbParams[1] = '%' + term + '%';
         dbParams[2] = limit;
         String query =
-                "SELECT " +
-                        COLUMNS +
-                        " FROM CMS_LANGUAGES " +
-                        " where status = 'N' and (lower(code) like lower(?) or lower(name) like lower(?)) " +
-                        " order by code, name" +
-                        " limit ?";
+            "SELECT " +
+                COLUMNS +
+                " FROM CMS_LANGUAGES " +
+                " where status = 'N' and (lower(code) like lower(?) or lower(name) like lower(?)) " +
+                " order by code, name" +
+                " limit ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapLang(resultSet));
+            mapLang(resultSet));
     }
 
     public Language getById(Long id) {
         String query =
-                "SELECT " + COLUMNS + "FROM CMS_LANGUAGES WHERE id = ?";
+            "SELECT " + COLUMNS + "FROM CMS_LANGUAGES WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                    mapLang(resultSet));
+            mapLang(resultSet));
     }
 
     public Language getByCode(String code) {
         String query =
-                "SELECT " + COLUMNS + "FROM CMS_LANGUAGES WHERE code = ?";
+            "SELECT " + COLUMNS + "FROM CMS_LANGUAGES WHERE code = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = code;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapLang(resultSet));
+            mapLang(resultSet));
     }
 
     public Language getByCodeIgnoreCase(String code) {
         String query =
-                "SELECT " + COLUMNS + "FROM CMS_LANGUAGES WHERE lower(code) = lower(?)";
+            "SELECT " + COLUMNS + "FROM CMS_LANGUAGES WHERE lower(code) = lower(?)";
         Object[] dbParams = new Object[1];
         dbParams[0] = code;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapLang(resultSet));
+            mapLang(resultSet));
     }
 
     public Long add(Language lang) {
@@ -111,8 +111,8 @@ public class CmsLanguagesDAO {
         dbParams[1] = lang.getCode();
         dbParams[2] = lang.getName();
         jdbcTemplate.update(
-                "INSERT INTO CMS_LANGUAGES(id, code, name, status) VALUES (?, ?, ?, 'N')",
-                dbParams
+            "INSERT INTO CMS_LANGUAGES(id, code, name, status) VALUES (?, ?, ?, 'N')",
+            dbParams
         );
         return id;
     }
@@ -123,8 +123,8 @@ public class CmsLanguagesDAO {
         dbParams[1] = lang.getName();
         dbParams[2] = lang.getId();
         jdbcTemplate.update(
-                "UPDATE CMS_LANGUAGES SET code = ?, name = ? WHERE id = ?",
-                dbParams
+            "UPDATE CMS_LANGUAGES SET code = ?, name = ? WHERE id = ?",
+            dbParams
         );
     }
 
@@ -132,8 +132,8 @@ public class CmsLanguagesDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = lang.getId();
         jdbcTemplate.update(
-                "update CMS_LANGUAGES set status = 'D' where id = ?",
-                dbParams
+            "update CMS_LANGUAGES set status = 'D' where id = ?",
+            dbParams
         );
     }
 
@@ -141,8 +141,8 @@ public class CmsLanguagesDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = lang.getId();
         jdbcTemplate.update(
-                "update CMS_LANGUAGES set status = 'N' where id = ?",
-                dbParams
+            "update CMS_LANGUAGES set status = 'N' where id = ?",
+            dbParams
         );
     }
 

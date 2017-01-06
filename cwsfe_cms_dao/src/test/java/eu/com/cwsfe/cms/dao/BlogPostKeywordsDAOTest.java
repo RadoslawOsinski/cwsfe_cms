@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = {DaoTestsConfiguration.class, BlogPostKeywordsDAO.class, BlogPostsDAO.class, BlogKeywordsDAO.class, CmsAuthorsDAO.class})
 @IfProfileValue(name = "test-groups", values = {"integration-tests-local"})
 public class BlogPostKeywordsDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
-    
+
     @Autowired
     private BlogPostKeywordsDAO dao;
 

@@ -21,8 +21,8 @@ public class CmsUserRolesDAO {
 
     private CmsUserRole mapCmsUserRole(ResultSet resultSet) throws SQLException {
         return new CmsUserRole(
-                resultSet.getLong("cms_user_id"),
-                resultSet.getLong("role_id")
+            resultSet.getLong("cms_user_id"),
+            resultSet.getLong("role_id")
         );
     }
 
@@ -30,13 +30,13 @@ public class CmsUserRolesDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = userId;
         String query =
-                "SELECT " +
-                        " cms_user_id, role_id " +
-                        " FROM CMS_USER_ROLES " +
-                        " where cms_user_id = ?" +
-                        " order by role_id";
+            "SELECT " +
+                " cms_user_id, role_id " +
+                " FROM CMS_USER_ROLES " +
+                " where cms_user_id = ?" +
+                " order by role_id";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapCmsUserRole(resultSet));
+            mapCmsUserRole(resultSet));
     }
 
     public void add(CmsUserRole cmsUserRole) {

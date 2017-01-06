@@ -31,12 +31,12 @@ public class BlogPostCommentsDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = blogPostI18nContentId;
         String query =
-                "select" +
-                        "  id, parent_comment_id, blog_post_i18n_content_id, comment, user_name, email, status, created" +
-                        "  from CMS_BLOG_POST_COMMENTS" +
-                        "  WHERE" +
-                        "  status = 'P' and blog_post_i18n_content_id = ?" +
-                        " ORDER BY created";
+            "select" +
+                "  id, parent_comment_id, blog_post_i18n_content_id, comment, user_name, email, status, created" +
+                "  from CMS_BLOG_POST_COMMENTS" +
+                "  WHERE" +
+                "  status = 'P' and blog_post_i18n_content_id = ?" +
+                " ORDER BY created";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) -> mapBlogPostComment(resultSet));
     }
 
@@ -55,7 +55,7 @@ public class BlogPostCommentsDAO {
     }
 
     public List<BlogPostComment> searchByAjax(
-            int iDisplayStart, int iDisplayLength
+        int iDisplayStart, int iDisplayLength
     ) {
         int numberOfSearchParams = 0;
         List<Object> additionalParams = new ArrayList<>(5);
@@ -68,22 +68,22 @@ public class BlogPostCommentsDAO {
             dbParams[i] = additionalParams.get(i);
         }
         String query =
-                "select" +
-                        "  id, parent_comment_id, blog_post_i18n_content_id, comment, user_name, email, status, created" +
-                        "  from CMS_BLOG_POST_COMMENTS" +
-                        " ORDER BY created desc" +
-                        " limit ? offset ?";
+            "select" +
+                "  id, parent_comment_id, blog_post_i18n_content_id, comment, user_name, email, status, created" +
+                "  from CMS_BLOG_POST_COMMENTS" +
+                " ORDER BY created desc" +
+                " limit ? offset ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) -> mapBlogPostComment(resultSet));
     }
 
     public int searchByAjaxCount() {
         String query =
-                "select count(*) from (" +
-                        "select" +
-                        "  id, parent_comment_id, blog_post_i18n_content_id, comment, user_name, email, status, created" +
-                        "  from CMS_BLOG_POST_COMMENTS" +
-                        " ORDER BY created desc" +
-                        ") as results";
+            "select count(*) from (" +
+                "select" +
+                "  id, parent_comment_id, blog_post_i18n_content_id, comment, user_name, email, status, created" +
+                "  from CMS_BLOG_POST_COMMENTS" +
+                " ORDER BY created desc" +
+                ") as results";
         return jdbcTemplate.queryForObject(query, Integer.class);
     }
 
@@ -91,10 +91,10 @@ public class BlogPostCommentsDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         String query =
-                "SELECT " +
-                        " id, parent_comment_id, blog_post_i18n_content_id, comment, user_name, email, status, created" +
-                        " FROM CMS_BLOG_POST_COMMENTS " +
-                        "WHERE id = ?";
+            "SELECT " +
+                " id, parent_comment_id, blog_post_i18n_content_id, comment, user_name, email, status, created" +
+                " FROM CMS_BLOG_POST_COMMENTS " +
+                "WHERE id = ?";
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPostComment(resultSet));
     }
 
@@ -113,8 +113,8 @@ public class BlogPostCommentsDAO {
         dbParams[6] = "N";
         dbParams[7] = blogPostComment.getCreated();
         jdbcTemplate.update("INSERT INTO CMS_BLOG_POST_COMMENTS(" +
-                "id, parent_comment_id, blog_post_i18n_content_id, comment, user_name, email, status, created" +
-                ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)", dbParams);
+            "id, parent_comment_id, blog_post_i18n_content_id, comment, user_name, email, status, created" +
+            ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)", dbParams);
         return id;
     }
 

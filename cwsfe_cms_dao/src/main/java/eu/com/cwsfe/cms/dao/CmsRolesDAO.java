@@ -27,9 +27,9 @@ public class CmsRolesDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = userId;
         String query = "" +
-                "SELECT ID, ROLE_CODE, ROLE_NAME " +
-                "FROM CMS_ROLES cr, cms_user_roles cur " +
-                "WHERE cr.id = cur.role_id and cur.cms_user_id = ?";
+            "SELECT ID, ROLE_CODE, ROLE_NAME " +
+            "FROM CMS_ROLES cr, cms_user_roles cur " +
+            "WHERE cr.id = cur.role_id and cur.cms_user_id = ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) -> mapCmsRole(resultSet));
     }
 
@@ -48,12 +48,12 @@ public class CmsRolesDAO {
 
     public List<CmsRole> list() {
         String query =
-                "SELECT " +
-                        " ID, ROLE_CODE, ROLE_NAME " +
-                        " FROM CMS_ROLES " +
-                        " order by role_name";
+            "SELECT " +
+                " ID, ROLE_CODE, ROLE_NAME " +
+                " FROM CMS_ROLES " +
+                " order by role_name";
         return jdbcTemplate.query(query, (resultSet, rowNum) ->
-                mapCmsRole(resultSet));
+            mapCmsRole(resultSet));
     }
 
     public List<CmsRole> listAjax(int offset, int limit) {
@@ -61,13 +61,13 @@ public class CmsRolesDAO {
         dbParams[0] = limit;
         dbParams[1] = offset;
         String query =
-                "SELECT " +
-                        " ID, ROLE_CODE, ROLE_NAME " +
-                        " FROM CMS_ROLES " +
-                        " order by role_name" +
-                        " limit ? offset ?";
+            "SELECT " +
+                " ID, ROLE_CODE, ROLE_NAME " +
+                " FROM CMS_ROLES " +
+                " order by role_name" +
+                " limit ? offset ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapCmsRole(resultSet));
+            mapCmsRole(resultSet));
     }
 
     public List<CmsRole> listRolesForDropList(String term, int limit) {
@@ -75,40 +75,40 @@ public class CmsRolesDAO {
         dbParams[0] = '%' + term + '%';
         dbParams[1] = limit;
         String query =
-                "SELECT " +
-                        " id, ID, ROLE_CODE, ROLE_NAME " +
-                        " FROM CMS_ROLES " +
-                        " where lower(role_name) like lower(?) " +
-                        " order by role_name" +
-                        " limit ?";
+            "SELECT " +
+                " id, ID, ROLE_CODE, ROLE_NAME " +
+                " FROM CMS_ROLES " +
+                " where lower(role_name) like lower(?) " +
+                " order by role_name" +
+                " limit ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapCmsRole(resultSet));
+            mapCmsRole(resultSet));
     }
 
-    @Cacheable(value="cmsRoleById")
+    @Cacheable(value = "cmsRoleById")
     public CmsRole get(Long id) {
         String query =
-                "SELECT " +
-                        " ID, ROLE_CODE, ROLE_NAME" +
-                        " FROM CMS_ROLES " +
-                        "WHERE id = ?";
+            "SELECT " +
+                " ID, ROLE_CODE, ROLE_NAME" +
+                " FROM CMS_ROLES " +
+                "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapCmsRole(resultSet));
+            mapCmsRole(resultSet));
     }
 
-    @Cacheable(value="cmsRoleByCode")
+    @Cacheable(value = "cmsRoleByCode")
     public CmsRole getByCode(String roleCode) {
         String query =
-                "SELECT " +
-                        " ID, ROLE_CODE, ROLE_NAME" +
-                        " FROM CMS_ROLES " +
-                        "WHERE ROLE_CODE = ?";
+            "SELECT " +
+                " ID, ROLE_CODE, ROLE_NAME" +
+                " FROM CMS_ROLES " +
+                "WHERE ROLE_CODE = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = roleCode;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapCmsRole(resultSet));
+            mapCmsRole(resultSet));
     }
 
 }

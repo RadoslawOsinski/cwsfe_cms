@@ -27,7 +27,7 @@ public class NewsletterMailAddressDAOTest extends AbstractTransactionalJUnit4Spr
 
     @Autowired
     private NewsletterMailAddressDAO dao;
-    
+
     @Autowired
     private NewsletterMailGroupDAO newsletterMailGroupDAO;
 

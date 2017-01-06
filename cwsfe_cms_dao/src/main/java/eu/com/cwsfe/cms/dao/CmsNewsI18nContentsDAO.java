@@ -31,13 +31,13 @@ public class CmsNewsI18nContentsDAO {
 
     public List<CmsNewsI18nContent> list() {
         String query =
-                "SELECT " +
-                        "id, news_id, language_id, news_title, news_shortcut, news_description, status " +
-                        "FROM CMS_NEWS_I18N_CONTENTS " +
-                        "WHERE status <> 'D' " +
-                        "ORDER BY news_id";
+            "SELECT " +
+                "id, news_id, language_id, news_title, news_shortcut, news_description, status " +
+                "FROM CMS_NEWS_I18N_CONTENTS " +
+                "WHERE status <> 'D' " +
+                "ORDER BY news_id";
         return jdbcTemplate.query(query, (resultSet, rowNum) ->
-                mapCmsNewsI18nContent(resultSet));
+            mapCmsNewsI18nContent(resultSet));
     }
 
     private CmsNewsI18nContent mapCmsNewsI18nContent(ResultSet resultSet) throws SQLException {
@@ -56,43 +56,43 @@ public class CmsNewsI18nContentsDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = newsId;
         String query =
-                "SELECT " +
-                        "id, news_id, language_id, news_title, news_shortcut, news_description, status " +
-                        "FROM CMS_NEWS_I18N_CONTENTS " +
-                        "WHERE status <> 'D' AND news_id = ?" +
-                        "ORDER BY language_id, news_title";
+            "SELECT " +
+                "id, news_id, language_id, news_title, news_shortcut, news_description, status " +
+                "FROM CMS_NEWS_I18N_CONTENTS " +
+                "WHERE status <> 'D' AND news_id = ?" +
+                "ORDER BY language_id, news_title";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapCmsNewsI18nContent(resultSet));
+            mapCmsNewsI18nContent(resultSet));
     }
 
-    @Cacheable(value="cmsNewsI18nContentById")
+    @Cacheable(value = "cmsNewsI18nContentById")
     public CmsNewsI18nContent get(Long id) {
         String query =
-                "SELECT " +
-                        "id, news_id, language_id, news_title, news_shortcut, news_description, status " +
-                        "FROM CMS_NEWS_I18N_CONTENTS " +
-                        "WHERE id = ?";
+            "SELECT " +
+                "id, news_id, language_id, news_title, news_shortcut, news_description, status " +
+                "FROM CMS_NEWS_I18N_CONTENTS " +
+                "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapCmsNewsI18nContent(resultSet));
+            mapCmsNewsI18nContent(resultSet));
     }
 
-    @Cacheable(value="cmsNewsI18nContentByLanguageForNews")
+    @Cacheable(value = "cmsNewsI18nContentByLanguageForNews")
     public CmsNewsI18nContent getByLanguageForNews(Long newsId, Long languageId) {
         String query =
-                "SELECT " +
-                        "id, news_id, language_id, news_title, news_shortcut, news_description, status " +
-                        "FROM CMS_NEWS_I18N_CONTENTS " +
-                        "WHERE news_id = ? AND language_id = ?";
+            "SELECT " +
+                "id, news_id, language_id, news_title, news_shortcut, news_description, status " +
+                "FROM CMS_NEWS_I18N_CONTENTS " +
+                "WHERE news_id = ? AND language_id = ?";
         Object[] dbParams = new Object[2];
         dbParams[0] = newsId;
         dbParams[1] = languageId;
         CmsNewsI18nContent cmsNewsI18nContent = null;
         try {
             cmsNewsI18nContent = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapCmsNewsI18nContent(resultSet));
-        } catch (EmptyResultDataAccessException ignored) {
-            LOGGER.info("No elements found for newsId: {} and languageId: {}", newsId, languageId);
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.trace("No elements found for newsId: {} and languageId: {}", newsId, languageId, e);
         } catch (DataAccessException e) {
             LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
         }
@@ -110,7 +110,7 @@ public class CmsNewsI18nContentsDAO {
         dbParams[4] = cmsNewsI18nContent.getNewsShortcut();
         dbParams[5] = cmsNewsI18nContent.getNewsDescription();
         jdbcTemplate.update("INSERT INTO CMS_NEWS_I18N_CONTENTS(id, news_id, language_id, news_title, news_shortcut, news_description, status)" +
-                " VALUES (?, ?, ?, ?, ?, ?, 'H')", dbParams);
+            " VALUES (?, ?, ?, ?, ?, ?, 'H')", dbParams);
         return id;
     }
 

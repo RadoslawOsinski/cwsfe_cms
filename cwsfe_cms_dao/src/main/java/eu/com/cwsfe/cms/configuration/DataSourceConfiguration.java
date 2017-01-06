@@ -31,6 +31,7 @@ public class DataSourceConfiguration {
 
     /**
      * JNDI name in wildfly is different than tomcat. Java standards sucks.
+     *
      * @return data source
      */
     @Profile("wildfly")
@@ -52,6 +53,7 @@ public class DataSourceConfiguration {
 
     /**
      * JNDI name in wildfly is different than tomcat. Java standards sucks.
+     *
      * @return data source
      */
     @Profile("tomcat")

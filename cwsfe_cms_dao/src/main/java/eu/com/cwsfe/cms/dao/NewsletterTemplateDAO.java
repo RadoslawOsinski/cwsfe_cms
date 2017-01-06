@@ -37,12 +37,12 @@ public class NewsletterTemplateDAO {
 
     public List<NewsletterTemplate> list() {
         String query =
-                "SELECT " +
-                        " id, LANGUAGE_ID, NAME, STATUS, SUBJECT, CONTENT" +
-                        " FROM NEWSLETTER_TEMPLATES " +
-                        " ORDER BY name ASC";
+            "SELECT " +
+                " id, LANGUAGE_ID, NAME, STATUS, SUBJECT, CONTENT" +
+                " FROM NEWSLETTER_TEMPLATES " +
+                " ORDER BY name ASC";
         return jdbcTemplate.query(query, (resultSet, rowNum) ->
-                mapNewsletterTemplate(resultSet));
+            mapNewsletterTemplate(resultSet));
     }
 
     private NewsletterTemplate mapNewsletterTemplate(ResultSet resultSet) throws SQLException {
@@ -61,17 +61,17 @@ public class NewsletterTemplateDAO {
         dbParams[0] = limit;
         dbParams[1] = offset;
         String query =
-                "SELECT " +
-                        " id, LANGUAGE_ID, NAME, STATUS, SUBJECT, CONTENT" +
-                        " FROM NEWSLETTER_TEMPLATES " +
-                        " ORDER BY name ASC" +
-                        " LIMIT ? OFFSET ?";
+            "SELECT " +
+                " id, LANGUAGE_ID, NAME, STATUS, SUBJECT, CONTENT" +
+                " FROM NEWSLETTER_TEMPLATES " +
+                " ORDER BY name ASC" +
+                " LIMIT ? OFFSET ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapNewsletterTemplate(resultSet));
+            mapNewsletterTemplate(resultSet));
     }
 
     public List<NewsletterTemplate> searchByAjax(
-            int iDisplayStart, int iDisplayLength, String searchName, Long searchLanguageId
+        int iDisplayStart, int iDisplayLength, String searchName, Long searchLanguageId
     ) {
         int numberOfSearchParams = 0;
         String additionalQuery = "";
@@ -95,13 +95,13 @@ public class NewsletterTemplateDAO {
             dbParams[i] = additionalParams.get(i);
         }
         String query =
-                "select " +
-                        " id, LANGUAGE_ID, NAME, STATUS, SUBJECT, CONTENT" +
-                        " from NEWSLETTER_TEMPLATES " +
-                        " where 1 = 1 " + additionalQuery +
-                        " and 1 = 1" +
-                        " order by name asc" +
-                        " limit ? offset ?";
+            "select " +
+                " id, LANGUAGE_ID, NAME, STATUS, SUBJECT, CONTENT" +
+                " from NEWSLETTER_TEMPLATES " +
+                " where 1 = 1 " + additionalQuery +
+                " and 1 = 1" +
+                " order by name asc" +
+                " limit ? offset ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) -> mapNewsletterTemplate(resultSet));
     }
 
@@ -124,40 +124,40 @@ public class NewsletterTemplateDAO {
             dbParamsForCount[i] = additionalParams.get(i);
         }
         String query =
-                "select count(*) from (" +
-                        " select " +
-                        " id, LANGUAGE_ID, NAME, STATUS, SUBJECT, CONTENT" +
-                        " from NEWSLETTER_TEMPLATES " +
-                        " where 1 = 1 " + additionalQuery +
-                        " and 1 = 1" +
-                        " order by name asc" +
-                        " ) as results";
+            "select count(*) from (" +
+                " select " +
+                " id, LANGUAGE_ID, NAME, STATUS, SUBJECT, CONTENT" +
+                " from NEWSLETTER_TEMPLATES " +
+                " where 1 = 1 " + additionalQuery +
+                " and 1 = 1" +
+                " order by name asc" +
+                " ) as results";
         return jdbcTemplate.queryForObject(query, dbParamsForCount, Integer.class);
     }
 
     public NewsletterTemplate get(Long id) {
         String query =
-                "SELECT " +
-                        " id, LANGUAGE_ID, NAME, STATUS, SUBJECT, CONTENT" +
-                        " FROM NEWSLETTER_TEMPLATES " +
-                        "WHERE id = ?";
+            "SELECT " +
+                " id, LANGUAGE_ID, NAME, STATUS, SUBJECT, CONTENT" +
+                " FROM NEWSLETTER_TEMPLATES " +
+                "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapNewsletterTemplate(resultSet));
+            mapNewsletterTemplate(resultSet));
     }
 
     public NewsletterTemplate getByName(String name) {
         String query =
-                "SELECT " +
-                        " id, LANGUAGE_ID, NAME, STATUS, SUBJECT, CONTENT" +
-                        " FROM NEWSLETTER_TEMPLATES " +
-                        "WHERE name = ?";
+            "SELECT " +
+                " id, LANGUAGE_ID, NAME, STATUS, SUBJECT, CONTENT" +
+                " FROM NEWSLETTER_TEMPLATES " +
+                "WHERE name = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = name;
         try {
             return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                    mapNewsletterTemplate(resultSet));
+                mapNewsletterTemplate(resultSet));
         } catch (DataAccessException e) {
             LOGGER.error("Problem query: [{}] with params: {}", Arrays.toString(dbParams), e);
         }
@@ -171,8 +171,8 @@ public class NewsletterTemplateDAO {
         dbParams[1] = newsletterTemplate.getLanguageId();
         dbParams[2] = newsletterTemplate.getName();
         jdbcTemplate.update(
-                "INSERT INTO NEWSLETTER_TEMPLATES(id, LANGUAGE_ID, NAME, STATUS, SUBJECT, CONTENT) VALUES (?, ?, ?, 'N', '', '')",
-                dbParams
+            "INSERT INTO NEWSLETTER_TEMPLATES(id, LANGUAGE_ID, NAME, STATUS, SUBJECT, CONTENT) VALUES (?, ?, ?, 'N', '', '')",
+            dbParams
         );
         return id;
     }
@@ -185,8 +185,8 @@ public class NewsletterTemplateDAO {
         dbParams[3] = newsletterTemplate.getContent();
         dbParams[4] = newsletterTemplate.getId();
         jdbcTemplate.update(
-                "UPDATE NEWSLETTER_TEMPLATES SET LANGUAGE_ID = ?, NAME = ?, SUBJECT = ?, CONTENT = ? WHERE id = ?",
-                dbParams
+            "UPDATE NEWSLETTER_TEMPLATES SET LANGUAGE_ID = ?, NAME = ?, SUBJECT = ?, CONTENT = ? WHERE id = ?",
+            dbParams
         );
     }
 
@@ -194,8 +194,8 @@ public class NewsletterTemplateDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = newsletterTemplate.getId();
         jdbcTemplate.update(
-                "UPDATE NEWSLETTER_TEMPLATES SET status = 'D' WHERE id = ?",
-                dbParams
+            "UPDATE NEWSLETTER_TEMPLATES SET status = 'D' WHERE id = ?",
+            dbParams
         );
     }
 
@@ -203,8 +203,8 @@ public class NewsletterTemplateDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = newsletterTemplate.getId();
         jdbcTemplate.update(
-                "UPDATE NEWSLETTER_TEMPLATES SET status = 'N' WHERE id = ?",
-                dbParams
+            "UPDATE NEWSLETTER_TEMPLATES SET status = 'N' WHERE id = ?",
+            dbParams
         );
     }
 

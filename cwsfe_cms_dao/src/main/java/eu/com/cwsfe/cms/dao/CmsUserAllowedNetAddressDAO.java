@@ -37,20 +37,20 @@ public class CmsUserAllowedNetAddressDAO {
         dbParams[0] = limit;
         dbParams[1] = offset;
         String query =
-                "SELECT " +
-                        "id, user_id, INET_ADDRESS " +
-                        "FROM CMS_USER_ALLOWED_NET_ADDRESS " +
-                        "ORDER BY INET_ADDRESS" +
-                        " LIMIT ? OFFSET ?";
+            "SELECT " +
+                "id, user_id, INET_ADDRESS " +
+                "FROM CMS_USER_ALLOWED_NET_ADDRESS " +
+                "ORDER BY INET_ADDRESS" +
+                " LIMIT ? OFFSET ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapCmsUserAllowedNetAddress(resultSet));
+            mapCmsUserAllowedNetAddress(resultSet));
     }
 
     public int countAddressesForUser(long userId) {
         Object[] dbParams = new Object[1];
         dbParams[0] = userId;
         String query =
-                "SELECT count(id) FROM CMS_USER_ALLOWED_NET_ADDRESS where user_id = ?";
+            "SELECT count(id) FROM CMS_USER_ALLOWED_NET_ADDRESS where user_id = ?";
         return jdbcTemplate.queryForObject(query, dbParams, Integer.class);
     }
 
@@ -58,37 +58,37 @@ public class CmsUserAllowedNetAddressDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = userId;
         String query =
-                "SELECT " +
-                        "id, user_id, INET_ADDRESS " +
-                        "FROM CMS_USER_ALLOWED_NET_ADDRESS " +
-                        "where user_id = ? " +
-                        "ORDER BY INET_ADDRESS";
+            "SELECT " +
+                "id, user_id, INET_ADDRESS " +
+                "FROM CMS_USER_ALLOWED_NET_ADDRESS " +
+                "where user_id = ? " +
+                "ORDER BY INET_ADDRESS";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapCmsUserAllowedNetAddress(resultSet));
+            mapCmsUserAllowedNetAddress(resultSet));
     }
 
     public CmsUserAllowedNetAddress get(Long id) {
         String query =
-                "SELECT " +
-                        "id, user_id, INET_ADDRESS " +
-                        "FROM CMS_USER_ALLOWED_NET_ADDRESS " +
-                        "WHERE id = ?";
+            "SELECT " +
+                "id, user_id, INET_ADDRESS " +
+                "FROM CMS_USER_ALLOWED_NET_ADDRESS " +
+                "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                    mapCmsUserAllowedNetAddress(resultSet));
+            mapCmsUserAllowedNetAddress(resultSet));
     }
 
     public Long add(CmsUserAllowedNetAddress cmsUserAllowedNetAddress) {
         Object[] dbParams = new Object[3];
         Long id = jdbcTemplate.queryForObject("SELECT nextval(" +
-                "'CMS_USER_ALLOWED_NET_ADDRESS_S')", Long.class);
+            "'CMS_USER_ALLOWED_NET_ADDRESS_S')", Long.class);
         dbParams[0] = id;
         dbParams[1] = cmsUserAllowedNetAddress.getUserId();
         dbParams[2] = cmsUserAllowedNetAddress.getInetAddress();
         jdbcTemplate.update(
-                "INSERT INTO CMS_USER_ALLOWED_NET_ADDRESS(id, user_id, INET_ADDRESS) VALUES (?, ?, ?::inet)",
-                dbParams);
+            "INSERT INTO CMS_USER_ALLOWED_NET_ADDRESS(id, user_id, INET_ADDRESS) VALUES (?, ?, ?::inet)",
+            dbParams);
         return id;
     }
 

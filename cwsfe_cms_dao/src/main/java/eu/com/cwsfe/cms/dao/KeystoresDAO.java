@@ -46,7 +46,7 @@ public class KeystoresDAO {
             LOGGER.error("Problem with converting bytes", e);
         }
         jdbcTemplate.update("INSERT INTO keystores(id, name, content)" +
-                " VALUES (?, ?, ?)", dbParams);
+            " VALUES (?, ?, ?)", dbParams);
         return id;
     }
 
@@ -56,15 +56,15 @@ public class KeystoresDAO {
 
     public Keystore getByName(String name) {
         String query =
-                "SELECT id, name, content " +
-                        " FROM keystores " +
-                        "WHERE name = ?";
+            "SELECT id, name, content " +
+                " FROM keystores " +
+                "WHERE name = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = name;
         Keystore keystore = null;
         try {
             keystore = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                    mapKeystore(resultSet));
+                mapKeystore(resultSet));
         } catch (DataAccessException e) {
             LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
         }

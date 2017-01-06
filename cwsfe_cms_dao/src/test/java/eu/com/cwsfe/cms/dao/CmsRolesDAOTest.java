@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 @Rollback
 @ContextConfiguration(classes = {DaoTestsConfiguration.class, CmsRolesDAO.class})
 @IfProfileValue(name = "test-groups", values = {"integration-tests-local"})
-public class CmsRolesDAOTest  extends AbstractTransactionalJUnit4SpringContextTests {
+public class CmsRolesDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
     private CmsRolesDAO dao;

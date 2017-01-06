@@ -27,11 +27,11 @@ public class NewsTypesDAO {
 
     public List<NewsType> list() {
         String query =
-                "SELECT " +
-                        "id, type, status " +
-                        "FROM CMS_NEWS_TYPES " +
-                        "WHERE status = 'N' " +
-                        "ORDER BY type";
+            "SELECT " +
+                "id, type, status " +
+                "FROM CMS_NEWS_TYPES " +
+                "WHERE status = 'N' " +
+                "ORDER BY type";
         return jdbcTemplate.query(query, (resultSet, rowNum) -> mapNewsType(resultSet));
     }
 
@@ -48,14 +48,14 @@ public class NewsTypesDAO {
         dbParams[0] = limit;
         dbParams[1] = offset;
         String query =
-                "SELECT " +
-                        "id, type, status " +
-                        "FROM CMS_NEWS_TYPES " +
-                        "WHERE status = 'N' " +
-                        "ORDER BY type" +
-                        " LIMIT ? OFFSET ?";
+            "SELECT " +
+                "id, type, status " +
+                "FROM CMS_NEWS_TYPES " +
+                "WHERE status = 'N' " +
+                "ORDER BY type" +
+                " LIMIT ? OFFSET ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapNewsType(resultSet));
+            mapNewsType(resultSet));
     }
 
     public List<NewsType> listNewsTypesForDropList(String term, int limit) {
@@ -63,38 +63,38 @@ public class NewsTypesDAO {
         dbParams[0] = '%' + term + '%';
         dbParams[1] = limit;
         String query =
-                "SELECT " +
-                        " id, type, status " +
-                        " FROM CMS_NEWS_TYPES " +
-                        " WHERE status = 'N' AND lower(type) LIKE lower(?) " +
-                        " ORDER BY type" +
-                        " LIMIT ?";
+            "SELECT " +
+                " id, type, status " +
+                " FROM CMS_NEWS_TYPES " +
+                " WHERE status = 'N' AND lower(type) LIKE lower(?) " +
+                " ORDER BY type" +
+                " LIMIT ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapNewsType(resultSet));
+            mapNewsType(resultSet));
     }
 
     public NewsType get(Long id) {
         String query =
-                "SELECT " +
-                        "id, type, status " +
-                        "FROM CMS_NEWS_TYPES " +
-                        "WHERE id = ?";
+            "SELECT " +
+                "id, type, status " +
+                "FROM CMS_NEWS_TYPES " +
+                "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapNewsType(resultSet));
+            mapNewsType(resultSet));
     }
 
     public NewsType getByType(String type) {
         String query =
-                "SELECT " +
-                        "id, type, status " +
-                        "FROM CMS_NEWS_TYPES " +
-                        "WHERE type = ?";
+            "SELECT " +
+                "id, type, status " +
+                "FROM CMS_NEWS_TYPES " +
+                "WHERE type = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = type;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapNewsType(resultSet));
+            mapNewsType(resultSet));
     }
 
     public Long add(NewsType newsType) {
@@ -103,7 +103,7 @@ public class NewsTypesDAO {
         dbParams[0] = id;
         dbParams[1] = newsType.getType();
         jdbcTemplate.update(
-                "INSERT INTO CMS_NEWS_TYPES(id, type, status) VALUES (?, ?, 'N')", dbParams);
+            "INSERT INTO CMS_NEWS_TYPES(id, type, status) VALUES (?, ?, 'N')", dbParams);
         return id;
     }
 
@@ -112,16 +112,16 @@ public class NewsTypesDAO {
         dbParams[0] = newsType.getType();
         dbParams[1] = newsType.getId();
         jdbcTemplate.update(
-                "UPDATE CMS_NEWS_TYPES SET type = ? WHERE id = ?"
-                , dbParams);
+            "UPDATE CMS_NEWS_TYPES SET type = ? WHERE id = ?"
+            , dbParams);
     }
 
     public void delete(NewsType newsType) {
         Object[] dbParams = new Object[1];
         dbParams[0] = newsType.getId();
         jdbcTemplate.update(
-                "UPDATE CMS_NEWS_TYPES SET status = 'D' WHERE id = ?",
-                dbParams
+            "UPDATE CMS_NEWS_TYPES SET status = 'D' WHERE id = ?",
+            dbParams
         );
     }
 
@@ -129,8 +129,8 @@ public class NewsTypesDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = newsType.getId();
         jdbcTemplate.update(
-                "UPDATE CMS_NEWS_TYPES SET status = 'N' WHERE id = ?",
-                dbParams
+            "UPDATE CMS_NEWS_TYPES SET status = 'N' WHERE id = ?",
+            dbParams
         );
     }
 

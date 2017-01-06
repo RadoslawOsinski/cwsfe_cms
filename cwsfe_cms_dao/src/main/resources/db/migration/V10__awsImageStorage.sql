@@ -1,13 +1,17 @@
 INSERT INTO CMS_GLOBAL_PARAMS (ID, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION) VALUES (
-  nextval('CMS_GLOBAL_PARAMS_S'), 'AWS_IMAGES_BUCKET_REGION', 'EU_CENTRAL_1', 'EU_CENTRAL_1', 'S3 region for blog and news images'
+    nextval('CMS_GLOBAL_PARAMS_S'), 'AWS_IMAGES_BUCKET_REGION', 'EU_CENTRAL_1', 'EU_CENTRAL_1',
+    'S3 region for blog and news images'
 );
 INSERT INTO CMS_GLOBAL_PARAMS (ID, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION) VALUES (
-  nextval('CMS_GLOBAL_PARAMS_S'), 'AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME', 'cwsfecms', 'cwsfecms', 'S3 root bucket name for CWSFE_CMS'
+    nextval('CMS_GLOBAL_PARAMS_S'), 'AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME', 'cwsfecms', 'cwsfecms',
+    'S3 root bucket name for CWSFE_CMS'
 );
 INSERT INTO CMS_GLOBAL_PARAMS (ID, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION) VALUES (
-  nextval('CMS_GLOBAL_PARAMS_S'), 'CWSFE_CMS_S3_BLOG_IMAGES_PATH', 'blogimages', 'blogimages', 'Bucket name for blog images'
+    nextval('CMS_GLOBAL_PARAMS_S'), 'CWSFE_CMS_S3_BLOG_IMAGES_PATH', 'blogimages', 'blogimages',
+    'Bucket name for blog images'
 );
 
 INSERT INTO CMS_GLOBAL_PARAMS (ID, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION) VALUES (
-  nextval('CMS_GLOBAL_PARAMS_S'), 'CWSFE_CMS_S3_NEWS_IMAGES_PATH', 'newsimages', 'newsimages', 'Bucket name for news images'
+    nextval('CMS_GLOBAL_PARAMS_S'), 'CWSFE_CMS_S3_NEWS_IMAGES_PATH', 'newsimages', 'newsimages',
+    'Bucket name for news images'
 );

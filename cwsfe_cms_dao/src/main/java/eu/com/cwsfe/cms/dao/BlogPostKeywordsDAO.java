@@ -24,32 +24,32 @@ public class BlogPostKeywordsDAO {
 
     public List<BlogKeyword> listForPost(Long postId) {
         String query =
-                "select" +
-                        "  bk.id, bk.keyword_name, bk.status" +
-                        "  from BLOG_KEYWORDS bk, BLOG_POST_KEYWORDS bkp" +
-                        "  WHERE " +
-                        "  bkp.blog_keyword_id = bk.id and bkp.blog_post_id = ? and" +
-                        "  bk.status = 'N'" +
-                        " ORDER BY bk.keyword_name";
+            "select" +
+                "  bk.id, bk.keyword_name, bk.status" +
+                "  from BLOG_KEYWORDS bk, BLOG_POST_KEYWORDS bkp" +
+                "  WHERE " +
+                "  bkp.blog_keyword_id = bk.id and bkp.blog_post_id = ? and" +
+                "  bk.status = 'N'" +
+                " ORDER BY bk.keyword_name";
         Object[] dbParams = new Object[1];
         dbParams[0] = postId;
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapBlogKeyword(resultSet));
+            mapBlogKeyword(resultSet));
     }
 
     public List<BlogKeywordAssignment> listValuesForPost(long postId) {
         String query =
-                "select" +
-                        "  bk.id, bk.keyword_name, bk.status, (bkp.blog_post_id = ?) as assignedKeyword " +
-                        "  from BLOG_KEYWORDS bk LEFT JOIN BLOG_POST_KEYWORDS bkp" +
-                        " on bk.id = bkp.blog_keyword_id " +
-                        "  WHERE " +
-                        "  bk.status = 'N'" +
-                        " ORDER BY bk.keyword_name";
+            "select" +
+                "  bk.id, bk.keyword_name, bk.status, (bkp.blog_post_id = ?) as assignedKeyword " +
+                "  from BLOG_KEYWORDS bk LEFT JOIN BLOG_POST_KEYWORDS bkp" +
+                " on bk.id = bkp.blog_keyword_id " +
+                "  WHERE " +
+                "  bk.status = 'N'" +
+                " ORDER BY bk.keyword_name";
         Object[] dbParams = new Object[1];
         dbParams[0] = postId;
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapBlogKeywordAssignment(resultSet));
+            mapBlogKeywordAssignment(resultSet));
     }
 
     private BlogKeyword mapBlogKeyword(ResultSet resultSet) throws SQLException {
@@ -75,7 +75,7 @@ public class BlogPostKeywordsDAO {
         dbParams[0] = blogPostId;
         dbParams[1] = blogKeywordId;
         return jdbcTemplate.queryForObject(query, dbParams,
-                (resultSet, rowNum) -> new BlogPostKeyword(resultSet.getLong("blog_post_id"), resultSet.getLong("blog_keyword_id"))
+            (resultSet, rowNum) -> new BlogPostKeyword(resultSet.getLong("blog_post_id"), resultSet.getLong("blog_keyword_id"))
         );
     }
 

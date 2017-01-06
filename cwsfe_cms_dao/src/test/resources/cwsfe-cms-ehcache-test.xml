@@ -1,8 +1,8 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="./META-INF/ehcache.xsd"
-        updateCheck="false"
-        monitoring="autodetect"
-        dynamicConfig="false">
+         xsi:noNamespaceSchemaLocation="./META-INF/ehcache.xsd"
+         updateCheck="false"
+         monitoring="autodetect"
+         dynamicConfig="false">
     <diskStore path="java.io.tmpdir"/>
 
     <cache name="blogKeywordById"

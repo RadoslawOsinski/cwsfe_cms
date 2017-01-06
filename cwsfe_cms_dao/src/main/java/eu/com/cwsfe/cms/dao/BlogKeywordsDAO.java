@@ -29,12 +29,12 @@ public class BlogKeywordsDAO {
 
     public List<BlogKeyword> list() {
         String query =
-                "SELECT" +
-                        "  id, keyword_name, status" +
-                        "  FROM BLOG_KEYWORDS" +
-                        "  WHERE" +
-                        "  status = 'N'" +
-                        " ORDER BY keyword_name";
+            "SELECT" +
+                "  id, keyword_name, status" +
+                "  FROM BLOG_KEYWORDS" +
+                "  WHERE" +
+                "  status = 'N'" +
+                " ORDER BY keyword_name";
         return jdbcTemplate.query(query, (resultSet, rowNum) -> mapBlogKeyword(resultSet));
     }
 
@@ -51,23 +51,23 @@ public class BlogKeywordsDAO {
         dbParams[0] = limit;
         dbParams[1] = offset;
         String query =
-                "SELECT" +
-                        "  id, keyword_name, status" +
-                        "  FROM BLOG_KEYWORDS" +
-                        "  WHERE" +
-                        "  status = 'N'" +
-                        " ORDER BY keyword_name" +
-                        " LIMIT ? OFFSET ? ";
+            "SELECT" +
+                "  id, keyword_name, status" +
+                "  FROM BLOG_KEYWORDS" +
+                "  WHERE" +
+                "  status = 'N'" +
+                " ORDER BY keyword_name" +
+                " LIMIT ? OFFSET ? ";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) -> mapBlogKeyword(resultSet));
     }
 
-    @Cacheable(value="blogKeywordById")
+    @Cacheable(value = "blogKeywordById")
     public BlogKeyword get(Long id) {
         String query =
-                "SELECT " +
-                        "id, keyword_name, status " +
-                        "FROM BLOG_KEYWORDS " +
-                        "WHERE id = ?";
+            "SELECT " +
+                "id, keyword_name, status " +
+                "FROM BLOG_KEYWORDS " +
+                "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogKeyword(resultSet));

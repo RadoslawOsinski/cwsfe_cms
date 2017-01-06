@@ -29,13 +29,13 @@ public class CmsFoldersDAO {
 
     public List<CmsFolder> list() {
         String query =
-                "SELECT " +
-                        "id, parent_id, folder_name, order_number, status " +
-                        "FROM CMS_FOLDERS " +
-                        "WHERE status = 'N' " +
-                        "ORDER BY order_number";
+            "SELECT " +
+                "id, parent_id, folder_name, order_number, status " +
+                "FROM CMS_FOLDERS " +
+                "WHERE status = 'N' " +
+                "ORDER BY order_number";
         return jdbcTemplate.query(query, (resultSet, rowNum) ->
-                mapCmsFolder(resultSet));
+            mapCmsFolder(resultSet));
     }
 
     private CmsFolder mapCmsFolder(ResultSet resultSet) throws SQLException {
@@ -53,14 +53,14 @@ public class CmsFoldersDAO {
         dbParams[0] = limit;
         dbParams[1] = offset;
         String query =
-                "SELECT " +
-                        "id, parent_id, folder_name, order_number, status " +
-                        "FROM CMS_FOLDERS " +
-                        "WHERE status = 'N' " +
-                        "ORDER BY order_number" +
-                        " LIMIT ? OFFSET ?";
+            "SELECT " +
+                "id, parent_id, folder_name, order_number, status " +
+                "FROM CMS_FOLDERS " +
+                "WHERE status = 'N' " +
+                "ORDER BY order_number" +
+                " LIMIT ? OFFSET ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapCmsFolder(resultSet));
+            mapCmsFolder(resultSet));
     }
 
     public List<CmsFolder> listFoldersForDropList(String term, int limit) {
@@ -68,40 +68,40 @@ public class CmsFoldersDAO {
         dbParams[0] = '%' + term + '%';
         dbParams[1] = limit;
         String query =
-                "SELECT " +
-                        "id, parent_id, folder_name, order_number, status " +
-                        " FROM CMS_FOLDERS " +
-                        " WHERE status = 'N' AND lower(folder_name) LIKE lower(?) " +
-                        " ORDER BY order_number" +
-                        " LIMIT ?";
+            "SELECT " +
+                "id, parent_id, folder_name, order_number, status " +
+                " FROM CMS_FOLDERS " +
+                " WHERE status = 'N' AND lower(folder_name) LIKE lower(?) " +
+                " ORDER BY order_number" +
+                " LIMIT ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapCmsFolder(resultSet));
+            mapCmsFolder(resultSet));
     }
 
-    @Cacheable(value="cmsFolderById")
+    @Cacheable(value = "cmsFolderById")
     public CmsFolder get(Long id) {
         String query =
-                "SELECT " +
-                        "id, parent_id, folder_name, order_number, status " +
-                        "FROM CMS_FOLDERS " +
-                        "WHERE id = ?";
+            "SELECT " +
+                "id, parent_id, folder_name, order_number, status " +
+                "FROM CMS_FOLDERS " +
+                "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapCmsFolder(resultSet));
+            mapCmsFolder(resultSet));
     }
 
-    @Cacheable(value="cmsFolderByName")
+    @Cacheable(value = "cmsFolderByName")
     public CmsFolder getByFolderName(String folderName) {
         String query =
-                "SELECT " +
-                        "id, parent_id, folder_name, order_number, status " +
-                        "FROM CMS_FOLDERS " +
-                        "WHERE folder_name = ?";
+            "SELECT " +
+                "id, parent_id, folder_name, order_number, status " +
+                "FROM CMS_FOLDERS " +
+                "WHERE folder_name = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = folderName;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapCmsFolder(resultSet));
+            mapCmsFolder(resultSet));
     }
 
     public Long add(CmsFolder cmsFolder) {
@@ -112,8 +112,8 @@ public class CmsFoldersDAO {
         dbParams[2] = cmsFolder.getFolderName();
         dbParams[3] = cmsFolder.getOrderNumber();
         jdbcTemplate.update(
-                "INSERT INTO CMS_FOLDERS(id, parent_id, folder_name, order_number, status) VALUES (?, ?, ?, ?, 'N')",
-                dbParams);
+            "INSERT INTO CMS_FOLDERS(id, parent_id, folder_name, order_number, status) VALUES (?, ?, ?, ?, 'N')",
+            dbParams);
         return id;
     }
 
@@ -125,7 +125,7 @@ public class CmsFoldersDAO {
         dbParams[2] = cmsFolder.getOrderNumber();
         dbParams[3] = cmsFolder.getId();
         jdbcTemplate.update("UPDATE CMS_FOLDERS SET parent_id = ?, folder_name = ?, order_number = ? WHERE id = ?"
-                , dbParams);
+            , dbParams);
     }
 
     @CacheEvict(value = {"cmsFolderById", "cmsFolderByName"})

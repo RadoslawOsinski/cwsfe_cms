@@ -28,12 +28,12 @@ public class CmsTextI18nDAO {
 
     public List<CmsTextI18n> list() {
         String query =
-                "SELECT " +
-                        " id, lang_id, i18n_category, i18n_key, i18n_text" +
-                        " FROM CMS_TEXT_I18N " +
-                        " ORDER BY i18n_key, i18n_category";
+            "SELECT " +
+                " id, lang_id, i18n_category, i18n_key, i18n_text" +
+                " FROM CMS_TEXT_I18N " +
+                " ORDER BY i18n_key, i18n_category";
         return jdbcTemplate.query(query, (resultSet, rowNum) ->
-                mapCmsTextI18n(resultSet));
+            mapCmsTextI18n(resultSet));
     }
 
     private CmsTextI18n mapCmsTextI18n(ResultSet resultSet) throws SQLException {
@@ -51,36 +51,36 @@ public class CmsTextI18nDAO {
         dbParams[0] = limit;
         dbParams[1] = offset;
         String query =
-                "SELECT " +
-                        " id, lang_id, i18n_category, i18n_key, i18n_text" +
-                        " FROM CMS_TEXT_I18N " +
-                        " ORDER BY i18n_key, i18n_category" +
-                        " LIMIT ? OFFSET ?";
+            "SELECT " +
+                " id, lang_id, i18n_category, i18n_key, i18n_text" +
+                " FROM CMS_TEXT_I18N " +
+                " ORDER BY i18n_key, i18n_category" +
+                " LIMIT ? OFFSET ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapCmsTextI18n(resultSet));
+            mapCmsTextI18n(resultSet));
     }
 
     @Cacheable(value = "cmsTextI18nById")
     public CmsTextI18n get(Long id) {
         String query =
-                "SELECT " +
-                        " id, lang_id, i18n_category, i18n_key, i18n_text" +
-                        " FROM CMS_TEXT_I18N " +
-                        "WHERE id = ?";
+            "SELECT " +
+                " id, lang_id, i18n_category, i18n_key, i18n_text" +
+                " FROM CMS_TEXT_I18N " +
+                "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                    mapCmsTextI18n(resultSet));
+            mapCmsTextI18n(resultSet));
     }
 
     public String findTranslation(String language2LetterCode, String category, String key) {
         String query =
-                "SELECT " +
-                        " i18n_text" +
-                        " FROM CMS_TEXT_I18N " +
-                        "WHERE " +
-                        " lang_id IN (SELECT id FROM cms_languages WHERE code = ?) AND" +
-                        " i18n_category IN (SELECT ID FROM cms_text_i18n_categories WHERE category = ?) AND i18n_key = ?";
+            "SELECT " +
+                " i18n_text" +
+                " FROM CMS_TEXT_I18N " +
+                "WHERE " +
+                " lang_id IN (SELECT id FROM cms_languages WHERE code = ?) AND" +
+                " i18n_category IN (SELECT ID FROM cms_text_i18n_categories WHERE category = ?) AND i18n_key = ?";
         Object[] dbParams = new Object[3];
         dbParams[0] = language2LetterCode;
         dbParams[1] = category;
@@ -97,8 +97,8 @@ public class CmsTextI18nDAO {
         dbParams[3] = cmsTextI18n.getI18nKey();
         dbParams[4] = cmsTextI18n.getI18nText();
         jdbcTemplate.update(
-                "INSERT INTO CMS_TEXT_I18N(id, lang_id, i18n_category, i18n_key, i18n_text) VALUES (?, ?, ?, ?, ?)",
-                dbParams
+            "INSERT INTO CMS_TEXT_I18N(id, lang_id, i18n_category, i18n_key, i18n_text) VALUES (?, ?, ?, ?, ?)",
+            dbParams
         );
         return id;
     }
@@ -112,8 +112,8 @@ public class CmsTextI18nDAO {
         dbParams[3] = cmsTextI18n.getI18nText();
         dbParams[4] = cmsTextI18n.getId();
         jdbcTemplate.update(
-                "UPDATE CMS_TEXT_I18N SET lang_id = ?, i18n_category = ?, i18n_key = ?, i18n_text = ? WHERE id = ?",
-                dbParams
+            "UPDATE CMS_TEXT_I18N SET lang_id = ?, i18n_category = ?, i18n_key = ?, i18n_text = ? WHERE id = ?",
+            dbParams
         );
     }
 
@@ -122,7 +122,7 @@ public class CmsTextI18nDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = cmsTextI18n.getId();
         jdbcTemplate.update(
-                "DELETE FROM CMS_TEXT_I18N WHERE id = ?", dbParams
+            "DELETE FROM CMS_TEXT_I18N WHERE id = ?", dbParams
         );
     }
 

@@ -28,13 +28,13 @@ public class NewsletterMailGroupDAO {
 
     public List<NewsletterMailGroup> list() {
         String query =
-                "SELECT " +
-                        " id, language_id, name, status" +
-                        " FROM NEWSLETTER_MAIL_GROUPS " +
-                        " WHERE status = 'N'" +
-                        " ORDER BY name";
+            "SELECT " +
+                " id, language_id, name, status" +
+                " FROM NEWSLETTER_MAIL_GROUPS " +
+                " WHERE status = 'N'" +
+                " ORDER BY name";
         return jdbcTemplate.query(query, (resultSet, rowNum) ->
-                mapNewsletterMailGroup(resultSet));
+            mapNewsletterMailGroup(resultSet));
     }
 
     private NewsletterMailGroup mapNewsletterMailGroup(ResultSet resultSet) throws SQLException {
@@ -51,14 +51,14 @@ public class NewsletterMailGroupDAO {
         dbParams[0] = '%' + term + '%';
         dbParams[1] = limit;
         String query =
-                "SELECT " +
-                        " id, language_id, name, status" +
-                        " FROM NEWSLETTER_MAIL_GROUPS " +
-                        " WHERE status = 'N' AND lower(name) LIKE lower(?) " +
-                        " ORDER BY name" +
-                        " LIMIT ?";
+            "SELECT " +
+                " id, language_id, name, status" +
+                " FROM NEWSLETTER_MAIL_GROUPS " +
+                " WHERE status = 'N' AND lower(name) LIKE lower(?) " +
+                " ORDER BY name" +
+                " LIMIT ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapNewsletterMailGroup(resultSet));
+            mapNewsletterMailGroup(resultSet));
     }
 
 
@@ -67,18 +67,18 @@ public class NewsletterMailGroupDAO {
         dbParams[0] = limit;
         dbParams[1] = offset;
         String query =
-                "SELECT " +
-                        " id, language_id, name, status" +
-                        " FROM NEWSLETTER_MAIL_GROUPS " +
-                        " WHERE status = 'N'" +
-                        " ORDER BY name" +
-                        " LIMIT ? OFFSET ?";
+            "SELECT " +
+                " id, language_id, name, status" +
+                " FROM NEWSLETTER_MAIL_GROUPS " +
+                " WHERE status = 'N'" +
+                " ORDER BY name" +
+                " LIMIT ? OFFSET ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapNewsletterMailGroup(resultSet));
+            mapNewsletterMailGroup(resultSet));
     }
 
     public List<NewsletterMailGroup> searchByAjax(
-            int iDisplayStart, int iDisplayLength, String searchName, Long searchLanguageId
+        int iDisplayStart, int iDisplayLength, String searchName, Long searchLanguageId
     ) {
         int numberOfSearchParams = 0;
         String additionalQuery = "";
@@ -102,13 +102,13 @@ public class NewsletterMailGroupDAO {
             dbParams[i] = additionalParams.get(i);
         }
         String query =
-                "select " +
-                        " id, language_id, name, status" +
-                        " from NEWSLETTER_MAIL_GROUPS " +
-                        " where status <> 'D' " + additionalQuery +
-                        " and 1 = 1" +
-                        " order by name desc" +
-                        " limit ? offset ?";
+            "select " +
+                " id, language_id, name, status" +
+                " from NEWSLETTER_MAIL_GROUPS " +
+                " where status <> 'D' " + additionalQuery +
+                " and 1 = 1" +
+                " order by name desc" +
+                " limit ? offset ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) -> mapNewsletterMailGroup(resultSet));
     }
 
@@ -131,40 +131,40 @@ public class NewsletterMailGroupDAO {
             dbParamsForCount[i] = additionalParams.get(i);
         }
         String query =
-                "select count(*) from (" +
-                        " select " +
-                        " id, language_id, name, status" +
-                        " from NEWSLETTER_MAIL_GROUPS " +
-                        " where status <> 'D' " + additionalQuery +
-                        " and 1 = 1" +
-                        " order by name desc" +
-                        " ) as results";
+            "select count(*) from (" +
+                " select " +
+                " id, language_id, name, status" +
+                " from NEWSLETTER_MAIL_GROUPS " +
+                " where status <> 'D' " + additionalQuery +
+                " and 1 = 1" +
+                " order by name desc" +
+                " ) as results";
         return jdbcTemplate.queryForObject(query, dbParamsForCount, Integer.class);
     }
 
     public NewsletterMailGroup get(Long id) {
         String query =
-                "SELECT " +
-                        " id, language_id, name, status" +
-                        " FROM NEWSLETTER_MAIL_GROUPS " +
-                        "WHERE id = ?";
+            "SELECT " +
+                " id, language_id, name, status" +
+                " FROM NEWSLETTER_MAIL_GROUPS " +
+                "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapNewsletterMailGroup(resultSet));
+            mapNewsletterMailGroup(resultSet));
     }
 
     public NewsletterMailGroup getByNameAndLanguage(String name, Long languageId) {
         String query =
-                "SELECT " +
-                        " id, language_id, name, status" +
-                        " FROM NEWSLETTER_MAIL_GROUPS " +
-                        "WHERE name = ? AND language_id = ?";
+            "SELECT " +
+                " id, language_id, name, status" +
+                " FROM NEWSLETTER_MAIL_GROUPS " +
+                "WHERE name = ? AND language_id = ?";
         Object[] dbParams = new Object[2];
         dbParams[0] = name;
         dbParams[1] = languageId;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapNewsletterMailGroup(resultSet));
+            mapNewsletterMailGroup(resultSet));
     }
 
     public Long add(NewsletterMailGroup newsletterMailGroup) {
@@ -174,8 +174,8 @@ public class NewsletterMailGroupDAO {
         dbParams[1] = newsletterMailGroup.getLanguageId();
         dbParams[2] = newsletterMailGroup.getName();
         jdbcTemplate.update(
-                "INSERT INTO NEWSLETTER_MAIL_GROUPS(id, language_id, name, status) VALUES (?, ?, ?, 'N')",
-                dbParams
+            "INSERT INTO NEWSLETTER_MAIL_GROUPS(id, language_id, name, status) VALUES (?, ?, ?, 'N')",
+            dbParams
         );
         return id;
     }
@@ -186,8 +186,8 @@ public class NewsletterMailGroupDAO {
         dbParams[1] = newsletterMailGroup.getName();
         dbParams[2] = newsletterMailGroup.getId();
         jdbcTemplate.update(
-                "UPDATE NEWSLETTER_MAIL_GROUPS SET language_id = ?, name = ? WHERE id = ?",
-                dbParams
+            "UPDATE NEWSLETTER_MAIL_GROUPS SET language_id = ?, name = ? WHERE id = ?",
+            dbParams
         );
     }
 
@@ -195,8 +195,8 @@ public class NewsletterMailGroupDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = newsletterMailGroup.getId();
         jdbcTemplate.update(
-                "UPDATE NEWSLETTER_MAIL_GROUPS SET status = 'D' WHERE id = ?",
-                dbParams
+            "UPDATE NEWSLETTER_MAIL_GROUPS SET status = 'D' WHERE id = ?",
+            dbParams
         );
     }
 
@@ -204,8 +204,8 @@ public class NewsletterMailGroupDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = newsletterMailGroup.getId();
         jdbcTemplate.update(
-                "UPDATE NEWSLETTER_MAIL_GROUPS SET status = 'N' WHERE id = ?",
-                dbParams
+            "UPDATE NEWSLETTER_MAIL_GROUPS SET status = 'N' WHERE id = ?",
+            dbParams
         );
     }
 

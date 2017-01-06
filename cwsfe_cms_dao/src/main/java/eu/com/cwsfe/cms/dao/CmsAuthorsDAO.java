@@ -29,13 +29,13 @@ public class CmsAuthorsDAO {
 
     public List<CmsAuthor> list() {
         String query =
-                "SELECT " +
-                        " id, first_name, last_name, google_plus_author_link, status" +
-                        " FROM CMS_AUTHORS " +
-                        " WHERE status = 'N'" +
-                        " ORDER BY last_name, first_name";
+            "SELECT " +
+                " id, first_name, last_name, google_plus_author_link, status" +
+                " FROM CMS_AUTHORS " +
+                " WHERE status = 'N'" +
+                " ORDER BY last_name, first_name";
         return jdbcTemplate.query(query, (resultSet, rowNum) ->
-                mapCmsAuthor(resultSet));
+            mapCmsAuthor(resultSet));
     }
 
     private CmsAuthor mapCmsAuthor(ResultSet resultSet) throws SQLException {
@@ -53,14 +53,14 @@ public class CmsAuthorsDAO {
         dbParams[0] = limit;
         dbParams[1] = offset;
         String query =
-                "SELECT " +
-                        " id, first_name, last_name, google_plus_author_link, status" +
-                        " FROM CMS_AUTHORS " +
-                        " WHERE status = 'N'" +
-                        " ORDER BY last_name, first_name" +
-                        " LIMIT ? OFFSET ?";
+            "SELECT " +
+                " id, first_name, last_name, google_plus_author_link, status" +
+                " FROM CMS_AUTHORS " +
+                " WHERE status = 'N'" +
+                " ORDER BY last_name, first_name" +
+                " LIMIT ? OFFSET ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapCmsAuthor(resultSet));
+            mapCmsAuthor(resultSet));
     }
 
     public List<CmsAuthor> listAuthorsForDropList(String term, int limit) {
@@ -69,27 +69,27 @@ public class CmsAuthorsDAO {
         dbParams[1] = '%' + term + '%';
         dbParams[2] = limit;
         String query =
-                "SELECT " +
-                        " id, first_name, last_name, google_plus_author_link, status" +
-                        " FROM CMS_AUTHORS " +
-                        " WHERE status = 'N' AND (lower(first_name) LIKE lower(?) OR lower(last_name) LIKE lower(?)) " +
-                        " ORDER BY last_name, first_name" +
-                        " LIMIT ?";
+            "SELECT " +
+                " id, first_name, last_name, google_plus_author_link, status" +
+                " FROM CMS_AUTHORS " +
+                " WHERE status = 'N' AND (lower(first_name) LIKE lower(?) OR lower(last_name) LIKE lower(?)) " +
+                " ORDER BY last_name, first_name" +
+                " LIMIT ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapCmsAuthor(resultSet));
+            mapCmsAuthor(resultSet));
     }
 
-    @Cacheable(value="cmsAuthorById")
+    @Cacheable(value = "cmsAuthorById")
     public CmsAuthor get(Long id) {
         String query =
-                "SELECT " +
-                        " id, first_name, last_name, google_plus_author_link, status" +
-                        " FROM CMS_AUTHORS " +
-                        "WHERE id = ?";
+            "SELECT " +
+                " id, first_name, last_name, google_plus_author_link, status" +
+                " FROM CMS_AUTHORS " +
+                "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapCmsAuthor(resultSet));
+            mapCmsAuthor(resultSet));
     }
 
     public Long add(CmsAuthor cmsAuthor) {
@@ -100,8 +100,8 @@ public class CmsAuthorsDAO {
         dbParams[2] = cmsAuthor.getLastName();
         dbParams[3] = cmsAuthor.getGooglePlusAuthorLink();
         jdbcTemplate.update(
-                "INSERT INTO CMS_AUTHORS(id, first_name, last_name, google_plus_author_link, status) VALUES (?, ?, ?, ?, 'N')",
-                dbParams
+            "INSERT INTO CMS_AUTHORS(id, first_name, last_name, google_plus_author_link, status) VALUES (?, ?, ?, ?, 'N')",
+            dbParams
         );
         return id;
     }
@@ -114,8 +114,8 @@ public class CmsAuthorsDAO {
         dbParams[2] = cmsAuthor.getGooglePlusAuthorLink();
         dbParams[3] = cmsAuthor.getId();
         jdbcTemplate.update(
-                "UPDATE CMS_AUTHORS SET first_name = ?, last_name = ?, google_plus_author_link = ? WHERE id = ?",
-                dbParams
+            "UPDATE CMS_AUTHORS SET first_name = ?, last_name = ?, google_plus_author_link = ? WHERE id = ?",
+            dbParams
         );
     }
 
@@ -124,8 +124,8 @@ public class CmsAuthorsDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = cmsAuthor.getId();
         jdbcTemplate.update(
-                "UPDATE CMS_AUTHORS SET status = 'D' WHERE id = ?",
-                dbParams
+            "UPDATE CMS_AUTHORS SET status = 'D' WHERE id = ?",
+            dbParams
         );
     }
 
@@ -134,8 +134,8 @@ public class CmsAuthorsDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = cmsAuthor.getId();
         jdbcTemplate.update(
-                "UPDATE CMS_AUTHORS SET status = 'N' WHERE id = ?",
-                dbParams
+            "UPDATE CMS_AUTHORS SET status = 'N' WHERE id = ?",
+            dbParams
         );
     }
 

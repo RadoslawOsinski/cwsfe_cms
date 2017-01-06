@@ -24,7 +24,7 @@ public class CmsFoldersDAOTest extends AbstractTransactionalJUnit4SpringContextT
 
     @Autowired
     private CmsFoldersDAO dao;
-    
+
     @Test
     public void testCountForAjax() throws Exception {
         //given
@@ -179,7 +179,7 @@ public class CmsFoldersDAOTest extends AbstractTransactionalJUnit4SpringContextT
 
         //when
         dao.delete(cmsFolder);
-        
+
         //then
         CmsFolder cmsFolderResult = dao.get(cmsFolder.getId());
         assertNotNull(cmsFolderResult);

@@ -40,13 +40,13 @@ class NewsletterDispatchedMailDAO {
         dbParams[0] = limit;
         dbParams[1] = offset;
         String query =
-                "SELECT " +
-                        " id, NEWSLETTER_MAIL_ID, EMAIL, ERROR, STATUS" +
-                        " FROM NEWSLETTER_DISPATCHED_MAILS " +
-                        " ORDER BY NEWSLETTER_MAIL_ID, EMAIL ASC" +
-                        " LIMIT ? OFFSET ?";
+            "SELECT " +
+                " id, NEWSLETTER_MAIL_ID, EMAIL, ERROR, STATUS" +
+                " FROM NEWSLETTER_DISPATCHED_MAILS " +
+                " ORDER BY NEWSLETTER_MAIL_ID, EMAIL ASC" +
+                " LIMIT ? OFFSET ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapNewsletterDispatchedMail(resultSet));
+            mapNewsletterDispatchedMail(resultSet));
     }
 
     private NewsletterDispatchedMail mapNewsletterDispatchedMail(ResultSet resultSet) throws SQLException {
@@ -61,7 +61,7 @@ class NewsletterDispatchedMailDAO {
 
 
     public List<NewsletterDispatchedMail> searchByAjax(
-            int iDisplayStart, int iDisplayLength, String searchEmail, Long searchNewsletterDispatchedMailId
+        int iDisplayStart, int iDisplayLength, String searchEmail, Long searchNewsletterDispatchedMailId
     ) {
         int numberOfSearchParams = 0;
         String additionalQuery = "";
@@ -85,13 +85,13 @@ class NewsletterDispatchedMailDAO {
             dbParams[i] = additionalParams.get(i);
         }
         String query =
-                "select " +
-                        " id, NEWSLETTER_MAIL_ID, EMAIL, ERROR, STATUS" +
-                        " from NEWSLETTER_DISPATCHED_MAILS " +
-                        " where 1 = 1 " + additionalQuery +
-                        " and 1 = 1" +
-                        " order by NEWSLETTER_MAIL_ID, EMAIL asc" +
-                        " limit ? offset ?";
+            "select " +
+                " id, NEWSLETTER_MAIL_ID, EMAIL, ERROR, STATUS" +
+                " from NEWSLETTER_DISPATCHED_MAILS " +
+                " where 1 = 1 " + additionalQuery +
+                " and 1 = 1" +
+                " order by NEWSLETTER_MAIL_ID, EMAIL asc" +
+                " limit ? offset ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) -> mapNewsletterDispatchedMail(resultSet));
     }
 
@@ -114,40 +114,40 @@ class NewsletterDispatchedMailDAO {
             dbParamsForCount[i] = additionalParams.get(i);
         }
         String query =
-                "select count(*) from (" +
-                        " select " +
-                        " id, NEWSLETTER_MAIL_ID, EMAIL, ERROR, STATUS" +
-                        " from NEWSLETTER_DISPATCHED_MAILS " +
-                        " where 1 = 1 " + additionalQuery +
-                        " and 1 = 1" +
-                        " order by NEWSLETTER_MAIL_ID, EMAIL asc" +
-                        " ) as results";
+            "select count(*) from (" +
+                " select " +
+                " id, NEWSLETTER_MAIL_ID, EMAIL, ERROR, STATUS" +
+                " from NEWSLETTER_DISPATCHED_MAILS " +
+                " where 1 = 1 " + additionalQuery +
+                " and 1 = 1" +
+                " order by NEWSLETTER_MAIL_ID, EMAIL asc" +
+                " ) as results";
         return jdbcTemplate.queryForObject(query, dbParamsForCount, Integer.class);
     }
 
     public NewsletterDispatchedMail get(Long id) {
         String query =
-                "SELECT " +
-                        " id, NEWSLETTER_MAIL_ID, EMAIL, ERROR, STATUS" +
-                        " FROM NEWSLETTER_DISPATCHED_MAILS " +
-                        "WHERE id = ?";
+            "SELECT " +
+                " id, NEWSLETTER_MAIL_ID, EMAIL, ERROR, STATUS" +
+                " FROM NEWSLETTER_DISPATCHED_MAILS " +
+                "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapNewsletterDispatchedMail(resultSet));
+            mapNewsletterDispatchedMail(resultSet));
     }
 
     public NewsletterDispatchedMail getByName(String email) {
         String query =
-                "SELECT " +
-                        " id, NEWSLETTER_MAIL_ID, EMAIL, ERROR, STATUS" +
-                        " FROM NEWSLETTER_DISPATCHED_MAILS " +
-                        "WHERE EMAIL = ?";
+            "SELECT " +
+                " id, NEWSLETTER_MAIL_ID, EMAIL, ERROR, STATUS" +
+                " FROM NEWSLETTER_DISPATCHED_MAILS " +
+                "WHERE EMAIL = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = email;
         try {
             return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                    mapNewsletterDispatchedMail(resultSet));
+                mapNewsletterDispatchedMail(resultSet));
         } catch (DataAccessException e) {
             LOGGER.error("Problem query: [{}] with params: {}", query, Arrays.toString(dbParams), e);
         }
@@ -163,8 +163,8 @@ class NewsletterDispatchedMailDAO {
         dbParams[3] = newsletterTemplate.getError();
         dbParams[4] = newsletterTemplate.getStatus();
         jdbcTemplate.update(
-                "INSERT INTO NEWSLETTER_DISPATCHED_MAILS(id, NEWSLETTER_MAIL_ID, EMAIL, ERROR, STATUS) VALUES (?, ?, ?, ?, ?)",
-                dbParams
+            "INSERT INTO NEWSLETTER_DISPATCHED_MAILS(id, NEWSLETTER_MAIL_ID, EMAIL, ERROR, STATUS) VALUES (?, ?, ?, ?, ?)",
+            dbParams
         );
         return id;
     }
@@ -177,8 +177,8 @@ class NewsletterDispatchedMailDAO {
         dbParams[3] = newsletterTemplate.getStatus();
         dbParams[4] = newsletterTemplate.getId();
         jdbcTemplate.update(
-                "UPDATE NEWSLETTER_DISPATCHED_MAILS SET NEWSLETTER_MAIL_ID = ?, EMAIL = ?, ERROR = ? = ? WHERE id = ?",
-                dbParams
+            "UPDATE NEWSLETTER_DISPATCHED_MAILS SET NEWSLETTER_MAIL_ID = ?, EMAIL = ?, ERROR = ? = ? WHERE id = ?",
+            dbParams
         );
     }
 
@@ -186,8 +186,8 @@ class NewsletterDispatchedMailDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = newsletterTemplate.getId();
         jdbcTemplate.update(
-                "UPDATE NEWSLETTER_DISPATCHED_MAILS SET status = 'D' WHERE id = ?",
-                dbParams
+            "UPDATE NEWSLETTER_DISPATCHED_MAILS SET status = 'D' WHERE id = ?",
+            dbParams
         );
     }
 
@@ -195,8 +195,8 @@ class NewsletterDispatchedMailDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = newsletterTemplate.getId();
         jdbcTemplate.update(
-                "UPDATE NEWSLETTER_DISPATCHED_MAILS SET status = 'N' WHERE id = ?",
-                dbParams
+            "UPDATE NEWSLETTER_DISPATCHED_MAILS SET status = 'N' WHERE id = ?",
+            dbParams
         );
     }
 
@@ -204,8 +204,8 @@ class NewsletterDispatchedMailDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = newsletterTemplate.getId();
         jdbcTemplate.update(
-                "UPDATE NEWSLETTER_DISPATCHED_MAILS SET status = 'S' WHERE id = ?",
-                dbParams
+            "UPDATE NEWSLETTER_DISPATCHED_MAILS SET status = 'S' WHERE id = ?",
+            dbParams
         );
     }
 
@@ -214,8 +214,8 @@ class NewsletterDispatchedMailDAO {
         dbParams[0] = newsletterTemplate.getError();
         dbParams[0] = newsletterTemplate.getId();
         jdbcTemplate.update(
-                "UPDATE NEWSLETTER_DISPATCHED_MAILS SET ERROR = ?, status = 'E' WHERE id = ?",
-                dbParams
+            "UPDATE NEWSLETTER_DISPATCHED_MAILS SET ERROR = ?, status = 'E' WHERE id = ?",
+            dbParams
         );
     }
 

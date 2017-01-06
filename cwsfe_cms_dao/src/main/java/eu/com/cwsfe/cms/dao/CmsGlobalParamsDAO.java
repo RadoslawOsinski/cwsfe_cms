@@ -28,12 +28,12 @@ public class CmsGlobalParamsDAO {
 
     public List<CmsGlobalParam> list() {
         String query =
-                "SELECT " +
-                        "id, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION " +
-                        "FROM CMS_GLOBAL_PARAMS " +
-                        "ORDER BY CODE";
+            "SELECT " +
+                "id, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION " +
+                "FROM CMS_GLOBAL_PARAMS " +
+                "ORDER BY CODE";
         return jdbcTemplate.query(query, (resultSet, rowNum) ->
-                mapCmsGlobalParam(resultSet));
+            mapCmsGlobalParam(resultSet));
     }
 
     private CmsGlobalParam mapCmsGlobalParam(ResultSet resultSet) throws SQLException {
@@ -51,13 +51,13 @@ public class CmsGlobalParamsDAO {
         dbParams[0] = limit;
         dbParams[1] = offset;
         String query =
-                "SELECT " +
-                        "id, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION " +
-                        "FROM CMS_GLOBAL_PARAMS " +
-                        "ORDER BY CODE" +
-                        " LIMIT ? OFFSET ?";
+            "SELECT " +
+                "id, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION " +
+                "FROM CMS_GLOBAL_PARAMS " +
+                "ORDER BY CODE" +
+                " LIMIT ? OFFSET ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapCmsGlobalParam(resultSet));
+            mapCmsGlobalParam(resultSet));
     }
 
     public List<CmsGlobalParam> listForDropList(String term, int limit) {
@@ -65,40 +65,40 @@ public class CmsGlobalParamsDAO {
         dbParams[0] = '%' + term + '%';
         dbParams[1] = limit;
         String query =
-                "SELECT " +
-                        "id, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION " +
-                        " FROM CMS_GLOBAL_PARAMS " +
-                        " WHERE lower(CODE) LIKE lower(?) " +
-                        " ORDER BY CODE" +
-                        " LIMIT ?";
+            "SELECT " +
+                "id, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION " +
+                " FROM CMS_GLOBAL_PARAMS " +
+                " WHERE lower(CODE) LIKE lower(?) " +
+                " ORDER BY CODE" +
+                " LIMIT ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapCmsGlobalParam(resultSet));
+            mapCmsGlobalParam(resultSet));
     }
 
-    @Cacheable(value="cmsGlobalParamById")
+    @Cacheable(value = "cmsGlobalParamById")
     public CmsGlobalParam get(Long id) {
         String query =
-                "SELECT " +
-                        "id, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION " +
-                        "FROM CMS_GLOBAL_PARAMS " +
-                        "WHERE id = ?";
+            "SELECT " +
+                "id, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION " +
+                "FROM CMS_GLOBAL_PARAMS " +
+                "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                    mapCmsGlobalParam(resultSet));
+            mapCmsGlobalParam(resultSet));
     }
 
-    @Cacheable(value="cmsGlobalParamByCode")
+    @Cacheable(value = "cmsGlobalParamByCode")
     public CmsGlobalParam getByCode(String code) {
         String query =
-                "SELECT " +
-                        "id, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION " +
-                        "FROM CMS_GLOBAL_PARAMS " +
-                        "WHERE CODE = ?";
+            "SELECT " +
+                "id, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION " +
+                "FROM CMS_GLOBAL_PARAMS " +
+                "WHERE CODE = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = code;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                mapCmsGlobalParam(resultSet));
+            mapCmsGlobalParam(resultSet));
     }
 
     public Long add(CmsGlobalParam cmsFolder) {
@@ -110,8 +110,8 @@ public class CmsGlobalParamsDAO {
         dbParams[3] = cmsFolder.getValue();
         dbParams[4] = cmsFolder.getDescription();
         jdbcTemplate.update(
-                "INSERT INTO CMS_GLOBAL_PARAMS(id, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION ) VALUES (?, ?, ?, ?, ?)",
-                dbParams);
+            "INSERT INTO CMS_GLOBAL_PARAMS(id, CODE, DEFAULT_VALUE, VALUE, DESCRIPTION ) VALUES (?, ?, ?, ?, ?)",
+            dbParams);
         return id;
     }
 
@@ -124,7 +124,7 @@ public class CmsGlobalParamsDAO {
         dbParams[3] = cmsFolder.getDescription();
         dbParams[4] = cmsFolder.getId();
         jdbcTemplate.update("UPDATE CMS_GLOBAL_PARAMS SET CODE = ?, DEFAULT_VALUE = ?, VALUE = ?, DESCRIPTION = ? WHERE id = ?"
-                , dbParams);
+            , dbParams);
     }
 
     @CacheEvict(value = {"cmsGlobalParamById", "cmsGlobalParamByCode"})

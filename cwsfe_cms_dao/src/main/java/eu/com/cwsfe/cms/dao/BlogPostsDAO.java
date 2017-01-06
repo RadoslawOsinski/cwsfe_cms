@@ -26,31 +26,31 @@ public class BlogPostsDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = languageId;
         String query =
-                "SELECT" +
-                        "  COUNT(bp.id), CAST(EXTRACT(YEAR FROM bp.post_creation_date) AS TEXT) AS YEAR, CAST(EXTRACT(MONTH FROM bp.post_creation_date) AS TEXT) AS MONTH" +
-                        "  FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
-                        "  WHERE" +
-                        "  bp.id = bpi18n.post_id AND" +
-                        "  bp.status = 'P' AND bpi18n.status = 'P' AND" +
-                        "  bpi18n.language_id = ?" +
-                        "  GROUP BY MONTH, YEAR" +
-                        " ORDER BY YEAR DESC, MONTH DESC";
+            "SELECT" +
+                "  COUNT(bp.id), CAST(EXTRACT(YEAR FROM bp.post_creation_date) AS TEXT) AS YEAR, CAST(EXTRACT(MONTH FROM bp.post_creation_date) AS TEXT) AS MONTH" +
+                "  FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
+                "  WHERE" +
+                "  bp.id = bpi18n.post_id AND" +
+                "  bp.status = 'P' AND bpi18n.status = 'P' AND" +
+                "  bpi18n.language_id = ?" +
+                "  GROUP BY MONTH, YEAR" +
+                " ORDER BY YEAR DESC, MONTH DESC";
         return jdbcTemplate.query(query, dbParams,
-                (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2), resultSet.getLong(3)});
+            (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2), resultSet.getLong(3)});
     }
 
     public List<Object[]> listArchiveStatistics() {
         String query =
-                "SELECT" +
-                        "  COUNT(bp.id), CAST(EXTRACT(YEAR FROM bp.post_creation_date) AS TEXT) AS YEAR, CAST(EXTRACT(MONTH FROM bp.post_creation_date) AS TEXT) AS MONTH" +
-                        "  FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
-                        "  WHERE" +
-                        "  bp.id = bpi18n.post_id AND" +
-                        "  bp.status = 'P' AND bpi18n.status = 'P'" +
-                        "  GROUP BY MONTH, YEAR" +
-                        " ORDER BY YEAR DESC, MONTH DESC";
+            "SELECT" +
+                "  COUNT(bp.id), CAST(EXTRACT(YEAR FROM bp.post_creation_date) AS TEXT) AS YEAR, CAST(EXTRACT(MONTH FROM bp.post_creation_date) AS TEXT) AS MONTH" +
+                "  FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
+                "  WHERE" +
+                "  bp.id = bpi18n.post_id AND" +
+                "  bp.status = 'P' AND bpi18n.status = 'P'" +
+                "  GROUP BY MONTH, YEAR" +
+                " ORDER BY YEAR DESC, MONTH DESC";
         return jdbcTemplate.query(query,
-                (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2), resultSet.getLong(3)});
+            (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2), resultSet.getLong(3)});
     }
 
     public List<Object[]> listForPageWithPaging(Long languageId, Integer limit, Integer offset) {
@@ -59,33 +59,33 @@ public class BlogPostsDAO {
         dbParams[1] = limit;
         dbParams[2] = offset;
         String query =
-                "SELECT" +
-                        " bp.id, bpi18n.id" +
-                        " FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
-                        " WHERE" +
-                        " bp.id = bpi18n.post_id AND" +
-                        " bpi18n.language_id = ? AND" +
-                        " bp.status = 'P' AND bpi18n.status = 'P'" +
-                        " ORDER BY bp.post_creation_date DESC" +
-                        " LIMIT ? OFFSET ?";
+            "SELECT" +
+                " bp.id, bpi18n.id" +
+                " FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
+                " WHERE" +
+                " bp.id = bpi18n.post_id AND" +
+                " bpi18n.language_id = ? AND" +
+                " bp.status = 'P' AND bpi18n.status = 'P'" +
+                " ORDER BY bp.post_creation_date DESC" +
+                " LIMIT ? OFFSET ?";
         return jdbcTemplate.query(query, dbParams,
-                (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
+            (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
     }
 
     public long listCountForPageWithPaging(Long languageId) {
         Object[] dbParams = new Object[1];
         dbParams[0] = languageId;
         String query =
-                "SELECT count(*) FROM(" +
-                        "SELECT" +
-                        " bp.id, bpi18n.id" +
-                        " FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
-                        " WHERE" +
-                        " bp.id = bpi18n.post_id AND" +
-                        " bpi18n.language_id = ? AND" +
-                        " bp.status = 'P' AND bpi18n.status = 'P'" +
-                        " ORDER BY bp.post_creation_date DESC" +
-                        ") AS results";
+            "SELECT count(*) FROM(" +
+                "SELECT" +
+                " bp.id, bpi18n.id" +
+                " FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
+                " WHERE" +
+                " bp.id = bpi18n.post_id AND" +
+                " bpi18n.language_id = ? AND" +
+                " bp.status = 'P' AND bpi18n.status = 'P'" +
+                " ORDER BY bp.post_creation_date DESC" +
+                ") AS results";
         return jdbcTemplate.queryForObject(query, dbParams, Long.class);
     }
 
@@ -96,19 +96,19 @@ public class BlogPostsDAO {
         dbParams[2] = limit;
         dbParams[3] = offset;
         String query =
-                "SELECT" +
-                        " bp.id, bpi18n.id" +
-                        " FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n, BLOG_POST_KEYWORDS bpk" +
-                        " WHERE" +
-                        " bp.id = bpi18n.post_id AND" +
-                        " bp.id = bpk.blog_post_id AND" +
-                        " bpk.blog_keyword_id = ? AND" +
-                        " bpi18n.language_id = ? AND" +
-                        " bp.status = 'P' AND bpi18n.status = 'P'" +
-                        " ORDER BY bp.post_creation_date DESC" +
-                        " LIMIT ? OFFSET ?";
+            "SELECT" +
+                " bp.id, bpi18n.id" +
+                " FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n, BLOG_POST_KEYWORDS bpk" +
+                " WHERE" +
+                " bp.id = bpi18n.post_id AND" +
+                " bp.id = bpk.blog_post_id AND" +
+                " bpk.blog_keyword_id = ? AND" +
+                " bpi18n.language_id = ? AND" +
+                " bp.status = 'P' AND bpi18n.status = 'P'" +
+                " ORDER BY bp.post_creation_date DESC" +
+                " LIMIT ? OFFSET ?";
         return jdbcTemplate.query(query, dbParams,
-                (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
+            (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
     }
 
     public long listCountForPageWithCategoryAndPaging(Long categoryId, Long languageId) {
@@ -116,18 +116,18 @@ public class BlogPostsDAO {
         dbParams[0] = categoryId;
         dbParams[1] = languageId;
         String query =
-                "SELECT count(*) FROM(" +
-                        "SELECT" +
-                        " bp.id, bpi18n.id" +
-                        " FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n, BLOG_POST_KEYWORDS bpk" +
-                        " WHERE" +
-                        " bp.id = bpi18n.post_id AND" +
-                        " bp.id = bpk.blog_post_id AND" +
-                        " bpk.blog_keyword_id = ? AND" +
-                        " bpi18n.language_id = ? AND" +
-                        " bp.status = 'P' AND bpi18n.status = 'P'" +
-                        " ORDER BY bp.post_creation_date DESC" +
-                        ")AS results";
+            "SELECT count(*) FROM(" +
+                "SELECT" +
+                " bp.id, bpi18n.id" +
+                " FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n, BLOG_POST_KEYWORDS bpk" +
+                " WHERE" +
+                " bp.id = bpi18n.post_id AND" +
+                " bp.id = bpk.blog_post_id AND" +
+                " bpk.blog_keyword_id = ? AND" +
+                " bpi18n.language_id = ? AND" +
+                " bp.status = 'P' AND bpi18n.status = 'P'" +
+                " ORDER BY bp.post_creation_date DESC" +
+                ")AS results";
         return jdbcTemplate.queryForObject(query, dbParams, Long.class);
     }
 
@@ -140,22 +140,22 @@ public class BlogPostsDAO {
         dbParams[4] = limit;
         dbParams[5] = offset;
         String query =
-                "SELECT" +
-                        " bp.id, bpi18n.id" +
-                        " FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
-                        " WHERE" +
-                        " bp.id = bpi18n.post_id AND" +
-                        " bpi18n.language_id = ? AND" +
-                        " bp.status = 'P' AND bpi18n.status = 'P'and" +
-                        " (" +
-                        " lower(bpi18n.post_title) like lower( ?) or" +
-                        " lower(bpi18n.post_shortcut) like lower (?) or" +
-                        " lower(bpi18n.post_description) like lower (?)" +
-                        " )" +
-                        " ORDER BY bp.post_creation_date DESC" +
-                        " LIMIT ? OFFSET ?";
+            "SELECT" +
+                " bp.id, bpi18n.id" +
+                " FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
+                " WHERE" +
+                " bp.id = bpi18n.post_id AND" +
+                " bpi18n.language_id = ? AND" +
+                " bp.status = 'P' AND bpi18n.status = 'P'and" +
+                " (" +
+                " lower(bpi18n.post_title) like lower( ?) or" +
+                " lower(bpi18n.post_shortcut) like lower (?) or" +
+                " lower(bpi18n.post_description) like lower (?)" +
+                " )" +
+                " ORDER BY bp.post_creation_date DESC" +
+                " LIMIT ? OFFSET ?";
         return jdbcTemplate.query(query, dbParams,
-                (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
+            (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
     }
 
     public long listCountForPageWithSearchTextAndPaging(String searchText, Long languageId) {
@@ -165,21 +165,21 @@ public class BlogPostsDAO {
         dbParams[2] = '%' + searchText + '%';
         dbParams[3] = '%' + searchText + '%';
         String query =
-                "SELECT count(*) FROM(" +
-                        "SELECT" +
-                        " bp.id, bpi18n.id" +
-                        " from BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
-                        " WHERE" +
-                        " bp.id = bpi18n.post_id AND" +
-                        " bpi18n.language_id = ? AND" +
-                        " bp.status = 'P' AND bpi18n.status = 'P' and" +
-                        "(" +
-                        " lower(bpi18n.post_title)like lower(?) or" +
-                        " lower(bpi18n.post_shortcut) like lower (?) or" +
-                        " lower(bpi18n.post_description) like lower (?)" +
-                        ")" +
-                        " ORDER BY bp.post_creation_date DESC" +
-                        ")AS results";
+            "SELECT count(*) FROM(" +
+                "SELECT" +
+                " bp.id, bpi18n.id" +
+                " from BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
+                " WHERE" +
+                " bp.id = bpi18n.post_id AND" +
+                " bpi18n.language_id = ? AND" +
+                " bp.status = 'P' AND bpi18n.status = 'P' and" +
+                "(" +
+                " lower(bpi18n.post_title)like lower(?) or" +
+                " lower(bpi18n.post_shortcut) like lower (?) or" +
+                " lower(bpi18n.post_description) like lower (?)" +
+                ")" +
+                " ORDER BY bp.post_creation_date DESC" +
+                ")AS results";
         return jdbcTemplate.queryForObject(query, dbParams, Long.class);
     }
 
@@ -191,18 +191,18 @@ public class BlogPostsDAO {
         dbParams[3] = limit;
         dbParams[4] = offset;
         String query =
-                "SELECT" +
-                        " bp.id, bpi18n.id" +
-                        " FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
-                        " WHERE" +
-                        " bp.id = bpi18n.post_id AND" +
-                        " bpi18n.language_id = ? AND" +
-                        " bp.post_creation_date >= ? AND bp.post_creation_date<? AND" +
-                        " bp.status = 'P' AND bpi18n.status = 'P'" +
-                        " ORDER BY bp.post_creation_date DESC" +
-                        " LIMIT ? OFFSET ?";
+            "SELECT" +
+                " bp.id, bpi18n.id" +
+                " FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
+                " WHERE" +
+                " bp.id = bpi18n.post_id AND" +
+                " bpi18n.language_id = ? AND" +
+                " bp.post_creation_date >= ? AND bp.post_creation_date<? AND" +
+                " bp.status = 'P' AND bpi18n.status = 'P'" +
+                " ORDER BY bp.post_creation_date DESC" +
+                " LIMIT ? OFFSET ?";
         return jdbcTemplate.query(query, dbParams,
-                (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
+            (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
     }
 
     public long listCountForPageWithArchiveDateAndPaging(Date startDate, Date endDate, Long languageId) {
@@ -211,17 +211,17 @@ public class BlogPostsDAO {
         dbParams[1] = startDate;
         dbParams[2] = endDate;
         String query =
-                "SELECT count(*) FROM(" +
-                        "SELECT" +
-                        " bp.id, bpi18n.id" +
-                        " FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
-                        " WHERE" +
-                        " bp.id = bpi18n.post_id AND" +
-                        " bpi18n.language_id = ? AND" +
-                        " bp.post_creation_date >= ? AND bp.post_creation_date<? AND" +
-                        " bp.status = 'P' AND bpi18n.status = 'P'" +
-                        " ORDER BY bp.post_creation_date DESC" +
-                        ")AS results";
+            "SELECT count(*) FROM(" +
+                "SELECT" +
+                " bp.id, bpi18n.id" +
+                " FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi18n" +
+                " WHERE" +
+                " bp.id = bpi18n.post_id AND" +
+                " bpi18n.language_id = ? AND" +
+                " bp.post_creation_date >= ? AND bp.post_creation_date<? AND" +
+                " bp.status = 'P' AND bpi18n.status = 'P'" +
+                " ORDER BY bp.post_creation_date DESC" +
+                ")AS results";
         return jdbcTemplate.queryForObject(query, dbParams, Long.class);
     }
 
@@ -230,7 +230,7 @@ public class BlogPostsDAO {
     }
 
     public List<Object[]> searchByAjax(
-            int iDisplayStart, int iDisplayLength, Integer searchAuthorId, String searchPostTextCode
+        int iDisplayStart, int iDisplayLength, Integer searchAuthorId, String searchPostTextCode
     ) {
         int numberOfSearchParams = 0;
         String additionalQuery = "";
@@ -255,23 +255,23 @@ public class BlogPostsDAO {
             dbParams[i] = additionalParams.get(i);
         }
         String query =
-                "select " +
-                        " bp.id, (first_name || ' ' || last_name) as author, post_text_code, post_creation_date, bp.status" +
-                        " from BLOG_POSTS bp left join CMS_AUTHORS ca ON bp.post_author_id = ca.id " +
-                        " where bp.status <> 'D' and ca.status <> 'D' " + additionalQuery +
-                        " and 1 = 1" +
-                        " order by post_creation_date desc" +
-                        " limit ? offset ?";
+            "select " +
+                " bp.id, (first_name || ' ' || last_name) as author, post_text_code, post_creation_date, bp.status" +
+                " from BLOG_POSTS bp left join CMS_AUTHORS ca ON bp.post_author_id = ca.id " +
+                " where bp.status <> 'D' and ca.status <> 'D' " + additionalQuery +
+                " and 1 = 1" +
+                " order by post_creation_date desc" +
+                " limit ? offset ?";
         return jdbcTemplate.query(query, dbParams,
-                (resultSet, i) -> {
-                    Object[] o = new Object[5];
-                    o[0] = resultSet.getInt("ID");
-                    o[1] = resultSet.getString("AUTHOR");
-                    o[2] = resultSet.getString("POST_TEXT_CODE");
-                    o[3] = resultSet.getDate("POST_CREATION_DATE");
-                    o[4] = resultSet.getString("STATUS");
-                    return o;
-                });
+            (resultSet, i) -> {
+                Object[] o = new Object[5];
+                o[0] = resultSet.getInt("ID");
+                o[1] = resultSet.getString("AUTHOR");
+                o[2] = resultSet.getString("POST_TEXT_CODE");
+                o[3] = resultSet.getDate("POST_CREATION_DATE");
+                o[4] = resultSet.getString("STATUS");
+                return o;
+            });
     }
 
     public int searchByAjaxCount(Integer searchAuthorId, String searchPostTextCode) {
@@ -294,23 +294,23 @@ public class BlogPostsDAO {
             dbParamsForCount[i] = additionalParams.get(i);
         }
         String query =
-                "select count(*) from (" +
-                        "select " +
-                        " bp.id, (first_name || ' ' || last_name) as author, post_text_code, post_creation_date, bp.status" +
-                        " from BLOG_POSTS bp left join CMS_AUTHORS ca ON bp.post_author_id = ca.id " +
-                        " where bp.status <> 'D' and ca.status <> 'D' " + additionalQuery +
-                        " and 1 = 1" +
-                        " order by post_creation_date desc" +
-                        ") as results";
+            "select count(*) from (" +
+                "select " +
+                " bp.id, (first_name || ' ' || last_name) as author, post_text_code, post_creation_date, bp.status" +
+                " from BLOG_POSTS bp left join CMS_AUTHORS ca ON bp.post_author_id = ca.id " +
+                " where bp.status <> 'D' and ca.status <> 'D' " + additionalQuery +
+                " and 1 = 1" +
+                " order by post_creation_date desc" +
+                ") as results";
         return jdbcTemplate.queryForObject(query, dbParamsForCount, Integer.class);
     }
 
     public BlogPost get(Long id) {
         String query =
-                "SELECT " +
-                        " id, post_author_id, post_text_code, post_creation_date, status" +
-                        " FROM BLOG_POSTS " +
-                        "WHERE id = ?";
+            "SELECT " +
+                " id, post_author_id, post_text_code, post_creation_date, status" +
+                " FROM BLOG_POSTS " +
+                "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPost(resultSet));
@@ -318,10 +318,10 @@ public class BlogPostsDAO {
 
     public BlogPost getByCode(String code) {
         String query =
-                "SELECT " +
-                        " id, post_author_id, post_text_code, post_creation_date, status" +
-                        " FROM BLOG_POSTS " +
-                        "WHERE post_text_code = ?";
+            "SELECT " +
+                " id, post_author_id, post_text_code, post_creation_date, status" +
+                " FROM BLOG_POSTS " +
+                "WHERE post_text_code = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = code;
         return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPost(resultSet));
@@ -346,7 +346,7 @@ public class BlogPostsDAO {
         dbParams[3] = blogPost.getPostCreationDate();
         dbParams[4] = blogPost.getStatus().getCode();
         jdbcTemplate.update("INSERT INTO BLOG_POSTS(id, post_author_id, post_text_code, post_creation_date, status)" +
-                "VALUES (?, ?, ?, ?, ?)", dbParams);
+            "VALUES (?, ?, ?, ?, ?)", dbParams);
         return id;
     }
 
@@ -388,15 +388,15 @@ public class BlogPostsDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = languageId;
         String query =
-                "SELECT bp.id, bpi.id " +
-                        "FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi " +
-                        "WHERE " +
-                        "bp.status = 'P' AND bpi.status = 'P' AND " +
-                        "bp.id = bpi.post_id AND " +
-                        "bpi.language_id = ? " +
-                        "ORDER BY bp.post_creation_date DESC ";
+            "SELECT bp.id, bpi.id " +
+                "FROM BLOG_POSTS bp, BLOG_POST_I18N_CONTENTS bpi " +
+                "WHERE " +
+                "bp.status = 'P' AND bpi.status = 'P' AND " +
+                "bp.id = bpi.post_id AND " +
+                "bpi.language_id = ? " +
+                "ORDER BY bp.post_creation_date DESC ";
         return jdbcTemplate.query(query, dbParams,
-                (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
+            (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
     }
 
 }

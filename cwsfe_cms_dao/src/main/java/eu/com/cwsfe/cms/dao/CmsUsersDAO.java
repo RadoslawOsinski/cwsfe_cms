@@ -61,13 +61,13 @@ public class CmsUsersDAO {
 
     public List<CmsUser> list() {
         String query =
-                "SELECT " +
-                        " id, username, password_hash, status" +
-                        " FROM CMS_USERS " +
-                        " WHERE status = 'N'" +
-                        " ORDER BY username";
+            "SELECT " +
+                " id, username, password_hash, status" +
+                " FROM CMS_USERS " +
+                " WHERE status = 'N'" +
+                " ORDER BY username";
         return jdbcTemplate.query(query, (resultSet, rowNum) ->
-                mapCmsUser(resultSet));
+            mapCmsUser(resultSet));
     }
 
     public List<CmsUser> listAjax(int offset, int limit) {
@@ -75,13 +75,13 @@ public class CmsUsersDAO {
         dbParams[0] = limit;
         dbParams[1] = offset;
         String query =
-                "SELECT " +
-                        " id, username, password_hash, status" +
-                        " FROM CMS_USERS " +
-                        " ORDER BY username" +
-                        " LIMIT ? OFFSET ?";
+            "SELECT " +
+                " id, username, password_hash, status" +
+                " FROM CMS_USERS " +
+                " ORDER BY username" +
+                " LIMIT ? OFFSET ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapCmsUser(resultSet));
+            mapCmsUser(resultSet));
     }
 
     public List<CmsUser> listUsersForDropList(String term, int limit) {
@@ -89,31 +89,31 @@ public class CmsUsersDAO {
         dbParams[0] = '%' + term + '%';
         dbParams[1] = limit;
         String query =
-                "SELECT " +
-                        " id, username, password_hash, status" +
-                        " FROM CMS_USERS " +
-                        " WHERE status = 'N' AND lower(username) LIKE lower(?) " +
-                        " ORDER BY username" +
-                        " LIMIT ?";
+            "SELECT " +
+                " id, username, password_hash, status" +
+                " FROM CMS_USERS " +
+                " WHERE status = 'N' AND lower(username) LIKE lower(?) " +
+                " ORDER BY username" +
+                " LIMIT ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
-                mapCmsUser(resultSet));
+            mapCmsUser(resultSet));
     }
 
-    @Cacheable(value="cmsUserById")
+    @Cacheable(value = "cmsUserById")
     public CmsUser get(Long id) {
         String query =
-                "SELECT " +
-                        " id, username, password_hash, status" +
-                        " FROM CMS_USERS " +
-                        "WHERE id = ?";
+            "SELECT " +
+                " id, username, password_hash, status" +
+                " FROM CMS_USERS " +
+                "WHERE id = ?";
         Object[] dbParams = new Object[1];
         dbParams[0] = id;
         CmsUser cmsUser = null;
         try {
             cmsUser = jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) ->
-                    mapCmsUser(resultSet));
+                mapCmsUser(resultSet));
         } catch (DataAccessException e) {
-            LOGGER.trace("User does not exist for id: {}", id, e) ;
+            LOGGER.trace("User does not exist for id: {}", id, e);
         }
         return cmsUser;
     }
@@ -125,8 +125,8 @@ public class CmsUsersDAO {
         dbParams[1] = cmsUser.getUserName();
         dbParams[2] = cmsUser.getPasswordHash();
         jdbcTemplate.update(
-                "INSERT INTO CMS_USERS(id, username, password_hash, status) VALUES (?, ?, ?, 'N')",
-                dbParams
+            "INSERT INTO CMS_USERS(id, username, password_hash, status) VALUES (?, ?, ?, 'N')",
+            dbParams
         );
         return id;
     }
@@ -138,8 +138,8 @@ public class CmsUsersDAO {
         dbParams[1] = cmsUser.getPasswordHash();
         dbParams[2] = cmsUser.getId();
         jdbcTemplate.update(
-                "UPDATE CMS_USERS SET username = ?, password_hash = ? WHERE id = ?",
-                dbParams
+            "UPDATE CMS_USERS SET username = ?, password_hash = ? WHERE id = ?",
+            dbParams
         );
     }
 
@@ -150,8 +150,8 @@ public class CmsUsersDAO {
         dbParams[1] = cmsUser.getStatus().getCode();
         dbParams[2] = cmsUser.getId();
         jdbcTemplate.update(
-                "UPDATE CMS_USERS SET username = ?, status = ? WHERE id = ?",
-                dbParams
+            "UPDATE CMS_USERS SET username = ?, status = ? WHERE id = ?",
+            dbParams
         );
     }
 
@@ -161,8 +161,8 @@ public class CmsUsersDAO {
         dbParams[0] = cmsUser.getUserName();
         dbParams[1] = cmsUser.getId();
         jdbcTemplate.update(
-                "UPDATE CMS_USERS SET username = ? WHERE id = ?",
-                dbParams
+            "UPDATE CMS_USERS SET username = ? WHERE id = ?",
+            dbParams
         );
     }
 
@@ -171,8 +171,8 @@ public class CmsUsersDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = cmsUser.getId();
         jdbcTemplate.update(
-                "UPDATE CMS_USERS SET status = 'D' WHERE id = ?",
-                dbParams
+            "UPDATE CMS_USERS SET status = 'D' WHERE id = ?",
+            dbParams
         );
     }
 
@@ -181,8 +181,8 @@ public class CmsUsersDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = cmsUser.getId();
         jdbcTemplate.update(
-                "UPDATE CMS_USERS SET status = 'N' WHERE id = ?",
-                dbParams
+            "UPDATE CMS_USERS SET status = 'N' WHERE id = ?",
+            dbParams
         );
     }
 
@@ -191,8 +191,8 @@ public class CmsUsersDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = cmsUser.getId();
         jdbcTemplate.update(
-                "UPDATE CMS_USERS SET status = 'L' WHERE id = ?",
-                dbParams
+            "UPDATE CMS_USERS SET status = 'L' WHERE id = ?",
+            dbParams
         );
     }
 
@@ -201,8 +201,8 @@ public class CmsUsersDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = cmsUser.getId();
         jdbcTemplate.update(
-                "UPDATE CMS_USERS SET status = 'N' WHERE id = ?",
-                dbParams
+            "UPDATE CMS_USERS SET status = 'N' WHERE id = ?",
+            dbParams
         );
     }
 

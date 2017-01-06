@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Rollback
 @ContextConfiguration(classes = {DaoTestsConfiguration.class, CmsNewsI18nContentsDAO.class,
-        CmsNewsDAO.class, NewsTypesDAO.class, CmsFoldersDAO.class, CmsAuthorsDAO.class, CmsLanguagesDAO.class
+    CmsNewsDAO.class, NewsTypesDAO.class, CmsFoldersDAO.class, CmsAuthorsDAO.class, CmsLanguagesDAO.class
 })
 @IfProfileValue(name = "test-groups", values = {"integration-tests-local"})
 public class CmsNewsI18nContentsDAOTest extends AbstractTransactionalJUnit4SpringContextTests {

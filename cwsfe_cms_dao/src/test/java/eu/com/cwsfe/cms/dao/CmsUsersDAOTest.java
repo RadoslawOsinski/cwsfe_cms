@@ -24,7 +24,7 @@ public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTes
 
     @Autowired
     private CmsUsersDAO dao;
-    
+
     @Test
     public void testIsActiveUsernameInDatabase() throws Exception {
         //given
