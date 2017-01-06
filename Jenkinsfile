@@ -2,6 +2,10 @@
 
     checkout scm
 
+    // Store the commit id for use in manifest. Current jenkins version does not support correct version
+    sh 'git rev-parse --short HEAD > GIT_CUSTOM_READ_SHA'
+    GIT_CUSTOM_READ_SHA = readFile('GIT_CUSTOM_READ_SHA').trim();
+
     //Properties for gradle are stored in ($JENKINS_HOME directory, cd ~/):
     //----->  /var/lib/jenkins/.gradle/gradle.properties
 
