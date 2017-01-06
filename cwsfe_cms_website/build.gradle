@@ -102,10 +102,20 @@ task createTomcatWar(type: War, dependsOn: classes) {
     classpath configurations.tomcatLibs // adds a configuration to the WEB-INF/lib dir
 }
 
+jacoco {
+    toolVersion = "0.7.8"
+}
+
 jacocoTestReport {
     group = "Reporting"
     description = "Generate Jacoco coverage reports after running tests."
     additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination "${buildDir}/reports/coverage"
+    }
+    executionData = files('build/jacoco/test.exec', 'build/jacoco/integration_tests_local.exec')
 }
 
 sonarqube {
