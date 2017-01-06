@@ -44,7 +44,7 @@ dependencies {
     testCompile group: 'org.springframework', name: 'spring-test', version: '4.3.3.RELEASE'
 }
 
-def gitCommitHash = "git rev-parse HEAD".execute();
+def gitCommitHash = "git rev-parse HEAD".execute().text.trim();
 
 jar.archiveName = "CWSFE_CMS_DAO-" + version + ".jar"
 jar {

@@ -52,7 +52,7 @@ dependencies {
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.2.9'
 }
 
-def gitCommitHash = "git rev-parse HEAD".execute();
+def gitCommitHash = "git rev-parse HEAD".execute().text.trim();
 
 jar.archiveName = "CWSFE_CMS_REST-" + version + ".jar";
 jar {
