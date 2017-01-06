@@ -26,7 +26,7 @@ public class BlogAuthorRestController {
      */
     @RequestMapping(value = "/rest/author/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public CmsAuthor getAuthor(
-            @PathVariable("id") long authorId
+        @PathVariable("id") long authorId
     ) {
         return cmsAuthorsDAO.get(authorId);
     }

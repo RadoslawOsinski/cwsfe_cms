@@ -67,14 +67,14 @@ public class BlogKeywordsRestControllerTest {
         when(cmsTextI18nDAO.findTranslation(anyString(), anyString(), anyString())).thenReturn(blogKeywordI18n);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/blogKeywordsList")
-                .param("languageCode", "en")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("languageCode", "en")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$[0].id").value((int) id))
-                .andExpect(jsonPath("$[0].keywordName").value(blogKeywordI18n));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$[0].id").value((int) id))
+            .andExpect(jsonPath("$[0].keywordName").value(blogKeywordI18n));
     }
 
     @Test
@@ -91,14 +91,14 @@ public class BlogKeywordsRestControllerTest {
         when(cmsTextI18nDAO.findTranslation(anyString(), anyString(), anyString())).thenThrow(new EmptyResultDataAccessException(1));
 
         ResultActions resultActions = mockMvc.perform(get("/rest/blogKeywordsList")
-                .param("languageCode", "en")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("languageCode", "en")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$[0].id").value((int) id))
-                .andExpect(jsonPath("$[0].keywordName").value(keyword));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$[0].id").value((int) id))
+            .andExpect(jsonPath("$[0].keywordName").value(keyword));
     }
 
     @Test
@@ -115,15 +115,15 @@ public class BlogKeywordsRestControllerTest {
         when(cmsTextI18nDAO.findTranslation(anyString(), anyString(), anyString())).thenReturn(blogKeywordI18n);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/postKeywords")
-                .param("blogPostId", "1")
-                .param("languageCode", "en")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("blogPostId", "1")
+            .param("languageCode", "en")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$[0].id").value((int) id))
-                .andExpect(jsonPath("$[0].keywordName").value(blogKeywordI18n));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$[0].id").value((int) id))
+            .andExpect(jsonPath("$[0].keywordName").value(blogKeywordI18n));
     }
 
 }

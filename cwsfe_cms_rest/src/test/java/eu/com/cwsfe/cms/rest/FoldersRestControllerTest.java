@@ -62,15 +62,15 @@ public class FoldersRestControllerTest {
         when(cmsTextI18nDAO.findTranslation(anyString(), anyString(), anyString())).thenReturn(folderNameI18n);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/foldersList")
-                .param("languageCode", "en")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("languageCode", "en")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$[0].id").value((int) id))
-                .andExpect(jsonPath("$[0].folderName").value(folderNameI18n))
-                .andExpect(jsonPath("$[0].orderNumber").value((int) orderNumber));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$[0].id").value((int) id))
+            .andExpect(jsonPath("$[0].folderName").value(folderNameI18n))
+            .andExpect(jsonPath("$[0].orderNumber").value((int) orderNumber));
     }
 
 }

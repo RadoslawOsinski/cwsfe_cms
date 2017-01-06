@@ -48,13 +48,13 @@ public class BlogPostCommentsRestControllerTest {
         when(blogPostCommentsDAO.countCommentsForPostI18n(anyLong())).thenReturn(count);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/comments")
-                .param("blogPostI18nContentId", "1")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("blogPostI18nContentId", "1")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.count").value(count));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.count").value(count));
     }
 
     @Test
@@ -62,25 +62,25 @@ public class BlogPostCommentsRestControllerTest {
         when(blogPostCommentsDAO.add(anyObject())).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/rest/comments")
-                .param("blogPostI18nContentId", "2")
-                .param("comment", "aaa")
-                .param("userName", "bbb")
-                .param("email", "Radoslaw.Osinski@cwsfe.pl")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("blogPostI18nContentId", "2")
+            .param("comment", "aaa")
+            .param("userName", "bbb")
+            .param("email", "Radoslaw.Osinski@cwsfe.pl")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
     }
 
     @Test
     public void testAddCommentValidationError() throws Exception {
         ResultActions resultActions = mockMvc.perform(post("/rest/comments")
-                .param("blogPostI18nContentId", "2")
-                .param("comment", "aaa")
-                .param("userName", "bbb")
-                .param("email", "incorrectEmail")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("blogPostI18nContentId", "2")
+            .param("comment", "aaa")
+            .param("userName", "bbb")
+            .param("email", "incorrectEmail")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions.andExpect(status().isBadRequest());
     }

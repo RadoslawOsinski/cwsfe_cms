@@ -53,7 +53,9 @@ public class RestTestConfiguration extends WebMvcConfigurationSupport {
         super.configureMessageConverters(converters);
     }
 
-/** DAO already tested. Mock tests should be fast */
+    /**
+     * DAO already tested. Mock tests should be fast
+     */
     @Bean
     public JdbcTemplate getJdbcTemplate() {
         return Mockito.mock(org.springframework.jdbc.core.JdbcTemplate.class);

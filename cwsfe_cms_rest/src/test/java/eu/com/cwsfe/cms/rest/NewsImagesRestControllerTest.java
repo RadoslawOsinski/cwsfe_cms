@@ -50,12 +50,12 @@ public class NewsImagesRestControllerTest {
         String thumbnailFileName = "thumbnailFileName";
         Integer thumbnailHeight = 2;
         Integer thumbnailWidth = 3;
-        String thumbnailTitle =  "thumbnailTitle";
+        String thumbnailTitle = "thumbnailTitle";
         long imageId = 11L;
         String imageFileName = "imageFileName";
         Integer imageHeight = 21;
         Integer imageWidth = 31;
-        String imageTitle =  "imageTitle";
+        String imageTitle = "imageTitle";
         CmsNewsImage thumbnail = new CmsNewsImage();
         thumbnail.setId(thumbnailId);
         thumbnail.setFileName(thumbnailFileName);
@@ -74,22 +74,22 @@ public class NewsImagesRestControllerTest {
         when(cmsNewsImagesDAO.listImagesForNewsWithoutThumbnails(anyLong())).thenReturn(images);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/newsImages")
-                .param("newsId", "1")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("newsId", "1")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andDo(print())
-                .andExpect(jsonPath("$.thumbnailImage.id").value((int) thumbnailId))
-                .andExpect(jsonPath("$.thumbnailImage.fileName").value(thumbnailFileName))
-                .andExpect(jsonPath("$.thumbnailImage.height").value(thumbnailHeight))
-                .andExpect(jsonPath("$.thumbnailImage.width").value(thumbnailWidth))
-                .andExpect(jsonPath("$.thumbnailImage.title").value(thumbnailTitle))
-                .andExpect(jsonPath("$.newsImages[0].id").value((int) imageId))
-                .andExpect(jsonPath("$.newsImages[0].fileName").value(imageFileName))
-                .andExpect(jsonPath("$.newsImages[0].height").value(imageHeight))
-                .andExpect(jsonPath("$.newsImages[0].width").value(imageWidth))
-                .andExpect(jsonPath("$.newsImages[0].title").value(imageTitle));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(jsonPath("$.thumbnailImage.id").value((int) thumbnailId))
+            .andExpect(jsonPath("$.thumbnailImage.fileName").value(thumbnailFileName))
+            .andExpect(jsonPath("$.thumbnailImage.height").value(thumbnailHeight))
+            .andExpect(jsonPath("$.thumbnailImage.width").value(thumbnailWidth))
+            .andExpect(jsonPath("$.thumbnailImage.title").value(thumbnailTitle))
+            .andExpect(jsonPath("$.newsImages[0].id").value((int) imageId))
+            .andExpect(jsonPath("$.newsImages[0].fileName").value(imageFileName))
+            .andExpect(jsonPath("$.newsImages[0].height").value(imageHeight))
+            .andExpect(jsonPath("$.newsImages[0].width").value(imageWidth))
+            .andExpect(jsonPath("$.newsImages[0].title").value(imageTitle));
     }
 }

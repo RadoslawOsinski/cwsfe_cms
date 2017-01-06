@@ -41,7 +41,7 @@ public class BlogKeywordsRestController {
      */
     @RequestMapping(value = "/rest/blogKeywordsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public List<BlogKeyword> blogKeywordsList(
-            @RequestParam(value = "languageCode") String languageCode
+        @RequestParam(value = "languageCode") String languageCode
     ) {
         List<BlogKeyword> list = blogKeywordsDAO.list();
         for (BlogKeyword blogKeyword : list) {
@@ -61,8 +61,8 @@ public class BlogKeywordsRestController {
      */
     @RequestMapping(value = "/rest/postKeywords", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public List<BlogKeyword> blogKeywordsListForPost(
-            @RequestParam(value = "blogPostId") long blogPostId,
-            @RequestParam(value = "languageCode") String languageCode
+        @RequestParam(value = "blogPostId") long blogPostId,
+        @RequestParam(value = "languageCode") String languageCode
     ) {
         List<BlogKeyword> list = blogPostKeywordsDAO.listForPost(blogPostId);
         for (BlogKeyword blogKeyword : list) {

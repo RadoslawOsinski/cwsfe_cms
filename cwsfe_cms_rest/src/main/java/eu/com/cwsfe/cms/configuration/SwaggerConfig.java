@@ -20,11 +20,11 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
     @Bean
     public Docket privilegesApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("CWSFE CMS Rest API")
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.ant("/rest/**"))
-                .build();
+            .groupName("CWSFE CMS Rest API")
+            .select()
+            .apis(RequestHandlerSelectors.any())
+            .paths(PathSelectors.ant("/rest/**"))
+            .build();
     }
 
     @Override

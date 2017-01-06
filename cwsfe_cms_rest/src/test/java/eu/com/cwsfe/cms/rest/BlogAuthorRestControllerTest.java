@@ -55,14 +55,14 @@ public class BlogAuthorRestControllerTest {
         when(cmsAuthorsDAO.get(anyLong())).thenReturn(value);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/author/1")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.id").value((int) id))
-                .andExpect(jsonPath("$.firstName").value(firstName))
-                .andExpect(jsonPath("$.lastName").value(lastName))
-                .andExpect(jsonPath("$.googlePlusAuthorLink").value(googlePlusAuthorLink));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.id").value((int) id))
+            .andExpect(jsonPath("$.firstName").value(firstName))
+            .andExpect(jsonPath("$.lastName").value(lastName))
+            .andExpect(jsonPath("$.googlePlusAuthorLink").value(googlePlusAuthorLink));
     }
 }

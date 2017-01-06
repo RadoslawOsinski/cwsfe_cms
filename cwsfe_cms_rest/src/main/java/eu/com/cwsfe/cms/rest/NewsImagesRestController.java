@@ -27,7 +27,7 @@ public class NewsImagesRestController {
 
     @RequestMapping(value = "/rest/newsImages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public Map<String, Object> getImagesForNewsWithoutContent(
-            @RequestParam(value = "newsId") long newsId
+        @RequestParam(value = "newsId") long newsId
     ) {
         CmsNewsImage thumbnailForNews = cmsNewsImagesDAO.getThumbnailForNews(newsId);
         List<CmsNewsImage> cmsNewsImages = cmsNewsImagesDAO.listImagesForNewsWithoutThumbnails(newsId);

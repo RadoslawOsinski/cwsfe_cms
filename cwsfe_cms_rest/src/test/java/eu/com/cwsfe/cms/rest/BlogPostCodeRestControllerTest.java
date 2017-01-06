@@ -55,14 +55,14 @@ public class BlogPostCodeRestControllerTest {
         when(blogPostCodesDAO.getCodeForPostByCodeId(anyLong(), anyString())).thenReturn(blogPostCode);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/blogPostCode/1/2")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.codeId").value(codeId))
-                .andExpect(jsonPath("$.blogPostId").value(blogPostId.intValue()))
-                .andExpect(jsonPath("$.code").value(code));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.codeId").value(codeId))
+            .andExpect(jsonPath("$.blogPostId").value(blogPostId.intValue()))
+            .andExpect(jsonPath("$.code").value(code));
     }
 
 }

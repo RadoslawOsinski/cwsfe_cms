@@ -32,7 +32,7 @@ public class FoldersRestController {
      */
     @RequestMapping(value = "/rest/foldersList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public List<CmsFolder> foldersList(
-            @RequestParam(value = "languageCode") String languageCode
+        @RequestParam(value = "languageCode") String languageCode
     ) {
         List<CmsFolder> list = cmsFoldersDAO.list();
         for (CmsFolder cmsFolder : list) {

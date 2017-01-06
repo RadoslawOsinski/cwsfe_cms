@@ -22,9 +22,9 @@ public class CmsTextI18nRestController {
 
     @RequestMapping(value = "/rest/getTranslation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public String getTranslation(
-            @RequestParam(value = "languageCode") String languageCode,
-            @RequestParam(value = "category") String category,
-            @RequestParam(value = "key") String key
+        @RequestParam(value = "languageCode") String languageCode,
+        @RequestParam(value = "category") String category,
+        @RequestParam(value = "key") String key
     ) {
         return cmsTextI18nDAO.findTranslation(languageCode, category, key);
     }

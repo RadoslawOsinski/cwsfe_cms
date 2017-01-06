@@ -82,19 +82,19 @@ public class NewsRestControllerTest {
         when(cmsNewsDAO.getByNewsTypeFolderAndNewsCode(anyLong(), anyLong(), anyString())).thenReturn(cmsNews);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/news")
-                .param("newsType", "Services")
-                .param("folderName", "Services")
-                .param("newsCode", "1")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("newsType", "Services")
+            .param("folderName", "Services")
+            .param("newsCode", "1")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.id").value((int) id))
-                .andExpect(jsonPath("$.authorId").value((int) authorId))
-                .andExpect(jsonPath("$.newsTypeId").value((int) newsTypeId))
-                .andExpect(jsonPath("$.newsFolderId").value((int) newsFolderId))
-                .andExpect(jsonPath("$.newsCode").value(testCode));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.id").value((int) id))
+            .andExpect(jsonPath("$.authorId").value((int) authorId))
+            .andExpect(jsonPath("$.newsTypeId").value((int) newsTypeId))
+            .andExpect(jsonPath("$.newsFolderId").value((int) newsFolderId))
+            .andExpect(jsonPath("$.newsCode").value(testCode));
     }
 
     @Ignore("Fix this failing test")
@@ -136,28 +136,28 @@ public class NewsRestControllerTest {
         when(cmsNewsI18nContentsDAO.get(anyLong())).thenReturn(cmsNewsI18nContent);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/newsI18nPairs")
-                .param("newsPerPage", "1")
-                .param("offset", "1")
-                .param("folderName", "folderName")
-                .param("languageCode", "languageCode")
-                .param("newsType", "newsType")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("newsPerPage", "1")
+            .param("offset", "1")
+            .param("folderName", "folderName")
+            .param("languageCode", "languageCode")
+            .param("newsType", "newsType")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$[0].cmsNews.id").value((int) id))
-                .andExpect(jsonPath("$[0].cmsNews.authorId").value((int) authorId))
-                .andExpect(jsonPath("$[0].cmsNews.newsTypeId").value((int) newsTypeId))
-                .andExpect(jsonPath("$[0].cmsNews.newsFolderId").value((int) newsFolderId))
-                .andExpect(jsonPath("$[0].cmsNews.newsCode").value(newsCode))
-                .andExpect(jsonPath("$[0].cmsNewsI18nContent.id").value((int) id2))
-                .andExpect(jsonPath("$[0].cmsNewsI18nContent.newsTitle").value(title))
-                .andExpect(jsonPath("$[0].cmsNewsI18nContent.newsShortcut").value(shortcut))
-                .andExpect(jsonPath("$[0].cmsNewsI18nContent.languageId").value((int) languageId))
-                .andExpect(jsonPath("$[0].cmsNewsI18nContent.newsDescription").value(description))
-                .andExpect(jsonPath("$[0].cmsNewsI18nContent.newsId").value((int) id))
-                ;
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$[0].cmsNews.id").value((int) id))
+            .andExpect(jsonPath("$[0].cmsNews.authorId").value((int) authorId))
+            .andExpect(jsonPath("$[0].cmsNews.newsTypeId").value((int) newsTypeId))
+            .andExpect(jsonPath("$[0].cmsNews.newsFolderId").value((int) newsFolderId))
+            .andExpect(jsonPath("$[0].cmsNews.newsCode").value(newsCode))
+            .andExpect(jsonPath("$[0].cmsNewsI18nContent.id").value((int) id2))
+            .andExpect(jsonPath("$[0].cmsNewsI18nContent.newsTitle").value(title))
+            .andExpect(jsonPath("$[0].cmsNewsI18nContent.newsShortcut").value(shortcut))
+            .andExpect(jsonPath("$[0].cmsNewsI18nContent.languageId").value((int) languageId))
+            .andExpect(jsonPath("$[0].cmsNewsI18nContent.newsDescription").value(description))
+            .andExpect(jsonPath("$[0].cmsNewsI18nContent.newsId").value((int) id))
+        ;
     }
 
     @Ignore("Fix this failing test")
@@ -171,15 +171,15 @@ public class NewsRestControllerTest {
         when(cmsNewsDAO.countListByFolderLangAndNewsWithPaging(anyInt(), anyLong(), anyString())).thenReturn(total);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/newsI18nPairsTotal")
-                .param("folderName", "folderName")
-                .param("languageCode", "languageCode")
-                .param("newsType", "newsType")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("folderName", "folderName")
+            .param("languageCode", "languageCode")
+            .param("newsType", "newsType")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.total").value(total));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.total").value(total));
     }
 
     @Test
@@ -204,19 +204,19 @@ public class NewsRestControllerTest {
         when(cmsNewsI18nContentsDAO.getByLanguageForNews(anyLong(), anyLong())).thenReturn(cmsNewsI18nContent);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/newsI18nContent")
-                .param("languageCode", "en")
-                .param("newsId", "1")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("languageCode", "en")
+            .param("newsId", "1")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.id").value((int) id))
-                .andExpect(jsonPath("$.newsId").value((int) newsId))
-                .andExpect(jsonPath("$.languageId").value((int) languageId))
-                .andExpect(jsonPath("$.newsDescription").value(description))
-                .andExpect(jsonPath("$.newsShortcut").value(shortcut))
-                .andExpect(jsonPath("$.newsTitle").value(title));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.id").value((int) id))
+            .andExpect(jsonPath("$.newsId").value((int) newsId))
+            .andExpect(jsonPath("$.languageId").value((int) languageId))
+            .andExpect(jsonPath("$.newsDescription").value(description))
+            .andExpect(jsonPath("$.newsShortcut").value(shortcut))
+            .andExpect(jsonPath("$.newsTitle").value(title));
     }
 
     @Test
@@ -238,18 +238,18 @@ public class NewsRestControllerTest {
         when(cmsNewsI18nContentsDAO.get(anyLong())).thenReturn(cmsNewsI18nContent);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/singleNewsI18nContent")
-                .param("id", "1")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("id", "1")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.id").value(id.intValue()))
-                .andExpect(jsonPath("$.newsId").value(newsId.intValue()))
-                .andExpect(jsonPath("$.languageId").value(languageId.intValue()))
-                .andExpect(jsonPath("$.newsDescription").value(description))
-                .andExpect(jsonPath("$.newsShortcut").value(shortcut))
-                .andExpect(jsonPath("$.newsTitle").value(title));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.id").value(id.intValue()))
+            .andExpect(jsonPath("$.newsId").value(newsId.intValue()))
+            .andExpect(jsonPath("$.languageId").value(languageId.intValue()))
+            .andExpect(jsonPath("$.newsDescription").value(description))
+            .andExpect(jsonPath("$.newsShortcut").value(shortcut))
+            .andExpect(jsonPath("$.newsTitle").value(title));
     }
 
     @Test
@@ -292,21 +292,21 @@ public class NewsRestControllerTest {
         when(cmsNewsI18nContentsDAO.getByLanguageForNews(anyLong(), anyLong())).thenReturn(cmsNewsI18nContent);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/newsI18nContentByNews")
-                .param("languageCode", "en")
-                .param("newsType", "Services")
-                .param("folderName", "Services")
-                .param("newsCode", "1")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("languageCode", "en")
+            .param("newsType", "Services")
+            .param("folderName", "Services")
+            .param("newsCode", "1")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.id").value((int) id))
-                .andExpect(jsonPath("$.newsId").value((int) newsId))
-                .andExpect(jsonPath("$.languageId").value((int) languageId))
-                .andExpect(jsonPath("$.newsDescription").value(description))
-                .andExpect(jsonPath("$.newsShortcut").value(shortcut))
-                .andExpect(jsonPath("$.newsTitle").value(title));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.id").value((int) id))
+            .andExpect(jsonPath("$.newsId").value((int) newsId))
+            .andExpect(jsonPath("$.languageId").value((int) languageId))
+            .andExpect(jsonPath("$.newsDescription").value(description))
+            .andExpect(jsonPath("$.newsShortcut").value(shortcut))
+            .andExpect(jsonPath("$.newsTitle").value(title));
     }
 
     @Ignore("Fix this failing test")
@@ -317,11 +317,11 @@ public class NewsRestControllerTest {
         when(cmsNewsDAO.getByNewsTypeFolderAndNewsCode(anyLong(), anyLong(), anyString())).thenThrow(new EmptyResultDataAccessException(1));
 
         ResultActions resultActions = mockMvc.perform(get("/rest/newsI18nContentByNews")
-                .param("languageCode", "en")
-                .param("newsType", "Services")
-                .param("folderName", "Services")
-                .param("newsCode", "1")
-                .accept(MediaType.APPLICATION_JSON));
+            .param("languageCode", "en")
+            .param("newsType", "Services")
+            .param("folderName", "Services")
+            .param("newsCode", "1")
+            .accept(MediaType.APPLICATION_JSON));
 
         resultActions.andExpect(status().isNotFound());
     }
@@ -336,11 +336,11 @@ public class NewsRestControllerTest {
         when(cmsNewsI18nContentsDAO.getByLanguageForNews(anyLong(), anyLong())).thenThrow(new EmptyResultDataAccessException(1));
 
         ResultActions resultActions = mockMvc.perform(get("/rest/newsI18nContentByNews")
-                .param("languageCode", "en")
-                .param("newsType", "Services")
-                .param("folderName", "Services")
-                .param("newsCode", "1")
-                .accept(MediaType.APPLICATION_JSON));
+            .param("languageCode", "en")
+            .param("newsType", "Services")
+            .param("folderName", "Services")
+            .param("newsCode", "1")
+            .accept(MediaType.APPLICATION_JSON));
 
         resultActions.andExpect(status().isNotFound());
     }

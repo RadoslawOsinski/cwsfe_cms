@@ -48,14 +48,14 @@ public class CmsTextI18nRestControllerTest {
         when(cmsTextI18nDAO.findTranslation(anyString(), anyString(), anyString())).thenReturn(text);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/getTranslation")
-                .param("languageCode", "en")
-                .param("category", "category")
-                .param("key", "key")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("languageCode", "en")
+            .param("category", "category")
+            .param("key", "key")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(content().string(text));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(content().string(text));
     }
 }

@@ -36,9 +36,9 @@ public class NewsRestController {
 
     @RequestMapping(value = "/rest/news", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public CmsNews getNewsByNewsTypeFolderAndNewsCode(
-            @RequestParam(value = "newsType") String newsTypeValue,
-            @RequestParam(value = "folderName") String folderName,
-            @RequestParam(value = "newsCode") String newsCode
+        @RequestParam(value = "newsType") String newsTypeValue,
+        @RequestParam(value = "folderName") String folderName,
+        @RequestParam(value = "newsCode") String newsCode
     ) {
         CmsFolder cmsFolder = cmsFoldersDAO.getByFolderName(folderName);
         NewsType newsType = newsTypesDAO.getByType(newsTypeValue);
@@ -47,11 +47,11 @@ public class NewsRestController {
 
     @RequestMapping(value = "/rest/newsI18nPairs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public List<CmsNewsI18nPair> listByFolderLangAndNewsWithPaging(
-            @RequestParam(value = "newsPerPage") int newsPerPage,
-            @RequestParam(value = "offset") int offset,
-            @RequestParam(value = "folderName") String folderName,
-            @RequestParam(value = "languageCode") String languageCode,
-            @RequestParam(value = "newsType") String newsType
+        @RequestParam(value = "newsPerPage") int newsPerPage,
+        @RequestParam(value = "offset") int offset,
+        @RequestParam(value = "folderName") String folderName,
+        @RequestParam(value = "languageCode") String languageCode,
+        @RequestParam(value = "newsType") String newsType
     ) {
         CmsFolder cmsFolder = cmsFoldersDAO.getByFolderName(folderName);
         Language language = cmsLanguagesDAO.getByCode(languageCode);
@@ -62,8 +62,8 @@ public class NewsRestController {
         List<CmsNewsI18nPair> results = new ArrayList<>();
         for (Object[] object : objects) {
             CmsNewsI18nPair cmsNewsI18nPair = new CmsNewsI18nPair(
-                    cmsNewsDAO.get((long) object[0]),
-                    cmsNewsI18nContentsDAO.get((long) object[1])
+                cmsNewsDAO.get((long) object[0]),
+                cmsNewsI18nContentsDAO.get((long) object[1])
             );
             results.add(cmsNewsI18nPair);
         }
@@ -72,9 +72,9 @@ public class NewsRestController {
 
     @RequestMapping(value = "/rest/newsI18nPairsTotal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public Map<String, Integer> countListByFolderLangAndNewsWithPaging(
-            @RequestParam(value = "folderName") String folderName,
-            @RequestParam(value = "languageCode") String languageCode,
-            @RequestParam(value = "newsType") String newsType
+        @RequestParam(value = "folderName") String folderName,
+        @RequestParam(value = "languageCode") String languageCode,
+        @RequestParam(value = "newsType") String newsType
     ) {
         CmsFolder cmsFolder = cmsFoldersDAO.getByFolderName(folderName);
         Language language = cmsLanguagesDAO.getByCode(languageCode);
@@ -89,8 +89,8 @@ public class NewsRestController {
 
     @RequestMapping(value = "/rest/newsI18nContent", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public CmsNewsI18nContent getByLanguageForNews(
-            @RequestParam(value = "languageCode") String languageCode,
-            @RequestParam(value = "newsId") Long newsId
+        @RequestParam(value = "languageCode") String languageCode,
+        @RequestParam(value = "newsId") Long newsId
     ) {
         Language currentPLang = cmsLanguagesDAO.getByCode(languageCode);
         if (currentPLang == null) {
@@ -101,17 +101,17 @@ public class NewsRestController {
 
     @RequestMapping(value = "/rest/singleNewsI18nContent", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public CmsNewsI18nContent get(
-            @RequestParam(value = "id") Long id
+        @RequestParam(value = "id") Long id
     ) {
         return cmsNewsI18nContentsDAO.get(id);
     }
 
     @RequestMapping(value = "/rest/newsI18nContentByNews", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public CmsNewsI18nContent getNewsI18nContentByNews(
-            @RequestParam(value = "languageCode") String languageCode,
-            @RequestParam(value = "newsType") String newsTypeValue,
-            @RequestParam(value = "folderName") String folderName,
-            @RequestParam(value = "newsCode") String newsCode
+        @RequestParam(value = "languageCode") String languageCode,
+        @RequestParam(value = "newsType") String newsTypeValue,
+        @RequestParam(value = "folderName") String folderName,
+        @RequestParam(value = "newsCode") String newsCode
     ) {
         CmsFolder cmsFolder = cmsFoldersDAO.getByFolderName(folderName);
         NewsType newsType = newsTypesDAO.getByType(newsTypeValue);

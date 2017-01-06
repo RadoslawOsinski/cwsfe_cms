@@ -36,9 +36,9 @@ public class CwsfeCmsRestControllerTest {
     @Test
     public void testGetCmsVersion() throws Exception {
         mockMvc.perform(get("/rest/version").accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.version").value("1.5"));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.version").value("1.5"));
     }
 
 }

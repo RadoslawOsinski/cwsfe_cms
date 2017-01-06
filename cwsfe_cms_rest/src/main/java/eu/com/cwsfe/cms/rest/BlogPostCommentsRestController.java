@@ -33,7 +33,7 @@ public class BlogPostCommentsRestController {
      */
     @RequestMapping(value = "/rest/comments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public Map<String, Integer> countCommentsForPostI18n(
-            @RequestParam(value = "blogPostI18nContentId") long blogPostI18nContentId
+        @RequestParam(value = "blogPostI18nContentId") long blogPostI18nContentId
     ) {
         Map<String, Integer> result = new HashMap<>(1);
         result.put("count", blogPostCommentsDAO.countCommentsForPostI18n(blogPostI18nContentId));
@@ -42,8 +42,8 @@ public class BlogPostCommentsRestController {
 
     @RequestMapping(value = "/rest/comments", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public Map<String, String> addComment(
-            @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
-            ModelMap modelMap, BindingResult result, Locale locale
+        @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
+        ModelMap modelMap, BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "blogPostI18nContentId", "Blog post must be set");
         ValidationUtils.rejectIfEmpty(result, "userName", "Username must be set");

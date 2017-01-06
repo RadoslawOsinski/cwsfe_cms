@@ -28,8 +28,8 @@ public class BlogPostCodeRestController {
      */
     @RequestMapping(value = "/rest/blogPostCode/{postId}/{codeId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public BlogPostCode getPostCode(
-            @PathVariable(value = "postId") long postId,
-            @PathVariable(value = "codeId") String codeId
+        @PathVariable(value = "postId") long postId,
+        @PathVariable(value = "codeId") String codeId
     ) {
         return blogPostCodesDAO.getCodeForPostByCodeId(postId, codeId);
     }

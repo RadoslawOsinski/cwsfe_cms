@@ -55,8 +55,8 @@ public class BlogRestController {
         List<BlogI18nPair> results = new ArrayList<>(postI18nIds.size());
         for (Object[] postI18nId : postI18nIds) {
             BlogI18nPair blogI18nPair = new BlogI18nPair(
-                    blogPostsDAO.get((long) postI18nId[0]),
-                    blogPostI18nContentsDAO.get((long) postI18nId[1])
+                blogPostsDAO.get((long) postI18nId[0]),
+                blogPostI18nContentsDAO.get((long) postI18nId[1])
             );
             results.add(blogI18nPair);
         }

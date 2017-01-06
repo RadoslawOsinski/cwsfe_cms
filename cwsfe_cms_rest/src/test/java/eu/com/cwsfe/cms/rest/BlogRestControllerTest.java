@@ -85,24 +85,24 @@ public class BlogRestControllerTest {
         when(blogPostI18nContentsDAO.get(anyLong())).thenReturn(blogPostI18nContent);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/blogI18nPairs")
-                .param("languageCode", "en")
-                .param("limit", "1")
-                .param("offset", "0")
-                .param("categoryId", "1")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("languageCode", "en")
+            .param("limit", "1")
+            .param("offset", "0")
+            .param("categoryId", "1")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$[0].blogPost.id").value((int) blogPostId))
-                .andExpect(jsonPath("$[0].blogPost.postAuthorId").value((int) authorId))
-                .andExpect(jsonPath("$[0].blogPost.postCreationDate").value((int) postCreationDate.getTime()))
-                .andExpect(jsonPath("$[0].blogPost.postTextCode").value(postTextCode))
-                .andExpect(jsonPath("$[0].blogPostI18nContent.id").value((int) blogPostI18nContentId))
-                .andExpect(jsonPath("$[0].blogPostI18nContent.postDescription").value(description))
-                .andExpect(jsonPath("$[0].blogPostI18nContent.postShortcut").value(shortcut))
-                .andExpect(jsonPath("$[0].blogPostI18nContent.languageId").value((int) languageId))
-                .andExpect(jsonPath("$[0].blogPostI18nContent.postTitle").value(postTitle));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$[0].blogPost.id").value((int) blogPostId))
+            .andExpect(jsonPath("$[0].blogPost.postAuthorId").value((int) authorId))
+            .andExpect(jsonPath("$[0].blogPost.postCreationDate").value((int) postCreationDate.getTime()))
+            .andExpect(jsonPath("$[0].blogPost.postTextCode").value(postTextCode))
+            .andExpect(jsonPath("$[0].blogPostI18nContent.id").value((int) blogPostI18nContentId))
+            .andExpect(jsonPath("$[0].blogPostI18nContent.postDescription").value(description))
+            .andExpect(jsonPath("$[0].blogPostI18nContent.postShortcut").value(shortcut))
+            .andExpect(jsonPath("$[0].blogPostI18nContent.languageId").value((int) languageId))
+            .andExpect(jsonPath("$[0].blogPostI18nContent.postTitle").value(postTitle));
     }
 
     @Test
@@ -137,24 +137,24 @@ public class BlogRestControllerTest {
         when(blogPostI18nContentsDAO.get(anyLong())).thenReturn(blogPostI18nContent);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/blogI18nPairs")
-                .param("languageCode", "en")
-                .param("limit", "1")
-                .param("offset", "0")
-                .param("categoryId", "")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("languageCode", "en")
+            .param("limit", "1")
+            .param("offset", "0")
+            .param("categoryId", "")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$[0].blogPost.id").value((int) blogPostId))
-                .andExpect(jsonPath("$[0].blogPost.postAuthorId").value((int) authorId))
-                .andExpect(jsonPath("$[0].blogPost.postCreationDate").value((int) postCreationDate.getTime()))
-                .andExpect(jsonPath("$[0].blogPost.postTextCode").value(postTextCode))
-                .andExpect(jsonPath("$[0].blogPostI18nContent.id").value((int) blogPostI18nContentId))
-                .andExpect(jsonPath("$[0].blogPostI18nContent.postDescription").value(description))
-                .andExpect(jsonPath("$[0].blogPostI18nContent.postShortcut").value(shortcut))
-                .andExpect(jsonPath("$[0].blogPostI18nContent.languageId").value((int) languageId))
-                .andExpect(jsonPath("$[0].blogPostI18nContent.postTitle").value(postTitle));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$[0].blogPost.id").value((int) blogPostId))
+            .andExpect(jsonPath("$[0].blogPost.postAuthorId").value((int) authorId))
+            .andExpect(jsonPath("$[0].blogPost.postCreationDate").value((int) postCreationDate.getTime()))
+            .andExpect(jsonPath("$[0].blogPost.postTextCode").value(postTextCode))
+            .andExpect(jsonPath("$[0].blogPostI18nContent.id").value((int) blogPostI18nContentId))
+            .andExpect(jsonPath("$[0].blogPostI18nContent.postDescription").value(description))
+            .andExpect(jsonPath("$[0].blogPostI18nContent.postShortcut").value(shortcut))
+            .andExpect(jsonPath("$[0].blogPostI18nContent.languageId").value((int) languageId))
+            .andExpect(jsonPath("$[0].blogPostI18nContent.postTitle").value(postTitle));
     }
 
     @Test
@@ -167,14 +167,14 @@ public class BlogRestControllerTest {
         when(blogPostsDAO.listCountForPageWithPaging(anyLong())).thenReturn(total);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/blogI18nPairsTotal")
-                .param("languageCode", "en")
-                .param("categoryId", "")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("languageCode", "en")
+            .param("categoryId", "")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.total").value((int) total));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.total").value((int) total));
     }
 
     @Test
@@ -187,14 +187,14 @@ public class BlogRestControllerTest {
         when(blogPostsDAO.listCountForPageWithCategoryAndPaging(anyLong(), anyLong())).thenReturn(total);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/blogI18nPairsTotal")
-                .param("languageCode", "en")
-                .param("categoryId", "1")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .param("languageCode", "en")
+            .param("categoryId", "1")
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.total").value((int) total));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.total").value((int) total));
     }
 
     @Test
@@ -223,19 +223,19 @@ public class BlogRestControllerTest {
         when(blogPostI18nContentsDAO.get(anyLong())).thenReturn(blogPostI18nContent);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/blog/singlePost/1/1")
-                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
+            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.blogPost.id").value((int) blogPostId))
-                .andExpect(jsonPath("$.blogPost.postAuthorId").value((int) authorId))
-                .andExpect(jsonPath("$.blogPost.postCreationDate").value((int) postCreationDate.getTime()))
-                .andExpect(jsonPath("$.blogPost.postTextCode").value(postTextCode))
-                .andExpect(jsonPath("$.blogPostI18nContent.id").value((int) blogPostI18nContentId))
-                .andExpect(jsonPath("$.blogPostI18nContent.postDescription").value(description))
-                .andExpect(jsonPath("$.blogPostI18nContent.postShortcut").value(shortcut))
-                .andExpect(jsonPath("$.blogPostI18nContent.languageId").value((int) languageId))
-                .andExpect(jsonPath("$.blogPostI18nContent.postTitle").value(postTitle));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.blogPost.id").value((int) blogPostId))
+            .andExpect(jsonPath("$.blogPost.postAuthorId").value((int) authorId))
+            .andExpect(jsonPath("$.blogPost.postCreationDate").value((int) postCreationDate.getTime()))
+            .andExpect(jsonPath("$.blogPost.postTextCode").value(postTextCode))
+            .andExpect(jsonPath("$.blogPostI18nContent.id").value((int) blogPostI18nContentId))
+            .andExpect(jsonPath("$.blogPostI18nContent.postDescription").value(description))
+            .andExpect(jsonPath("$.blogPostI18nContent.postShortcut").value(shortcut))
+            .andExpect(jsonPath("$.blogPostI18nContent.languageId").value((int) languageId))
+            .andExpect(jsonPath("$.blogPostI18nContent.postTitle").value(postTitle));
     }
 }
