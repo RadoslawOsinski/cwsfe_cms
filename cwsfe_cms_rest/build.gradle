@@ -54,6 +54,19 @@ dependencies {
 
 jar.archiveName = "CWSFE_CMS_REST-" + version + ".jar";
 
+task integration_tests_local(type: Test) {
+    systemProperty "spring.profiles.test-groups", "integration-tests-local"
+    systemProperty "spring.profiles.active", "tomcat";
+    systemProperty "test-groups", "integration-tests-local";
+    systemProperty "test-groups", "integration-tests-local";
+
+    //pass environment variable parameters from .gradle/gradle.properties to environment variable parameters in test task
+    systemProperty "cwsfe_cms.jdbc.driverClassName", System.properties['cwsfe_cms.jdbc.driverClassName'];
+    systemProperty "cwsfe_cms.jdbc.url", System.properties['cwsfe_cms.jdbc.url'];
+    systemProperty "cwsfe_cms.jdbc.user", System.properties['cwsfe_cms.jdbc.user'];
+    systemProperty "cwsfe_cms.jdbc.password", System.properties['cwsfe_cms.jdbc.password'];
+}
+
 jacoco {
     toolVersion = "0.7.8"
 }
