@@ -14,6 +14,8 @@
     }
     stage('Integration testing') {
         sh './gradlew --no-daemon test integration_tests_local jacocoTestReport'
+        [$class: 'JUnitResultArchiver', testResults: '**/build/test-results/test/TEST-*.xml']
+        [$class: 'JUnitResultArchiver', testResults: '**/build/integration_tests_local/test/TEST-*.xml']
     }
     stage('SonarQube analysis') {
         sh './gradlew --no-daemon sonarqube'
