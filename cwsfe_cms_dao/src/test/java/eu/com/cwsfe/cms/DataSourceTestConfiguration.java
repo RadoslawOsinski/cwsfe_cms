@@ -33,6 +33,7 @@ public class DataSourceTestConfiguration {
         dataSource.setUrl(environment.getProperty("cwsfe_cms.jdbc.url"));
         dataSource.setUsername(environment.getProperty("cwsfe_cms.jdbc.user"));
         dataSource.setPassword(environment.getProperty("cwsfe_cms.jdbc.password"));
+        dataSource.setSchema(environment.getProperty("cwsfe_cms.jdbc.schema"));
         return dataSource;
     }
 
