@@ -51,7 +51,8 @@
                     </div>
                     <div class="row">
                         <input type="button" id="addNewsTypeButton" class="button small radius primary"
-                               value="<spring:message code="Add"/>" data-bind="enable: newsTypesViewModel.addNewsTypeFormIsValid"/>
+                               value="<spring:message code="Add"/>"
+                               data-bind="enable: newsTypesViewModel.addNewsTypeFormIsValid"/>
                         <input type="reset" id="resetAddNewsType" value="Reset" class="button small radius alert">
                     </div>
                 </fieldset>

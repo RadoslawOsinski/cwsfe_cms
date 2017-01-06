@@ -5,13 +5,13 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.userName = ko.observable();
         self.passwordHash = ko.observable();
 
-        self.userNameIsRequiredStyle = ko.computed(function() {
+        self.userNameIsRequiredStyle = ko.computed(function () {
             return self.userName() === null || self.userName() === '' ? 'error' : 'invisible';
         });
-        self.passwordIsRequiredStyle = ko.computed(function() {
+        self.passwordIsRequiredStyle = ko.computed(function () {
             return self.passwordHash() === null || self.passwordHash() === '' ? 'error' : 'invisible';
         });
-        self.addUserFormIsValid = ko.computed(function() {
+        self.addUserFormIsValid = ko.computed(function () {
             return self.userName() !== null && self.userName() !== '' &&
                 self.passwordHash() !== null && self.passwordHash() !== '';
         });
@@ -68,7 +68,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
 
     });
 
-    $('#resetAddUser').click(function() {
+    $('#resetAddUser').click(function () {
         viewModel.usersViewModel.userName(null);
         viewModel.usersViewModel.passwordHash(null);
         viewModel.formAlerts.cleanAllMessages();
@@ -146,7 +146,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         });
     }
 
-    $('#addUserButton').click(function() {
+    $('#addUserButton').click(function () {
         addUser();
     });
 

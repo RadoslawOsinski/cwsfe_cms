@@ -49,10 +49,10 @@ public class FoldersControllerTest {
     @Test
     public void testDefaultView() throws Exception {
         mockMvc.perform(get("/folders"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/folders/Folders"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/folders/Folders.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/folders/Folders"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/folders/Folders.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()));
     }
 
     @Test
@@ -74,22 +74,22 @@ public class FoldersControllerTest {
         when(cmsFoldersDAO.countForAjax()).thenReturn(numberOfCmsFolders);
 
         ResultActions resultActions = mockMvc.perform(get("/foldersList")
-                .param("iDisplayStart", String.valueOf(iDisplayStart))
-                .param("iDisplayLength", String.valueOf(iDisplayLength))
-                .param("sEcho", sEcho))
-                .andExpect(status().isOk());
+            .param("iDisplayStart", String.valueOf(iDisplayStart))
+            .param("iDisplayLength", String.valueOf(iDisplayLength))
+            .param("sEcho", sEcho))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.sEcho").value(sEcho))
-                .andExpect(jsonPath("$.iTotalRecords").value(numberOfCmsFolders))
-                .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfCmsFolders))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
-                .andExpect(jsonPath("$.aaData[0].folderName").value(folderName))
-                .andExpect(jsonPath("$.aaData[0].orderNumber").value((int) orderNumber))
-                .andExpect(jsonPath("$.aaData[0].id").value((int) id));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.sEcho").value(sEcho))
+            .andExpect(jsonPath("$.iTotalRecords").value(numberOfCmsFolders))
+            .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfCmsFolders))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
+            .andExpect(jsonPath("$.aaData[0].folderName").value(folderName))
+            .andExpect(jsonPath("$.aaData[0].orderNumber").value((int) orderNumber))
+            .andExpect(jsonPath("$.aaData[0].id").value((int) id));
         verify(cmsFoldersDAO, times(1)).listAjax(anyInt(), anyInt());
         verify(cmsFoldersDAO, times(1)).countForAjax();
         verifyNoMoreInteractions(cmsFoldersDAO);
@@ -108,16 +108,16 @@ public class FoldersControllerTest {
         when(cmsFoldersDAO.listFoldersForDropList(anyString(), anyInt())).thenReturn(cmsFolders);
 
         ResultActions resultActions = mockMvc.perform(get("/news/foldersDropList")
-                .param("term", folderName)
-                .param("limit", String.valueOf(limit)))
-                .andExpect(status().isOk());
+            .param("term", folderName)
+            .param("limit", String.valueOf(limit)))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data[0].id").value((int) id))
-                .andExpect(jsonPath("$.data[0].folderName").value(folderName));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data[0].id").value((int) id))
+            .andExpect(jsonPath("$.data[0].folderName").value(folderName));
         verify(cmsFoldersDAO, times(1)).listFoldersForDropList(anyString(), anyInt());
         verifyNoMoreInteractions(cmsFoldersDAO);
     }
@@ -132,13 +132,13 @@ public class FoldersControllerTest {
         when(cmsFoldersDAO.add(any(CmsFolder.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addFolder")
-                .param("folderName", folderName))
-                .andExpect(status().isOk());
+            .param("folderName", folderName))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + FoldersController.JSON_STATUS).value(FoldersController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + FoldersController.JSON_STATUS).value(FoldersController.JSON_STATUS_SUCCESS));
         verify(cmsFoldersDAO, times(1)).add(any(CmsFolder.class));
         verifyNoMoreInteractions(cmsFoldersDAO);
     }
@@ -149,13 +149,13 @@ public class FoldersControllerTest {
         doNothing().when(cmsFoldersDAO).delete(any(CmsFolder.class));
 
         ResultActions resultActions = mockMvc.perform(post("/deleteFolder")
-                .param("id", String.valueOf(id)))
-                .andExpect(status().isOk());
+            .param("id", String.valueOf(id)))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + FoldersController.JSON_STATUS).value(FoldersController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + FoldersController.JSON_STATUS).value(FoldersController.JSON_STATUS_SUCCESS));
         verify(cmsFoldersDAO, times(1)).delete(any(CmsFolder.class));
         verifyNoMoreInteractions(cmsFoldersDAO);
     }

@@ -6,13 +6,13 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.language = ko.observable();
         self.newsletterMailGroupName = ko.observable();
 
-        self.languageIsRequiredStyle = ko.computed(function() {
+        self.languageIsRequiredStyle = ko.computed(function () {
             return self.language() === null || self.language() === '' ? 'error' : 'invisible';
         });
-        self.newsletterMailGroupNameIsRequiredStyle= ko.computed(function() {
+        self.newsletterMailGroupNameIsRequiredStyle = ko.computed(function () {
             return self.newsletterMailGroupName() === null || self.newsletterMailGroupName() === '' ? 'error' : 'invisible';
         });
-        self.addNewsletterMailGroupFormIsValid = ko.computed(function() {
+        self.addNewsletterMailGroupFormIsValid = ko.computed(function () {
             return self.language() !== null && self.language() !== '' &&
                 self.newsletterMailGroupName() !== null && self.newsletterMailGroupName() !== '';
         });
@@ -123,15 +123,15 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         $("#newsletterMailGroupsList").dataTable().fnDraw();
     }
 
-    $('#addNewsletterMailGroupButton').click(function() {
+    $('#addNewsletterMailGroupButton').click(function () {
         addNewsletterMailGroup();
     });
 
-    $('body').on('click', 'button[name="removeNewsletterMailGroupButton"]', function() {
+    $('body').on('click', 'button[name="removeNewsletterMailGroupButton"]', function () {
         removeNewsletterMailGroup($(this).val());
     });
 
-    $('#resetAddNewsletterMailGroup').click(function() {
+    $('#resetAddNewsletterMailGroup').click(function () {
         viewModel.newsletterMailGroupViewModel.languageId = null;
         viewModel.newsletterMailGroupViewModel.language(null);
         viewModel.newsletterMailGroupViewModel.newsletterMailGroupName(null);

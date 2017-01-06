@@ -34,11 +34,11 @@ public class CmsMailSender extends JavaMailSenderImpl {
         props.put("mail.smtp.port", cmsGlobalParamsDAO.getByCode("MAIL_SMTP_PORT").getValue());
 
         Session session = Session.getInstance(props,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
-                    }
-                });
+            new javax.mail.Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
 
         setSession(session);
     }

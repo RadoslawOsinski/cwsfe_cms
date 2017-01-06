@@ -67,8 +67,8 @@ class InitialConfigurationController extends JsonController {
 
     @RequestMapping(value = "/configuration/addAdminUser", method = RequestMethod.POST)
     public ModelAndView addAdminUser(
-            @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "userName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FirstNameMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "password", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("PasswordMustBeSet"));

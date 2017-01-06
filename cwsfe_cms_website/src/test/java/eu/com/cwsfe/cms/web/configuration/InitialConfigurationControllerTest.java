@@ -63,8 +63,8 @@ public class InitialConfigurationControllerTest {
         when(cmsGlobalParamsDAO.getByCode("CWSFE_CMS_IS_CONFIGURED")).thenReturn(cwsfeCmsIsConfigured);
 
         mockMvc.perform(get("/configuration/initialConfiguration"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/login/Login"));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/login/Login"));
     }
 
     @Test
@@ -72,8 +72,8 @@ public class InitialConfigurationControllerTest {
         when(cmsGlobalParamsDAO.getByCode("CWSFE_CMS_IS_CONFIGURED")).thenReturn(null);
 
         mockMvc.perform(get("/configuration/initialConfiguration"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/configuration/InitialConfiguration"));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/configuration/InitialConfiguration"));
     }
 
     @Test
@@ -87,11 +87,11 @@ public class InitialConfigurationControllerTest {
         doNothing().when(cmsGlobalParamsDAO).update(cwsfeCmsIsConfigured);
 
         ResultActions resultActions = mockMvc.perform(post("/configuration/addAdminUser")
-                        .param("userName", "abc")
-                        .param("password", "def")
+            .param("userName", "abc")
+            .param("password", "def")
         );
 
         resultActions
-                .andExpect(status().isSeeOther());
+            .andExpect(status().isSeeOther());
     }
 }

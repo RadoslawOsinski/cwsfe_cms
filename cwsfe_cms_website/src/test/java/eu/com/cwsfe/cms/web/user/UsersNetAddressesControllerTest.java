@@ -54,10 +54,10 @@ public class UsersNetAddressesControllerTest {
     @Test
     public void testDefaultView() throws Exception {
         mockMvc.perform(get("/usersNetAddresses"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/usersNetAddresses/UsersNetAddresses"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/usersNetAddresses/UsersNetAddresses.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/usersNetAddresses/UsersNetAddresses"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/usersNetAddresses/UsersNetAddresses.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()));
     }
 
     @Test
@@ -84,22 +84,22 @@ public class UsersNetAddressesControllerTest {
         when(cmsUsersDAO.get(anyLong())).thenReturn(cmsUser);
 
         ResultActions resultActions = mockMvc.perform(get("/usersNetAddressesList")
-                .param("iDisplayStart", String.valueOf(iDisplayStart))
-                .param("iDisplayLength", String.valueOf(iDisplayLength))
-                .param("sEcho", sEcho))
-                .andExpect(status().isOk());
+            .param("iDisplayStart", String.valueOf(iDisplayStart))
+            .param("iDisplayLength", String.valueOf(iDisplayLength))
+            .param("sEcho", sEcho))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.sEcho").value(sEcho))
-                .andExpect(jsonPath("$.iTotalRecords").value(count))
-                .andExpect(jsonPath("$.iTotalDisplayRecords").value(count))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
-                .andExpect(jsonPath("$.aaData[0].userName").value(userName))
-                .andExpect(jsonPath("$.aaData[0].inetAddress").value(inetAddress))
-                .andExpect(jsonPath("$.aaData[0].id").value((int) id));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.sEcho").value(sEcho))
+            .andExpect(jsonPath("$.iTotalRecords").value(count))
+            .andExpect(jsonPath("$.iTotalDisplayRecords").value(count))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
+            .andExpect(jsonPath("$.aaData[0].userName").value(userName))
+            .andExpect(jsonPath("$.aaData[0].inetAddress").value(inetAddress))
+            .andExpect(jsonPath("$.aaData[0].id").value((int) id));
         verify(cmsUserAllowedNetAddressDAO, times(1)).listAjax(anyInt(), anyInt());
         verify(cmsUserAllowedNetAddressDAO, times(1)).countForAjax();
         verify(cmsUsersDAO, times(1)).get(anyLong());
@@ -112,14 +112,14 @@ public class UsersNetAddressesControllerTest {
         when(cmsUserAllowedNetAddressDAO.add(Matchers.any(CmsUserAllowedNetAddress.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addNetAddress")
-                .param("userId", "1")
-                .param("inetAddress", "127.0.0.1"))
-                .andExpect(status().isOk());
+            .param("userId", "1")
+            .param("inetAddress", "127.0.0.1"))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + UsersNetAddressesController.JSON_STATUS).value(UsersNetAddressesController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + UsersNetAddressesController.JSON_STATUS).value(UsersNetAddressesController.JSON_STATUS_SUCCESS));
         verify(cmsUserAllowedNetAddressDAO, times(1)).add(Matchers.any(CmsUserAllowedNetAddress.class));
         verifyNoMoreInteractions(cmsUserAllowedNetAddressDAO);
     }
@@ -129,13 +129,13 @@ public class UsersNetAddressesControllerTest {
         doNothing().when(cmsUserAllowedNetAddressDAO).delete(Matchers.any(CmsUserAllowedNetAddress.class));
 
         ResultActions resultActions = mockMvc.perform(post("/deleteNetAddress")
-                .param("id", "1"))
-                .andExpect(status().isOk());
+            .param("id", "1"))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + UsersNetAddressesController.JSON_STATUS).value(UsersNetAddressesController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + UsersNetAddressesController.JSON_STATUS).value(UsersNetAddressesController.JSON_STATUS_SUCCESS));
         verify(cmsUserAllowedNetAddressDAO, times(1)).delete(Matchers.any(CmsUserAllowedNetAddress.class));
         verifyNoMoreInteractions(cmsUserAllowedNetAddressDAO);
     }

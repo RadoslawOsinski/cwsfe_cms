@@ -47,7 +47,8 @@
                     <div class="row">
                         <label for="firstName"><spring:message code="FirstName"/></label>
                         <input type="text" id="firstName" required data-bind="textInput: authorsViewModel.firstName"/>
-                        <small class="invisible" data-bind="attr: { 'class': authorsViewModel.firstNameIsRequiredStyle}">
+                        <small class="invisible"
+                               data-bind="attr: { 'class': authorsViewModel.firstNameIsRequiredStyle}">
                             <spring:message code="FirstNameIsRequired"/>
                         </small>
                     </div>
@@ -64,7 +65,8 @@
                     </div>
                     <div class="row">
                         <input type="button" id="addAuthorButton" class="button small radius primary"
-                               value="<spring:message code="Add"/>" data-bind="enable: authorsViewModel.addAuthorFormIsValid"/>
+                               value="<spring:message code="Add"/>"
+                               data-bind="enable: authorsViewModel.addAuthorFormIsValid"/>
                         <input type="reset" id="resetAuthorButton" value="Reset" class="button small radius alert"/>
                     </div>
                 </fieldset>

@@ -7,16 +7,16 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.newsletterMailName = ko.observable();
         self.newsletterMailSubject = ko.observable();
 
-        self.recipientGroupIsRequiredStyle= ko.computed(function() {
+        self.recipientGroupIsRequiredStyle = ko.computed(function () {
             return self.recipientGroup() === null || self.recipientGroup() === '' ? 'error' : 'invisible';
         });
-        self.newsletterMailNameIsRequiredStyle= ko.computed(function() {
+        self.newsletterMailNameIsRequiredStyle = ko.computed(function () {
             return self.newsletterMailName() === null || self.newsletterMailName() === '' ? 'error' : 'invisible';
         });
-        self.newsletterMailSubjectIsRequiredStyle= ko.computed(function() {
+        self.newsletterMailSubjectIsRequiredStyle = ko.computed(function () {
             return self.newsletterMailSubject() === null || self.newsletterMailSubject() === '' ? 'error' : 'invisible';
         });
-        self.addNewsletterMailFormIsValid = ko.computed(function() {
+        self.addNewsletterMailFormIsValid = ko.computed(function () {
             return self.recipientGroup() !== null && self.recipientGroup() !== '' &&
                 self.newsletterMailName() !== null && self.newsletterMailName() !== '' &&
                 self.newsletterMailSubject() !== null && self.newsletterMailSubject() !== '';
@@ -84,15 +84,15 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
             ]
         });
 
-        $('#searchNewsletterMailButton').click(function() {
+        $('#searchNewsletterMailButton').click(function () {
             searchNewsletterMail();
         });
 
-        $('#addNewsletterMailButton').click(function() {
+        $('#addNewsletterMailButton').click(function () {
             addNewsletterMail();
         });
 
-        $('body').on('click', 'button[name="removeNewsletterMailButton"]', function() {
+        $('body').on('click', 'button[name="removeNewsletterMailButton"]', function () {
             removeNewsletterMail($(this).val());
         });
 
@@ -156,7 +156,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         $("#newsletterMailsList").dataTable().fnDraw();
     }
 
-    $('#resetAddNewsletterMail').click(function() {
+    $('#resetAddNewsletterMail').click(function () {
         viewModel.newsletterMailsViewModel.recipientGroupId = null;
         viewModel.newsletterMailsViewModel.recipientGroup(null);
         viewModel.newsletterMailsViewModel.newsletterMailName(null);

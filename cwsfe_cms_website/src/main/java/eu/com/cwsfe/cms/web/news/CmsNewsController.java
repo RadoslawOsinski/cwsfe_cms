@@ -76,25 +76,25 @@ public class CmsNewsController extends JsonController {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         addCmsNewsManagementBreadCrumb(locale, breadcrumbs);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/news/" + id).build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CurrentNews")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/news/" + id).build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CurrentNews")));
         return breadcrumbs;
     }
 
     private void addCmsNewsManagementBreadCrumb(Locale locale, List<Breadcrumb> breadcrumbs) {
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/news").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CmsNewsManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/news").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CmsNewsManagement")));
     }
 
     @RequestMapping(value = "/newsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String list(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho,
-            @RequestParam(required = false) String searchNewsCode,
-            WebRequest webRequest
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho,
+        @RequestParam(required = false) String searchNewsCode,
+        WebRequest webRequest
     ) {
         Integer searchAuthorId = null;
         String searchAuthorIdText = webRequest.getParameter("searchAuthorId");
@@ -134,8 +134,8 @@ public class CmsNewsController extends JsonController {
     @RequestMapping(value = "/addNews", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addNews(
-            @ModelAttribute(value = "cmsNews") CmsNews cmsNews,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsNews") CmsNews cmsNews,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "authorId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("AuthorMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "newsTypeId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeMustBeSet"));
@@ -156,8 +156,8 @@ public class CmsNewsController extends JsonController {
     @RequestMapping(value = "/news/updateNewsBasicInfo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updateNewsBasicInfo(
-            @ModelAttribute(value = "cmsNews") CmsNews cmsNews,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsNews") CmsNews cmsNews,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "newsTypeId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "newsFolderId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderMustBeSet"));
@@ -176,8 +176,8 @@ public class CmsNewsController extends JsonController {
     @RequestMapping(value = "/deleteNews", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteFolder(
-            @ModelAttribute(value = "cmsNews") CmsNews cmsNews,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsNews") CmsNews cmsNews,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -240,8 +240,8 @@ public class CmsNewsController extends JsonController {
 
     @RequestMapping(value = "/news/addNewsI18nContent", method = RequestMethod.POST)
     public ModelAndView addNewsI18nContent(
-            @ModelAttribute(value = "cmsNewsI18nContent") CmsNewsI18nContent cmsNewsI18nContent,
-            ModelMap model, Locale locale, HttpServletRequest httpServletRequest
+        @ModelAttribute(value = "cmsNewsI18nContent") CmsNewsI18nContent cmsNewsI18nContent,
+        ModelMap model, Locale locale, HttpServletRequest httpServletRequest
     ) {
         cmsNewsI18nContentsDAO.add(cmsNewsI18nContent);
         browseNews(model, locale, cmsNewsI18nContent.getNewsId(), httpServletRequest);
@@ -254,8 +254,8 @@ public class CmsNewsController extends JsonController {
     @RequestMapping(value = "/news/updateNewsI18nContent", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updateNewsI18nContent(
-            @ModelAttribute(value = "cmsNewsI18nContent") CmsNewsI18nContent cmsNewsI18nContent,
-            BindingResult result, ModelMap model, Locale locale, HttpServletRequest httpServletRequest
+        @ModelAttribute(value = "cmsNewsI18nContent") CmsNewsI18nContent cmsNewsI18nContent,
+        BindingResult result, ModelMap model, Locale locale, HttpServletRequest httpServletRequest
     ) {
         ValidationUtils.rejectIfEmpty(result, "newsId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "languageId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet"));
@@ -286,7 +286,7 @@ public class CmsNewsController extends JsonController {
             } catch (Exception e) {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("SavingFailed"));
             }
-        } else{
+        } else {
             prepareErrorResponse(result, responseDetailsJson);
         }
         return responseDetailsJson.toString();

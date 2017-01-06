@@ -59,10 +59,10 @@ public class NewsletterMailGroupsControllerTest {
     @Test
     public void testDefaultView() throws Exception {
         mockMvc.perform(get("/newsletterMailGroups"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/newsletterMailGroups/NewsletterMailGroups"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/newsletterMailGroups/NewsletterMailGroups.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/newsletterMailGroups/NewsletterMailGroups"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/newsletterMailGroups/NewsletterMailGroups.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()));
     }
 
     @Test
@@ -77,16 +77,16 @@ public class NewsletterMailGroupsControllerTest {
         when(newsletterMailGroupDAO.listNewsletterMailGroupsForDropList(anyString(), anyInt())).thenReturn(newsletterMailGroups);
 
         ResultActions resultActions = mockMvc.perform(get("/newsletterMailGroupsDropList")
-                        .param("term", "term")
-                        .param("limit", "1")
+            .param("term", "term")
+            .param("limit", "1")
         );
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data[0].id").value((int) id))
-                .andExpect(jsonPath("$.data[0].newsletterMailGroupName").value(name));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data[0].id").value((int) id))
+            .andExpect(jsonPath("$.data[0].newsletterMailGroupName").value(name));
         verify(newsletterMailGroupDAO, times(1)).listNewsletterMailGroupsForDropList(anyString(), anyInt());
         verifyNoMoreInteractions(newsletterMailGroupDAO);
     }
@@ -113,22 +113,22 @@ public class NewsletterMailGroupsControllerTest {
         when(cmsLanguagesDAO.getById(anyLong())).thenReturn(language);
 
         ResultActions resultActions = mockMvc.perform(get("/newsletterMailGroupsList")
-                .param("iDisplayStart", String.valueOf(iDisplayStart))
-                .param("iDisplayLength", String.valueOf(iDisplayLength))
-                .param("sEcho", sEcho))
-                .andExpect(status().isOk());
+            .param("iDisplayStart", String.valueOf(iDisplayStart))
+            .param("iDisplayLength", String.valueOf(iDisplayLength))
+            .param("sEcho", sEcho))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.sEcho").value(sEcho))
-                .andExpect(jsonPath("$.iTotalRecords").value(numberOfNewsletterMailGroups))
-                .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfNewsletterMailGroups))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
-                .andExpect(jsonPath("$.aaData[0].language2LetterCode").value(languageCode))
-                .andExpect(jsonPath("$.aaData[0].newsletterMailGroupName").value(name))
-                .andExpect(jsonPath("$.aaData[0].id").value((int) id));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.sEcho").value(sEcho))
+            .andExpect(jsonPath("$.iTotalRecords").value(numberOfNewsletterMailGroups))
+            .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfNewsletterMailGroups))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
+            .andExpect(jsonPath("$.aaData[0].language2LetterCode").value(languageCode))
+            .andExpect(jsonPath("$.aaData[0].newsletterMailGroupName").value(name))
+            .andExpect(jsonPath("$.aaData[0].id").value((int) id));
         verify(newsletterMailGroupDAO, times(1)).searchByAjax(anyInt(), anyInt(), anyString(), anyLong());
         verify(newsletterMailGroupDAO, times(1)).searchByAjaxCount(anyString(), anyLong());
         verifyNoMoreInteractions(newsletterMailGroupDAO);
@@ -139,13 +139,13 @@ public class NewsletterMailGroupsControllerTest {
         when(newsletterMailGroupDAO.add(any(NewsletterMailGroup.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addNewsletterMailGroup")
-                .param("name", "name")
-                .param("languageId", "1"));
+            .param("name", "name")
+            .param("languageId", "1"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_SUCCESS));
         verify(newsletterMailGroupDAO, times(1)).add(any(NewsletterMailGroup.class));
         verifyNoMoreInteractions(newsletterMailGroupDAO);
     }
@@ -156,13 +156,13 @@ public class NewsletterMailGroupsControllerTest {
         doNothing().when(newsletterMailGroupDAO).delete(any(NewsletterMailGroup.class));
 
         ResultActions resultActions = mockMvc.perform(post("/deleteNewsletterMailGroup")
-                .param("id", String.valueOf(id)))
-                .andExpect(status().isOk());
+            .param("id", String.valueOf(id)))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_SUCCESS));
         verify(newsletterMailGroupDAO, times(1)).delete(any(NewsletterMailGroup.class));
         verifyNoMoreInteractions(newsletterMailGroupDAO);
     }
@@ -178,12 +178,12 @@ public class NewsletterMailGroupsControllerTest {
         when(cmsLanguagesDAO.getById(anyLong())).thenReturn(language);
 
         mockMvc.perform(get("/newsletterMailGroups/1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/newsletterMailGroups/SingleNewsletterMailGroup"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/newsletterMailGroups/SingleNewsletterMailGroup.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()))
-                .andExpect(model().attribute("newsletterMailGroup", anything()))
-                .andExpect(model().attribute("newsletterMailGroupLanguageCode", languageCode));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/newsletterMailGroups/SingleNewsletterMailGroup"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/newsletterMailGroups/SingleNewsletterMailGroup.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()))
+            .andExpect(model().attribute("newsletterMailGroup", anything()))
+            .andExpect(model().attribute("newsletterMailGroupLanguageCode", languageCode));
     }
 
     @Test
@@ -204,21 +204,21 @@ public class NewsletterMailGroupsControllerTest {
         when(newsletterMailAddressDAO.searchByAjaxCount(anyString(), anyLong())).thenReturn(numberOfNewsletterMailAddress);
 
         ResultActions resultActions = mockMvc.perform(get("/newsletterMailGroups/newsletterMailAddressesList")
-                .param("iDisplayStart", String.valueOf(iDisplayStart))
-                .param("iDisplayLength", String.valueOf(iDisplayLength))
-                .param("sEcho", sEcho));
+            .param("iDisplayStart", String.valueOf(iDisplayStart))
+            .param("iDisplayLength", String.valueOf(iDisplayLength))
+            .param("sEcho", sEcho));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.sEcho").value(sEcho))
-                .andExpect(jsonPath("$.iTotalRecords").value(numberOfNewsletterMailAddress))
-                .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfNewsletterMailAddress))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
-                .andExpect(jsonPath("$.aaData[0].email").value(email))
-                .andExpect(jsonPath("$.aaData[0].status").value(NewsletterMailAddressStatus.NEW.name()))
-                .andExpect(jsonPath("$.aaData[0].id").value((int) id));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.sEcho").value(sEcho))
+            .andExpect(jsonPath("$.iTotalRecords").value(numberOfNewsletterMailAddress))
+            .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfNewsletterMailAddress))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
+            .andExpect(jsonPath("$.aaData[0].email").value(email))
+            .andExpect(jsonPath("$.aaData[0].status").value(NewsletterMailAddressStatus.NEW.name()))
+            .andExpect(jsonPath("$.aaData[0].id").value((int) id));
         verify(newsletterMailAddressDAO, times(1)).searchByAjax(anyInt(), anyInt(), anyString(), anyLong());
         verify(newsletterMailAddressDAO, times(1)).searchByAjaxCount(anyString(), anyLong());
         verifyNoMoreInteractions(newsletterMailAddressDAO);
@@ -229,15 +229,15 @@ public class NewsletterMailGroupsControllerTest {
         doNothing().when(newsletterMailGroupDAO).update(any(NewsletterMailGroup.class));
 
         ResultActions resultActions = mockMvc.perform(post("/newsletterMailGroups/updateNewsletterMailGroup")
-                        .param("id", "1")
-                        .param("name", "name")
-                        .param("languageId", "2")
+            .param("id", "1")
+            .param("name", "name")
+            .param("languageId", "2")
         );
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_SUCCESS));
         verify(newsletterMailGroupDAO, times(1)).update(any(NewsletterMailGroup.class));
         verifyNoMoreInteractions(newsletterMailGroupDAO);
     }
@@ -250,14 +250,14 @@ public class NewsletterMailGroupsControllerTest {
         when(newsletterMailAddressDAO.add(any(NewsletterMailAddress.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/newsletterMailGroups/addNewsletterMailAddresses")
-                        .param("mailGroupId", "1")
-                        .param("email", "Radoslaw.Osinski@cwsfe.pl")
+            .param("mailGroupId", "1")
+            .param("email", "Radoslaw.Osinski@cwsfe.pl")
         );
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_SUCCESS));
         verify(newsletterMailAddressDAO, times(1)).getByEmailAndMailGroup(anyString(), anyLong());
         verify(newsletterMailAddressDAO, times(1)).getByConfirmString(anyString());
         verify(newsletterMailAddressDAO, times(1)).getByUnSubscribeString(anyString());
@@ -273,15 +273,15 @@ public class NewsletterMailGroupsControllerTest {
         when(newsletterMailAddressDAO.add(any(NewsletterMailAddress.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/newsletterMailGroups/addNewsletterMailAddresses")
-                        .param("mailGroupId", "1")
-                        .param("email", "existing@cwsfe.pl")
+            .param("mailGroupId", "1")
+            .param("email", "existing@cwsfe.pl")
         );
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_FAIL))
-                .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_ERROR_MESSAGES + "[0]").exists());
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_FAIL))
+            .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_ERROR_MESSAGES + "[0]").exists());
         verify(newsletterMailAddressDAO, times(1)).getByEmailAndMailGroup(anyString(), anyLong());
         verifyNoMoreInteractions(newsletterMailAddressDAO);
     }
@@ -289,14 +289,14 @@ public class NewsletterMailGroupsControllerTest {
     @Test
     public void testAddNewsletterMailAddressesEmailInvalid() throws Exception {
         ResultActions resultActions = mockMvc.perform(post("/newsletterMailGroups/addNewsletterMailAddresses")
-                        .param("mailGroupId", "1")
-                        .param("email", "email")
+            .param("mailGroupId", "1")
+            .param("email", "email")
         );
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_FAIL));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_FAIL));
         verifyNoMoreInteractions(newsletterMailAddressDAO);
     }
 
@@ -305,12 +305,12 @@ public class NewsletterMailGroupsControllerTest {
         doNothing().when(newsletterMailAddressDAO).delete(any(NewsletterMailAddress.class));
 
         ResultActions resultActions = mockMvc.perform(post("/newsletterMailGroups/deleteNewsletterMailAddress")
-                .param("id", "1"));
+            .param("id", "1"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_SUCCESS));
         verify(newsletterMailAddressDAO, times(1)).delete(any(NewsletterMailAddress.class));
         verifyNoMoreInteractions(newsletterMailAddressDAO);
     }
@@ -320,12 +320,12 @@ public class NewsletterMailGroupsControllerTest {
         doNothing().when(newsletterMailAddressDAO).activate(any(NewsletterMailAddress.class));
 
         ResultActions resultActions = mockMvc.perform(post("/newsletterMailGroups/activateNewsletterMailAddress")
-                .param("id", "1"));
+            .param("id", "1"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_SUCCESS));
         verify(newsletterMailAddressDAO, times(1)).activate(any(NewsletterMailAddress.class));
         verifyNoMoreInteractions(newsletterMailAddressDAO);
     }
@@ -335,12 +335,12 @@ public class NewsletterMailGroupsControllerTest {
         doNothing().when(newsletterMailAddressDAO).deactivate(any(NewsletterMailAddress.class));
 
         ResultActions resultActions = mockMvc.perform(post("/newsletterMailGroups/deactivateNewsletterMailAddress")
-                .param("id", "1"));
+            .param("id", "1"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + NewsletterMailGroupsController.JSON_STATUS).value(NewsletterMailGroupsController.JSON_STATUS_SUCCESS));
         verify(newsletterMailAddressDAO, times(1)).deactivate(any(NewsletterMailAddress.class));
         verifyNoMoreInteractions(newsletterMailAddressDAO);
     }

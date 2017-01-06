@@ -63,30 +63,30 @@ public class BlogPostsController extends JsonController {
     private List<Breadcrumb> getBreadcrumbs(Locale locale) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/blogPosts").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/blogPosts").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostManagement")));
         return breadcrumbs;
     }
 
     private List<Breadcrumb> getSingleBlogPostsBreadcrumbs(Locale locale, Long id) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/blogPosts").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostsManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/blogPosts").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostsManagement")));
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/blogPosts/" + id).build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CurrentBlogPost")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/blogPosts/" + id).build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CurrentBlogPost")));
         return breadcrumbs;
     }
 
     @RequestMapping(value = "/blogPostsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listBlogPosts(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho,
-            @RequestParam(required = false) String searchPostTextCode,
-            WebRequest webRequest
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho,
+        @RequestParam(required = false) String searchPostTextCode,
+        WebRequest webRequest
     ) {
         Integer searchAuthorId = null;
         String searchAuthorIdText = webRequest.getParameter("searchAuthorId");
@@ -126,8 +126,8 @@ public class BlogPostsController extends JsonController {
     @RequestMapping(value = "/blogPostKeywordAssignment", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listBlogPostKeywordAssignment(
-            @RequestParam long blogPostId,
-            WebRequest webRequest
+        @RequestParam long blogPostId,
+        WebRequest webRequest
     ) {
         List<BlogKeywordAssignment> blogKeywordAssignments = blogPostKeywordsDAO.listValuesForPost(blogPostId);
         JSONObject responseDetailsJson = new JSONObject();
@@ -147,8 +147,8 @@ public class BlogPostsController extends JsonController {
     @RequestMapping(value = "/addBlogPost", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addBlogPost(
-            @ModelAttribute(value = "blogPost") BlogPost blogPost,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "blogPost") BlogPost blogPost,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "postAuthorId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("AuthorMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "postTextCode", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("PostTextCodeMustBeSet"));
@@ -168,8 +168,8 @@ public class BlogPostsController extends JsonController {
     @RequestMapping(value = "/deleteBlogPost", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String delete(
-            @ModelAttribute(value = "blogPost") BlogPost blogPost,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "blogPost") BlogPost blogPost,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -233,8 +233,8 @@ public class BlogPostsController extends JsonController {
     @RequestMapping(value = "/blogPosts/updatePostBasicInfo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updatePostBasicInfo(
-            @ModelAttribute(value = "blogPost") BlogPost blogPost,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "blogPost") BlogPost blogPost,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "postTextCode", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("PostTextCodeMustBeSet"));
@@ -252,8 +252,8 @@ public class BlogPostsController extends JsonController {
     @RequestMapping(value = "/blogPosts/updateBlogPostI18nContent", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updateBlogPostI18nContent(
-            @ModelAttribute(value = "BlogPostI18nContent") BlogPostI18nContent blogPostI18nContent,
-            BindingResult result, ModelMap model, Locale locale, HttpServletRequest httpServletRequest
+        @ModelAttribute(value = "BlogPostI18nContent") BlogPostI18nContent blogPostI18nContent,
+        BindingResult result, ModelMap model, Locale locale, HttpServletRequest httpServletRequest
     ) {
         ValidationUtils.rejectIfEmpty(result, "postId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "languageId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet"));
@@ -284,7 +284,7 @@ public class BlogPostsController extends JsonController {
             } catch (Exception e) {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("SavingFailed"));
             }
-        } else{
+        } else {
             prepareErrorResponse(result, responseDetailsJson);
         }
         return responseDetailsJson.toString();
@@ -293,10 +293,10 @@ public class BlogPostsController extends JsonController {
     @RequestMapping(value = "/postCategoryUpdate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String postCategoriesUpdate(
-            @ModelAttribute(value = "blogKeywordAssignment") BlogKeywordAssignment blogKeywordAssignment,
-            @RequestParam Long postId,
-            ModelMap model, Locale locale, BindingResult result,
-            WebRequest webRequest, HttpServletRequest httpServletRequest
+        @ModelAttribute(value = "blogKeywordAssignment") BlogKeywordAssignment blogKeywordAssignment,
+        @RequestParam Long postId,
+        ModelMap model, Locale locale, BindingResult result,
+        WebRequest webRequest, HttpServletRequest httpServletRequest
     ) {
         if (postId == null) {
             result.addError(new ObjectError("postId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet")));
@@ -314,14 +314,14 @@ public class BlogPostsController extends JsonController {
             try {
                 if (blogPostKeyword == null && blogKeywordAssignment.isAssigned()) {
                     blogPostKeywordsDAO.add(new BlogPostKeyword(postId, blogKeywordAssignment.getId()));
-                } else if (blogPostKeyword != null && !blogKeywordAssignment.isAssigned()){
+                } else if (blogPostKeyword != null && !blogKeywordAssignment.isAssigned()) {
                     blogPostKeywordsDAO.delete(postId, blogKeywordAssignment.getId());
                 }
                 addJsonSuccess(responseDetailsJson);
             } catch (Exception e) {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("SavingFailed"));
             }
-        } else{
+        } else {
             prepareErrorResponse(result, responseDetailsJson);
         }
         return responseDetailsJson.toString();

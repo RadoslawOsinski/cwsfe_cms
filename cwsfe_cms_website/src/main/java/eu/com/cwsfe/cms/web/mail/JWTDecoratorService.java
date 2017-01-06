@@ -39,8 +39,8 @@ public class JWTDecoratorService {
             final Claims body = claimsJws.getBody();
             LOGGER.info("Request JWT " + body.toString());
             return new SendEmailRequest(
-                    (String) body.get("replayToEmail"),
-                    (String) body.get("emailText")
+                (String) body.get("replayToEmail"),
+                (String) body.get("emailText")
             );
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
             LOGGER.error("Problem with send email JWT: ", e);

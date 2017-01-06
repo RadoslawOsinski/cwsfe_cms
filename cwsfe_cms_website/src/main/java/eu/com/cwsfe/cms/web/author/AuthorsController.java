@@ -48,17 +48,17 @@ public class AuthorsController extends JsonController {
     private List<Breadcrumb> getBreadcrumbs(Locale locale) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/authors").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("AuthorsManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/authors").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("AuthorsManagement")));
         return breadcrumbs;
     }
 
     @RequestMapping(value = "/authorsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listAuthors(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho
     ) {
         final List<CmsAuthor> cmsAuthors = cmsAuthorsDAO.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
@@ -83,8 +83,8 @@ public class AuthorsController extends JsonController {
     @RequestMapping(value = "/authorsDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listAuthorsForDropList(
-            @RequestParam String term,
-            @RequestParam Integer limit
+        @RequestParam String term,
+        @RequestParam Integer limit
     ) {
         final List<CmsAuthor> cmsAuthors = cmsAuthorsDAO.listAuthorsForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
@@ -104,8 +104,8 @@ public class AuthorsController extends JsonController {
     @RequestMapping(value = "/addAuthor", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addAuthor(
-            @ModelAttribute(value = "cmsAuthor") CmsAuthor cmsAuthor,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsAuthor") CmsAuthor cmsAuthor,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "firstName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FirstNameMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "lastName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LastNameMustBeSet"));
@@ -122,8 +122,8 @@ public class AuthorsController extends JsonController {
     @RequestMapping(value = "/deleteAuthor", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteAuthor(
-            @ModelAttribute(value = "cmsAuthor") CmsAuthor cmsAuthor,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsAuthor") CmsAuthor cmsAuthor,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("AuthorMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();

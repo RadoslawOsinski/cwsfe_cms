@@ -1,4 +1,4 @@
-module.exports = function(config) {
+module.exports = function (config) {
     config.set({
         // base path, that will be used to resolve files and exclude
         basePath: './../../../',
@@ -7,15 +7,15 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser      
         files: [{
-                pattern: 'src/main/webapp/resources-cwsfe-cms/js/cms/**/*.js',
-                included: false
-            }, {
-                pattern: 'src/test/js/resources-cwsfe-cms/cms/**/*.js',
-                included: false
-            }, {
-                pattern: 'src/test/js/**/*Spec.js',
-                included: false
-            }
+            pattern: 'src/main/webapp/resources-cwsfe-cms/js/cms/**/*.js',
+            included: false
+        }, {
+            pattern: 'src/test/js/resources-cwsfe-cms/cms/**/*.js',
+            included: false
+        }, {
+            pattern: 'src/test/js/**/*Spec.js',
+            included: false
+        }
             //,
             //'src/test/js/test-main.js'
         ],

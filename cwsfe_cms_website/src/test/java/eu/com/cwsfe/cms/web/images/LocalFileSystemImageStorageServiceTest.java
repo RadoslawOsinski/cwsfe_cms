@@ -78,7 +78,7 @@ public class LocalFileSystemImageStorageServiceTest {
         File file = new File("src/main/webapp/resources-cwsfe-cms/CWSFE_logo.png");
         FileInputStream input = new FileInputStream(file);
         MultipartFile multipartFile = new MockMultipartFile("file",
-                file.getName(), "image/png", IOUtils.toByteArray(input));
+            file.getName(), "image/png", IOUtils.toByteArray(input));
         CmsNewsImage cmsNewsImage = new CmsNewsImage();
         cmsNewsImage.setFile(multipartFile);
 
@@ -97,7 +97,7 @@ public class LocalFileSystemImageStorageServiceTest {
         File file = new File("src/main/webapp/resources-cwsfe-cms/CWSFE_logo.png");
         FileInputStream input = new FileInputStream(file);
         MultipartFile multipartFile = new MockMultipartFile("file",
-                file.getName(), "image/png", IOUtils.toByteArray(input));
+            file.getName(), "image/png", IOUtils.toByteArray(input));
         BlogPostImage blogPostImage = new BlogPostImage();
         blogPostImage.setFile(multipartFile);
 

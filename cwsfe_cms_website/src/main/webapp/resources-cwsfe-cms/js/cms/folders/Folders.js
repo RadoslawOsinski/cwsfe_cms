@@ -5,10 +5,10 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         self.folderName = ko.observable();
         self.orderNumber = ko.observable(0);
 
-        self.folderNameIsRequiredStyle= ko.computed(function() {
+        self.folderNameIsRequiredStyle = ko.computed(function () {
             return self.folderName() === null || self.folderName() === '' ? 'error' : 'invisible';
         });
-        self.addFolderFormIsValid = ko.computed(function() {
+        self.addFolderFormIsValid = ko.computed(function () {
             return self.folderName() !== null && self.folderName() !== '';
         });
     }
@@ -46,15 +46,15 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
 
     });
 
-    $('#addFolderButton').click(function() {
+    $('#addFolderButton').click(function () {
         addFolder();
     });
 
-    $('body').on('click', 'button[name="deleteFolderButton"]', function() {
+    $('body').on('click', 'button[name="deleteFolderButton"]', function () {
         deleteFolder($(this).val());
     });
 
-    $('#resetAddFolder').click(function() {
+    $('#resetAddFolder').click(function () {
         viewModel.folderViewModel.folderName(null);
         viewModel.folderViewModel.orderNumber(0);
         viewModel.formAlerts.cleanAllMessages();

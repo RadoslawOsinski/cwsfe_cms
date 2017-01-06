@@ -5,13 +5,13 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         self.code = ko.observable();
         self.name = ko.observable();
 
-        self.languageIsRequiredStyle= ko.computed(function() {
+        self.languageIsRequiredStyle = ko.computed(function () {
             return self.code() === null || self.code() === '' ? 'error' : 'invisible';
         });
-        self.languageNameIsRequiredStyle= ko.computed(function() {
+        self.languageNameIsRequiredStyle = ko.computed(function () {
             return self.name() === null || self.name() === '' ? 'error' : 'invisible';
         });
-        self.addLanguagesFormIsValid = ko.computed(function() {
+        self.addLanguagesFormIsValid = ko.computed(function () {
             return self.code() !== null && self.code() !== '' &&
                 self.name() !== null && self.name() !== '';
         });
@@ -50,7 +50,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
 
     });
 
-    $('#resetAddLanguages').click(function() {
+    $('#resetAddLanguages').click(function () {
         viewModel.languagesViewModel.code(null);
         viewModel.languagesViewModel.name(null);
         viewModel.formAlerts.cleanAllMessages();
@@ -101,11 +101,11 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         });
     }
 
-    $('#addLanguageButton').click(function() {
+    $('#addLanguageButton').click(function () {
         addLanguage();
     });
 
-    $('body').on('click', 'button[name="removeLanguageButton"]', function() {
+    $('body').on('click', 'button[name="removeLanguageButton"]', function () {
         removeLanguage($(this).val());
     });
 

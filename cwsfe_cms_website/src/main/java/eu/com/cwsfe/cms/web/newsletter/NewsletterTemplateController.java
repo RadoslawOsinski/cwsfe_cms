@@ -72,8 +72,8 @@ class NewsletterTemplateController extends JsonController {
     private List<Breadcrumb> getBreadcrumbs(Locale locale) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterTemplates").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterTemplatesManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterTemplates").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterTemplatesManagement")));
         return breadcrumbs;
     }
 
@@ -84,22 +84,22 @@ class NewsletterTemplateController extends JsonController {
     private List<Breadcrumb> getSingleNewsletterTemplatesBreadcrumbs(Locale locale, Long id) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterTemplates").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterTemplatesManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterTemplates").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterTemplatesManagement")));
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterTemplates/" + id).build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CurrentNewsletterTemplate")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterTemplates/" + id).build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CurrentNewsletterTemplate")));
         return breadcrumbs;
     }
 
     @RequestMapping(value = "/newsletterTemplatesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listNewsletterTemplates(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho,
-            @RequestParam(required = false) Long searchLanguageId,
-            @RequestParam(required = false) String searchName
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho,
+        @RequestParam(required = false) Long searchLanguageId,
+        @RequestParam(required = false) String searchName
     ) {
         List<NewsletterTemplate> dbList = newsletterTemplateDAO.searchByAjax(iDisplayStart, iDisplayLength, searchName, searchLanguageId);
         Integer dbListDisplayRecordsSize = newsletterTemplateDAO.searchByAjaxCount(searchName, searchLanguageId);
@@ -126,8 +126,8 @@ class NewsletterTemplateController extends JsonController {
     @RequestMapping(value = "/addNewsletterTemplate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addNewsletterTemplate(
-            @ModelAttribute(value = "newsletterTemplate") NewsletterTemplate newsletterTemplate,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterTemplate") NewsletterTemplate newsletterTemplate,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "languageId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "name", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterTemplateNameMustBeSet"));
@@ -144,8 +144,8 @@ class NewsletterTemplateController extends JsonController {
     @RequestMapping(value = "/deleteNewsletterTemplate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteNewsletterTemplate(
-            @ModelAttribute(value = "newsletterTemplate") NewsletterTemplate newsletterTemplate,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterTemplate") NewsletterTemplate newsletterTemplate,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterTemplateMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -161,8 +161,8 @@ class NewsletterTemplateController extends JsonController {
     @RequestMapping(value = "/unDeleteNewsletterTemplate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String unDeleteNewsletterTemplate(
-            @ModelAttribute(value = "newsletterTemplate") NewsletterTemplate newsletterTemplate,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterTemplate") NewsletterTemplate newsletterTemplate,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterTemplateMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -188,8 +188,8 @@ class NewsletterTemplateController extends JsonController {
     @RequestMapping(value = "/newsletterTemplates/updateNewsletterTemplate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updateNewsletterTemplate(
-            @ModelAttribute(value = "newsletterTemplate") NewsletterTemplate newsletterTemplate,
-            BindingResult result, ModelMap model, Locale locale, HttpServletRequest httpServletRequest
+        @ModelAttribute(value = "newsletterTemplate") NewsletterTemplate newsletterTemplate,
+        BindingResult result, ModelMap model, Locale locale, HttpServletRequest httpServletRequest
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterTemplateMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "languageId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet"));
@@ -210,9 +210,9 @@ class NewsletterTemplateController extends JsonController {
     @RequestMapping(value = "/newsletterTemplates/newsletterTemplateTestSend", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String newsletterTemplateTestSend(
-            @ModelAttribute(value = "newsletterTemplate") NewsletterTemplate newsletterTemplate,
-            @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterTemplate") NewsletterTemplate newsletterTemplate,
+        @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterTemplateMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "email", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("EmailIsInvalid"));

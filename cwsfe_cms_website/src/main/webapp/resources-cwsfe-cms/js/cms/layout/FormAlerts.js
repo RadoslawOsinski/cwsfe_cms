@@ -1,4 +1,4 @@
-define('formAlerts', ['jquery', 'knockout'], function($, ko) {
+define('formAlerts', ['jquery', 'knockout'], function ($, ko) {
 
     var FormAlerts = function () {
         var self = this;
@@ -66,6 +66,6 @@ define('formAlerts', ['jquery', 'knockout'], function($, ko) {
         };
     };
 
-return {formAlerts: FormAlerts};
+    return {formAlerts: FormAlerts};
 
 });

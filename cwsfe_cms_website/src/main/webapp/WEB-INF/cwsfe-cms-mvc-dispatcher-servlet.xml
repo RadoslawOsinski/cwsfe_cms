@@ -59,7 +59,8 @@
         <property name="paramName" value="cmsLanguage"/>
     </bean>
 
-    <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+    <bean id="handlerMapping"
+          class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
         <property name="interceptors" ref="cwsfeCmsLocaleChangeInterceptor"/>
     </bean>
 
@@ -83,7 +84,8 @@
 
     <bean class="eu.com.cwsfe.cms.configuration.SwaggerConfig"/>
 
-    <bean id="dbMigrationManager" class="eu.com.cwsfe.cms.version.DbMigrationManager" init-method="updateCmsDatabaseSchema">
+    <bean id="dbMigrationManager" class="eu.com.cwsfe.cms.version.DbMigrationManager"
+          init-method="updateCmsDatabaseSchema">
         <constructor-arg name="migrationDataSource" ref="dataSource"/>
     </bean>
 

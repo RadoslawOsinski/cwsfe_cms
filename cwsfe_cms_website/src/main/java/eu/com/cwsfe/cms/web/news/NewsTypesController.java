@@ -49,17 +49,17 @@ class NewsTypesController extends JsonController {
     private List<Breadcrumb> getBreadcrumbs(Locale locale) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsTypes").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypesManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsTypes").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypesManagement")));
         return breadcrumbs;
     }
 
     @RequestMapping(value = "/newsTypesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listNewsTypes(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho
     ) {
         final List<NewsType> cmsNewsTypes = newsTypesDAO.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
@@ -82,8 +82,8 @@ class NewsTypesController extends JsonController {
     @RequestMapping(value = "/news/newsTypesDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listNewsTypesForDropList(
-            @RequestParam String term,
-            @RequestParam Integer limit
+        @RequestParam String term,
+        @RequestParam Integer limit
     ) {
         final List<NewsType> results = newsTypesDAO.listNewsTypesForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
@@ -101,8 +101,8 @@ class NewsTypesController extends JsonController {
     @RequestMapping(value = "/addNewsType", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addNewsType(
-            @ModelAttribute(value = "newsType") NewsType newsType,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsType") NewsType newsType,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "type", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -122,8 +122,8 @@ class NewsTypesController extends JsonController {
     @RequestMapping(value = "/deleteNewsType", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteNewsType(
-            @ModelAttribute(value = "cmsNewsType") NewsType cmsNewsType,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsNewsType") NewsType cmsNewsType,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();

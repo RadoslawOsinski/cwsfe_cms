@@ -75,7 +75,8 @@
                     </div>
                     <div class="row">
                         <label for="newsType"><spring:message code="NewsType"/></label>
-                        <input type="text" id="newsType" value="" required data-bind="textInput: newsViewModel.newsType"/>
+                        <input type="text" id="newsType" value="" required
+                               data-bind="textInput: newsViewModel.newsType"/>
                         <small class="invisible" data-bind="attr: { 'class': newsViewModel.newsTypeIsRequiredStyle}">
                             <spring:message code="NewsTypeMustBeSet"/>
                         </small>
@@ -89,14 +90,16 @@
                     </div>
                     <div class="row">
                         <label for="newsCode"><spring:message code="NewsCode"/></label>
-                        <input type="text" id="newsCode" maxlength="100" required data-bind="textInput: newsViewModel.newsCode"/>
+                        <input type="text" id="newsCode" maxlength="100" required
+                               data-bind="textInput: newsViewModel.newsCode"/>
                         <small class="invisible" data-bind="attr: { 'class': newsViewModel.newsCodeIsRequiredStyle}">
                             <spring:message code="NewsCodeMustBeSet"/>
                         </small>
                     </div>
                     <div class="row">
                         <input type="button" id="addNewsButton" class="button small radius primary"
-                               value="<spring:message code="Add"/>" data-bind="enable: newsViewModel.addNewsFormIsValid">
+                               value="<spring:message code="Add"/>"
+                               data-bind="enable: newsViewModel.addNewsFormIsValid">
                         <input type="reset" id="resetAddNews" value="Reset" class="button small radius alert">
                     </div>
                 </fieldset>

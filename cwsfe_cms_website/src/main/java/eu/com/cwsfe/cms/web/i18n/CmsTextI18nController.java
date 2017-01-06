@@ -55,17 +55,17 @@ public class CmsTextI18nController extends JsonController {
     private List<Breadcrumb> getBreadcrumbs(Locale locale) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/cmsTextI18n").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TranslationsManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/cmsTextI18n").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TranslationsManagement")));
         return breadcrumbs;
     }
 
     @RequestMapping(value = "/cmsTextI18nList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listCmsTextI18n(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho
     ) {
         final List<CmsTextI18n> cmsTextI18ns = cmsTextI18nDAO.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
@@ -91,8 +91,8 @@ public class CmsTextI18nController extends JsonController {
     @RequestMapping(value = "/addCmsTextI18n", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addTextI18n(
-            @ModelAttribute(value = "cmsTextI18n") CmsTextI18n cmsTextI18n,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsTextI18n") CmsTextI18n cmsTextI18n,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "langId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "i18nCategory", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CategoryMustBeSet"));
@@ -115,8 +115,8 @@ public class CmsTextI18nController extends JsonController {
     @RequestMapping(value = "/deleteCmsTextI18n", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteTextI18n(
-            @ModelAttribute(value = "cmsTextI18n") CmsTextI18n cmsTextI18n,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsTextI18n") CmsTextI18n cmsTextI18n,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TextI18nMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();

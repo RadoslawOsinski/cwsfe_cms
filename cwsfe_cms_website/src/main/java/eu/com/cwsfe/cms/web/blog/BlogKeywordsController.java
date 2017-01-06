@@ -49,17 +49,17 @@ public class BlogKeywordsController extends JsonController {
     private List<Breadcrumb> getBreadcrumbs(Locale locale) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/blogKeywords").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogKeywordsManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/blogKeywords").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogKeywordsManagement")));
         return breadcrumbs;
     }
 
     @RequestMapping(value = "/blogKeywordsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listBlogKeywords(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho
     ) {
         final List<BlogKeyword> blogKeywords = blogKeywordsDAO.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
@@ -82,8 +82,8 @@ public class BlogKeywordsController extends JsonController {
     @RequestMapping(value = "/addBlogKeyword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addBlogKeyword(
-            @ModelAttribute(value = "blogKeyword") BlogKeyword blogKeyword,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "blogKeyword") BlogKeyword blogKeyword,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "keywordName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("KeywordNameMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -103,8 +103,8 @@ public class BlogKeywordsController extends JsonController {
     @RequestMapping(value = "/deleteBlogKeyword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteFolder(
-            @ModelAttribute(value = "blogKeyword") BlogKeyword blogKeyword,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "blogKeyword") BlogKeyword blogKeyword,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();

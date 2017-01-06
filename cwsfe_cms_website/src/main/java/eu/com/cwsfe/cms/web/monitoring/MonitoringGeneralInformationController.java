@@ -50,8 +50,8 @@ public class MonitoringGeneralInformationController extends JsonController {
     private List<Breadcrumb> getBreadcrumbs(Locale locale) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/monitoring/generalInformation").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("MonitoringGeneralInformation")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/monitoring/generalInformation").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("MonitoringGeneralInformation")));
         return breadcrumbs;
     }
 

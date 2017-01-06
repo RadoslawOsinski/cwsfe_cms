@@ -4,10 +4,10 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         var self = this;
         self.type = ko.observable();
 
-        self.typeIsRequiredStyle= ko.computed(function() {
+        self.typeIsRequiredStyle = ko.computed(function () {
             return self.type() === null || self.type() === '' ? 'error' : 'invisible';
         });
-        self.addNewsTypeFormIsValid = ko.computed(function() {
+        self.addNewsTypeFormIsValid = ko.computed(function () {
             return self.type() !== null && self.type() !== '';
         });
     }
@@ -19,7 +19,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
 
     $(document).ready(function () {
         ko.applyBindings(viewModel);
-        
+
         $('#newsTypesList').dataTable({
             'iTabIndex': -1,
             'sPaginationType': 'full_numbers',
@@ -44,19 +44,19 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
 
     });
 
-    $('#addNewsTypeButton').click(function() {
+    $('#addNewsTypeButton').click(function () {
         addNewsType();
     });
 
-    $('body').on('click', 'button[name="removeNewsTypeButton"]', function() {
+    $('body').on('click', 'button[name="removeNewsTypeButton"]', function () {
         removeNewsType($(this).val());
     });
 
-    $('#resetAddNewsType').click(function() {
+    $('#resetAddNewsType').click(function () {
         viewModel.newsTypesViewModel.type(null);
         viewModel.formAlerts.cleanAllMessages();
     });
-    
+
     function addNewsType() {
         viewModel.formAlerts.cleanAllMessages();
         $.ajax({

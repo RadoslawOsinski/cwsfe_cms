@@ -66,8 +66,8 @@ public class NewsletterMailController extends JsonController {
     private List<Breadcrumb> getBreadcrumbs(Locale locale) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMails").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailsManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMails").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailsManagement")));
         return breadcrumbs;
     }
 
@@ -78,22 +78,22 @@ public class NewsletterMailController extends JsonController {
     private List<Breadcrumb> getSingleNewsletterMailsBreadcrumbs(Locale locale, Long id) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMails").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailsManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMails").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailsManagement")));
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMails/" + id).build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CurrentNewsletter")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMails/" + id).build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CurrentNewsletter")));
         return breadcrumbs;
     }
 
     @RequestMapping(value = "/newsletterMailsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listNewsletterMails(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho,
-            @RequestParam(required = false) Long searchRecipientGroupId,
-            @RequestParam(required = false) String searchName
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho,
+        @RequestParam(required = false) Long searchRecipientGroupId,
+        @RequestParam(required = false) String searchName
     ) {
         List<NewsletterMail> dbList = newsletterMailDAO.searchByAjax(iDisplayStart, iDisplayLength, searchName, searchRecipientGroupId);
         Integer dbListDisplayRecordsSize = newsletterMailDAO.searchByAjaxCount(searchName, searchRecipientGroupId);
@@ -120,8 +120,8 @@ public class NewsletterMailController extends JsonController {
     @RequestMapping(value = "/addNewsletterMail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addNewsletterMail(
-            @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "recipientGroupId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("RecipientGroupMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "name", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailNameMustBeSet"));
@@ -140,8 +140,8 @@ public class NewsletterMailController extends JsonController {
     @RequestMapping(value = "/deleteNewsletterMail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteNewsletterMail(
-            @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -157,8 +157,8 @@ public class NewsletterMailController extends JsonController {
     @RequestMapping(value = "/unDeleteNewsletterMail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String unDeleteNewsletterMail(
-            @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -184,8 +184,8 @@ public class NewsletterMailController extends JsonController {
 
     @RequestMapping(value = "/newsletterMails/updateNewsletterMail", method = RequestMethod.POST)
     public String updateNewsletterMail(
-            @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
-            BindingResult result, ModelMap model, Locale locale, HttpServletRequest httpServletRequest
+        @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
+        BindingResult result, ModelMap model, Locale locale, HttpServletRequest httpServletRequest
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "recipientGroupId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("RecipientGroupMustBeSet"));
@@ -209,8 +209,8 @@ public class NewsletterMailController extends JsonController {
     @RequestMapping(value = "/newsletterMails/newsletterSend", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String newsletterSend(
-            @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailMustBeSet"));
         newsletterMail = newsletterMailDAO.get(newsletterMail.getId());
@@ -227,9 +227,9 @@ public class NewsletterMailController extends JsonController {
     @RequestMapping(value = "/newsletterMails/newsletterTestSend", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String newsletterTestSend(
-            @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
-            @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterMail") NewsletterMail newsletterMail,
+        @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "email", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("EmailIsInvalid"));

@@ -164,8 +164,8 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                 },
                 {
                     'bSortable': false, mData: 'id', 'fnRender': function (o) {
-                        return '<button class="button red tiny" name="removeBlogPostImageButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>';
-                    }
+                    return '<button class="button red tiny" name="removeBlogPostImageButton" value="' + o.aData.id + '" tabindex="-1">Delete</button>';
+                }
                 }
             ]
         });
@@ -404,7 +404,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
             dataType: 'json',
             url: 'addBlogPostCode',
             data: "blogPostId=" + blogPostId + "&codeId=" + singlePostViewModel.codeId() + "&code=" + singlePostViewModel.code() +
-                "&status=NEW",
+            "&status=NEW",
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#blogPostCodesList").dataTable().fnDraw();

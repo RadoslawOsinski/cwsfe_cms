@@ -47,15 +47,19 @@
                     <legend><spring:message code="TranslationAdding"/></legend>
                     <div class="row">
                         <label for="searchLanguage"><spring:message code="Language"/></label>
-                        <input type="text" id="searchLanguage" required data-bind="textInput: translationViewModel.searchLanguage"/>
-                        <small class="invisible" data-bind="attr: { 'class': translationViewModel.searchLanguageIsRequiredStyle}">
+                        <input type="text" id="searchLanguage" required
+                               data-bind="textInput: translationViewModel.searchLanguage"/>
+                        <small class="invisible"
+                               data-bind="attr: { 'class': translationViewModel.searchLanguageIsRequiredStyle}">
                             <spring:message code="LanguageMustBeSet"/>
                         </small>
                     </div>
                     <div class="row">
                         <label for="searchCategory"><spring:message code="Category"/></label>
-                        <input type="text" id="searchCategory" required data-bind="textInput: translationViewModel.searchCategory"/>
-                        <small class="invisible" data-bind="attr: { 'class': translationViewModel.searchCategoryIsRequiredStyle}">
+                        <input type="text" id="searchCategory" required
+                               data-bind="textInput: translationViewModel.searchCategory"/>
+                        <small class="invisible"
+                               data-bind="attr: { 'class': translationViewModel.searchCategoryIsRequiredStyle}">
                             <spring:message code="CategoryMustBeSet"/>
                         </small>
                     </div>
@@ -75,7 +79,8 @@
                     </div>
                     <div class="row">
                         <input type="button" id="addCmsTextI18nButton" class="button small radius primary"
-                               value="<spring:message code="Add"/>" data-bind="enable: translationViewModel.addTranslationFormIsValid">
+                               value="<spring:message code="Add"/>"
+                               data-bind="enable: translationViewModel.addTranslationFormIsValid">
                         <input type="reset" id="resetAddTranslation" value="Reset" class="button small radius alert">
                     </div>
                 </fieldset>

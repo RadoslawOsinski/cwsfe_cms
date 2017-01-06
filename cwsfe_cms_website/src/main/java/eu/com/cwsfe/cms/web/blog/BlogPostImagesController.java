@@ -47,10 +47,10 @@ public class BlogPostImagesController extends JsonController {
     @RequestMapping(value = "/blogPosts/blogPostImagesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listBlogPostImages(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho,
-            WebRequest webRequest
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho,
+        WebRequest webRequest
     ) {
         Long blogPostId = null;
         try {
@@ -82,8 +82,8 @@ public class BlogPostImagesController extends JsonController {
 
     @RequestMapping(value = "/blogPosts/addBlogPostImage", method = RequestMethod.POST)
     public ModelAndView addBlogPostImage(
-            @ModelAttribute(value = "blogPostImage") BlogPostImage blogPostImage,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "blogPostImage") BlogPostImage blogPostImage,
+        BindingResult result, Locale locale
     ) {
         BufferedImage image;
         try {
@@ -113,8 +113,8 @@ public class BlogPostImagesController extends JsonController {
     @RequestMapping(value = "/blogPosts/deleteBlogPostImage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteBlogPostImage(
-            @ModelAttribute(value = "blogPostImage") BlogPostImage blogPostImage,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "blogPostImage") BlogPostImage blogPostImage,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("ImageMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();

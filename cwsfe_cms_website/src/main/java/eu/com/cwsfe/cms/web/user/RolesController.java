@@ -49,17 +49,17 @@ public class RolesController extends JsonController {
     private List<Breadcrumb> getBreadcrumbs(Locale locale) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/roles").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("RolesManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/roles").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("RolesManagement")));
         return breadcrumbs;
     }
 
     @RequestMapping(value = "/rolesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listRoles(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho
     ) {
         final List<CmsRole> cmsRoles = cmsRolesDAO.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
@@ -82,8 +82,8 @@ public class RolesController extends JsonController {
     @RequestMapping(value = "/rolesDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listRolesForDropList(
-            @RequestParam String term,
-            @RequestParam Integer limit
+        @RequestParam String term,
+        @RequestParam Integer limit
     ) {
         final List<CmsRole> cmsRoles = cmsRolesDAO.listRolesForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();

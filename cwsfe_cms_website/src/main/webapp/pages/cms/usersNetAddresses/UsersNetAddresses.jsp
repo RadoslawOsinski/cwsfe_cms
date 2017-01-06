@@ -46,21 +46,26 @@
                     <div class="row">
                         <label for="userName"><spring:message code="Username"/></label>
                         <input type="text" id="userName" required/>
-                        <small class="invisible" data-bind="attr: { 'class': userNetAddressesModel.userNameIsRequiredStyle}">
+                        <small class="invisible"
+                               data-bind="attr: { 'class': userNetAddressesModel.userNameIsRequiredStyle}">
                             <spring:message code="UsernameIsRequired"/>
                         </small>
                     </div>
                     <div class="row">
                         <label for="netAddress"><spring:message code="NetAddress"/></label>
-                        <input type="text" id="netAddress" required data-bind="value: userNetAddressesModel.netAddress"/>
-                        <small class="invisible" data-bind="attr: { 'class': userNetAddressesModel.netAddressIsRequiredStyle}">
+                        <input type="text" id="netAddress" required
+                               data-bind="value: userNetAddressesModel.netAddress"/>
+                        <small class="invisible"
+                               data-bind="attr: { 'class': userNetAddressesModel.netAddressIsRequiredStyle}">
                             <spring:message code="NetAddressIsRequired"/>
                         </small>
                     </div>
                     <div class="row">
                         <input type="button" id="addNetAddressButton" class="button small radius primary"
-                               value="<spring:message code="Add"/>" data-bind="enable: userNetAddressesModel.addUserNetAddressFormIsValid"/>
-                        <input type="reset" id="resetAddNetAddressButton" value="Reset" class="button small radius alert"/>
+                               value="<spring:message code="Add"/>"
+                               data-bind="enable: userNetAddressesModel.addUserNetAddressFormIsValid"/>
+                        <input type="reset" id="resetAddNetAddressButton" value="Reset"
+                               class="button small radius alert"/>
                     </div>
                 </fieldset>
             </form>

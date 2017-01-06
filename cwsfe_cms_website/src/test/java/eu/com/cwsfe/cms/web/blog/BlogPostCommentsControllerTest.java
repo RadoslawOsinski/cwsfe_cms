@@ -46,12 +46,12 @@ public class BlogPostCommentsControllerTest {
         doNothing().when(blogPostCommentsDAO).publish(any(BlogPostComment.class));
 
         ResultActions resultActions = mockMvc.perform(post("/publishBlogPostComment")
-                .param("id", "1"));
+            .param("id", "1"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + BlogPostCommentsController.JSON_STATUS).value(BlogPostCommentsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + BlogPostCommentsController.JSON_STATUS).value(BlogPostCommentsController.JSON_STATUS_SUCCESS));
         verify(blogPostCommentsDAO, times(1)).publish(any(BlogPostComment.class));
         verifyNoMoreInteractions(blogPostCommentsDAO);
     }
@@ -61,12 +61,12 @@ public class BlogPostCommentsControllerTest {
         doNothing().when(blogPostCommentsDAO).block(any(BlogPostComment.class));
 
         ResultActions resultActions = mockMvc.perform(post("/blockBlogPostComment")
-                .param("id", "1"));
+            .param("id", "1"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + BlogPostCommentsController.JSON_STATUS).value(BlogPostCommentsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + BlogPostCommentsController.JSON_STATUS).value(BlogPostCommentsController.JSON_STATUS_SUCCESS));
         verify(blogPostCommentsDAO, times(1)).block(any(BlogPostComment.class));
         verifyNoMoreInteractions(blogPostCommentsDAO);
     }
@@ -76,12 +76,12 @@ public class BlogPostCommentsControllerTest {
         doNothing().when(blogPostCommentsDAO).markAsSpam(any(BlogPostComment.class));
 
         ResultActions resultActions = mockMvc.perform(post("/markAsSpamBlogPostComment")
-                .param("id", "1"));
+            .param("id", "1"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + BlogPostCommentsController.JSON_STATUS).value(BlogPostCommentsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + BlogPostCommentsController.JSON_STATUS).value(BlogPostCommentsController.JSON_STATUS_SUCCESS));
         verify(blogPostCommentsDAO, times(1)).markAsSpam(any(BlogPostComment.class));
         verifyNoMoreInteractions(blogPostCommentsDAO);
     }
@@ -91,12 +91,12 @@ public class BlogPostCommentsControllerTest {
         doNothing().when(blogPostCommentsDAO).delete(any(BlogPostComment.class));
 
         ResultActions resultActions = mockMvc.perform(post("/deleteBlogPostComment")
-                .param("id", "1"));
+            .param("id", "1"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + BlogPostCommentsController.JSON_STATUS).value(BlogPostCommentsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + BlogPostCommentsController.JSON_STATUS).value(BlogPostCommentsController.JSON_STATUS_SUCCESS));
         verify(blogPostCommentsDAO, times(1)).delete(any(BlogPostComment.class));
         verifyNoMoreInteractions(blogPostCommentsDAO);
     }

@@ -30,7 +30,7 @@ class ErrorController {
     public String loginPage(HttpServletRequest req, ModelMap model) {
         try {
             LOGGER.error("Error occurred: ", req.getAttribute("javax.servlet.error.exception"));
-        } catch (Exception ignored){
+        } catch (Exception ignored) {
             //ignored logging if exception is missing in request
         }
         addMainSiteUrl(model);

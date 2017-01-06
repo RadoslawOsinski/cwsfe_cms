@@ -40,13 +40,13 @@
                             <label for="status"><spring:message code="Status"/></label>
                             <select id="status">
                                 <option value="NEW"
-                                        <c:if test="${cmsUser.status.equals('NEW')}"> selected</c:if>>
+                                    <c:if test="${cmsUser.status.equals('NEW')}"> selected</c:if>>
                                     <spring:message code="UserStatusNew"/></option>
                                 <option value="LOCKED"
-                                        <c:if test="${cmsUser.status.equals('LOCKED')}"> selected</c:if>>
+                                    <c:if test="${cmsUser.status.equals('LOCKED')}"> selected</c:if>>
                                     <spring:message code="UserStatusLocked"/></option>
                                 <option value="DELETED"
-                                        <c:if test="${cmsUser.status.equals('DELETED')}"> selected</c:if>>
+                                    <c:if test="${cmsUser.status.equals('DELETED')}"> selected</c:if>>
                                     <spring:message code="UserStatusDeleted"/></option>
                             </select>
                         </div>
@@ -74,13 +74,14 @@
 
                                 <input type="checkbox" name="cmsUserRoles"
                                        value="${role.id}"<c:if
-                                        test="${userSelectedRoles.contains(role.id)}"> checked</c:if>/>
+                                    test="${userSelectedRoles.contains(role.id)}"> checked</c:if>/>
 
                             </div>
 
                         </c:forEach>
                         <div class="row">
-                            <input type="submit" value="<spring:message code="Save"/>" class="button small radius primary"/>
+                            <input type="submit" value="<spring:message code="Save"/>"
+                                   class="button small radius primary"/>
                             <input type="reset" class="button small radius alert"/>
                         </div>
                     </fieldset>

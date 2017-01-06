@@ -61,10 +61,10 @@ public class CmsNewsControllerTest {
     @Test
     public void testDefaultView() throws Exception {
         mockMvc.perform(get("/news"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/news/News"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/news/News.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/news/News"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/news/News.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()));
     }
 
     @Test
@@ -88,23 +88,23 @@ public class CmsNewsControllerTest {
         when(cmsNewsDAO.getTotalNumberNotDeleted()).thenReturn(numberOfNews);
 
         ResultActions resultActions = mockMvc.perform(get("/newsList")
-                .param("iDisplayStart", "0")
-                .param("iDisplayLength", "2")
-                .param("sEcho", sEcho))
-                .andExpect(status().isOk());
+            .param("iDisplayStart", "0")
+            .param("iDisplayLength", "2")
+            .param("sEcho", sEcho))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.sEcho").value(sEcho))
-                .andExpect(jsonPath("$.iTotalRecords").value(numberOfNews))
-                .andExpect(jsonPath("$.iTotalDisplayRecords").value(ajaxCountNumber))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].#").value(1))
-                .andExpect(jsonPath("$.aaData[0].author").value(author))
-                .andExpect(jsonPath("$.aaData[0].newsCode").value(newsCode))
-                .andExpect(jsonPath("$.aaData[0].creationDate").value("1970-01-01"))
-                .andExpect(jsonPath("$.aaData[0].id").value(id));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.sEcho").value(sEcho))
+            .andExpect(jsonPath("$.iTotalRecords").value(numberOfNews))
+            .andExpect(jsonPath("$.iTotalDisplayRecords").value(ajaxCountNumber))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].#").value(1))
+            .andExpect(jsonPath("$.aaData[0].author").value(author))
+            .andExpect(jsonPath("$.aaData[0].newsCode").value(newsCode))
+            .andExpect(jsonPath("$.aaData[0].creationDate").value("1970-01-01"))
+            .andExpect(jsonPath("$.aaData[0].id").value(id));
         verify(cmsNewsDAO, times(1)).searchByAjax(anyInt(), anyInt(), anyInt(), anyString());
         verify(cmsNewsDAO, times(1)).searchByAjaxCount(anyInt(), anyString());
         verify(cmsNewsDAO, times(1)).getTotalNumberNotDeleted();
@@ -116,16 +116,16 @@ public class CmsNewsControllerTest {
         when(cmsNewsDAO.add(any(CmsNews.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addNews")
-                .param("authorId", "2")
-                .param("newsTypeId", "3")
-                .param("newsFolderId", "4")
-                .param("newsCode", "newsCode"))
-        .andExpect(status().isOk());
+            .param("authorId", "2")
+            .param("newsTypeId", "3")
+            .param("newsFolderId", "4")
+            .param("newsCode", "newsCode"))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + CmsNewsController.JSON_STATUS).value(CmsNewsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + CmsNewsController.JSON_STATUS).value(CmsNewsController.JSON_STATUS_SUCCESS));
         verify(cmsNewsDAO, times(1)).add(any(CmsNews.class));
         verifyNoMoreInteractions(cmsNewsDAO);
     }
@@ -140,15 +140,15 @@ public class CmsNewsControllerTest {
         when(cmsFoldersDAO.get(anyLong())).thenReturn(new CmsFolder());
 
         ResultActions resultActions = mockMvc.perform(post("/news/updateNewsBasicInfo")
-                .param("newsTypeId", "3")
-                .param("newsFolderId", "4")
-                .param("newsCode", "newsCode")
-                .param("status", "NEW"));
+            .param("newsTypeId", "3")
+            .param("newsFolderId", "4")
+            .param("newsCode", "newsCode")
+            .param("status", "NEW"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + CmsNewsController.JSON_STATUS).value(CmsNewsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + CmsNewsController.JSON_STATUS).value(CmsNewsController.JSON_STATUS_SUCCESS));
         verify(cmsNewsDAO, times(1)).updatePostBasicInfo(any(CmsNews.class));
         verifyNoMoreInteractions(cmsNewsDAO);
     }
@@ -158,13 +158,13 @@ public class CmsNewsControllerTest {
         doNothing().when(cmsNewsDAO).delete(any(CmsNews.class));
 
         ResultActions resultActions = mockMvc.perform(post("/deleteNews")
-                .param("id", "1"))
-                .andExpect(status().isOk());
+            .param("id", "1"))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + CmsNewsController.JSON_STATUS).value(CmsNewsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + CmsNewsController.JSON_STATUS).value(CmsNewsController.JSON_STATUS_SUCCESS));
         verify(cmsNewsDAO, times(1)).delete(any(CmsNews.class));
         verifyNoMoreInteractions(cmsNewsDAO);
     }
@@ -178,16 +178,16 @@ public class CmsNewsControllerTest {
         when(cmsFoldersDAO.get(anyLong())).thenReturn(new CmsFolder());
 
         mockMvc.perform(get("/news/1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/news/SingleNews"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/news/SingleNews.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()))
-                .andExpect(model().attribute("cmsLanguages", anything()))
-                .andExpect(model().attribute("cmsNews", anything()))
-                .andExpect(model().attribute("cmsAuthor", anything()))
-                .andExpect(model().attribute("newsType", anything()))
-                .andExpect(model().attribute("cmsNews", anything()))
-                .andExpect(model().attribute("newsFolder", anything()));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/news/SingleNews"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/news/SingleNews.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()))
+            .andExpect(model().attribute("cmsLanguages", anything()))
+            .andExpect(model().attribute("cmsNews", anything()))
+            .andExpect(model().attribute("cmsAuthor", anything()))
+            .andExpect(model().attribute("newsType", anything()))
+            .andExpect(model().attribute("cmsNews", anything()))
+            .andExpect(model().attribute("newsFolder", anything()));
     }
 
     @Test
@@ -205,13 +205,13 @@ public class CmsNewsControllerTest {
         ResultActions resultActions = mockMvc.perform(get("/news/1/2")).andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + CmsNewsController.JSON_STATUS).value(CmsNewsController.JSON_STATUS_SUCCESS))
-                .andExpect(jsonPath("$.data.newsTitle").value(newsTitle))
-                .andExpect(jsonPath("$.data.newsShortcut").value(newsShortcut))
-                .andExpect(jsonPath("$.data.newsDescription").value(newsDescription))
-                .andExpect(jsonPath("$.data.status").value(CmsNewsI18nContentStatus.NEW.name()));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + CmsNewsController.JSON_STATUS).value(CmsNewsController.JSON_STATUS_SUCCESS))
+            .andExpect(jsonPath("$.data.newsTitle").value(newsTitle))
+            .andExpect(jsonPath("$.data.newsShortcut").value(newsShortcut))
+            .andExpect(jsonPath("$.data.newsDescription").value(newsDescription))
+            .andExpect(jsonPath("$.data.status").value(CmsNewsI18nContentStatus.NEW.name()));
 
         verify(cmsNewsI18nContentsDAO, times(1)).getByLanguageForNews(anyLong(), anyLong());
         verifyNoMoreInteractions(cmsNewsDAO);
@@ -226,19 +226,19 @@ public class CmsNewsControllerTest {
         when(cmsFoldersDAO.get(anyLong())).thenReturn(new CmsFolder());
 
         ResultActions resultActions = mockMvc.perform(post("/news/addNewsI18nContent")
-                .param("newsId", "1")
-                .param("languageId", "2")
-                .param("newsTitle", "newsTitle")
-                .param("newsShortcut", "newsShortcut")
-                .param("newsDescription", "newsDescription"));
+            .param("newsId", "1")
+            .param("languageId", "2")
+            .param("newsTitle", "newsTitle")
+            .param("newsShortcut", "newsShortcut")
+            .param("newsDescription", "newsDescription"));
 
         resultActions.andExpect(status().isSeeOther())
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/news/SingleNews.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()))
-                .andExpect(model().attribute("cmsLanguages", anything()))
-                .andExpect(model().attribute("cmsAuthor", anything()))
-                .andExpect(model().attribute("newsType", anything()))
-                .andExpect(model().attribute("newsFolder", anything()));
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/news/SingleNews.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()))
+            .andExpect(model().attribute("cmsLanguages", anything()))
+            .andExpect(model().attribute("cmsAuthor", anything()))
+            .andExpect(model().attribute("newsType", anything()))
+            .andExpect(model().attribute("newsFolder", anything()));
         verify(cmsNewsI18nContentsDAO, times(1)).add(any(CmsNewsI18nContent.class));
         verifyNoMoreInteractions(cmsNewsI18nContentsDAO);
     }
@@ -254,15 +254,15 @@ public class CmsNewsControllerTest {
         when(cmsFoldersDAO.get(anyLong())).thenReturn(new CmsFolder());
 
         ResultActions resultActions = mockMvc.perform(post("/news/updateNewsI18nContent")
-                .param("newsId", "1")
-                .param("languageId", "2")
-                .param("newsTitle", "newsTitle")
-                .param("newsShortcut", "newsShortcut")
-                .param("newsDescription", "newsDescription"));
+            .param("newsId", "1")
+            .param("languageId", "2")
+            .param("newsTitle", "newsTitle")
+            .param("newsShortcut", "newsShortcut")
+            .param("newsDescription", "newsDescription"));
 
         resultActions.andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + CmsNewsController.JSON_STATUS).value(CmsNewsController.JSON_STATUS_SUCCESS));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + CmsNewsController.JSON_STATUS).value(CmsNewsController.JSON_STATUS_SUCCESS));
         verify(cmsNewsI18nContentsDAO, times(1)).getByLanguageForNews(anyLong(), anyLong());
         verify(cmsNewsI18nContentsDAO, times(1)).add(any(CmsNewsI18nContent.class));
         verifyNoMoreInteractions(cmsNewsI18nContentsDAO);

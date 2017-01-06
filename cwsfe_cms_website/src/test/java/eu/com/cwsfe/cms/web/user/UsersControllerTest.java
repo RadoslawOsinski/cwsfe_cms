@@ -60,10 +60,10 @@ public class UsersControllerTest {
     @Test
     public void testDefaultView() throws Exception {
         mockMvc.perform(get("/users"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/users/Users"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/users/Users.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/users/Users"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/users/Users.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()));
     }
 
     @Test
@@ -84,22 +84,22 @@ public class UsersControllerTest {
         when(cmsUsersDAO.countForAjax()).thenReturn(count);
 
         ResultActions resultActions = mockMvc.perform(get("/usersList")
-                .param("iDisplayStart", String.valueOf(iDisplayStart))
-                .param("iDisplayLength", String.valueOf(iDisplayLength))
-                .param("sEcho", sEcho))
-                .andExpect(status().isOk());
+            .param("iDisplayStart", String.valueOf(iDisplayStart))
+            .param("iDisplayLength", String.valueOf(iDisplayLength))
+            .param("sEcho", sEcho))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.sEcho").value(sEcho))
-                .andExpect(jsonPath("$.iTotalRecords").value(count))
-                .andExpect(jsonPath("$.iTotalDisplayRecords").value(count))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
-                .andExpect(jsonPath("$.aaData[0].userName").value(userName))
-                .andExpect(jsonPath("$.aaData[0].status").value(CmsUserStatus.NEW.name()))
-                .andExpect(jsonPath("$.aaData[0].id").value((int) userId));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.sEcho").value(sEcho))
+            .andExpect(jsonPath("$.iTotalRecords").value(count))
+            .andExpect(jsonPath("$.iTotalDisplayRecords").value(count))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
+            .andExpect(jsonPath("$.aaData[0].userName").value(userName))
+            .andExpect(jsonPath("$.aaData[0].status").value(CmsUserStatus.NEW.name()))
+            .andExpect(jsonPath("$.aaData[0].id").value((int) userId));
         verify(cmsUsersDAO, times(1)).listAjax(anyInt(), anyInt());
         verify(cmsUsersDAO, times(1)).countForAjax();
         verifyNoMoreInteractions(cmsUsersDAO);
@@ -119,16 +119,16 @@ public class UsersControllerTest {
         when(cmsUsersDAO.listUsersForDropList(anyString(), anyInt())).thenReturn(users);
 
         ResultActions resultActions = mockMvc.perform(get("/usersDropList")
-                .param("term", userName)
-                .param("limit", String.valueOf(limit)))
-                .andExpect(status().isOk());
+            .param("term", userName)
+            .param("limit", String.valueOf(limit)))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data[0].id").value((int) userId))
-                .andExpect(jsonPath("$.data[0].userName").value(userName));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data[0].id").value((int) userId))
+            .andExpect(jsonPath("$.data[0].userName").value(userName));
         verify(cmsUsersDAO, times(1)).listUsersForDropList(anyString(), anyInt());
         verifyNoMoreInteractions(cmsUsersDAO);
     }
@@ -147,14 +147,14 @@ public class UsersControllerTest {
         when(cmsUsersDAO.add(Matchers.any(CmsUser.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addUser")
-                .param("userName", userName)
-                .param("passwordHash", passwordHash))
-                .andExpect(status().isOk());
+            .param("userName", userName)
+            .param("passwordHash", passwordHash))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
         verify(cmsUsersDAO, times(1)).getByUsername(anyString());
         verify(cmsUsersDAO, times(1)).add(Matchers.any(CmsUser.class));
         verifyNoMoreInteractions(cmsUsersDAO);
@@ -173,14 +173,14 @@ public class UsersControllerTest {
         when(cmsUsersDAO.getByUsername(anyString())).thenReturn(user);
 
         ResultActions resultActions = mockMvc.perform(post("/addUser")
-                .param("userName", userName)
-                .param("passwordHash", passwordHash))
-                .andExpect(status().isOk());
+            .param("userName", userName)
+            .param("passwordHash", passwordHash))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + UsersController.JSON_ERROR_MESSAGES + ".[0].error").exists());
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + UsersController.JSON_ERROR_MESSAGES + ".[0].error").exists());
         verify(cmsUsersDAO, times(1)).getByUsername(anyString());
         verifyNoMoreInteractions(cmsUsersDAO);
     }
@@ -190,13 +190,13 @@ public class UsersControllerTest {
         doNothing().when(cmsUsersDAO).delete(Matchers.any(CmsUser.class));
 
         ResultActions resultActions = mockMvc.perform(post("/deleteUser")
-                .param("id", "1"))
-                .andExpect(status().isOk());
+            .param("id", "1"))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
         verify(cmsUsersDAO, times(1)).delete(Matchers.any(CmsUser.class));
         verifyNoMoreInteractions(cmsUsersDAO);
     }
@@ -206,13 +206,13 @@ public class UsersControllerTest {
         doNothing().when(cmsUsersDAO).lock(Matchers.any(CmsUser.class));
 
         ResultActions resultActions = mockMvc.perform(post("/lockUser")
-                .param("id", "1"))
-                .andExpect(status().isOk());
+            .param("id", "1"))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
         verify(cmsUsersDAO, times(1)).lock(Matchers.any(CmsUser.class));
         verifyNoMoreInteractions(cmsUsersDAO);
     }
@@ -222,13 +222,13 @@ public class UsersControllerTest {
         doNothing().when(cmsUsersDAO).unlock(Matchers.any(CmsUser.class));
 
         ResultActions resultActions = mockMvc.perform(post("/unlockUser")
-                .param("id", "1"))
-                .andExpect(status().isOk());
+            .param("id", "1"))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
         verify(cmsUsersDAO, times(1)).unlock(Matchers.any(CmsUser.class));
         verifyNoMoreInteractions(cmsUsersDAO);
     }
@@ -251,13 +251,13 @@ public class UsersControllerTest {
         ResultActions resultActions = mockMvc.perform(get("/users/1"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/users/SingleUser"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/users/SingleUser.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()))
-                .andExpect(model().attribute("cmsUser", anything()))
-                .andExpect(model().attribute("userSelectedRoles", anything()))
-                .andExpect(model().attribute("cmsRoles", anything()));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/users/SingleUser"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/users/SingleUser.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()))
+            .andExpect(model().attribute("cmsUser", anything()))
+            .andExpect(model().attribute("userSelectedRoles", anything()))
+            .andExpect(model().attribute("cmsRoles", anything()));
     }
 
     @Test
@@ -279,12 +279,12 @@ public class UsersControllerTest {
         ResultActions resultActions = mockMvc.perform(post("/userRolesUpdate").param("id", String.valueOf(id)));
 
         resultActions
-                .andExpect(status().isSeeOther())
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/users/SingleUser.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()))
-                .andExpect(model().attribute("cmsUser", anything()))
-                .andExpect(model().attribute("userSelectedRoles", anything()))
-                .andExpect(model().attribute("cmsRoles", anything()));
+            .andExpect(status().isSeeOther())
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/users/SingleUser.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()))
+            .andExpect(model().attribute("cmsUser", anything()))
+            .andExpect(model().attribute("userSelectedRoles", anything()))
+            .andExpect(model().attribute("cmsRoles", anything()));
     }
 
     @Test
@@ -300,15 +300,15 @@ public class UsersControllerTest {
         doNothing().when(cmsUsersDAO).updatePostBasicInfo(Matchers.any(CmsUser.class));
 
         ResultActions resultActions = mockMvc.perform(post("/users/updateUserBasicInfo")
-                .param("id", String.valueOf(userId))
-                .param("userName", userName)
-                .param("status", CmsUserStatus.NEW.name()))
-                .andExpect(status().isOk());
+            .param("id", String.valueOf(userId))
+            .param("userName", userName)
+            .param("status", CmsUserStatus.NEW.name()))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
         verify(cmsUsersDAO, times(1)).updatePostBasicInfo(Matchers.any(CmsUser.class));
         verifyNoMoreInteractions(cmsUsersDAO);
     }

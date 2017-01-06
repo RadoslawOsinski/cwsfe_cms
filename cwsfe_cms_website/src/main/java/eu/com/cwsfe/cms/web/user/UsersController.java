@@ -81,9 +81,9 @@ class UsersController extends JsonController {
     @RequestMapping(value = "/usersList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listUsers(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho
     ) {
         final List<CmsUser> cmsUsers = cmsUsersDAO.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
@@ -107,8 +107,8 @@ class UsersController extends JsonController {
     @RequestMapping(value = "/usersDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listUsersForDropList(
-            @RequestParam String term,
-            @RequestParam Integer limit
+        @RequestParam String term,
+        @RequestParam Integer limit
     ) {
         final List<CmsUser> cmsUsers = cmsUsersDAO.listUsersForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
@@ -126,8 +126,8 @@ class UsersController extends JsonController {
     @RequestMapping(value = "/addUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addUser(
-            @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "userName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UsernameMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "passwordHash", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("PasswordMustBeSet"));
@@ -150,8 +150,8 @@ class UsersController extends JsonController {
     @RequestMapping(value = "/deleteUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteUser(
-            @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -167,8 +167,8 @@ class UsersController extends JsonController {
     @RequestMapping(value = "/lockUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String lockUser(
-            @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -184,8 +184,8 @@ class UsersController extends JsonController {
     @RequestMapping(value = "/unlockUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String unlockUser(
-            @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -214,9 +214,9 @@ class UsersController extends JsonController {
 
     @RequestMapping(value = "/userRolesUpdate", method = RequestMethod.POST)
     public ModelAndView userRolesUpdate(
-            @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
-            ModelMap model, Locale locale,
-            WebRequest webRequest, HttpServletRequest httpServletRequest
+        @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
+        ModelMap model, Locale locale,
+        WebRequest webRequest, HttpServletRequest httpServletRequest
     ) {
         String[] userRolesStrings = webRequest.getParameterValues("cmsUserRoles");
         //todo add transactions!
@@ -224,8 +224,8 @@ class UsersController extends JsonController {
         if (userRolesStrings != null) {
             for (String roleIdString : userRolesStrings) {
                 cmsUserRolesDAO.add(new CmsUserRole(
-                        cmsUser.getId(),
-                        Long.parseLong(roleIdString)
+                    cmsUser.getId(),
+                    Long.parseLong(roleIdString)
                 ));
             }
         }
@@ -239,8 +239,8 @@ class UsersController extends JsonController {
     @RequestMapping(value = "/users/updateUserBasicInfo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updateUserBasicInfo(
-            @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "userName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UsernameMustBeSet"));

@@ -5,13 +5,13 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         self.firstName = ko.observable();
         self.lastName = ko.observable();
 
-        self.firstNameIsRequiredStyle= ko.computed(function() {
+        self.firstNameIsRequiredStyle = ko.computed(function () {
             return self.firstName() === null || self.firstName() === '' ? 'error' : 'invisible';
         });
-        self.lastNameIsRequiredStyle= ko.computed(function() {
+        self.lastNameIsRequiredStyle = ko.computed(function () {
             return self.lastName() === null || self.lastName() === '' ? 'error' : 'invisible';
         });
-        self.addAuthorFormIsValid = ko.computed(function() {
+        self.addAuthorFormIsValid = ko.computed(function () {
             return self.firstName() !== null && self.firstName() !== '' &&
                 self.lastName() !== null && self.lastName() !== '';
         });
@@ -51,7 +51,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
 
     });
 
-    $('#resetAuthorButton').click(function() {
+    $('#resetAuthorButton').click(function () {
         viewModel.authorsViewModel.firstName(null);
         viewModel.authorsViewModel.lastName(null);
         viewModel.formAlerts.cleanAllMessages();
@@ -104,12 +104,12 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         });
     }
 
-    $('#addAuthorButton').click(function() {
+    $('#addAuthorButton').click(function () {
         addAuthor();
     });
 
-    $('body').on('click', 'button[name="removeAuthorButton"]', function() {
+    $('body').on('click', 'button[name="removeAuthorButton"]', function () {
         removeAuthor($(this).val());
     });
-    
+
 });

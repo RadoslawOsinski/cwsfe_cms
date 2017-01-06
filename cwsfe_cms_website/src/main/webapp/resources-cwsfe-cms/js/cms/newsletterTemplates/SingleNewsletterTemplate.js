@@ -8,24 +8,24 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout'], function 
         self.newsletterTemplateSubject = ko.observable($('#newsletterTemplateSubject').val());
         self.testEmail = ko.observable();
 
-        self.languageIsRequiredStyle = ko.computed(function() {
+        self.languageIsRequiredStyle = ko.computed(function () {
             return self.language() === null || self.language() === '' ? 'error' : 'invisible';
         });
-        self.newsletterTemplateNameIsRequiredStyle = ko.computed(function() {
+        self.newsletterTemplateNameIsRequiredStyle = ko.computed(function () {
             return self.newsletterTemplateName() === null || self.newsletterTemplateName() === '' ? 'error' : 'invisible';
         });
-        self.newsletterTemplateSubjectIsRequiredStyle = ko.computed(function() {
+        self.newsletterTemplateSubjectIsRequiredStyle = ko.computed(function () {
             return self.newsletterTemplateSubject() === null || self.newsletterTemplateSubject() === '' ? 'error' : 'invisible';
         });
-        self.testEmailIsRequiredStyle = ko.computed(function() {
+        self.testEmailIsRequiredStyle = ko.computed(function () {
             return self.testEmail() === null || self.testEmail() === '' ? 'error' : 'invisible';
         });
-        self.updateNewsletterTemplateFormIsValid = ko.computed(function() {
+        self.updateNewsletterTemplateFormIsValid = ko.computed(function () {
             return self.language() !== null && self.language() !== '' &&
                 self.newsletterTemplateName() !== null && self.newsletterTemplateName() !== '' &&
                 self.newsletterTemplateSubject() !== null && self.newsletterTemplateSubject() !== '';
         });
-        self.newsletterTemplateTestSendFormIsValid = ko.computed(function() {
+        self.newsletterTemplateTestSendFormIsValid = ko.computed(function () {
             return self.testEmail() !== null && self.testEmail() !== '';
         });
     }
@@ -69,11 +69,11 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout'], function 
         $('.ui-autocomplete').addClass('f-dropdown');
     });
 
-    $('#newsletterTemplateTestSendButton').click(function() {
+    $('#newsletterTemplateTestSendButton').click(function () {
         newsletterTemplateTestSend();
     });
 
-    $('#resetNewsletterTemplate').click(function() {
+    $('#resetNewsletterTemplate').click(function () {
         viewModel.newsletterTemplateViewModel.languageId = $('#languageId').val();
         viewModel.newsletterTemplateViewModel.language($('#language').val());
         viewModel.newsletterTemplateViewModel.newsletterTemplateName($('#newsletterTemplateName').val());
@@ -81,12 +81,12 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout'], function 
         viewModel.updateNewsletterTemplateAlerts.cleanAllMessages();
     });
 
-    $('#resetNewsletterTemplateTest').click(function() {
+    $('#resetNewsletterTemplateTest').click(function () {
         viewModel.newsletterTemplateViewModel.testEmail(null);
         viewModel.newsletterTemplateTestAlerts.cleanAllMessages();
     });
 
-    $('#updateNewsletterTemplate').click(function() {
+    $('#updateNewsletterTemplate').click(function () {
         updateNewsletterTemplate();
     });
 
@@ -97,10 +97,10 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout'], function 
             dataType: 'json',
             url: 'updateNewsletterTemplate',
             data: "id=" + $('#newsletterTemplateId').val() +
-                "&languageId=" + viewModel.newsletterTemplateViewModel.languageId +
-                "&name=" + viewModel.newsletterTemplateViewModel.newsletterTemplateName() +
-                "&subject=" + viewModel.newsletterTemplateViewModel.newsletterTemplateSubject() +
-                "&content=" + $('#newsletterTemplateContent').val(),
+            "&languageId=" + viewModel.newsletterTemplateViewModel.languageId +
+            "&name=" + viewModel.newsletterTemplateViewModel.newsletterTemplateName() +
+            "&subject=" + viewModel.newsletterTemplateViewModel.newsletterTemplateSubject() +
+            "&content=" + $('#newsletterTemplateContent').val(),
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     viewModel.newsletterTemplateViewModel.languageId = $('#languageId').val();

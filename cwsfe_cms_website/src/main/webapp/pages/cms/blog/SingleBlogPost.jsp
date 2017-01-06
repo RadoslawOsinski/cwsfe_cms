@@ -87,10 +87,10 @@
                             <label for="status"><spring:message code="Status"/></label>
                             <select id="status" required data-bind="textInput: status">
                                 <option value="HIDDEN"<c:if
-                                        test="${blogPost.status.name().equals('HIDDEN')}"> selected</c:if>>
+                                    test="${blogPost.status.name().equals('HIDDEN')}"> selected</c:if>>
                                     <spring:message code="Hidden"/></option>
                                 <option value="PUBLISHED"<c:if
-                                        test="${blogPost.status.name().equals('PUBLISHED')}"> selected</c:if>>
+                                    test="${blogPost.status.name().equals('PUBLISHED')}"> selected</c:if>>
                                     <spring:message code="Published"/></option>
                             </select>
                         </div>

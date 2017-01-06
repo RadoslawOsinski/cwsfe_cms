@@ -46,17 +46,20 @@
                     <div class="row">
                         <label for="folderName"><spring:message code="Folder"/></label>
                         <input type="text" id="folderName" required data-bind="textInput: folderViewModel.folderName"/>
-                        <small class="invisible" data-bind="attr: { 'class': folderViewModel.folderNameIsRequiredStyle}">
+                        <small class="invisible"
+                               data-bind="attr: { 'class': folderViewModel.folderNameIsRequiredStyle}">
                             <spring:message code="FolderNameMustBeSet"/>
                         </small>
                     </div>
                     <div class="row">
                         <label for="orderNumber"><spring:message code="OrderNumber"/></label>
-                        <input type="number" id="orderNumber" value="0" data-bind="textInput: folderViewModel.orderNumber"/>
+                        <input type="number" id="orderNumber" value="0"
+                               data-bind="textInput: folderViewModel.orderNumber"/>
                     </div>
                     <div class="row">
                         <input type="button" id="addFolderButton" class="button small radius primary"
-                               value="<spring:message code="Add"/>" data-bind="enable: folderViewModel.addFolderFormIsValid">
+                               value="<spring:message code="Add"/>"
+                               data-bind="enable: folderViewModel.addFolderFormIsValid">
                         <input type="reset" id="resetAddFolder" value="Reset" class="button small radius alert">
                     </div>
                 </fieldset>

@@ -6,6 +6,7 @@
     src: local('Bree Serif'), local('BreeSerif-Regular'), url('../../../resources-cwsfe-cms/font/0daoUMW28nkWOnFz2G4AAiEAvth_LlrfE80CYdSH47w.woff2') format('woff2');
     unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
 }
+
 /* latin */
 @font-face {
     font-family: 'Bree Serif';
@@ -30,37 +31,40 @@ fieldset {
     display: block;
 }
 
-.subMenu{
-	background-color: #484959;
-	margin:0 !important;
+.subMenu {
+    background-color: #484959;
+    margin: 0 !important;
 }
 
-.side-nav li .subMenu a{
-	font-size: 0.715rem; padding-left:1.575rem !important;
+.side-nav li .subMenu a {
+    font-size: 0.715rem;
+    padding-left: 1.575rem !important;
 }
 
 ul.subMenu {
-	list-style:none;
+    list-style: none;
 }
 
-.dataTables_info{
-	font-size:0.75rem;
-	font-weight:600;
-	margin-bottom:1rem;
+.dataTables_info {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
 }
 
-.dataTables_paginate{
-	font-size:0.75rem;
+.dataTables_paginate {
+    font-size: 0.75rem;
 }
 
-.dataTables_paginate a.paginate_button, .dataTables_paginate a.paginate_active{
-	padding:0.4rem 0.75rem;
-	margin-right:0.2rem;
-	color:#fff;
-	border-radius:3px;
-	-moz-border-radius:3px;;
-	-webkit-border-radius:3px;
+.dataTables_paginate a.paginate_button, .dataTables_paginate a.paginate_active {
+    padding: 0.4rem 0.75rem;
+    margin-right: 0.2rem;
+    color: #fff;
+    border-radius: 3px;
+    -moz-border-radius: 3px;;
+    -webkit-border-radius: 3px;
 }
 
 /*################################################JQUERY AUTOCOMPLETE################*/
-.ui-helper-hidden-accessible{display:none}
+.ui-helper-hidden-accessible {
+    display: none
+}

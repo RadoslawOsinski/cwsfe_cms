@@ -49,17 +49,17 @@ public class FoldersController extends JsonController {
     private List<Breadcrumb> getBreadcrumbs(Locale locale) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/folders").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FoldersManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/folders").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FoldersManagement")));
         return breadcrumbs;
     }
 
     @RequestMapping(value = "/foldersList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listFolders(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho
     ) {
         final List<CmsFolder> cmsFolders = cmsFoldersDAO.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
@@ -83,8 +83,8 @@ public class FoldersController extends JsonController {
     @RequestMapping(value = "/news/foldersDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listFoldersForDropList(
-            @RequestParam String term,
-            @RequestParam Integer limit
+        @RequestParam String term,
+        @RequestParam Integer limit
     ) {
         final List<CmsFolder> results = cmsFoldersDAO.listFoldersForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
@@ -102,8 +102,8 @@ public class FoldersController extends JsonController {
     @RequestMapping(value = "/addFolder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addFolder(
-            @ModelAttribute(value = "cmsFolder") CmsFolder cmsFolder,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsFolder") CmsFolder cmsFolder,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "folderName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderNameMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -123,8 +123,8 @@ public class FoldersController extends JsonController {
     @RequestMapping(value = "/deleteFolder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteFolder(
-            @ModelAttribute(value = "cmsFolder") CmsFolder cmsFolder,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsFolder") CmsFolder cmsFolder,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();

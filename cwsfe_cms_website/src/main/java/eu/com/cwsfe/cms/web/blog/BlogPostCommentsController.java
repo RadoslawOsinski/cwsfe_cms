@@ -33,8 +33,8 @@ public class BlogPostCommentsController extends JsonController {
     @RequestMapping(value = "/publishBlogPostComment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String blogPostCommentPublish(
-            @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CommentMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -50,8 +50,8 @@ public class BlogPostCommentsController extends JsonController {
     @RequestMapping(value = "/blockBlogPostComment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String blogPostCommentBlock(
-            @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CommentMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -67,8 +67,8 @@ public class BlogPostCommentsController extends JsonController {
     @RequestMapping(value = "/markAsSpamBlogPostComment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String blogPostCommentMarkAsSpam(
-            @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CommentMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -84,8 +84,8 @@ public class BlogPostCommentsController extends JsonController {
     @RequestMapping(value = "/deleteBlogPostComment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String blogPostCommentDelete(
-            @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CommentMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();

@@ -78,7 +78,7 @@ public class AWSBucketImageStorageService implements ImageStorageService {
         CmsGlobalParam rootBucketName = cmsGlobalParamsDAO.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
         try {
             PutObjectRequest putObjectRequest = new PutObjectRequest(rootBucketName.getValue(), imagePath + "/" + image.getOriginalFilename(),
-                    image.getInputStream(), new ObjectMetadata());
+                image.getInputStream(), new ObjectMetadata());
             putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
             amazonS3.putObject(putObjectRequest);
         } catch (AmazonServiceException | IOException e) {

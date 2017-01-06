@@ -9,19 +9,19 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.key = ko.observable();
         self.text = ko.observable();
 
-        self.searchLanguageIsRequiredStyle= ko.computed(function() {
+        self.searchLanguageIsRequiredStyle = ko.computed(function () {
             return self.searchLanguage() === null || self.searchLanguage() === '' ? 'error' : 'invisible';
         });
-        self.searchCategoryIsRequiredStyle= ko.computed(function() {
+        self.searchCategoryIsRequiredStyle = ko.computed(function () {
             return self.searchCategory() === null || self.searchCategory() === '' ? 'error' : 'invisible';
         });
-        self.keyIsRequiredStyle= ko.computed(function() {
+        self.keyIsRequiredStyle = ko.computed(function () {
             return self.key() === null || self.key() === '' ? 'error' : 'invisible';
         });
-        self.textIsRequiredStyle= ko.computed(function() {
+        self.textIsRequiredStyle = ko.computed(function () {
             return self.text() === null || self.text() === '' ? 'error' : 'invisible';
         });
-        self.addTranslationFormIsValid = ko.computed(function() {
+        self.addTranslationFormIsValid = ko.computed(function () {
             return self.searchLanguage() !== null && self.searchLanguage() !== '' &&
                 self.searchCategory() !== null && self.searchCategory() !== '' &&
                 self.key() !== null && self.key() !== '' &&
@@ -119,15 +119,15 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         $('.ui-autocomplete').addClass('f-dropdown');
     });
 
-    $('#addCmsTextI18nButton').click(function() {
+    $('#addCmsTextI18nButton').click(function () {
         addCmsTextI18n();
     });
 
-    $('body').on('click', 'button[name="removeCmsTextI18nButton"]', function() {
+    $('body').on('click', 'button[name="removeCmsTextI18nButton"]', function () {
         removeCmsTextI18n($(this).val());
     });
 
-    $('#resetAddTranslation').click(function() {
+    $('#resetAddTranslation').click(function () {
         viewModel.translationViewModel.searchLanguageId = null;
         viewModel.translationViewModel.searchLanguage(null);
         viewModel.translationViewModel.searchCategoryId = null;

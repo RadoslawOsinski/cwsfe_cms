@@ -5,13 +5,13 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.userId = ko.observable();
         self.netAddress = ko.observable();
 
-        self.userNameIsRequiredStyle= ko.computed(function() {
+        self.userNameIsRequiredStyle = ko.computed(function () {
             return self.userId() === null || self.userId() === '' ? 'error' : 'invisible';
         });
-        self.netAddressIsRequiredStyle= ko.computed(function() {
+        self.netAddressIsRequiredStyle = ko.computed(function () {
             return self.netAddress() === null || self.netAddress() === '' ? 'error' : 'invisible';
         });
-        self.addUserNetAddressFormIsValid = ko.computed(function() {
+        self.addUserNetAddressFormIsValid = ko.computed(function () {
             return self.userId() !== null && self.userId() !== '' &&
                 self.netAddress() !== null && self.netAddress() !== '';
         });
@@ -78,7 +78,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         $('.ui-autocomplete').addClass('f-dropdown');
     });
 
-    $('#resetAddNetAddressButton').click(function() {
+    $('#resetAddNetAddressButton').click(function () {
         viewModel.userNetAddressesModel.userId(null);
         viewModel.userNetAddressesModel.netAddress(null);
         viewModel.formAlerts.cleanAllMessages();
@@ -135,5 +135,5 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
     $('body').on('click', 'button[name="removeNetAddressButton"]', function () {
         removeNetAddress($(this).val());
     });
-    
+
 });

@@ -4,10 +4,10 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         var self = this;
         self.category = ko.observable();
 
-        self.categoryIsRequiredStyle= ko.computed(function() {
+        self.categoryIsRequiredStyle = ko.computed(function () {
             return self.category() === null || self.category() === '' ? 'error' : 'invisible';
         });
-        self.addCategoryFormIsValid = ko.computed(function() {
+        self.addCategoryFormIsValid = ko.computed(function () {
             return self.category() !== null && self.category() !== '';
         });
     }
@@ -54,7 +54,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         });
     });
 
-    $('#resetAddUser').click(function() {
+    $('#resetAddUser').click(function () {
         viewModel.categoryViewModel.category(null);
         viewModel.formAlerts.cleanAllMessages();
     });
@@ -103,11 +103,11 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         });
     }
 
-    $('#addCmsTextI18nCategoryButton').click(function() {
+    $('#addCmsTextI18nCategoryButton').click(function () {
         addCmsTextI18nCategory();
     });
 
-    $('body').on('click', 'button[name="removeCmsTextI18nCategoryButton"]', function() {
+    $('body').on('click', 'button[name="removeCmsTextI18nCategoryButton"]', function () {
         removeCmsTextI18nCategory($(this).val());
     });
 

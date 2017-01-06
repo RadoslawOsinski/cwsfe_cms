@@ -93,8 +93,8 @@ public class CmsAuthProvider implements AuthenticationProvider {
     private boolean userIsUsingAllowedAddress(String userIPAddress, long userId) {
         List<CmsUserAllowedNetAddress> cmsUserAllowedNetAddresses = cmsUserAllowedNetAddressDAO.listForUser(userId);
         return cmsUserAllowedNetAddresses.stream().
-                map(CmsUserAllowedNetAddress::getInetAddress).collect(Collectors.toList()).
-                contains(userIPAddress);
+            map(CmsUserAllowedNetAddress::getInetAddress).collect(Collectors.toList()).
+            contains(userIPAddress);
     }
 
     /**

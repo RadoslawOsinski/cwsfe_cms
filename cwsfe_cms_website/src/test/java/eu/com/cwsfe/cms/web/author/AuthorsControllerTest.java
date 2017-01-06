@@ -48,10 +48,10 @@ public class AuthorsControllerTest {
     @Test
     public void testDefaultView() throws Exception {
         mockMvc.perform(get("/authors"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/authors/Authors"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/authors/Authors.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/authors/Authors"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/authors/Authors.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()));
     }
 
     @Test
@@ -75,22 +75,22 @@ public class AuthorsControllerTest {
         when(cmsAuthorsDAO.countForAjax()).thenReturn(numberOfAuthors);
 
         ResultActions resultActions = mockMvc.perform(get("/authorsList")
-                .param("iDisplayStart", String.valueOf(iDisplayStart))
-                .param("iDisplayLength", String.valueOf(iDisplayLength))
-                .param("sEcho", sEcho))
-                .andExpect(status().isOk());
+            .param("iDisplayStart", String.valueOf(iDisplayStart))
+            .param("iDisplayLength", String.valueOf(iDisplayLength))
+            .param("sEcho", sEcho))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.sEcho").value(sEcho))
-                .andExpect(jsonPath("$.iTotalRecords").value(numberOfAuthors))
-                .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfAuthors))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].id").value((int) authorId))
-                .andExpect(jsonPath("$.aaData[0].lastName").value(lastName))
-                .andExpect(jsonPath("$.aaData[0].firstName").value(firstName))
-                .andExpect(jsonPath("$.aaData[0].googlePlusAuthorLink").value(googlePlusAuthorLink));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.sEcho").value(sEcho))
+            .andExpect(jsonPath("$.iTotalRecords").value(numberOfAuthors))
+            .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfAuthors))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].id").value((int) authorId))
+            .andExpect(jsonPath("$.aaData[0].lastName").value(lastName))
+            .andExpect(jsonPath("$.aaData[0].firstName").value(firstName))
+            .andExpect(jsonPath("$.aaData[0].googlePlusAuthorLink").value(googlePlusAuthorLink));
         verify(cmsAuthorsDAO, times(1)).listAjax(anyInt(), anyInt());
         verify(cmsAuthorsDAO, times(1)).countForAjax();
         verifyNoMoreInteractions(cmsAuthorsDAO);
@@ -113,18 +113,18 @@ public class AuthorsControllerTest {
         when(cmsAuthorsDAO.listAuthorsForDropList(anyString(), anyInt())).thenReturn(authors);
 
         ResultActions resultActions = mockMvc.perform(get("/authorsDropList")
-                .param("term", lastName)
-                .param("limit", String.valueOf(limit)))
-                .andExpect(status().isOk());
+            .param("term", lastName)
+            .param("limit", String.valueOf(limit)))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data[0].id").value((int) authorId))
-                .andExpect(jsonPath("$.data[0].lastName").value(lastName))
-                .andExpect(jsonPath("$.data[0].firstName").value(firstName))
-                .andExpect(jsonPath("$.data[0].googlePlusAuthorLink").value(googlePlusAuthorLink));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data[0].id").value((int) authorId))
+            .andExpect(jsonPath("$.data[0].lastName").value(lastName))
+            .andExpect(jsonPath("$.data[0].firstName").value(firstName))
+            .andExpect(jsonPath("$.data[0].googlePlusAuthorLink").value(googlePlusAuthorLink));
         verify(cmsAuthorsDAO, times(1)).listAuthorsForDropList(anyString(), anyInt());
         verifyNoMoreInteractions(cmsAuthorsDAO);
     }
@@ -143,14 +143,14 @@ public class AuthorsControllerTest {
         when(cmsAuthorsDAO.add(any(CmsAuthor.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addAuthor")
-                .param("firstName", firstName)
-                .param("lastName", lastName))
-                .andExpect(status().isOk());
+            .param("firstName", firstName)
+            .param("lastName", lastName))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
         verify(cmsAuthorsDAO, times(1)).add(any(CmsAuthor.class));
         verifyNoMoreInteractions(cmsAuthorsDAO);
     }
@@ -170,13 +170,13 @@ public class AuthorsControllerTest {
         doNothing().when(cmsAuthorsDAO).delete(any(CmsAuthor.class));
 
         ResultActions resultActions = mockMvc.perform(post("/deleteAuthor")
-                .param("id", String.valueOf(id)))
-                .andExpect(status().isOk());
+            .param("id", String.valueOf(id)))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
         verify(cmsAuthorsDAO, times(1)).delete(any(CmsAuthor.class));
         verifyNoMoreInteractions(cmsAuthorsDAO);
     }

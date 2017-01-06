@@ -82,23 +82,23 @@ public class BlogPostImagesControllerTest {
         when(blogPostImagesDAO.getTotalNumberNotDeleted()).thenReturn(totalNumberNotDeleted);
 
         ResultActions resultActions = mockMvc.perform(get("/blogPosts/blogPostImagesList")
-                .param("iDisplayStart", String.valueOf(iDisplayStart))
-                .param("iDisplayLength", String.valueOf(iDisplayLength))
-                .param("sEcho", sEcho)
-                .param("blogPostId", String.valueOf(blogPostId)));
+            .param("iDisplayStart", String.valueOf(iDisplayStart))
+            .param("iDisplayLength", String.valueOf(iDisplayLength))
+            .param("sEcho", sEcho)
+            .param("blogPostId", String.valueOf(blogPostId)));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.sEcho").value(sEcho))
-                .andExpect(jsonPath("$.iTotalRecords").value(totalNumberNotDeleted))
-                .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfBlogPostImages))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
-                .andExpect(jsonPath("$.aaData[0].title").value(title))
-                .andExpect(jsonPath("$.aaData[0].fileName").value(fileName))
-                .andExpect(jsonPath("$.aaData[0].url").value(url))
-                .andExpect(jsonPath("$.aaData[0].id").value((int) id));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.sEcho").value(sEcho))
+            .andExpect(jsonPath("$.iTotalRecords").value(totalNumberNotDeleted))
+            .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfBlogPostImages))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
+            .andExpect(jsonPath("$.aaData[0].title").value(title))
+            .andExpect(jsonPath("$.aaData[0].fileName").value(fileName))
+            .andExpect(jsonPath("$.aaData[0].url").value(url))
+            .andExpect(jsonPath("$.aaData[0].id").value((int) id));
         verify(blogPostImagesDAO, times(1)).searchByAjaxWithoutContent(anyInt(), anyInt(), anyLong());
         verify(blogPostImagesDAO, times(1)).searchByAjaxCountWithoutContent(anyLong());
         verify(blogPostImagesDAO, times(1)).getTotalNumberNotDeleted();
@@ -120,11 +120,11 @@ public class BlogPostImagesControllerTest {
         when(cmsGlobalParam.getValue()).thenReturn(System.getProperty("java.io.tmpdir"));
 
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.fileUpload("/blogPosts/addBlogPostImage")
-                        .file(file)
-                        .param("blogPostId", "1")
-                        .param("title", "testImage")
-                        .contentType(MediaType.MULTIPART_FORM_DATA)
+            MockMvcRequestBuilders.fileUpload("/blogPosts/addBlogPostImage")
+                .file(file)
+                .param("blogPostId", "1")
+                .param("title", "testImage")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
         );
 
         resultActions.andExpect(status().is3xxRedirection());
@@ -135,12 +135,12 @@ public class BlogPostImagesControllerTest {
         doNothing().when(blogPostImagesDAO).delete(any(BlogPostImage.class));
 
         ResultActions resultActions = mockMvc.perform(post("/blogPosts/deleteBlogPostImage")
-                .param("id", "1"));
+            .param("id", "1"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + BlogPostImagesController.JSON_STATUS).value(BlogPostImagesController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + BlogPostImagesController.JSON_STATUS).value(BlogPostImagesController.JSON_STATUS_SUCCESS));
         verify(blogPostImagesDAO, times(1)).delete(any(BlogPostImage.class));
         verifyNoMoreInteractions(blogPostImagesDAO);
     }

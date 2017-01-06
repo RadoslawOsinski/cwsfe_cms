@@ -63,10 +63,10 @@ public class BlogPostsControllerTest {
     @Test
     public void testDefaultView() throws Exception {
         mockMvc.perform(get("/blogPosts"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/blog/Posts"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/blog/Posts.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/blog/Posts"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/blog/Posts.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()));
     }
 
     @Test
@@ -90,23 +90,23 @@ public class BlogPostsControllerTest {
         when(blogPostsDAO.getTotalNumberNotDeleted()).thenReturn(numberOfPosts);
 
         ResultActions resultActions = mockMvc.perform(get("/blogPostsList")
-                .param("iDisplayStart", "0")
-                .param("iDisplayLength", "2")
-                .param("sEcho", sEcho))
-                .andExpect(status().isOk());
+            .param("iDisplayStart", "0")
+            .param("iDisplayLength", "2")
+            .param("sEcho", sEcho))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.sEcho").value(sEcho))
-                .andExpect(jsonPath("$.iTotalRecords").value(numberOfPosts))
-                .andExpect(jsonPath("$.iTotalDisplayRecords").value(ajaxCountNumber))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].#").value(1))
-                .andExpect(jsonPath("$.aaData[0].author").value(author))
-                .andExpect(jsonPath("$.aaData[0].postTextCode").value(postTextCode))
-                .andExpect(jsonPath("$.aaData[0].postCreationDate").value("1970-01-01"))
-                .andExpect(jsonPath("$.aaData[0].id").value(id));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.sEcho").value(sEcho))
+            .andExpect(jsonPath("$.iTotalRecords").value(numberOfPosts))
+            .andExpect(jsonPath("$.iTotalDisplayRecords").value(ajaxCountNumber))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].#").value(1))
+            .andExpect(jsonPath("$.aaData[0].author").value(author))
+            .andExpect(jsonPath("$.aaData[0].postTextCode").value(postTextCode))
+            .andExpect(jsonPath("$.aaData[0].postCreationDate").value("1970-01-01"))
+            .andExpect(jsonPath("$.aaData[0].id").value(id));
         verify(blogPostsDAO, times(1)).searchByAjax(anyInt(), anyInt(), anyInt(), anyString());
         verify(blogPostsDAO, times(1)).searchByAjaxCount(anyInt(), anyString());
         verify(blogPostsDAO, times(1)).getTotalNumberNotDeleted();
@@ -129,16 +129,16 @@ public class BlogPostsControllerTest {
         when(blogPostKeywordsDAO.listValuesForPost(anyLong())).thenReturn(blogKeywordAssignments);
 
         ResultActions resultActions = mockMvc.perform(get("/blogPostKeywordAssignment")
-                .param("blogPostId", "1"));
+            .param("blogPostId", "1"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].id").value((int) id))
-                .andExpect(jsonPath("$.aaData[0].keywordName").value(keywordName))
-                .andExpect(jsonPath("$.aaData[0].assigned").value(assigned))
-                .andExpect(jsonPath("$.aaData[0].status").value(BlogKeywordStatus.NEW.name()));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].id").value((int) id))
+            .andExpect(jsonPath("$.aaData[0].keywordName").value(keywordName))
+            .andExpect(jsonPath("$.aaData[0].assigned").value(assigned))
+            .andExpect(jsonPath("$.aaData[0].status").value(BlogKeywordStatus.NEW.name()));
         verify(blogPostKeywordsDAO, times(1)).listValuesForPost(anyLong());
         verifyNoMoreInteractions(blogPostKeywordsDAO);
     }
@@ -148,13 +148,13 @@ public class BlogPostsControllerTest {
         when(blogPostsDAO.add(any(BlogPost.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addBlogPost")
-                .param("postAuthorId", "2")
-                .param("postTextCode", "postTextCode"));
+            .param("postAuthorId", "2")
+            .param("postTextCode", "postTextCode"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS));
         verify(blogPostsDAO, times(1)).add(any(BlogPost.class));
         verifyNoMoreInteractions(blogPostsDAO);
     }
@@ -164,12 +164,12 @@ public class BlogPostsControllerTest {
         doNothing().when(blogPostsDAO).delete(any(BlogPost.class));
 
         ResultActions resultActions = mockMvc.perform(post("/deleteBlogPost")
-                .param("id", "1"));
+            .param("id", "1"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS));
         verify(blogPostsDAO, times(1)).delete(any(BlogPost.class));
         verifyNoMoreInteractions(blogPostsDAO);
     }
@@ -185,15 +185,15 @@ public class BlogPostsControllerTest {
         ResultActions resultActions = mockMvc.perform(get("/blogPosts/1"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/blog/SingleBlogPost"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/blog/SinglePost.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()))
-                .andExpect(model().attribute("cmsLanguages", anything()))
-                .andExpect(model().attribute("blogPostSelectedKeywords", anything()))
-                .andExpect(model().attribute("blogKeywords", anything()))
-                .andExpect(model().attribute("blogPost", anything()))
-                .andExpect(model().attribute("cmsAuthor", anything()));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/blog/SingleBlogPost"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/blog/SinglePost.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()))
+            .andExpect(model().attribute("cmsLanguages", anything()))
+            .andExpect(model().attribute("blogPostSelectedKeywords", anything()))
+            .andExpect(model().attribute("blogKeywords", anything()))
+            .andExpect(model().attribute("blogPost", anything()))
+            .andExpect(model().attribute("cmsAuthor", anything()));
     }
 
     @Test
@@ -211,13 +211,13 @@ public class BlogPostsControllerTest {
         ResultActions resultActions = mockMvc.perform(get("/blogPosts/1/2")).andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS))
-                .andExpect(jsonPath("$.data.postTitle").value(postTitle))
-                .andExpect(jsonPath("$.data.postShortcut").value(postShortcut))
-                .andExpect(jsonPath("$.data.postDescription").value(postDescription))
-                .andExpect(jsonPath("$.data.status").value(BlogPostI18nContentStatus.NEW.name()));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS))
+            .andExpect(jsonPath("$.data.postTitle").value(postTitle))
+            .andExpect(jsonPath("$.data.postShortcut").value(postShortcut))
+            .andExpect(jsonPath("$.data.postDescription").value(postDescription))
+            .andExpect(jsonPath("$.data.status").value(BlogPostI18nContentStatus.NEW.name()));
 
         verify(blogPostI18nContentsDAO, times(1)).getByLanguageForPost(anyLong(), anyLong());
         verifyNoMoreInteractions(blogPostI18nContentsDAO);
@@ -228,14 +228,14 @@ public class BlogPostsControllerTest {
         doNothing().when(blogPostsDAO).updatePostBasicInfo(any(BlogPost.class));
 
         ResultActions resultActions = mockMvc.perform(post("/blogPosts/updatePostBasicInfo")
-                .param("id", "3")
-                .param("postTextCode", "postTextCode")
-                .param("status", "NEW"));
+            .param("id", "3")
+            .param("postTextCode", "postTextCode")
+            .param("status", "NEW"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS));
         verify(blogPostsDAO, times(1)).updatePostBasicInfo(any(BlogPost.class));
         verifyNoMoreInteractions(blogPostsDAO);
     }
@@ -247,16 +247,16 @@ public class BlogPostsControllerTest {
         when(blogPostsDAO.get(anyLong())).thenReturn(new BlogPost());
 
         ResultActions resultActions = mockMvc.perform(post("/blogPosts/updateBlogPostI18nContent")
-                .param("languageId", "1")
-                .param("postId", "2")
-                .param("postTitle", "postTitle")
-                .param("postShortcut", "postShortcut")
-                .param("postDescription", "postDescription"));
+            .param("languageId", "1")
+            .param("postId", "2")
+            .param("postTitle", "postTitle")
+            .param("postShortcut", "postShortcut")
+            .param("postDescription", "postDescription"));
 
         resultActions.andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS));
-                verify(blogPostI18nContentsDAO, times(1)).getByLanguageForPost(anyLong(), anyLong());
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS));
+        verify(blogPostI18nContentsDAO, times(1)).getByLanguageForPost(anyLong(), anyLong());
         verify(blogPostI18nContentsDAO, times(1)).add(any(BlogPostI18nContent.class));
         verifyNoMoreInteractions(blogPostI18nContentsDAO);
     }
@@ -266,14 +266,14 @@ public class BlogPostsControllerTest {
         when(blogPostKeywordsDAO.get(anyLong(), anyLong())).thenThrow(new EmptyResultDataAccessException(1));
 
         ResultActions resultActions = mockMvc.perform(post("/postCategoryUpdate")
-                .param("postId", "1")
-                .param("id", "1")
-                .param("assigned", "true"));
+            .param("postId", "1")
+            .param("id", "1")
+            .param("assigned", "true"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS));
         verify(blogPostKeywordsDAO, times(1)).get(anyLong(), anyLong());
         verify(blogPostKeywordsDAO, times(1)).add(any(BlogPostKeyword.class));
         verifyNoMoreInteractions(blogPostKeywordsDAO);
@@ -284,14 +284,14 @@ public class BlogPostsControllerTest {
         when(blogPostKeywordsDAO.get(anyLong(), anyLong())).thenReturn(new BlogPostKeyword(anyLong(), anyLong()));
 
         ResultActions resultActions = mockMvc.perform(post("/postCategoryUpdate")
-                .param("postId", "1")
-                .param("id", "1")
-                .param("assigned", "false"));
+            .param("postId", "1")
+            .param("id", "1")
+            .param("assigned", "false"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + BlogPostsController.JSON_STATUS).value(BlogPostsController.JSON_STATUS_SUCCESS));
         verify(blogPostKeywordsDAO, times(1)).get(anyLong(), anyLong());
         verify(blogPostKeywordsDAO, times(1)).delete(anyLong(), anyLong());
         verifyNoMoreInteractions(blogPostKeywordsDAO);

@@ -56,7 +56,7 @@ class NewsletterMailGroupsController extends JsonController {
     private List<Breadcrumb> getBreadcrumbs(Locale locale) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMailGroups").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailGroupsManagement")));
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailGroupsManagement")));
         return breadcrumbs;
     }
 
@@ -67,19 +67,19 @@ class NewsletterMailGroupsController extends JsonController {
     private List<Breadcrumb> getSingleNewsletterMailGroupsBreadcrumbs(Locale locale, Long id) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMailGroups").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailGroupsManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMailGroups").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailGroupsManagement")));
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMailGroups/" + id).build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CurrentNewsletterMailGroup")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsletterMailGroups/" + id).build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CurrentNewsletterMailGroup")));
         return breadcrumbs;
     }
 
     @RequestMapping(value = "/newsletterMailGroupsDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listNewsletterMailGroupsForDropList(
-            @RequestParam String term,
-            @RequestParam Integer limit
+        @RequestParam String term,
+        @RequestParam Integer limit
     ) {
         final List<NewsletterMailGroup> results = newsletterMailGroupDAO.listNewsletterMailGroupsForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
@@ -97,11 +97,11 @@ class NewsletterMailGroupsController extends JsonController {
     @RequestMapping(value = "/newsletterMailGroupsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listNewsletterMailGroups(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho,
-            @RequestParam(required = false) Long searchLanguageId,
-            @RequestParam(required = false) String searchName
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho,
+        @RequestParam(required = false) Long searchLanguageId,
+        @RequestParam(required = false) String searchName
     ) {
         List<NewsletterMailGroup> dbList = newsletterMailGroupDAO.searchByAjax(iDisplayStart, iDisplayLength, searchName, searchLanguageId);
         Integer dbListDisplayRecordsSize = newsletterMailGroupDAO.searchByAjaxCount(searchName, searchLanguageId);
@@ -126,8 +126,8 @@ class NewsletterMailGroupsController extends JsonController {
     @RequestMapping(value = "/addNewsletterMailGroup", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addNewsletterMailGroup(
-            @ModelAttribute(value = "newsletterMailGroup") NewsletterMailGroup newsletterMailGroup,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterMailGroup") NewsletterMailGroup newsletterMailGroup,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "name", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailGroupMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "languageId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet"));
@@ -144,8 +144,8 @@ class NewsletterMailGroupsController extends JsonController {
     @RequestMapping(value = "/deleteNewsletterMailGroup", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteNewsletterMailGroup(
-            @ModelAttribute(value = "newsletterMailGroup") NewsletterMailGroup newsletterMailGroup,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterMailGroup") NewsletterMailGroup newsletterMailGroup,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailGroupMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -171,11 +171,11 @@ class NewsletterMailGroupsController extends JsonController {
     @RequestMapping(value = "/newsletterMailGroups/newsletterMailAddressesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String newsletterMailAddressesList(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho,
-            @RequestParam(required = false) String searchMail,
-            @RequestParam(required = false) Long mailGroupId
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho,
+        @RequestParam(required = false) String searchMail,
+        @RequestParam(required = false) Long mailGroupId
     ) {
         List<NewsletterMailAddress> dbList = newsletterMailAddressDAO.searchByAjax(iDisplayStart, iDisplayLength, searchMail, mailGroupId);
         Integer dbListDisplayRecordsSize = newsletterMailAddressDAO.searchByAjaxCount(searchMail, mailGroupId);
@@ -200,8 +200,8 @@ class NewsletterMailGroupsController extends JsonController {
     @RequestMapping(value = "/newsletterMailGroups/updateNewsletterMailGroup", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updateNewsletterMailGroup(
-            @ModelAttribute(value = "newsletterMailGroup") NewsletterMailGroup newsletterMailGroup,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterMailGroup") NewsletterMailGroup newsletterMailGroup,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailGroupMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "name", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailGroupNameMustBeSet"));
@@ -219,8 +219,8 @@ class NewsletterMailGroupsController extends JsonController {
     @RequestMapping(value = "/newsletterMailGroups/addNewsletterMailAddresses", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addNewsletterMailAddresses(
-            @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "mailGroupId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailAddressGroupMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "email", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailAddressMustBeSet"));
@@ -258,8 +258,8 @@ class NewsletterMailGroupsController extends JsonController {
     @RequestMapping(value = "/newsletterMailGroups/deleteNewsletterMailAddress", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteNewsletterMailAddress(
-            @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailAddressMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -275,8 +275,8 @@ class NewsletterMailGroupsController extends JsonController {
     @RequestMapping(value = "/newsletterMailGroups/activateNewsletterMailAddress", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String activateNewsletterMailAddress(
-            @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailAddressMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -292,8 +292,8 @@ class NewsletterMailGroupsController extends JsonController {
     @RequestMapping(value = "/newsletterMailGroups/deactivateNewsletterMailAddress", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deactivateNewsletterMailAddress(
-            @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "newsletterMailAddress") NewsletterMailAddress newsletterMailAddress,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsletterMailAddressMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();

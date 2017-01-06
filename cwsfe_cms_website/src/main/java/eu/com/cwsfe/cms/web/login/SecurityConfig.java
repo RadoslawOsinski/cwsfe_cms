@@ -74,20 +74,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers(
-                        "/loginPage", "/loginFailed", "/configuration/initialConfiguration",
-                        "favicon.ico", "/rest/**", "/resources-cwsfe-cms/**",
-                        "/newsImages/**", "/blogPostImages/**",
-                        "/swagger-ui.html", "/webjars/**", "/swagger-resources", "/swagger-resources/**",
-                        "/v2", "/v2/**"
-                ).permitAll()
-                .antMatchers("/**").hasRole("CWSFE_CMS_ADMIN")
-                .anyRequest().authenticated()
-                .and().formLogin().loginPage("/loginPage").defaultSuccessUrl("/loginPage").failureUrl("/loginFailed").permitAll()
-                .and().logout().logoutSuccessUrl("/loginPage").invalidateHttpSession(true).logoutUrl("/logout").permitAll()
-                .and().addFilterAfter(getCmsAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
-                .csrf().disable()
-                .authenticationProvider(getCmsAuthProvider());
+            .antMatchers(
+                "/loginPage", "/loginFailed", "/configuration/initialConfiguration",
+                "favicon.ico", "/rest/**", "/resources-cwsfe-cms/**",
+                "/newsImages/**", "/blogPostImages/**",
+                "/swagger-ui.html", "/webjars/**", "/swagger-resources", "/swagger-resources/**",
+                "/v2", "/v2/**"
+            ).permitAll()
+            .antMatchers("/**").hasRole("CWSFE_CMS_ADMIN")
+            .anyRequest().authenticated()
+            .and().formLogin().loginPage("/loginPage").defaultSuccessUrl("/loginPage").failureUrl("/loginFailed").permitAll()
+            .and().logout().logoutSuccessUrl("/loginPage").invalidateHttpSession(true).logoutUrl("/logout").permitAll()
+            .and().addFilterAfter(getCmsAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
+            .csrf().disable()
+            .authenticationProvider(getCmsAuthProvider());
     }
 
 }

@@ -4,10 +4,10 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         var self = this;
         self.keywordName = ko.observable();
 
-        self.keywordNameIsRequiredStyle= ko.computed(function() {
+        self.keywordNameIsRequiredStyle = ko.computed(function () {
             return self.keywordName() === null || self.keywordName() === '' ? 'error' : 'invisible';
         });
-        self.addBlogKeywordFormIsValid = ko.computed(function() {
+        self.addBlogKeywordFormIsValid = ko.computed(function () {
             return self.keywordName() !== null && self.keywordName() !== '';
         });
     }
@@ -44,15 +44,15 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
 
     });
 
-    $('#addBlogKeywordButton').click(function() {
+    $('#addBlogKeywordButton').click(function () {
         addBlogKeyword();
     });
 
-    $('body').on('click', 'button[name="removeBlogKeywordButton"]', function() {
+    $('body').on('click', 'button[name="removeBlogKeywordButton"]', function () {
         removeBlogKeyword($(this).val());
     });
 
-    $('#resetAddBlogKeyword').click(function() {
+    $('#resetAddBlogKeyword').click(function () {
         viewModel.blogKeywordsViewModel.keywordName(null);
         viewModel.formAlerts.cleanAllMessages();
     });

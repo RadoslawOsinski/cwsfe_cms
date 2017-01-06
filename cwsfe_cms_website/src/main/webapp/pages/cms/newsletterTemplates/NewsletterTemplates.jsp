@@ -64,28 +64,34 @@
                     <li data-bind='text: msg'></li>
                 </ul>
             </div>
-            
+
             <form id="addNewNewsletterTemplateForm">
                 <fieldset>
                     <legend><spring:message code="NewsletterTemplateAdding"/></legend>
                     <div class="row">
                         <label for="language"><spring:message code="Language2LetterCode"/></label>
-                        <input type="text" id="language" required data-bind="textInput: newNewsletterTemplateViewModel.language"/>
-                        <small class="invisible" data-bind="attr: { 'class': newNewsletterTemplateViewModel.languageIsRequiredStyle}">
+                        <input type="text" id="language" required
+                               data-bind="textInput: newNewsletterTemplateViewModel.language"/>
+                        <small class="invisible"
+                               data-bind="attr: { 'class': newNewsletterTemplateViewModel.languageIsRequiredStyle}">
                             <spring:message code="LanguageMustBeSet"/>
                         </small>
                     </div>
                     <div class="row">
                         <label for="newsletterTemplateName"><spring:message code="Name"/></label>
-                        <input type="text" id="newsletterTemplateName" maxlength="100" required data-bind="textInput: newNewsletterTemplateViewModel.newsletterTemplateName"/>
-                        <small class="invisible" data-bind="attr: { 'class': newNewsletterTemplateViewModel.newsletterTemplateNameIsRequiredStyle}">
+                        <input type="text" id="newsletterTemplateName" maxlength="100" required
+                               data-bind="textInput: newNewsletterTemplateViewModel.newsletterTemplateName"/>
+                        <small class="invisible"
+                               data-bind="attr: { 'class': newNewsletterTemplateViewModel.newsletterTemplateNameIsRequiredStyle}">
                             <spring:message code="NewsletterTemplateNameMustBeSet"/>
                         </small>
                     </div>
                     <div class="row">
                         <input type="button" id="addNewsletterTemplateButton" class="button small radius primary"
-                               value="<spring:message code="Add"/>" data-bind="enable: newNewsletterTemplateViewModel.newNewsletterTemplateFormIsValid">
-                        <input type="reset" id="resetAddNewNewsletterTemplate" value="Reset" class="button small radius alert">
+                               value="<spring:message code="Add"/>"
+                               data-bind="enable: newNewsletterTemplateViewModel.newNewsletterTemplateFormIsValid">
+                        <input type="reset" id="resetAddNewNewsletterTemplate" value="Reset"
+                               class="button small radius alert">
                     </div>
                 </fieldset>
             </form>

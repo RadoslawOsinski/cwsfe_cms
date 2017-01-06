@@ -49,10 +49,10 @@ public class CmsTextI18nCategoryControllerTest {
     @Test
     public void testDefaultView() throws Exception {
         mockMvc.perform(get("/cmsTextI18nCategories"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/textI18nCategories/TextI18nCategories"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/textI18nCategories/TextI18nCategories.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/textI18nCategories/TextI18nCategories"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/textI18nCategories/TextI18nCategories.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()));
     }
 
     @Test
@@ -73,22 +73,22 @@ public class CmsTextI18nCategoryControllerTest {
         when(cmsTextI18nCategoryDAO.countForAjax()).thenReturn(numberOfCategories);
 
         ResultActions resultActions = mockMvc.perform(get("/cmsTextI18nCategoriesList")
-                .param("iDisplayStart", String.valueOf(iDisplayStart))
-                .param("iDisplayLength", String.valueOf(iDisplayLength))
-                .param("sEcho", sEcho))
-                .andExpect(status().isOk());
+            .param("iDisplayStart", String.valueOf(iDisplayStart))
+            .param("iDisplayLength", String.valueOf(iDisplayLength))
+            .param("sEcho", sEcho))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.sEcho").value(sEcho))
-                .andExpect(jsonPath("$.iTotalRecords").value(numberOfCategories))
-                .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfCategories))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
-                .andExpect(jsonPath("$.aaData[0].category").value(category))
-                .andExpect(jsonPath("$.aaData[0].status").value(CmsTextI18nCategoryStatus.NEW.name()))
-                .andExpect(jsonPath("$.aaData[0].id").value((int) id));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.sEcho").value(sEcho))
+            .andExpect(jsonPath("$.iTotalRecords").value(numberOfCategories))
+            .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfCategories))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
+            .andExpect(jsonPath("$.aaData[0].category").value(category))
+            .andExpect(jsonPath("$.aaData[0].status").value(CmsTextI18nCategoryStatus.NEW.name()))
+            .andExpect(jsonPath("$.aaData[0].id").value((int) id));
         verify(cmsTextI18nCategoryDAO, times(1)).listAjax(anyInt(), anyInt());
         verify(cmsTextI18nCategoryDAO, times(1)).countForAjax();
         verifyNoMoreInteractions(cmsTextI18nCategoryDAO);
@@ -107,16 +107,16 @@ public class CmsTextI18nCategoryControllerTest {
         when(cmsTextI18nCategoryDAO.listForDropList(anyString(), anyInt())).thenReturn(cmsTextI18nCategories);
 
         ResultActions resultActions = mockMvc.perform(get("/cmsTextI18nCategoryDropList")
-                .param("term", category)
-                .param("limit", String.valueOf(limit)))
-                .andExpect(status().isOk());
+            .param("term", category)
+            .param("limit", String.valueOf(limit)))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data[0].id").value((int) id))
-                .andExpect(jsonPath("$.data[0].category").value(category));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data[0].id").value((int) id))
+            .andExpect(jsonPath("$.data[0].category").value(category));
         verify(cmsTextI18nCategoryDAO, times(1)).listForDropList(anyString(), anyInt());
         verifyNoMoreInteractions(cmsTextI18nCategoryDAO);
     }
@@ -131,13 +131,13 @@ public class CmsTextI18nCategoryControllerTest {
         when(cmsTextI18nCategoryDAO.add(any(CmsTextI18nCategory.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addCmsTextI18nCategory")
-                .param("category", category))
-                .andExpect(status().isOk());
+            .param("category", category))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + CmsTextI18nCategoryController.JSON_STATUS).value(CmsTextI18nCategoryController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + CmsTextI18nCategoryController.JSON_STATUS).value(CmsTextI18nCategoryController.JSON_STATUS_SUCCESS));
         verify(cmsTextI18nCategoryDAO, times(1)).add(any(CmsTextI18nCategory.class));
         verifyNoMoreInteractions(cmsTextI18nCategoryDAO);
     }
@@ -148,13 +148,13 @@ public class CmsTextI18nCategoryControllerTest {
         doNothing().when(cmsTextI18nCategoryDAO).delete(any(CmsTextI18nCategory.class));
 
         ResultActions resultActions = mockMvc.perform(post("/deleteCmsTextI18nCategory")
-                .param("id", String.valueOf(id)))
-                .andExpect(status().isOk());
+            .param("id", String.valueOf(id)))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + CmsTextI18nCategoryController.JSON_STATUS).value(CmsTextI18nCategoryController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + CmsTextI18nCategoryController.JSON_STATUS).value(CmsTextI18nCategoryController.JSON_STATUS_SUCCESS));
         verify(cmsTextI18nCategoryDAO, times(1)).delete(any(CmsTextI18nCategory.class));
         verifyNoMoreInteractions(cmsTextI18nCategoryDAO);
     }

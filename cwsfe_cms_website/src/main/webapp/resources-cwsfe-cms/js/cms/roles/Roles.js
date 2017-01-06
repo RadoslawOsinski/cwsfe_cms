@@ -1,6 +1,6 @@
 require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
 
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         $('#rolesList').dataTable({
             'iTabIndex': -1,

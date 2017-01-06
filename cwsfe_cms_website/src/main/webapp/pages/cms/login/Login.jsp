@@ -46,7 +46,8 @@
     <spring:url value="/cwsfe_cms_security_check" var="loginCheckUrl" htmlEscape="true"/>
     <form accept-charset="UTF-8" action="${loginCheckUrl}" method="post">
         <div class="passport-left">
-            <img src="${pageContext.request.contextPath}/resources-cwsfe-cms/CWSFE_logo.png" alt="CWSFE logo" height="294" width="300"/>
+            <img src="${pageContext.request.contextPath}/resources-cwsfe-cms/CWSFE_logo.png" alt="CWSFE logo"
+                 height="294" width="300"/>
         </div>
         <div class="passport-right">
             <div id="emailLogin">

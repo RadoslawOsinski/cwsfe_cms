@@ -74,7 +74,7 @@ public class AWSBucketImageStorageServiceTest {
         File file = new File("src/main/webapp/resources-cwsfe-cms/CWSFE_logo.png");
         FileInputStream input = new FileInputStream(file);
         MultipartFile multipartFile = new MockMultipartFile("file",
-                file.getName(), "image/png", IOUtils.toByteArray(input));
+            file.getName(), "image/png", IOUtils.toByteArray(input));
         CmsNewsImage cmsNewsImage = new CmsNewsImage();
         cmsNewsImage.setFileName("CWSFE_logo.png");
         cmsNewsImage.setFile(multipartFile);
@@ -102,7 +102,7 @@ public class AWSBucketImageStorageServiceTest {
         File file = new File("src/main/webapp/resources-cwsfe-cms/CWSFE_logo.png");
         FileInputStream input = new FileInputStream(file);
         MultipartFile multipartFile = new MockMultipartFile("file",
-                file.getName(), "image/png", IOUtils.toByteArray(input));
+            file.getName(), "image/png", IOUtils.toByteArray(input));
         BlogPostImage blogPostImage = new BlogPostImage();
         blogPostImage.setFileName("CWSFE_logo.png");
         blogPostImage.setFile(multipartFile);

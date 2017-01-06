@@ -6,13 +6,13 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.author = ko.observable();
         self.postTextCode = ko.observable();
 
-        self.authorIsRequiredStyle = ko.computed(function() {
+        self.authorIsRequiredStyle = ko.computed(function () {
             return self.author() === null || self.author() === '' ? 'error' : 'invisible';
         });
-        self.postTextCodeIsRequiredStyle = ko.computed(function() {
+        self.postTextCodeIsRequiredStyle = ko.computed(function () {
             return self.postTextCode() === null || self.postTextCode() === '' ? 'error' : 'invisible';
         });
-        self.addBlogPostFormIsValid = ko.computed(function() {
+        self.addBlogPostFormIsValid = ko.computed(function () {
             return self.author() !== null && self.author() !== '' &&
                 self.postTextCode() !== null && self.postTextCode() !== '';
         });
@@ -122,7 +122,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         $("#blogPostsList").dataTable().fnDraw();
     }
 
-    $('#resetAddBlogPost').click(function() {
+    $('#resetAddBlogPost').click(function () {
         viewModel.blogPostsViewModel.authorId = null;
         viewModel.blogPostsViewModel.author(null);
         viewModel.blogPostsViewModel.postTextCode(null);
@@ -175,12 +175,12 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         });
     }
 
-    $('#addBlogPostButton').click(function() {
+    $('#addBlogPostButton').click(function () {
         addBlogPost();
     });
 
-    $('body').on('click', 'button[name="removeBlogPostButton"]', function() {
+    $('body').on('click', 'button[name="removeBlogPostButton"]', function () {
         removeBlogPost($(this).val());
     });
-    
+
 });

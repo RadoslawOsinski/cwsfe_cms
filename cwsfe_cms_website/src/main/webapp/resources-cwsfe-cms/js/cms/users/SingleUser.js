@@ -1,6 +1,6 @@
 require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'foundation', 'foundationTabs'], function ($, ko) {
 
-    $('#saveUserButton').click(function() {
+    $('#saveUserButton').click(function () {
         saveUser();
     });
 

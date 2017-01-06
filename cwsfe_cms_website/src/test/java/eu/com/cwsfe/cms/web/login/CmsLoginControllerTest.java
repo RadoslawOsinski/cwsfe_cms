@@ -50,9 +50,9 @@ public class CmsLoginControllerTest {
         ResultActions resultActions = mockMvc.perform(get("/"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/login/Login"))
-                .andExpect(model().attribute("mainSiteUrl", someUrl));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/login/Login"))
+            .andExpect(model().attribute("mainSiteUrl", someUrl));
     }
 
     @Test
@@ -65,9 +65,9 @@ public class CmsLoginControllerTest {
         ResultActions resultActions = mockMvc.perform(get("/loginPage"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/login/Login"))
-                .andExpect(model().attribute("mainSiteUrl", someUrl));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/login/Login"))
+            .andExpect(model().attribute("mainSiteUrl", someUrl));
     }
 
     @Test
@@ -80,10 +80,10 @@ public class CmsLoginControllerTest {
         ResultActions resultActions = mockMvc.perform(get("/loginFailed"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/login/Login"))
-                .andExpect(model().attribute("error", "true"))
-                .andExpect(model().attribute("mainSiteUrl", someUrl));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/login/Login"))
+            .andExpect(model().attribute("error", "true"))
+            .andExpect(model().attribute("mainSiteUrl", someUrl));
     }
 
     @Test
@@ -96,8 +96,8 @@ public class CmsLoginControllerTest {
         ResultActions resultActions = mockMvc.perform(get("/logout"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/login/Login"))
-                .andExpect(model().attribute("mainSiteUrl", someUrl));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/login/Login"))
+            .andExpect(model().attribute("mainSiteUrl", someUrl));
     }
 }

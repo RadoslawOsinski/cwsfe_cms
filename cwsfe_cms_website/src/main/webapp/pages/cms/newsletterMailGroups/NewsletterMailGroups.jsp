@@ -67,23 +67,29 @@
                     <legend><spring:message code="NewsletterMailGroupAdding"/></legend>
                     <div class="row">
                         <label for="language"><spring:message code="Language2LetterCode"/></label>
-                        <input type="text" id="language" required data-bind="textInput: newsletterMailGroupViewModel.language"/>
-                        <small class="invisible" data-bind="attr: { 'class': newsletterMailGroupViewModel.languageIsRequiredStyle}">
+                        <input type="text" id="language" required
+                               data-bind="textInput: newsletterMailGroupViewModel.language"/>
+                        <small class="invisible"
+                               data-bind="attr: { 'class': newsletterMailGroupViewModel.languageIsRequiredStyle}">
                             <spring:message code="LanguageMustBeSet"/>
                         </small>
                     </div>
                     <div class="row">
                         <label for="newsletterMailGroupName"><spring:message
-                                code="NewsletterMailGroupName"/></label>
-                        <input type="text" id="newsletterMailGroupName" maxlength="100" required data-bind="textInput: newsletterMailGroupViewModel.newsletterMailGroupName"/>
-                        <small class="invisible" data-bind="attr: { 'class': newsletterMailGroupViewModel.newsletterMailGroupNameIsRequiredStyle}">
+                            code="NewsletterMailGroupName"/></label>
+                        <input type="text" id="newsletterMailGroupName" maxlength="100" required
+                               data-bind="textInput: newsletterMailGroupViewModel.newsletterMailGroupName"/>
+                        <small class="invisible"
+                               data-bind="attr: { 'class': newsletterMailGroupViewModel.newsletterMailGroupNameIsRequiredStyle}">
                             <spring:message code="NewsletterMailGroupMustBeSet"/>
                         </small>
                     </div>
                     <div class="row">
                         <input type="button" id="addNewsletterMailGroupButton" class="button small radius primary"
-                               value="<spring:message code="Add"/>" data-bind="enable: newsletterMailGroupViewModel.addNewsletterMailGroupFormIsValid">
-                        <input type="reset" id="resetAddNewsletterMailGroup" value="Reset" class="button small radius alert">
+                               value="<spring:message code="Add"/>"
+                               data-bind="enable: newsletterMailGroupViewModel.addNewsletterMailGroupFormIsValid">
+                        <input type="reset" id="resetAddNewsletterMailGroup" value="Reset"
+                               class="button small radius alert">
                     </div>
                 </fieldset>
             </form>

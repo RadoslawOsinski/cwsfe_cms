@@ -6,13 +6,13 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.language = ko.observable();
         self.newsletterTemplateName = ko.observable();
 
-        self.languageIsRequiredStyle= ko.computed(function() {
+        self.languageIsRequiredStyle = ko.computed(function () {
             return self.language() === null || self.language() === '' ? 'error' : 'invisible';
         });
-        self.newsletterTemplateNameIsRequiredStyle= ko.computed(function() {
+        self.newsletterTemplateNameIsRequiredStyle = ko.computed(function () {
             return self.newsletterTemplateName() === null || self.newsletterTemplateName() === '' ? 'error' : 'invisible';
         });
-        self.newNewsletterTemplateFormIsValid = ko.computed(function() {
+        self.newNewsletterTemplateFormIsValid = ko.computed(function () {
             return self.language() !== null && self.language() !== '' &&
                 self.newsletterTemplateName() !== null && self.newsletterTemplateName() !== '';
         });
@@ -135,23 +135,23 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         $("#newsletterTemplatesList").dataTable().fnDraw();
     }
 
-    $('#searchNewsletterTemplateButton').click(function() {
+    $('#searchNewsletterTemplateButton').click(function () {
         searchNewsletterTemplate();
     });
 
-    $('#addNewsletterTemplateButton').click(function() {
+    $('#addNewsletterTemplateButton').click(function () {
         addNewsletterTemplate();
     });
 
     var $body = $('body');
-    $body.on('click', 'button[name="unDeleteNewsletterTemplateButton"]', function() {
+    $body.on('click', 'button[name="unDeleteNewsletterTemplateButton"]', function () {
         unDeleteNewsletterTemplate($(this).val());
     });
-    $body.on('click', 'button[name="removeNewsletterTemplateButton"]', function() {
+    $body.on('click', 'button[name="removeNewsletterTemplateButton"]', function () {
         removeNewsletterTemplate($(this).val());
     });
 
-    $('#resetAddNewNewsletterTemplate').click(function() {
+    $('#resetAddNewNewsletterTemplate').click(function () {
         viewModel.newNewsletterTemplateViewModel.languageId = null;
         viewModel.newNewsletterTemplateViewModel.language(null);
         viewModel.newNewsletterTemplateViewModel.newsletterTemplateName(null);

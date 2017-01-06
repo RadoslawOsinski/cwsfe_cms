@@ -46,13 +46,15 @@
                     <div class="row">
                         <label for="category"><spring:message code="Category"/></label>
                         <input type="text" id="category" required data-bind="textInput: categoryViewModel.category"/>
-                        <small class="invisible" data-bind="attr: { 'class': categoryViewModel.categoryIsRequiredStyle}">
+                        <small class="invisible"
+                               data-bind="attr: { 'class': categoryViewModel.categoryIsRequiredStyle}">
                             <spring:message code="CategoryIsRequired"/>
                         </small>
                     </div>
                     <div class="row">
                         <input type="button" id="addCmsTextI18nCategoryButton" class="button small radius primary"
-                               value="<spring:message code="Add"/>" data-bind="enable: categoryViewModel.addCategoryFormIsValid">
+                               value="<spring:message code="Add"/>"
+                               data-bind="enable: categoryViewModel.addCategoryFormIsValid">
                         <input type="reset" id="resetAddCategory" value="Reset" class="button small radius alert"/>
                     </div>
                 </fieldset>

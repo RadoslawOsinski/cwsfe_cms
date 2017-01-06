@@ -38,10 +38,10 @@ public class BlogPostCodeController extends JsonController {
     @RequestMapping(value = "/blogPosts/blogPostCodesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listBlogPostCodes(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho,
-            WebRequest webRequest
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho,
+        WebRequest webRequest
     ) {
         Long blogPostId = null;
         try {
@@ -76,8 +76,8 @@ public class BlogPostCodeController extends JsonController {
     @RequestMapping(value = "/blogPosts/addBlogPostCode", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addBlogPostCode(
-            @ModelAttribute(value = "blogPostCode") BlogPostCode blogPostCode,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "blogPostCode") BlogPostCode blogPostCode,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "codeId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CodeIdMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "blogPostId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));
@@ -104,8 +104,8 @@ public class BlogPostCodeController extends JsonController {
     @RequestMapping(value = "/blogPosts/deleteBlogPostCode", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String blogPostCodeDelete(
-            @ModelAttribute(value = "blogPostCode") BlogPostCode blogPostCode,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "blogPostCode") BlogPostCode blogPostCode,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "codeId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CodeIdMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "blogPostId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));

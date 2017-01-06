@@ -82,23 +82,23 @@ public class CmsNewsImagesControllerTest {
         when(cmsNewsImagesDAO.getTotalNumberNotDeleted()).thenReturn(totalNumberNotDeleted);
 
         ResultActions resultActions = mockMvc.perform(get("/news/cmsNewsImagesList")
-                .param("iDisplayStart", String.valueOf(iDisplayStart))
-                .param("iDisplayLength", String.valueOf(iDisplayLength))
-                .param("sEcho", sEcho)
-                .param("cmsNewsId", String.valueOf(cmsNewsId)));
+            .param("iDisplayStart", String.valueOf(iDisplayStart))
+            .param("iDisplayLength", String.valueOf(iDisplayLength))
+            .param("sEcho", sEcho)
+            .param("cmsNewsId", String.valueOf(cmsNewsId)));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.sEcho").value(sEcho))
-                .andExpect(jsonPath("$.iTotalRecords").value(totalNumberNotDeleted))
-                .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfCmsNewsImages))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
-                .andExpect(jsonPath("$.aaData[0].title").value(title))
-                .andExpect(jsonPath("$.aaData[0].fileName").value(fileName))
-                .andExpect(jsonPath("$.aaData[0].url").value(url))
-                .andExpect(jsonPath("$.aaData[0].id").value((int) id));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.sEcho").value(sEcho))
+            .andExpect(jsonPath("$.iTotalRecords").value(totalNumberNotDeleted))
+            .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfCmsNewsImages))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
+            .andExpect(jsonPath("$.aaData[0].title").value(title))
+            .andExpect(jsonPath("$.aaData[0].fileName").value(fileName))
+            .andExpect(jsonPath("$.aaData[0].url").value(url))
+            .andExpect(jsonPath("$.aaData[0].id").value((int) id));
         verify(cmsNewsImagesDAO, times(1)).searchByAjaxWithoutContent(anyInt(), anyInt(), anyLong());
         verify(cmsNewsImagesDAO, times(1)).searchByAjaxCountWithoutContent(anyLong());
         verify(cmsNewsImagesDAO, times(1)).getTotalNumberNotDeleted();
@@ -120,11 +120,11 @@ public class CmsNewsImagesControllerTest {
         when(cmsGlobalParam.getValue()).thenReturn(System.getProperty("java.io.tmpdir"));
 
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.fileUpload("/news/addCmsNewsImage")
-                        .file(file)
-                        .param("newsId", "1")
-                        .param("title", "testImage")
-                        .contentType(MediaType.MULTIPART_FORM_DATA)
+            MockMvcRequestBuilders.fileUpload("/news/addCmsNewsImage")
+                .file(file)
+                .param("newsId", "1")
+                .param("title", "testImage")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
         );
 
         resultActions.andExpect(status().is3xxRedirection());
@@ -135,12 +135,12 @@ public class CmsNewsImagesControllerTest {
         doNothing().when(cmsNewsImagesDAO).delete(any(CmsNewsImage.class));
 
         ResultActions resultActions = mockMvc.perform(post("/news/deleteCmsNewsImage")
-                .param("id", "1"));
+            .param("id", "1"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + CmsNewsImagesController.JSON_STATUS).value(CmsNewsImagesController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + CmsNewsImagesController.JSON_STATUS).value(CmsNewsImagesController.JSON_STATUS_SUCCESS));
         verify(cmsNewsImagesDAO, times(1)).delete(any(CmsNewsImage.class));
         verifyNoMoreInteractions(cmsNewsImagesDAO);
     }

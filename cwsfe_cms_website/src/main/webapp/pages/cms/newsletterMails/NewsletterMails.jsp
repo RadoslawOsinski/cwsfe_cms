@@ -69,28 +69,35 @@
                     <legend><spring:message code="NewsletterMailAdding"/></legend>
                     <div class="row">
                         <label for="recipientGroup"><spring:message code="RecipientGroup"/></label>
-                        <input type="text" id="recipientGroup" required data-bind="textInput: newsletterMailsViewModel.recipientGroup"/>
-                        <small class="invisible" data-bind="attr: { 'class': newsletterMailsViewModel.recipientGroupIsRequiredStyle}">
+                        <input type="text" id="recipientGroup" required
+                               data-bind="textInput: newsletterMailsViewModel.recipientGroup"/>
+                        <small class="invisible"
+                               data-bind="attr: { 'class': newsletterMailsViewModel.recipientGroupIsRequiredStyle}">
                             <spring:message code="RecipientGroupMustBeSet"/>
                         </small>
                     </div>
                     <div class="row">
                         <label for="newsletterMailName"><spring:message code="Name"/></label>
-                        <input type="text" id="newsletterMailName" maxlength="100" required data-bind="textInput: newsletterMailsViewModel.newsletterMailName"/>
-                        <small class="invisible" data-bind="attr: { 'class': newsletterMailsViewModel.newsletterMailNameIsRequiredStyle}">
+                        <input type="text" id="newsletterMailName" maxlength="100" required
+                               data-bind="textInput: newsletterMailsViewModel.newsletterMailName"/>
+                        <small class="invisible"
+                               data-bind="attr: { 'class': newsletterMailsViewModel.newsletterMailNameIsRequiredStyle}">
                             <spring:message code="NewsletterMailGroupMustBeSet"/>
                         </small>
                     </div>
                     <div class="row">
                         <label for="newsletterMailSubject"><spring:message code="Subject"/></label>
-                        <input type="text" id="newsletterMailSubject" maxlength="100" required data-bind="textInput: newsletterMailsViewModel.newsletterMailSubject"/>
-                        <small class="invisible" data-bind="attr: { 'class': newsletterMailsViewModel.newsletterMailSubjectIsRequiredStyle}">
+                        <input type="text" id="newsletterMailSubject" maxlength="100" required
+                               data-bind="textInput: newsletterMailsViewModel.newsletterMailSubject"/>
+                        <small class="invisible"
+                               data-bind="attr: { 'class': newsletterMailsViewModel.newsletterMailSubjectIsRequiredStyle}">
                             <spring:message code="SubjectMustBeSet"/>
                         </small>
                     </div>
                     <div class="row">
                         <input type="button" id="addNewsletterMailButton" class="button small radius primary"
-                               value="<spring:message code="Add"/>" data-bind="enable: newsletterMailsViewModel.addNewsletterMailFormIsValid">
+                               value="<spring:message code="Add"/>"
+                               data-bind="enable: newsletterMailsViewModel.addNewsletterMailFormIsValid">
                         <input type="reset" id="resetAddNewsletterMail" value="Reset" class="button small radius alert">
                     </div>
                 </fieldset>

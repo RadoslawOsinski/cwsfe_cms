@@ -50,10 +50,10 @@ public class NewsTypesControllerTest {
     @Test
     public void testDefaultView() throws Exception {
         mockMvc.perform(get("/newsTypes"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/newsTypes/NewsTypes"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/newsTypes/NewsTypes.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/newsTypes/NewsTypes"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/newsTypes/NewsTypes.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()));
     }
 
     @Test
@@ -73,21 +73,21 @@ public class NewsTypesControllerTest {
         when(newsTypesDAO.countForAjax()).thenReturn(numberOfNewsTypes);
 
         ResultActions resultActions = mockMvc.perform(get("/newsTypesList")
-                .param("iDisplayStart", String.valueOf(iDisplayStart))
-                .param("iDisplayLength", String.valueOf(iDisplayLength))
-                .param("sEcho", sEcho))
-                .andExpect(status().isOk());
+            .param("iDisplayStart", String.valueOf(iDisplayStart))
+            .param("iDisplayLength", String.valueOf(iDisplayLength))
+            .param("sEcho", sEcho))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.sEcho").value(sEcho))
-                .andExpect(jsonPath("$.iTotalRecords").value(numberOfNewsTypes))
-                .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfNewsTypes))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
-                .andExpect(jsonPath("$.aaData[0].type").value(type))
-                .andExpect(jsonPath("$.aaData[0].id").value((int) id));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.sEcho").value(sEcho))
+            .andExpect(jsonPath("$.iTotalRecords").value(numberOfNewsTypes))
+            .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfNewsTypes))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
+            .andExpect(jsonPath("$.aaData[0].type").value(type))
+            .andExpect(jsonPath("$.aaData[0].id").value((int) id));
         verify(newsTypesDAO, times(1)).listAjax(anyInt(), anyInt());
         verify(newsTypesDAO, times(1)).countForAjax();
         verifyNoMoreInteractions(newsTypesDAO);
@@ -106,16 +106,16 @@ public class NewsTypesControllerTest {
         when(newsTypesDAO.listNewsTypesForDropList(anyString(), anyInt())).thenReturn(cmsNewsTypes);
 
         ResultActions resultActions = mockMvc.perform(get("/news/newsTypesDropList")
-                .param("term", type)
-                .param("limit", String.valueOf(limit)))
-                .andExpect(status().isOk());
+            .param("term", type)
+            .param("limit", String.valueOf(limit)))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data[0].id").value((int) id))
-                .andExpect(jsonPath("$.data[0].type").value(type));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data[0].id").value((int) id))
+            .andExpect(jsonPath("$.data[0].type").value(type));
         verify(newsTypesDAO, times(1)).listNewsTypesForDropList(anyString(), anyInt());
         verifyNoMoreInteractions(newsTypesDAO);
     }
@@ -126,12 +126,12 @@ public class NewsTypesControllerTest {
         when(newsTypesDAO.add(any(NewsType.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addNewsType")
-                .param("type", type));
+            .param("type", type));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + NewsTypesController.JSON_STATUS).value(NewsTypesController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + NewsTypesController.JSON_STATUS).value(NewsTypesController.JSON_STATUS_SUCCESS));
         verify(newsTypesDAO, times(1)).add(any(NewsType.class));
         verifyNoMoreInteractions(newsTypesDAO);
     }
@@ -142,13 +142,13 @@ public class NewsTypesControllerTest {
         when(newsTypesDAO.add(any(NewsType.class))).thenThrow(new DuplicateKeyException("Duplicate"));
 
         ResultActions resultActions = mockMvc.perform(post("/addNewsType")
-                .param("type", type));
+            .param("type", type));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + NewsTypesController.JSON_STATUS).value(NewsTypesController.JSON_STATUS_FAIL))
-                .andExpect(jsonPath("$." + NewsTypesController.JSON_ERROR_MESSAGES + "[0]").exists());
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + NewsTypesController.JSON_STATUS).value(NewsTypesController.JSON_STATUS_FAIL))
+            .andExpect(jsonPath("$." + NewsTypesController.JSON_ERROR_MESSAGES + "[0]").exists());
         verify(newsTypesDAO, times(1)).add(any(NewsType.class));
         verifyNoMoreInteractions(newsTypesDAO);
     }
@@ -159,13 +159,13 @@ public class NewsTypesControllerTest {
         doNothing().when(newsTypesDAO).delete(any(NewsType.class));
 
         ResultActions resultActions = mockMvc.perform(post("/deleteNewsType")
-                .param("id", String.valueOf(id)))
-                .andExpect(status().isOk());
+            .param("id", String.valueOf(id)))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + NewsTypesController.JSON_STATUS).value(NewsTypesController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + NewsTypesController.JSON_STATUS).value(NewsTypesController.JSON_STATUS_SUCCESS));
         verify(newsTypesDAO, times(1)).delete(any(NewsType.class));
         verifyNoMoreInteractions(newsTypesDAO);
     }

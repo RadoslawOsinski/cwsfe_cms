@@ -49,17 +49,17 @@ class LanguagesController extends JsonController {
     private List<Breadcrumb> getBreadcrumbs(Locale locale) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/languages").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguagesManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/languages").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguagesManagement")));
         return breadcrumbs;
     }
 
     @RequestMapping(value = "/languagesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listLanguages(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho
     ) {
         final List<Language> cmsLanguages = cmsLanguagesDAO.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
@@ -83,8 +83,8 @@ class LanguagesController extends JsonController {
     @RequestMapping(value = "/cmsLanguagesDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listCmsLanguagesForDropList(
-            @RequestParam String term,
-            @RequestParam Integer limit
+        @RequestParam String term,
+        @RequestParam Integer limit
     ) {
         final List<Language> languages = cmsLanguagesDAO.listForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
@@ -103,8 +103,8 @@ class LanguagesController extends JsonController {
     @RequestMapping(value = "/addLanguage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addLanguage(
-            @ModelAttribute(value = "cmsLanguage") Language cmsLanguage,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsLanguage") Language cmsLanguage,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "code", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageCodeMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "name", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageNameMustBeSet"));
@@ -128,8 +128,8 @@ class LanguagesController extends JsonController {
     @RequestMapping(value = "/deleteLanguage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteLanguage(
-            @ModelAttribute(value = "cmsLanguage") Language cmsLanguage,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsLanguage") Language cmsLanguage,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();

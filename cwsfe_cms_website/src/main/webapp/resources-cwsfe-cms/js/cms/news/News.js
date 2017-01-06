@@ -10,19 +10,19 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.newsFolder = ko.observable();
         self.newsCode = ko.observable();
 
-        self.authorIsRequiredStyle = ko.computed(function() {
+        self.authorIsRequiredStyle = ko.computed(function () {
             return self.author() === null || self.author() === '' ? 'error' : 'invisible';
         });
-        self.newsTypeIsRequiredStyle = ko.computed(function() {
+        self.newsTypeIsRequiredStyle = ko.computed(function () {
             return self.newsType() === null || self.newsType() === '' ? 'error' : 'invisible';
         });
-        self.newsFolderIsRequiredStyle = ko.computed(function() {
+        self.newsFolderIsRequiredStyle = ko.computed(function () {
             return self.newsFolder() === null || self.newsFolder() === '' ? 'error' : 'invisible';
         });
-        self.newsCodeIsRequiredStyle = ko.computed(function() {
+        self.newsCodeIsRequiredStyle = ko.computed(function () {
             return self.newsCode() === null || self.newsCode() === '' ? 'error' : 'invisible';
         });
-        self.addNewsFormIsValid = ko.computed(function() {
+        self.addNewsFormIsValid = ko.computed(function () {
             return self.author() !== null && self.author() !== '' &&
                 self.newsType() !== null && self.newsType() !== '' &&
                 self.newsFolder() !== null && self.newsFolder() !== '' &&
@@ -189,15 +189,15 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         $("#newsList").dataTable().fnDraw();
     }
 
-    $('#addNewsButton').click(function() {
+    $('#addNewsButton').click(function () {
         addNews();
     });
 
-    $('body').on('click', 'button[name="removeNewsButton"]', function() {
+    $('body').on('click', 'button[name="removeNewsButton"]', function () {
         removeNews($(this).val());
     });
 
-    $('#resetAddBlogPost').click(function() {
+    $('#resetAddBlogPost').click(function () {
         viewModel.newsViewModel.authorId = null;
         viewModel.newsViewModel.author(null);
         viewModel.newsViewModel.newsTypeId = null;
@@ -207,7 +207,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         viewModel.newsViewModel.newsCode(null);
         viewModel.formAlerts.cleanAllMessages();
     });
-    
+
     function addNews() {
         viewModel.formAlerts.cleanAllMessages();
         $.ajax({
@@ -215,7 +215,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
             dataType: 'json',
             url: 'addNews',
             data: "authorId=" + viewModel.newsViewModel.authorId + "&newsTypeId=" + viewModel.newsViewModel.newsTypeId +
-                "&newsFolderId=" + viewModel.newsViewModel.newsFolderId + "&newsCode=" + viewModel.newsViewModel.newsCode(),
+            "&newsFolderId=" + viewModel.newsViewModel.newsFolderId + "&newsCode=" + viewModel.newsViewModel.newsCode(),
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#newsList").dataTable().fnDraw();

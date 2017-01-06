@@ -30,7 +30,7 @@ class MainCmsController extends JsonController {
     private final BlogPostCommentsDAO blogPostCommentsDAO;
 
     private static final DateTimeFormatter DATE_FORMAT = new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd HH:mm:ss").
-            toFormatter().withZone(ZoneId.systemDefault());
+        toFormatter().withZone(ZoneId.systemDefault());
 
     @Autowired
     public MainCmsController(BlogPostCommentsDAO blogPostCommentsDAO) {
@@ -52,9 +52,9 @@ class MainCmsController extends JsonController {
     @RequestMapping(value = "/blogPostCommentsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listBlogPostComments(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho
     ) {
         List<BlogPostComment> dbList = blogPostCommentsDAO.searchByAjax(iDisplayStart, iDisplayLength);
         Integer dbListDisplayRecordsSize = blogPostCommentsDAO.searchByAjaxCount();

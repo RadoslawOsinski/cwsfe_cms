@@ -39,27 +39,30 @@
                     <li data-bind='text: msg'></li>
                 </ul>
             </div>
-            
+
             <form class="large-5">
                 <fieldset>
                     <legend><spring:message code="LanguagesAdding"/></legend>
                     <div class="row">
                         <label for="code"><spring:message code="Code"/></label>
                         <input type="text" id="code" required data-bind="textInput: languagesViewModel.code"/>
-                        <small class="invisible" data-bind="attr: { 'class': languagesViewModel.languageIsRequiredStyle}">
+                        <small class="invisible"
+                               data-bind="attr: { 'class': languagesViewModel.languageIsRequiredStyle}">
                             <spring:message code="LanguageMustBeSet"/>
                         </small>
                     </div>
                     <div class="row">
                         <label for="name"><spring:message code="Name"/></label>
                         <input type="text" id="name" required data-bind="textInput: languagesViewModel.name"/>
-                        <small class="invisible" data-bind="attr: { 'class': languagesViewModel.languageNameIsRequiredStyle}">
+                        <small class="invisible"
+                               data-bind="attr: { 'class': languagesViewModel.languageNameIsRequiredStyle}">
                             <spring:message code="LanguageNameMustBeSet"/>
                         </small>
                     </div>
                     <div class="row">
                         <input type="button" id="addLanguageButton" class="button small radius primary"
-                               value="<spring:message code="Add"/>" data-bind="enable: languagesViewModel.addLanguagesFormIsValid">
+                               value="<spring:message code="Add"/>"
+                               data-bind="enable: languagesViewModel.addLanguagesFormIsValid">
                         <input type="reset" id="resetAddLanguages" value="Reset" class="button small radius alert">
                     </div>
                 </fieldset>

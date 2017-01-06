@@ -45,12 +45,14 @@
     <spring:url value="/configuration/addAdminUser" var="addAdminUserUrl" htmlEscape="true"/>
     <form accept-charset="UTF-8" action="${addAdminUserUrl}" method="post" autocomplete="off">
         <div class="passport-left">
-            <img src="${pageContext.request.contextPath}/resources-cwsfe-cms/CWSFE_logo.png" alt="CWSFE logo" height="294" width="300"/>
+            <img src="${pageContext.request.contextPath}/resources-cwsfe-cms/CWSFE_logo.png" alt="CWSFE logo"
+                 height="294" width="300"/>
         </div>
         <div class="passport-right">
             <div id="emailLogin">
                 <h5 class="hide-for-small"><spring:message code="CmsConfiguration" text="CmsConfiguration"/></h5>
-                <input autocapitalize="off" autocorrect="off" name="userName" placeholder="Username" type="text" required/>
+                <input autocapitalize="off" autocorrect="off" name="userName" placeholder="Username" type="text"
+                       required/>
                 <input id="password" name="password" placeholder="Password" type="password" required/>
 
                 <button type="submit"><spring:message code="Add" text="Add"/> &raquo;</button>

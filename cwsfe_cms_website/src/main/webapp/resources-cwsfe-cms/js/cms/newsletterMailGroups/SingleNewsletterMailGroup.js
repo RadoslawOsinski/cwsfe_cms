@@ -7,20 +7,20 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         self.language = ko.observable($('#language').val());
         self.newsletterMailAddress = ko.observable($('#newsletterMailAddress').val());
 
-        self.newsletterMailGroupNameIsRequiredStyle= ko.computed(function() {
+        self.newsletterMailGroupNameIsRequiredStyle = ko.computed(function () {
             return self.newsletterMailGroupName() === null || self.newsletterMailGroupName() === '' ? 'error' : 'invisible';
         });
-        self.languageIsRequiredStyle= ko.computed(function() {
+        self.languageIsRequiredStyle = ko.computed(function () {
             return self.language() === null || self.language() === '' ? 'error' : 'invisible';
         });
-        self.newsletterMailAddressIsRequiredStyle= ko.computed(function() {
+        self.newsletterMailAddressIsRequiredStyle = ko.computed(function () {
             return self.newsletterMailAddress() === null || self.newsletterMailAddress() === '' ? 'error' : 'invisible';
         });
-        self.saveNewsletterMailGroupFormIsValid = ko.computed(function() {
+        self.saveNewsletterMailGroupFormIsValid = ko.computed(function () {
             return self.newsletterMailGroupName() !== null && self.newsletterMailGroupName() !== '' &&
                 self.language() !== null && self.language() !== '';
         });
-        self.addNewsletterMailAddressFormIsValid = ko.computed(function() {
+        self.addNewsletterMailAddressFormIsValid = ko.computed(function () {
             return self.newsletterMailAddress() !== null && self.newsletterMailAddress() !== '';
         });
     }
@@ -33,7 +33,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
 
     $(document).ready(function () {
         ko.applyBindings(viewModel);
-        
+
         $('#newsletterMailAddressesList').dataTable({
             'iTabIndex': -1,
             'bAutoWidth': true,
@@ -113,39 +113,39 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         $("#newsletterMailAddressesList").dataTable().fnDraw();
     }
 
-    $('#searchMailInNewsletterMailGroupButton').click(function() {
+    $('#searchMailInNewsletterMailGroupButton').click(function () {
         searchMailInNewsletterMailGroup();
     });
 
-    $('#saveNewsletterMailGroupButton').click(function() {
+    $('#saveNewsletterMailGroupButton').click(function () {
         updateNewsletterMailGroup();
     });
 
-    $('#addNewsletterMailAddressButton').click(function() {
+    $('#addNewsletterMailAddressButton').click(function () {
         addNewsletterMailAddress();
     });
 
     var $body = $('body');
-    $body.on('click', 'button[name="activateNewsletterMailAddressButton"]', function() {
+    $body.on('click', 'button[name="activateNewsletterMailAddressButton"]', function () {
         activateNewsletterMailAddress($(this).val());
     });
 
-    $body.on('click', 'button[name="deactivateNewsletterMailAddressButton"]', function() {
+    $body.on('click', 'button[name="deactivateNewsletterMailAddressButton"]', function () {
         deactivateNewsletterMailAddress($(this).val());
     });
 
-    $body.on('click', 'button[name="removeNewsletterMailAddressButton"]', function() {
+    $body.on('click', 'button[name="removeNewsletterMailAddressButton"]', function () {
         removeNewsletterMailAddress($(this).val());
     });
 
-    $('#resetSaveNewsletterMailGroupFormIsValid').click(function() {
+    $('#resetSaveNewsletterMailGroupFormIsValid').click(function () {
         viewModel.singleNewsletterMailGroupViewModel.newsletterMailGroupName($('#newsletterMailGroupName').val());
         viewModel.singleNewsletterMailGroupViewModel.languageId = $('#languageId').val();
         viewModel.singleNewsletterMailGroupViewModel.language($('#language').val());
         viewModel.editMailGroupAlerts.cleanAllMessages();
     });
 
-     $('#resetAddNewsletterMailAddress').click(function() {
+    $('#resetAddNewsletterMailAddress').click(function () {
         viewModel.singleNewsletterMailGroupViewModel.newsletterMailAddress(null);
         viewModel.newMailAddressAlerts.cleanAllMessages();
     });

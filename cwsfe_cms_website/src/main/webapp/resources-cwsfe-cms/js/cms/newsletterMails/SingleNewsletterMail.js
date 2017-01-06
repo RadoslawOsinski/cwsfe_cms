@@ -8,24 +8,24 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'foundatio
         self.subject = ko.observable($('#newsletterSubject').val());
         self.testEmail = ko.observable();
 
-        self.newsletterMailGroupNameIsRequiredStyle= ko.computed(function() {
+        self.newsletterMailGroupNameIsRequiredStyle = ko.computed(function () {
             return self.newsletterMailGroupName() === null || self.newsletterMailGroupName() === '' ? 'error' : 'invisible';
         });
-        self.nameIsRequiredStyle= ko.computed(function() {
+        self.nameIsRequiredStyle = ko.computed(function () {
             return self.name() === null || self.name() === '' ? 'error' : 'invisible';
         });
-        self.subjectIsRequiredStyle= ko.computed(function() {
+        self.subjectIsRequiredStyle = ko.computed(function () {
             return self.subject() === null || self.subject() === '' ? 'error' : 'invisible';
         });
-         self.testEmailIsRequiredStyle= ko.computed(function() {
+        self.testEmailIsRequiredStyle = ko.computed(function () {
             return self.testEmail() === null || self.testEmail() === '' ? 'error' : 'invisible';
         });
-        self.updateNewsletterMailFormIsValid = ko.computed(function() {
+        self.updateNewsletterMailFormIsValid = ko.computed(function () {
             return self.newsletterMailGroupName() !== null && self.newsletterMailGroupName() !== '' &&
                 self.name() !== null && self.name() !== '' &&
                 self.subject() !== null && self.subject() !== '';
         });
-        self.newsletterTestSendFormIsValid = ko.computed(function() {
+        self.newsletterTestSendFormIsValid = ko.computed(function () {
             return self.testEmail() !== null && self.testEmail() !== '';
         });
     }
@@ -36,7 +36,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'foundatio
         newsletterTestSendAlerts: new formAlertsModule.formAlerts()
     };
 
-    $('#resetUpdateNewsletterMail').click(function() {
+    $('#resetUpdateNewsletterMail').click(function () {
         viewModel.singleNewsletterMailViewModel.recipientGroupId = $('#recipientGroupId').val();
         viewModel.singleNewsletterMailViewModel.newsletterMailGroupName($('#recipientGroup').val());
         viewModel.singleNewsletterMailViewModel.name($('#newsletterName').val());
@@ -44,7 +44,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'foundatio
         viewModel.updateNewsletterMailAlerts.cleanAllMessages();
     });
 
-    $('#resetNewsletterTestSend').click(function() {
+    $('#resetNewsletterTestSend').click(function () {
         viewModel.singleNewsletterMailViewModel.testEmail(null);
         viewModel.newsletterTestSendAlerts.cleanAllMessages();
     });
@@ -73,7 +73,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'foundatio
     }
 
     function confirmNewsletterSend() {
-        $('#confirmSendNewsletterModal').foundation('reveal','open');
+        $('#confirmSendNewsletterModal').foundation('reveal', 'open');
     }
 
     function newsletterSend() {
@@ -128,20 +128,20 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'foundatio
             $(this).autocomplete("search", "");
         });
 
-        $('#confirmSendButton').click(function() {
+        $('#confirmSendButton').click(function () {
             confirmNewsletterSend();
         });
 
-        $('#newsletterTestSendButton').click(function() {
+        $('#newsletterTestSendButton').click(function () {
             newsletterTestSend();
         });
 
-        $('#confirmSendNewsletterButton').click(function() {
+        $('#confirmSendNewsletterButton').click(function () {
             newsletterSend();
             $('#confirmSendNewsletterModal').foundation('reveal', 'close');
         });
 
-        $('#cancelSendNewsletterButton').click(function() {
+        $('#cancelSendNewsletterButton').click(function () {
             $('#confirmSendNewsletterModal').foundation('reveal', 'close');
         });
 

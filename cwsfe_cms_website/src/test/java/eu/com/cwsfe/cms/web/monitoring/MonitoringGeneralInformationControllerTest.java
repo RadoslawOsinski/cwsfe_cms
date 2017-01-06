@@ -42,21 +42,21 @@ public class MonitoringGeneralInformationControllerTest {
     @Test
     public void testDefaultView() throws Exception {
         mockMvc.perform(get("/monitoring/generalInformation"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/monitoring/GeneralInformation"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/monitoring/GeneralInformation"))
-                .andExpect(model().attribute("breadcrumbs", anything()));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/monitoring/GeneralInformation"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/monitoring/GeneralInformation"))
+            .andExpect(model().attribute("breadcrumbs", anything()));
     }
 
     @Test
     public void testGetGeneralMemoryInfo() throws Exception {
         ResultActions resultActions = mockMvc.perform(get("/monitoring/generalMemoryInfo"))
-                .andExpect(status().isOk());
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.usedMemoryInMb").exists())
-                .andExpect(jsonPath("$.availableMemoryInMB").exists());
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.usedMemoryInMb").exists())
+            .andExpect(jsonPath("$.availableMemoryInMB").exists());
     }
 }

@@ -48,7 +48,7 @@ public class MailRestController {
 
     @RequestMapping(value = "/rest/sendEmail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public void getTranslation(
-            @RequestParam(value = "requestJWT") String requestJWT
+        @RequestParam(value = "requestJWT") String requestJWT
     ) {
         LOGGER.info("Send email via CMS request JWT: " + requestJWT);
         SendEmailRequest sendEmailRequest = jwtDecoratorService.getSendEmailRequest(requestJWT);

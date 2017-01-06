@@ -88,7 +88,8 @@
                             <option value="HIDDEN" <c:if test="${cmsNews.status.equals('HIDDEN')}"> selected</c:if>>
                                 <spring:message code="Hidden"/>
                             </option>
-                            <option value="PUBLISHED" <c:if test="${cmsNews.status.equals('PUBLISHED')}"> selected</c:if>>
+                            <option value="PUBLISHED" <c:if
+                                test="${cmsNews.status.equals('PUBLISHED')}"> selected</c:if>>
                                 <spring:message code="Published"/>
                             </option>
                         </select>
@@ -100,7 +101,8 @@
                     <div class="row">
                         <input type="button" id="saveNewsButton" class="button small radius primary"
                                value="<spring:message code="Save"/>" data-bind="enable: saveBasicInfoFormIsValid">
-                        <input type="reset" id="resetSaveBasicInfoButton" value="Revert" class="button small radius alert"/>
+                        <input type="reset" id="resetSaveBasicInfoButton" value="Revert"
+                               class="button small radius alert"/>
                     </div>
                 </form>
             </section>
@@ -232,7 +234,7 @@
                         <div class="row">
                             <label><spring:message code="File"/></label>
                             <input type="file" name="file"/>
-                            <%--tood image upload over ajax--%>
+                                <%--tood image upload over ajax--%>
                         </div>
 
                         <div class="row">

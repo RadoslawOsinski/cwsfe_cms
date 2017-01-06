@@ -48,17 +48,17 @@ public class CmsTextI18nCategoryController extends JsonController {
     private List<Breadcrumb> getBreadcrumbs(Locale locale) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
         breadcrumbs.add(new Breadcrumb(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/cmsTextI18nCategories").build().toUriString(),
-                ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TranslationCategoriesManagement")));
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/cmsTextI18nCategories").build().toUriString(),
+            ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TranslationCategoriesManagement")));
         return breadcrumbs;
     }
 
     @RequestMapping(value = "/cmsTextI18nCategoriesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listCmsTextI18nCategories(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho
     ) {
         final List<CmsTextI18nCategory> cmsTextI18nCategories = cmsTextI18nCategoryDAO.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
@@ -82,8 +82,8 @@ public class CmsTextI18nCategoryController extends JsonController {
     @RequestMapping(value = "/cmsTextI18nCategoryDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listCmsLanguagesForDropList(
-            @RequestParam String term,
-            @RequestParam Integer limit
+        @RequestParam String term,
+        @RequestParam Integer limit
     ) {
         final List<CmsTextI18nCategory> cmsTextI18nCategories = cmsTextI18nCategoryDAO.listForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
@@ -102,8 +102,8 @@ public class CmsTextI18nCategoryController extends JsonController {
     @RequestMapping(value = "/addCmsTextI18nCategory", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addTextI18nCategory(
-            @ModelAttribute(value = "cmsTextI18nCategory") CmsTextI18nCategory cmsTextI18nCategory,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsTextI18nCategory") CmsTextI18nCategory cmsTextI18nCategory,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "category", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CategoryMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
@@ -119,8 +119,8 @@ public class CmsTextI18nCategoryController extends JsonController {
     @RequestMapping(value = "/deleteCmsTextI18nCategory", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteTextI18nCategory(
-            @ModelAttribute(value = "cmsTextI18nCategory") CmsTextI18nCategory cmsTextI18nCategory,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsTextI18nCategory") CmsTextI18nCategory cmsTextI18nCategory,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TextI18nCategoryMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();

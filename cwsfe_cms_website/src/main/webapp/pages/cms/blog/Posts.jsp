@@ -62,7 +62,7 @@
                     <li data-bind='text: msg'></li>
                 </ul>
             </div>
-            
+
             <form id="addNewBlogPostForm" class="large-5">
                 <fieldset>
                     <legend><spring:message code="BlogPostAdding"/></legend>
@@ -75,14 +75,17 @@
                     </div>
                     <div class="row">
                         <label for="postTextCode"><spring:message code="PostTextCode"/></label>
-                        <input type="text" id="postTextCode" maxlength="100" required data-bind="textInput: blogPostsViewModel.postTextCode"/>
-                        <small class="invisible" data-bind="attr: { 'class': blogPostsViewModel.postTextCodeIsRequiredStyle}">
+                        <input type="text" id="postTextCode" maxlength="100" required
+                               data-bind="textInput: blogPostsViewModel.postTextCode"/>
+                        <small class="invisible"
+                               data-bind="attr: { 'class': blogPostsViewModel.postTextCodeIsRequiredStyle}">
                             <spring:message code="PostTextCodeMustBeSet"/>
                         </small>
                     </div>
                     <div class="row">
                         <input type="button" id="addBlogPostButton" class="button small radius primary"
-                               value="<spring:message code="Add"/>" data-bind="enable: blogPostsViewModel.addBlogPostFormIsValid">
+                               value="<spring:message code="Add"/>"
+                               data-bind="enable: blogPostsViewModel.addBlogPostFormIsValid">
                         <input type="reset" id="resetAddBlogPost" value="Reset" class="button small radius alert">
                     </div>
                 </fieldset>

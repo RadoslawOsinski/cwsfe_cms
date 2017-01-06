@@ -47,10 +47,10 @@ public class CmsNewsImagesController extends JsonController {
     @RequestMapping(value = "/news/cmsNewsImagesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String list(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho,
-            WebRequest webRequest
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho,
+        WebRequest webRequest
     ) {
         Long newsId = null;
         try {
@@ -82,8 +82,8 @@ public class CmsNewsImagesController extends JsonController {
 
     @RequestMapping(value = "/news/addCmsNewsImage", method = RequestMethod.POST)
     public ModelAndView addCmsNewsImage(
-            @ModelAttribute(value = "cmsNewsImage") CmsNewsImage cmsNewsImage,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsNewsImage") CmsNewsImage cmsNewsImage,
+        BindingResult result, Locale locale
     ) {
         BufferedImage image;
         try {
@@ -113,8 +113,8 @@ public class CmsNewsImagesController extends JsonController {
     @RequestMapping(value = "/news/deleteCmsNewsImage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteCmsNewsImage(
-            @ModelAttribute(value = "cmsNewsImage") CmsNewsImage cmsNewsImage,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsNewsImage") CmsNewsImage cmsNewsImage,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("ImageMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();

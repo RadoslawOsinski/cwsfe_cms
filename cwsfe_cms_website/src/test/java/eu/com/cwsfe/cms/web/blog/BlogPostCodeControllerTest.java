@@ -65,23 +65,23 @@ public class BlogPostCodeControllerTest {
         when(blogPostCodesDAO.getTotalNumberNotDeleted()).thenReturn(numberOfCodesNotDeleted);
 
         ResultActions resultActions = mockMvc.perform(get("/blogPosts/blogPostCodesList")
-                .param("blogPostId", "1")
-                .param("iDisplayStart", String.valueOf(iDisplayStart))
-                .param("iDisplayLength", String.valueOf(iDisplayLength))
-                .param("sEcho", sEcho))
-                .andExpect(status().isOk());
+            .param("blogPostId", "1")
+            .param("iDisplayStart", String.valueOf(iDisplayStart))
+            .param("iDisplayLength", String.valueOf(iDisplayLength))
+            .param("sEcho", sEcho))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.sEcho").value(sEcho))
-                .andExpect(jsonPath("$.iTotalRecords").value(numberOfCodesNotDeleted))
-                .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfCodes))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
-                .andExpect(jsonPath("$.aaData[0].codeId").value(codeId))
-                .andExpect(jsonPath("$.aaData[0].code").value(code))
-                .andExpect(jsonPath("$.aaData[0].id").value(codeId));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.sEcho").value(sEcho))
+            .andExpect(jsonPath("$.iTotalRecords").value(numberOfCodesNotDeleted))
+            .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfCodes))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
+            .andExpect(jsonPath("$.aaData[0].codeId").value(codeId))
+            .andExpect(jsonPath("$.aaData[0].code").value(code))
+            .andExpect(jsonPath("$.aaData[0].id").value(codeId));
         verify(blogPostCodesDAO, times(1)).searchByAjax(anyInt(), anyInt(), anyLong());
         verify(blogPostCodesDAO, times(1)).searchByAjaxCount(anyLong());
         verify(blogPostCodesDAO, times(1)).getTotalNumberNotDeleted();
@@ -94,14 +94,14 @@ public class BlogPostCodeControllerTest {
         when(blogPostCodesDAO.add(any(BlogPostCode.class))).thenReturn("a");
 
         ResultActions resultActions = mockMvc.perform(post("/blogPosts/addBlogPostCode")
-                .param("codeId", "1")
-                .param("blogPostId", "2")
-                .param("code", "code"));
+            .param("codeId", "1")
+            .param("blogPostId", "2")
+            .param("code", "code"));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + BlogPostCodeController.JSON_STATUS).value(BlogPostCodeController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + BlogPostCodeController.JSON_STATUS).value(BlogPostCodeController.JSON_STATUS_SUCCESS));
         verify(blogPostCodesDAO, times(1)).getCodeForPostByCodeId(anyLong(), anyString());
         verify(blogPostCodesDAO, times(1)).add(any(BlogPostCode.class));
         verifyNoMoreInteractions(blogPostCodesDAO);
@@ -113,14 +113,14 @@ public class BlogPostCodeControllerTest {
         doNothing().when(blogPostCodesDAO).delete(any(BlogPostCode.class));
 
         ResultActions resultActions = mockMvc.perform(post("/blogPosts/deleteBlogPostCode")
-                .param("codeId", String.valueOf(id))
-                .param("blogPostId", String.valueOf(id)))
-                .andExpect(status().isOk());
+            .param("codeId", String.valueOf(id))
+            .param("blogPostId", String.valueOf(id)))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + BlogPostCodeController.JSON_STATUS).value(BlogPostCodeController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + BlogPostCodeController.JSON_STATUS).value(BlogPostCodeController.JSON_STATUS_SUCCESS));
         verify(blogPostCodesDAO, times(1)).delete(any(BlogPostCode.class));
         verifyNoMoreInteractions(blogPostCodesDAO);
     }

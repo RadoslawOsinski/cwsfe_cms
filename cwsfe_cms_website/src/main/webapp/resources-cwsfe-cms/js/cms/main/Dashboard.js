@@ -147,19 +147,19 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
         });
     }
 
-    $body.on('click', 'button[name="publishBlogCommentButton"]', function() {
+    $body.on('click', 'button[name="publishBlogCommentButton"]', function () {
         publishBlogComment($(this).val());
     });
 
-    $body.on('click', 'button[name="blockBlogCommentButton"]', function() {
+    $body.on('click', 'button[name="blockBlogCommentButton"]', function () {
         blockBlogComment($(this).val());
     });
 
-    $body.on('click', 'button[name="markAsSpamBlogPostCommentButton"]', function() {
+    $body.on('click', 'button[name="markAsSpamBlogPostCommentButton"]', function () {
         markAsSpamBlogPostComment($(this).val());
     });
 
-    $body.on('click', 'button[name="deleteBlogCommentButton"]', function() {
+    $body.on('click', 'button[name="deleteBlogCommentButton"]', function () {
         deleteBlogComment($(this).val());
     });
 

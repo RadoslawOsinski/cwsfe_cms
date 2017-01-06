@@ -47,10 +47,10 @@ public class RolesControllerTest {
     @Test
     public void testDefaultView() throws Exception {
         mockMvc.perform(get("/roles"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/roles/Roles"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/roles/Roles.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/roles/Roles"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/roles/Roles.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()));
     }
 
     @Test
@@ -72,21 +72,21 @@ public class RolesControllerTest {
         when(cmsRolesDAO.countForAjax()).thenReturn(count);
 
         ResultActions resultActions = mockMvc.perform(get("/rolesList")
-                .param("iDisplayStart", String.valueOf(iDisplayStart))
-                .param("iDisplayLength", String.valueOf(iDisplayLength))
-                .param("sEcho", sEcho))
-                .andExpect(status().isOk());
+            .param("iDisplayStart", String.valueOf(iDisplayStart))
+            .param("iDisplayLength", String.valueOf(iDisplayLength))
+            .param("sEcho", sEcho))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.sEcho").value(sEcho))
-                .andExpect(jsonPath("$.iTotalRecords").value(count))
-                .andExpect(jsonPath("$.iTotalDisplayRecords").value(count))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
-                .andExpect(jsonPath("$.aaData[0].roleName").value(roleName))
-                .andExpect(jsonPath("$.aaData[0].roleCode").value(roleCode));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.sEcho").value(sEcho))
+            .andExpect(jsonPath("$.iTotalRecords").value(count))
+            .andExpect(jsonPath("$.iTotalDisplayRecords").value(count))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
+            .andExpect(jsonPath("$.aaData[0].roleName").value(roleName))
+            .andExpect(jsonPath("$.aaData[0].roleCode").value(roleCode));
         verify(cmsRolesDAO, times(1)).listAjax(anyInt(), anyInt());
         verify(cmsRolesDAO, times(1)).countForAjax();
         verifyNoMoreInteractions(cmsRolesDAO);
@@ -107,16 +107,16 @@ public class RolesControllerTest {
         when(cmsRolesDAO.listRolesForDropList(anyString(), anyInt())).thenReturn(cmsRoles);
 
         ResultActions resultActions = mockMvc.perform(get("/rolesDropList")
-                .param("term", roleName)
-                .param("limit", String.valueOf(limit)))
-                .andExpect(status().isOk());
+            .param("term", roleName)
+            .param("limit", String.valueOf(limit)))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data[0].id").value((int) roleId))
-                .andExpect(jsonPath("$.data[0].roleName").value(roleName));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data[0].id").value((int) roleId))
+            .andExpect(jsonPath("$.data[0].roleName").value(roleName));
         verify(cmsRolesDAO, times(1)).listRolesForDropList(anyString(), anyInt());
         verifyNoMoreInteractions(cmsRolesDAO);
     }

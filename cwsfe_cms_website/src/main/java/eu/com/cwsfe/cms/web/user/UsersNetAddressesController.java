@@ -61,9 +61,9 @@ class UsersNetAddressesController extends JsonController {
     @RequestMapping(value = "/usersNetAddressesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String listUsers(
-            @RequestParam int iDisplayStart,
-            @RequestParam int iDisplayLength,
-            @RequestParam String sEcho
+        @RequestParam int iDisplayStart,
+        @RequestParam int iDisplayLength,
+        @RequestParam String sEcho
     ) {
         List<CmsUserAllowedNetAddress> cmsUserAllowedNetAddresses = cmsUserAllowedNetAddressDAO.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
@@ -88,8 +88,8 @@ class UsersNetAddressesController extends JsonController {
     @RequestMapping(value = "/addNetAddress", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addNetAddress(
-            @ModelAttribute(value = "cmsUserAllowedNetAddress") CmsUserAllowedNetAddress cmsUserAllowedNetAddress,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsUserAllowedNetAddress") CmsUserAllowedNetAddress cmsUserAllowedNetAddress,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "userId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UsernameMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "inetAddress", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NetAddressMustBeSet"));
@@ -110,8 +110,8 @@ class UsersNetAddressesController extends JsonController {
     @RequestMapping(value = "/deleteNetAddress", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteUser(
-            @ModelAttribute(value = "cmsUserAllowedNetAddress") CmsUserAllowedNetAddress cmsUserAllowedNetAddress,
-            BindingResult result, Locale locale
+        @ModelAttribute(value = "cmsUserAllowedNetAddress") CmsUserAllowedNetAddress cmsUserAllowedNetAddress,
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NetAddressMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();

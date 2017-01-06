@@ -50,10 +50,10 @@ public class LanguagesControllerTest {
     @Test
     public void testDefaultView() throws Exception {
         mockMvc.perform(get("/languages"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cms/languages/Languages"))
-                .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/languages/Languages.js"))
-                .andExpect(model().attribute("breadcrumbs", anything()));
+            .andExpect(status().isOk())
+            .andExpect(view().name("cms/languages/Languages"))
+            .andExpect(model().attribute("mainJavaScript", "/resources-cwsfe-cms/js/cms/languages/Languages.js"))
+            .andExpect(model().attribute("breadcrumbs", anything()));
     }
 
     @Test
@@ -75,22 +75,22 @@ public class LanguagesControllerTest {
         when(cmsLanguagesDAO.countForAjax()).thenReturn(numberOfLanguages);
 
         ResultActions resultActions = mockMvc.perform(get("/languagesList")
-                .param("iDisplayStart", String.valueOf(iDisplayStart))
-                .param("iDisplayLength", String.valueOf(iDisplayLength))
-                .param("sEcho", sEcho))
-                .andExpect(status().isOk());
+            .param("iDisplayStart", String.valueOf(iDisplayStart))
+            .param("iDisplayLength", String.valueOf(iDisplayLength))
+            .param("sEcho", sEcho))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.sEcho").value(sEcho))
-                .andExpect(jsonPath("$.iTotalRecords").value(numberOfLanguages))
-                .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfLanguages))
-                .andExpect(jsonPath("$.aaData").exists())
-                .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
-                .andExpect(jsonPath("$.aaData[0].code").value(code))
-                .andExpect(jsonPath("$.aaData[0].name").value(name))
-                .andExpect(jsonPath("$.aaData[0].id").value((int) id));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.sEcho").value(sEcho))
+            .andExpect(jsonPath("$.iTotalRecords").value(numberOfLanguages))
+            .andExpect(jsonPath("$.iTotalDisplayRecords").value(numberOfLanguages))
+            .andExpect(jsonPath("$.aaData").exists())
+            .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
+            .andExpect(jsonPath("$.aaData[0].code").value(code))
+            .andExpect(jsonPath("$.aaData[0].name").value(name))
+            .andExpect(jsonPath("$.aaData[0].id").value((int) id));
         verify(cmsLanguagesDAO, times(1)).listAjax(anyInt(), anyInt());
         verify(cmsLanguagesDAO, times(1)).countForAjax();
         verifyNoMoreInteractions(cmsLanguagesDAO);
@@ -111,17 +111,17 @@ public class LanguagesControllerTest {
         when(cmsLanguagesDAO.listForDropList(anyString(), anyInt())).thenReturn(cmsLanguages);
 
         ResultActions resultActions = mockMvc.perform(get("/cmsLanguagesDropList")
-                .param("term", code)
-                .param("limit", String.valueOf(limit)))
-                .andExpect(status().isOk());
+            .param("term", code)
+            .param("limit", String.valueOf(limit)))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data[0].id").value((int) id))
-                .andExpect(jsonPath("$.data[0].code").value(code))
-                .andExpect(jsonPath("$.data[0].name").value(name));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$.data").exists())
+            .andExpect(jsonPath("$.data[0].id").value((int) id))
+            .andExpect(jsonPath("$.data[0].code").value(code))
+            .andExpect(jsonPath("$.data[0].name").value(name));
         verify(cmsLanguagesDAO, times(1)).listForDropList(anyString(), anyInt());
         verifyNoMoreInteractions(cmsLanguagesDAO);
     }
@@ -133,14 +133,14 @@ public class LanguagesControllerTest {
         when(cmsLanguagesDAO.add(any(Language.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addLanguage")
-                .param("code", code)
-                .param("name", name))
-                .andExpect(status().isOk());
+            .param("code", code)
+            .param("name", name))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + LanguagesController.JSON_STATUS).value(LanguagesController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + LanguagesController.JSON_STATUS).value(LanguagesController.JSON_STATUS_SUCCESS));
         verify(cmsLanguagesDAO, times(1)).add(any(Language.class));
         verifyNoMoreInteractions(cmsLanguagesDAO);
     }
@@ -152,14 +152,14 @@ public class LanguagesControllerTest {
         when(cmsLanguagesDAO.add(any(Language.class))).thenThrow(new DuplicateKeyException("Duplicate"));
 
         ResultActions resultActions = mockMvc.perform(post("/addLanguage")
-                .param("code", code)
-                .param("name", name));
+            .param("code", code)
+            .param("name", name));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + LanguagesController.JSON_STATUS).value(LanguagesController.JSON_STATUS_FAIL))
-                .andExpect(jsonPath("$." + LanguagesController.JSON_ERROR_MESSAGES + "[0]").exists());
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + LanguagesController.JSON_STATUS).value(LanguagesController.JSON_STATUS_FAIL))
+            .andExpect(jsonPath("$." + LanguagesController.JSON_ERROR_MESSAGES + "[0]").exists());
         verify(cmsLanguagesDAO, times(1)).add(any(Language.class));
         verifyNoMoreInteractions(cmsLanguagesDAO);
     }
@@ -170,13 +170,13 @@ public class LanguagesControllerTest {
         doNothing().when(cmsLanguagesDAO).delete(any(Language.class));
 
         ResultActions resultActions = mockMvc.perform(post("/deleteLanguage")
-                .param("id", String.valueOf(id)))
-                .andExpect(status().isOk());
+            .param("id", String.valueOf(id)))
+            .andExpect(status().isOk());
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$." + LanguagesController.JSON_STATUS).value(LanguagesController.JSON_STATUS_SUCCESS));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
+            .andExpect(jsonPath("$." + LanguagesController.JSON_STATUS).value(LanguagesController.JSON_STATUS_SUCCESS));
         verify(cmsLanguagesDAO, times(1)).delete(any(Language.class));
         verifyNoMoreInteractions(cmsLanguagesDAO);
     }
