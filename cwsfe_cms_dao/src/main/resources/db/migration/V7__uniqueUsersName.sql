@@ -1,2 +1,1 @@
-ALTER TABLE CMS_USERS
-    ADD CONSTRAINT cms_users_username_unique UNIQUE (username);
+alter table CMS_USERS add constraint cms_users_username_unique UNIQUE(username);
