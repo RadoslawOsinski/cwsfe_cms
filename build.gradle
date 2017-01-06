@@ -39,6 +39,8 @@ subprojects {
             property 'sonar.sourceEncoding', 'UTF-8'
             property 'sonar.login', System.properties['cwsfe_cms.sonar.login']
             property 'sonar.password', System.properties['cwsfe_cms.sonar.password']
+            property 'sonar.jacoco.itReportPath', 'build/jacoco/integration_tests_local.exec'
+            property 'sonar.jacoco.reportPath', 'build/jacoco/test.exec'
 
             //for code coverage in integration tests
             property 'spring.profiles.test-groups', 'integration-tests-local'
