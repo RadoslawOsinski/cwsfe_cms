@@ -11,11 +11,11 @@ public class EmailValidator {
         "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+
     private EmailValidator() {
         //validator does not need an instance
     }
-
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     public static boolean isValidEmailAddress(String email) {
         return EMAIL_PATTERN.matcher(email).matches();

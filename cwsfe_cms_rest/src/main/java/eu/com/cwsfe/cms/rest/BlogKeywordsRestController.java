@@ -49,7 +49,7 @@ public class BlogKeywordsRestController {
                 String keywordTranslation = cmsTextI18nDAO.findTranslation(languageCode, "BlogKeywords", blogKeyword.getKeywordName());
                 blogKeyword.setKeywordName(keywordTranslation);
             } catch (EmptyResultDataAccessException e) {
-                LOGGER.error("Missing translation for languageCode: {}, category: blog_keyword, key: {}", languageCode, blogKeyword.getKeywordName());
+                LOGGER.error("Missing translation for languageCode: {}, category: blog_keyword, key: {}", languageCode, blogKeyword.getKeywordName(), e);
             }
         }
         return list;
@@ -70,7 +70,7 @@ public class BlogKeywordsRestController {
                 String keywordTranslation = cmsTextI18nDAO.findTranslation(languageCode, "BlogKeywords", blogKeyword.getKeywordName());
                 blogKeyword.setKeywordName(keywordTranslation);
             } catch (EmptyResultDataAccessException e) {
-                LOGGER.error("Missing translation for languageCode: {}, category: blog_keyword, key: {}", languageCode, blogKeyword.getKeywordName());
+                LOGGER.error("Missing translation for languageCode: {}, category: blog_keyword, key: {}", languageCode, blogKeyword.getKeywordName(), e);
             }
         }
         return list;

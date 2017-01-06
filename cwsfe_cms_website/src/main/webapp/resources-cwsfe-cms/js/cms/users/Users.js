@@ -109,7 +109,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                     $("#usersList").dataTable().fnDraw();
                 }
             },
-            error: function (response) {
+            error: function () {
             }
         });
     }
@@ -125,7 +125,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                     $("#usersList").dataTable().fnDraw();
                 }
             },
-            error: function (response) {
+            error: function () {
             }
         });
     }
@@ -141,7 +141,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                     $("#usersList").dataTable().fnDraw();
                 }
             },
-            error: function (response) {
+            error: function () {
             }
         });
     }

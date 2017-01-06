@@ -14,7 +14,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Radoslaw Osinski.
@@ -48,8 +47,4 @@ public class RestConfiguration extends WebMvcConfigurationSupport {
         return new StringHttpMessageConverter(Charset.forName("UTF-8"));
     }
 
-    @Override
-    protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        super.configureMessageConverters(converters);
-    }
 }
