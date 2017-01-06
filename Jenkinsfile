@@ -13,8 +13,11 @@
         sh './gradlew --no-daemon createTomcatWar'
     }
     stage('Integration testing') {
-        //sh './gradlew --no-daemon integration_tests_local'
+        sh './gradlew --no-daemon integration_tests_local'
     }
+    //stage('Jacoco code coverage') {
+    //        sh './gradlew --no-daemon jacocoTestReport'
+    //}
     stage('SonarQube analysis') {
         sh './gradlew --no-daemon sonarqube'
     }

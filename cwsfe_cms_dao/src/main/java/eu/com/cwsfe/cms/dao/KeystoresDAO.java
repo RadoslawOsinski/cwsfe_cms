@@ -43,7 +43,7 @@ public class KeystoresDAO {
         try {
             dbParams[2] = IOUtils.toByteArray(keystore.getContent());
         } catch (IOException e) {
-            LOGGER.error("Problem with converting bytes");
+            LOGGER.error("Problem with converting bytes", e);
         }
         jdbcTemplate.update("INSERT INTO keystores(id, name, content)" +
                 " VALUES (?, ?, ?)", dbParams);

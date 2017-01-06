@@ -17,7 +17,6 @@ import javax.sql.DataSource;
  */
 @Configuration
 @ComponentScan({"eu.com.cwsfe.cms.version"})
-@PropertySource(value = "classpath:jdbc_cwsfe_cms_test.properties")
 public class DataSourceTestConfiguration {
 
     private Environment environment;
@@ -30,10 +29,10 @@ public class DataSourceTestConfiguration {
     @Bean
     public DataSource getTestDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
-        dataSource.setUrl(environment.getProperty("jdbc.url"));
-        dataSource.setUsername(environment.getProperty("jdbc.userName"));
-        dataSource.setPassword(environment.getProperty("jdbc.password"));
+        dataSource.setDriverClassName(environment.getProperty("cwsfe_cms.jdbc.driverClassName", "org.postgresql.Driver"));
+        dataSource.setUrl(environment.getProperty("cwsfe_cms.jdbc.url"));
+        dataSource.setUsername(environment.getProperty("cwsfe_cms.jdbc.user"));
+        dataSource.setPassword(environment.getProperty("cwsfe_cms.jdbc.password"));
         return dataSource;
     }
 

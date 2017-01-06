@@ -1,17 +1,15 @@
 package eu.com.cwsfe.cms.web.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.test.annotation.IfProfileValue;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.Properties;
 
 /**
  * @author Radoslaw Osinski
@@ -20,21 +18,20 @@ import java.util.Properties;
 @Configuration
 public class IntegrationTestsDataSource {
 
+    private Environment environment;
 
-    @Bean
-    public Properties getIntegrationTestsLocalhostProperties() throws IOException {
-        Resource resource = new ClassPathResource("jdbc_cwsfe_cms_test.properties");
-        return PropertiesLoaderUtils.loadProperties(resource);
+    @Autowired
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
     }
 
     @Bean
     public DataSource getIntegrationTestsLocalhostDataSource() throws IOException {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        Properties properties = getIntegrationTestsLocalhostProperties();
-        dataSource.setDriverClassName(properties.getProperty("jdbc.driverClassName"));
-        dataSource.setUrl(properties.getProperty("jdbc.url"));
-        dataSource.setUsername(properties.getProperty("jdbc.userName"));
-        dataSource.setPassword(properties.getProperty("jdbc.password"));
+        dataSource.setDriverClassName(environment.getProperty("cwsfe_cms.jdbc.driverClassName", "org.postgresql.Driver"));
+        dataSource.setUrl(environment.getProperty("cwsfe_cms.jdbc.url"));
+        dataSource.setUsername(environment.getProperty("cwsfe_cms.jdbc.user"));
+        dataSource.setPassword(environment.getProperty("cwsfe_cms.jdbc.password"));
         return dataSource;
     }
 

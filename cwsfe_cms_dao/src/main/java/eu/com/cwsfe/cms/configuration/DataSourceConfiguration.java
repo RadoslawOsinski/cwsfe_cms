@@ -44,7 +44,7 @@ public class DataSourceConfiguration {
         try {
             dataSource = (DataSource) jndiObjectFactoryBean.getJndiTemplate().getContext().lookup(jndiName);
         } catch (NamingException e) {
-            LOGGER.error("Data source problem with with jndiName: {}", jndiName);
+            LOGGER.error("Data source problem with with jndiName: {}", jndiName, e);
         }
         LOGGER.info("Wildfly data source attachment success status: {}", dataSource != null);
         return dataSource;

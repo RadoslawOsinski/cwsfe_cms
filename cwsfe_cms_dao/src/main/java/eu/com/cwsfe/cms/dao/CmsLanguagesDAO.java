@@ -13,6 +13,8 @@ import java.util.List;
 @Repository
 public class CmsLanguagesDAO {
 
+    private static final String COLUMNS = "id, code, name, status ";
+
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -24,8 +26,6 @@ public class CmsLanguagesDAO {
         String query = "SELECT count(*) from CMS_LANGUAGES";
         return jdbcTemplate.queryForObject(query, Integer.class);
     }
-
-    private static final String COLUMNS = "id, code, name, status ";
 
     public List<Language> listAll() {
         String query =
