@@ -52,6 +52,8 @@ dependencies {
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.2.9'
 }
 
+def gitCommitHash = "git rev-parse HEAD".execute();
+
 jar.archiveName = "CWSFE_CMS_REST-" + version + ".jar";
 jar {
     manifest {
@@ -62,7 +64,7 @@ jar {
             'build-id': System.getenv().BUILD_ID == null ? 'local build' : System.getenv().BUILD_ID,
             'Build-Time': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
             'Build-Url': System.getenv().BUILD_URL == null ? 'local build' : System.getenv().BUILD_URL,
-            'scm-version': System.getenv().GIT_CUSTOM_READ_SHA == null ? 'local build' : System.getenv().GIT_CUSTOM_READ_SHA
+            'scm-version': gitCommitHash == null ? 'local build' : gitCommitHash
         )
     }
 }
