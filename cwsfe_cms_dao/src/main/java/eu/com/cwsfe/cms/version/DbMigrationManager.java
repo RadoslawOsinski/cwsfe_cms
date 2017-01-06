@@ -25,6 +25,8 @@ public class DbMigrationManager {
         Flyway flyway = new Flyway();
         flyway.setDataSource(dataSource);
         flyway.migrate();
+        flyway.setBaselineOnMigrate(true);
+        flyway.repair();
     }
 
 }
