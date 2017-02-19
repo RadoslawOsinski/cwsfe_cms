@@ -1,5 +1,10 @@
 #CHANGELOG
 
+##v3.0.1 (2017.02.19)
+- Swagger support 
+- Jacoco - code coverage measuring
+- Experiments with Jenkinsfile
+
 ##v3.0 (2016.02.06)
 - Amazon AWS support 
 
