@@ -19,7 +19,7 @@ import java.nio.file.Files;
 /**
  * @author Radoslaw Osinski
  */
-@Profile({"wildfly", "tomcat"})
+@Profile({"wildfly", "tomcat", "localFileSystemImageStorage"})
 @Service
 public class LocalFileSystemImageStorageService implements ImageStorageService {
 
