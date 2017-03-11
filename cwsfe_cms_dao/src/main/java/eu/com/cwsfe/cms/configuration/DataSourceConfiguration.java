@@ -13,6 +13,7 @@ import org.springframework.jndi.JndiObjectFactoryBean;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.util.Arrays;
 
 /**
  * Created by Radoslaw Osinski.
@@ -27,6 +28,7 @@ public class DataSourceConfiguration {
     @Autowired
     public void setEnvironment(Environment environment) {
         this.environment = environment;
+        LOGGER.info("CWSFE CMS spring active profiles: {}", Arrays.toString(environment.getActiveProfiles()));
     }
 
     /**
@@ -59,11 +61,23 @@ public class DataSourceConfiguration {
     @Profile("tomcat")
     @Bean(name = "dataSource", value = "dataSource")
     public DataSource getTomcatDataSource() {
-        LOGGER.info("Attaching to tomcat data source");
+        LOGGER.info("Attaching to tomcat jndi data source");
         JndiObjectFactoryBean jndiObjectFactoryBean = new JndiObjectFactoryBean();
         jndiObjectFactoryBean.setJndiName("java:comp/env/jdbc/cwsfe_cms");
         DataSource dataSource = (DataSource) jndiObjectFactoryBean.getObject();
         LOGGER.info("Tomcat data source attachment success status: {}", dataSource != null);
+        return dataSource;
+    }
+
+    @Profile("tomcat-jndi")
+    @Bean(name = "dataSource", value = "dataSource")
+    public DataSource getTomcatJndiDataSource() {
+        LOGGER.info("Attaching to tomcat jndi data source");
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(environment.getProperty("dataSource.driverClassName"));
+        dataSource.setUrl(environment.getProperty("dataSource.url"));
+        dataSource.setUsername(environment.getProperty("dataSource.username"));
+        dataSource.setPassword(environment.getProperty("dataSource.password"));
         return dataSource;
     }
 
