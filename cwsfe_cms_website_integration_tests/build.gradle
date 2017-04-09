@@ -10,21 +10,9 @@ apply plugin: 'java'
 apply plugin: 'base'
 apply plugin: 'jacoco'
 
-version = '3.0.1'
+version = project.ext.project_version
 group = "eu.com.cwsfe.cms"
 compileJava.options.encoding = 'UTF-8'
-
-repositories {
-    mavenLocal();
-    mavenCentral();
-}
-
-compileJava {
-    sourceCompatibility = '1.8'
-    targetCompatibility = '1.8'
-    options.encoding = 'UTF-8'
-    options.compilerArgs = ['-Xlint', '-Xlint:-serial', '-Xlint:-path']
-}
 
 configurations {
     tomcatLibs
@@ -49,7 +37,7 @@ task integration_tests_local(type: Test) {
 }
 
 jacoco {
-    toolVersion = "0.7.8"
+    toolVersion = project.ext.jacoco_version
 }
 
 jacocoTestReport {

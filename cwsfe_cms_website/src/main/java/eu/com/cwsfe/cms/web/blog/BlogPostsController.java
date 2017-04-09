@@ -1,8 +1,8 @@
 package eu.com.cwsfe.cms.web.blog;
 
 import eu.com.cwsfe.cms.dao.*;
-import eu.com.cwsfe.cms.domains.BlogPostI18nContentStatus;
-import eu.com.cwsfe.cms.domains.BlogPostStatus;
+import eu.com.cwsfe.cms.db.blog.BlogPostI18nContentStatus;
+import eu.com.cwsfe.cms.db.blog.BlogPostStatus;
 import eu.com.cwsfe.cms.model.*;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;

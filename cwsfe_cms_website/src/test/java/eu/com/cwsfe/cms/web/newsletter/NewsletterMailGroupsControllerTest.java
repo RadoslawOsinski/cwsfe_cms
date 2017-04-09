@@ -3,7 +3,7 @@ package eu.com.cwsfe.cms.web.newsletter;
 import eu.com.cwsfe.cms.dao.CmsLanguagesDAO;
 import eu.com.cwsfe.cms.dao.NewsletterMailAddressDAO;
 import eu.com.cwsfe.cms.dao.NewsletterMailGroupDAO;
-import eu.com.cwsfe.cms.domains.NewsletterMailAddressStatus;
+import eu.com.cwsfe.cms.db.newsletter.NewsletterMailAddressStatus;
 import eu.com.cwsfe.cms.model.Language;
 import eu.com.cwsfe.cms.model.NewsletterMailAddress;
 import eu.com.cwsfe.cms.model.NewsletterMailGroup;

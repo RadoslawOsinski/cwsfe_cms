@@ -1,0 +1,1 @@
+DELETE FROM blog_keywords WHERE ID IN (100000, 100001);

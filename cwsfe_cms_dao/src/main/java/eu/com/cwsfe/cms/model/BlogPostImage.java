@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.model;
 
-import eu.com.cwsfe.cms.domains.BlogPostImageStatus;
+import eu.com.cwsfe.cms.db.domains.BlogPostImageStatus;
 
 public class BlogPostImage extends CmsImage {
 

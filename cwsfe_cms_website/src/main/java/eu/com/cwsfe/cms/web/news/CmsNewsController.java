@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.web.news;
 
-import eu.com.cwsfe.cms.domains.CmsNewsI18nContentStatus;
+import eu.com.cwsfe.cms.db.news.CmsNewsI18nContentStatus;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import eu.com.cwsfe.cms.dao.*;
 import eu.com.cwsfe.cms.model.Breadcrumb;

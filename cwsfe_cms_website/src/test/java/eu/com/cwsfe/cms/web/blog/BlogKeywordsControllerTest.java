@@ -1,8 +1,8 @@
 package eu.com.cwsfe.cms.web.blog;
 
-import eu.com.cwsfe.cms.dao.BlogKeywordsDAO;
-import eu.com.cwsfe.cms.domains.BlogKeywordStatus;
-import eu.com.cwsfe.cms.model.BlogKeyword;
+import eu.com.cwsfe.cms.db.blog.BlogKeywordsEntity;
+import eu.com.cwsfe.cms.db.blog.BlogKeywordsRepository;
+import eu.com.cwsfe.cms.db.common.NewDeletedStatus;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class BlogKeywordsControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private BlogKeywordsDAO blogKeywordsDAO;
+    private BlogKeywordsRepository blogKeywordsRepository;
 
     @InjectMocks
     private BlogKeywordsController blogKeywordsController;
@@ -62,17 +62,17 @@ public class BlogKeywordsControllerTest {
         int iDisplayStart = 0;
         int iDisplayLength = 2;
         String sEcho = "1";
-        int numberOfBlogKeywords = 1;
-        List<BlogKeyword> blogKeywords = new ArrayList<>();
-        BlogKeyword cmsTextI18nCategory = new BlogKeyword();
+        long numberOfBlogKeywords = 1;
+        List<BlogKeywordsEntity> blogKeywords = new ArrayList<>();
+        BlogKeywordsEntity cmsTextI18nCategory = new BlogKeywordsEntity();
         String keywordName = "keywordName";
         long id = 1L;
         cmsTextI18nCategory.setId(id);
         cmsTextI18nCategory.setKeywordName(keywordName);
-        cmsTextI18nCategory.setStatus(BlogKeywordStatus.NEW);
+        cmsTextI18nCategory.setStatus(NewDeletedStatus.NEW);
         blogKeywords.add(cmsTextI18nCategory);
-        when(blogKeywordsDAO.listAjax(iDisplayStart, iDisplayLength)).thenReturn(blogKeywords);
-        when(blogKeywordsDAO.countForAjax()).thenReturn(numberOfBlogKeywords);
+        when(blogKeywordsRepository.listAjax(iDisplayStart, iDisplayLength)).thenReturn(blogKeywords);
+        when(blogKeywordsRepository.countForAjax()).thenReturn(numberOfBlogKeywords);
 
         ResultActions resultActions = mockMvc.perform(get("/blogKeywordsList")
             .param("iDisplayStart", String.valueOf(iDisplayStart))
@@ -90,15 +90,15 @@ public class BlogKeywordsControllerTest {
             .andExpect(jsonPath("$.aaData[0].#").value(iDisplayStart + 1))
             .andExpect(jsonPath("$.aaData[0].keywordName").value(keywordName))
             .andExpect(jsonPath("$.aaData[0].id").value((int) id));
-        verify(blogKeywordsDAO, times(1)).listAjax(anyInt(), anyInt());
-        verify(blogKeywordsDAO, times(1)).countForAjax();
-        verifyNoMoreInteractions(blogKeywordsDAO);
+        verify(blogKeywordsRepository, times(1)).listAjax(anyInt(), anyInt());
+        verify(blogKeywordsRepository, times(1)).countForAjax();
+        verifyNoMoreInteractions(blogKeywordsRepository);
     }
 
     @Test
     public void testAddBlogKeyword() throws Exception {
         String keywordName = "keywordName";
-        when(blogKeywordsDAO.add(any(BlogKeyword.class))).thenReturn(1L);
+        when(blogKeywordsRepository.add(any(BlogKeywordsEntity.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addBlogKeyword")
             .param("keywordName", keywordName));
@@ -107,14 +107,14 @@ public class BlogKeywordsControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
             .andExpect(jsonPath("$." + BlogKeywordsController.JSON_STATUS).value(BlogKeywordsController.JSON_STATUS_SUCCESS));
-        verify(blogKeywordsDAO, times(1)).add(any(BlogKeyword.class));
-        verifyNoMoreInteractions(blogKeywordsDAO);
+        verify(blogKeywordsRepository, times(1)).add(any(BlogKeywordsEntity.class));
+        verifyNoMoreInteractions(blogKeywordsRepository);
     }
 
     @Test
     public void testAddExistingBlogKeyword() throws Exception {
         String keywordName = "keywordName";
-        when(blogKeywordsDAO.add(any(BlogKeyword.class))).thenThrow(new DuplicateKeyException("Duplicate!"));
+        when(blogKeywordsRepository.add(any(BlogKeywordsEntity.class))).thenThrow(new DuplicateKeyException("Duplicate!"));
 
         ResultActions resultActions = mockMvc.perform(post("/addBlogKeyword")
             .param("keywordName", keywordName));
@@ -124,14 +124,14 @@ public class BlogKeywordsControllerTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
             .andExpect(jsonPath("$." + BlogKeywordsController.JSON_STATUS).value(BlogKeywordsController.JSON_STATUS_FAIL))
             .andExpect(jsonPath("$." + BlogKeywordsController.JSON_ERROR_MESSAGES + "[0]").exists());
-        verify(blogKeywordsDAO, times(1)).add(any(BlogKeyword.class));
-        verifyNoMoreInteractions(blogKeywordsDAO);
+        verify(blogKeywordsRepository, times(1)).add(any(BlogKeywordsEntity.class));
+        verifyNoMoreInteractions(blogKeywordsRepository);
     }
 
     @Test
     public void testDeleteFolder() throws Exception {
         int id = 1;
-        doNothing().when(blogKeywordsDAO).delete(any(BlogKeyword.class));
+        doNothing().when(blogKeywordsRepository).delete(any(BlogKeywordsEntity.class));
 
         ResultActions resultActions = mockMvc.perform(post("/deleteBlogKeyword")
             .param("id", String.valueOf(id)))
@@ -141,7 +141,7 @@ public class BlogKeywordsControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
             .andExpect(jsonPath("$." + BlogKeywordsController.JSON_STATUS).value(BlogKeywordsController.JSON_STATUS_SUCCESS));
-        verify(blogKeywordsDAO, times(1)).delete(any(BlogKeyword.class));
-        verifyNoMoreInteractions(blogKeywordsDAO);
+        verify(blogKeywordsRepository, times(1)).delete(any(BlogKeywordsEntity.class));
+        verifyNoMoreInteractions(blogKeywordsRepository);
     }
 }

@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
-import eu.com.cwsfe.cms.domains.CmsTextI18nCategoryStatus;
+import eu.com.cwsfe.cms.db.domains.CmsTextI18nCategoryStatus;
 import eu.com.cwsfe.cms.model.CmsTextI18nCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;

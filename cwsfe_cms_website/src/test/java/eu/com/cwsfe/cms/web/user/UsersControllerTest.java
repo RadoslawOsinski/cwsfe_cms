@@ -3,7 +3,7 @@ package eu.com.cwsfe.cms.web.user;
 import eu.com.cwsfe.cms.dao.CmsRolesDAO;
 import eu.com.cwsfe.cms.dao.CmsUserRolesDAO;
 import eu.com.cwsfe.cms.dao.CmsUsersDAO;
-import eu.com.cwsfe.cms.domains.CmsUserStatus;
+import eu.com.cwsfe.cms.db.users.CmsUserStatus;
 import eu.com.cwsfe.cms.model.CmsRole;
 import eu.com.cwsfe.cms.model.CmsUser;
 import eu.com.cwsfe.cms.web.author.AuthorsController;

@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
-import eu.com.cwsfe.cms.domains.LanguageStatus;
+import eu.com.cwsfe.cms.db.domains.LanguageStatus;
 import eu.com.cwsfe.cms.model.Language;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

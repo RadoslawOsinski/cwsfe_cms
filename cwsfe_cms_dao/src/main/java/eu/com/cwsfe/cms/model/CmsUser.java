@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.model;
 
-import eu.com.cwsfe.cms.domains.CmsUserStatus;
+import eu.com.cwsfe.cms.db.domains.CmsUserStatus;
 
 import java.io.Serializable;
 import java.util.List;

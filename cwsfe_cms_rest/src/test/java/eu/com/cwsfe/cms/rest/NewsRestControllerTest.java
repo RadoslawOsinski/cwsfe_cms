@@ -1,9 +1,9 @@
 package eu.com.cwsfe.cms.rest;
 
-import eu.com.cwsfe.cms.configuration.RestTestConfiguration;
+import eu.com.cwsfe.cms.db.configuration.RestTestConfiguration;
 import eu.com.cwsfe.cms.dao.*;
-import eu.com.cwsfe.cms.domains.CmsNewsI18nContentStatus;
-import eu.com.cwsfe.cms.domains.CmsNewsStatus;
+import eu.com.cwsfe.cms.db.news.CmsNewsI18nContentStatus;
+import eu.com.cwsfe.cms.db.news.CmsNewsStatus;
 import eu.com.cwsfe.cms.model.*;
 import org.junit.Before;
 import org.junit.Ignore;

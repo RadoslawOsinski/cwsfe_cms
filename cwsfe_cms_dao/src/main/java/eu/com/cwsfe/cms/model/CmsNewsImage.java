@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.model;
 
-import eu.com.cwsfe.cms.domains.CmsNewsImageStatus;
+import eu.com.cwsfe.cms.db.domains.CmsNewsImageStatus;
 
 public class CmsNewsImage extends CmsImage {
 

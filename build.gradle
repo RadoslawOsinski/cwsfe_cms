@@ -6,12 +6,16 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        maven {
+            url "https://artifacts.alfresco.com/nexus/content/repositories/public/"
+        }
     }
     dependencies {
         classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.1.6'
         classpath 'gradle.plugin.com.boxfuse.client:flyway-release:4.0.3'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1'
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0-M1'
     }
 }
 
@@ -20,6 +24,28 @@ subprojects {
     apply plugin: 'info.solidsoft.pitest'
     apply plugin: 'com.github.ben-manes.versions'
     apply plugin: 'org.sonarqube'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        maven {
+            url "https://artifacts.alfresco.com/nexus/content/repositories/public/"
+        }
+    }
+
+    dependencies {
+        testCompile group: 'org.pitest', name: 'pitest-maven', version: '1.2.0'
+    }
+
     pitest {
         threads = 4
         if (project.name in ['module-without-any-test']) {
@@ -46,5 +72,52 @@ subprojects {
             property 'spring.profiles.test-groups', 'integration-tests-local'
             property 'spring.profiles.active', 'tomcat'
         }
+    }
+
+    ext {
+        project_version = '3.1.0';
+        spring_version = '5.0.0.M5'
+        spring_security_version = '4.2.1.RELEASE'
+        mail_api_version = '1.5.6'
+        activation_version = '1.1.1'
+        jsp_api_version = '2.2.1-b03'
+        servlet_api_version = '2.5'
+        mail_version = '1.5.0-b01'
+        javax_ejb_version = '3.0'
+        jstl_version = '1.2'
+        javax_annotation_api_version = '1.3'
+        jackson_version = '2.8.7'
+        swagger_version = '2.6.1'
+        transaction_api_version = '1.2'
+        javax_resources_version = '1.7'
+        javax_persistance_version = '1.0.2'
+        commons_logging_version = '1.2'
+        commons_io_version = '2.5'
+        commons_fileupload_version = '1.3.2'
+        commons_dbcp_version = '1.4'
+        commons_beanutils_version = '1.9.3'
+        commons_collections_version = '20040616'
+        commons_lang_version = '2.6'
+        commons_lang3_version = '3.5'
+        commons_pool_version = '1.6'
+        flyway_core_version = '4.1.1'
+        postgresql_version = '9.4.1211'
+        ezomorph_version = '1.0.6'
+        json_lib_version = '2.4'
+        rome_version = '1.0.0'
+        aws_java_jdk_version = '1.11.97'
+        jwt_version = '0.7.0'
+        aop_alliance_version = '1.0'
+        logback_version = '1.2.3'
+        json_path_version = '2.2.0'
+        hibernate_jpa2_api_version = '1.0.0.Final'
+        hibernate_core_version = '5.2.8.Final'
+        hibernate_validator_version = '5.3.4.Final'
+        hazelcast_hibernate52_version = '1.2'
+        hazelcast_version = '3.8'
+        mockito_version = '2.7.12'
+        junit5_version = '5.0.0-M4'
+        junit5_platform_version = '1.0.0-M4'
+        jacoco_version = '0.7.8'
     }
 }

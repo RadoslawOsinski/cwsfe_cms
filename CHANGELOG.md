@@ -1,5 +1,10 @@
 #CHANGELOG
 
+##v3.1.0 (2017.02.24)
+- Moving data base layer from plain jdbc queries with manual ehcache management
+ to hibernate and hazelcast. Hazelcast is easier to integrate, scale and is very actively developed.
+ Hazelcast is also much easier testable.
+
 ##v3.0.1 (2017.02.19)
 - Swagger support 
 - Jacoco - code coverage measuring

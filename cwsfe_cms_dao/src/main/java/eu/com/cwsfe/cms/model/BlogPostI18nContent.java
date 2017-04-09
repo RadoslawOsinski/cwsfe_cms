@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.model;
 
-import eu.com.cwsfe.cms.domains.BlogPostI18nContentStatus;
+import eu.com.cwsfe.cms.db.domains.BlogPostI18nContentStatus;
 
 import java.io.Serializable;
 import java.util.List;

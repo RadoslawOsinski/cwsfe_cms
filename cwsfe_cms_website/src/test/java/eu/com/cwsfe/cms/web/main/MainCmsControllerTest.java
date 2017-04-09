@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.web.main;
 
 import eu.com.cwsfe.cms.dao.BlogPostCommentsDAO;
-import eu.com.cwsfe.cms.domains.BlogPostCommentStatus;
+import eu.com.cwsfe.cms.db.blog.BlogPostCommentStatus;
 import eu.com.cwsfe.cms.model.BlogPostComment;
 import org.junit.Before;
 import org.junit.Ignore;

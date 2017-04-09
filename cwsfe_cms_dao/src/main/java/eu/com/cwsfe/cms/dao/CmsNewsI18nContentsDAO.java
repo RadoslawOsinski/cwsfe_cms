@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
-import eu.com.cwsfe.cms.domains.CmsNewsI18nContentStatus;
+import eu.com.cwsfe.cms.db.domains.CmsNewsI18nContentStatus;
 import eu.com.cwsfe.cms.model.CmsNewsI18nContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

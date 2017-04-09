@@ -9,47 +9,35 @@ apply plugin: 'maven'
 apply plugin: 'java'
 apply plugin: 'base'
 apply plugin: 'jacoco'
+apply plugin: 'org.junit.platform.gradle.plugin'
 
-version = '3.0.1'
+version = project.ext.project_version
 group = "eu.com.cwsfe.cms"
 compileJava.options.encoding = 'UTF-8'
 
-repositories {
-    mavenLocal();
-    mavenCentral();
-}
-
-compileJava {
-    sourceCompatibility = '1.8'
-    targetCompatibility = '1.8'
-    options.encoding = 'UTF-8'
-    options.compilerArgs = ['-Xlint', '-Xlint:-serial', '-Xlint:-path']
-}
-
 dependencies {
     compile project(':cwsfe_cms_dao')
-    compile group: 'org.springframework', name: 'spring-webmvc', version: '4.3.3.RELEASE'
-    compile group: 'org.springframework', name: 'spring-tx', version: '4.3.3.RELEASE'
-    compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.3.RELEASE'
-    compile group: 'org.springframework', name: 'spring-core', version: '4.3.3.RELEASE'
-    compile group: 'org.springframework', name: 'spring-beans', version: '4.3.3.RELEASE'
-    compile group: 'org.springframework', name: 'spring-context', version: '4.3.3.RELEASE'
-    compile group: 'org.springframework', name: 'spring-context-support', version: '4.3.3.RELEASE'
-    compile group: 'org.springframework', name: 'spring-web', version: '4.3.3.RELEASE'  //dla CommonsMultipartFile
-    compile group: 'javax.ejb', name: 'ejb-api', version: '3.0'
-    compile group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.8.4'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.4'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.4'
-    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.6.0'
-    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.6.0'
+    compile project(':cwsfe_cms_services')
+    compile group: 'org.springframework', name: 'spring-webmvc', version: project.ext.spring_version
+    compile group: 'org.springframework', name: 'spring-tx', version: project.ext.spring_version
+    compile group: 'org.springframework', name: 'spring-core', version: project.ext.spring_version
+    compile group: 'org.springframework', name: 'spring-beans', version: project.ext.spring_version
+    compile group: 'org.springframework', name: 'spring-context', version: project.ext.spring_version
+    compile group: 'org.springframework', name: 'spring-context-support', version: project.ext.spring_version
+    compile group: 'org.springframework', name: 'spring-web', version: project.ext.spring_version  //dla CommonsMultipartFile
+    compile group: 'javax.annotation', name: 'javax.annotation-api', version: project.ext.javax_annotation_api_version
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: project.ext.jackson_version
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: project.ext.jackson_version
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: project.ext.jackson_version
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: project.ext.swagger_version
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: project.ext.swagger_version
     testCompile project(path: ':cwsfe_cms_dao', configuration: 'tests')
-    testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1' //3.1.0 -newer version has problems with tests
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.springframework', name: 'spring-test', version: '4.3.3.RELEASE'
-    testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.2.0'
-    testCompile group: 'com.jayway.jsonpath', name: 'json-path-assert', version: '2.2.0'
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.2.9'
+    testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: project.ext.servlet_api_version //3.1.0 -newer version has problems with tests
+    testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: project.ext.junit5_platform_version
+    testCompile group: 'org.springframework', name: 'spring-test', version: project.ext.spring_version
+    testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: project.ext.json_path_version
+    testCompile group: 'com.jayway.jsonpath', name: 'json-path-assert', version: project.ext.json_path_version
+    testCompile group: 'org.mockito', name: 'mockito-core', version: project.ext.mockito_version
 }
 
 def gitCommitHash = "git rev-parse HEAD".execute().text.trim();
@@ -88,7 +76,7 @@ task integration_tests_local(type: Test) {
 }
 
 jacoco {
-    toolVersion = "0.7.8"
+    toolVersion = project.ext.jacoco_version
 }
 
 jacocoTestReport {

@@ -12,8 +12,9 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <context:component-scan base-package="eu.com.cwsfe.cms">
-        <context:exclude-filter type="assignable" expression="eu.com.cwsfe.cms.configuration.DataSourceConfiguration"/>
-        <context:exclude-filter type="assignable" expression="eu.com.cwsfe.cms.configuration.DaoConfiguration"/>
+        <context:exclude-filter type="assignable" expression="eu.com.cwsfe.cms.db.configuration.DataSourceConfiguration"/>
+        <context:exclude-filter type="assignable" expression="eu.com.cwsfe.cms.db.configuration.DaoConfiguration"/>
+        <context:exclude-filter type="assignable" expression="eu.com.cwsfe.cms.db.configuration.RepositoryConfiguration"/>
     </context:component-scan>
 
     <context:annotation-config/>
@@ -80,13 +81,13 @@
     <!-- Handles HTTP GET requests for /resources-cwsfe-cms/** by efficiently serving up static resources in the ${webappRoot}/resources-cwsfe-cms/ directory -->
     <mvc:resources mapping="/resources-cwsfe-cms/**" location="/resources-cwsfe-cms/"/>
 
-    <bean class="eu.com.cwsfe.cms.configuration.RestConfiguration"/>
+    <bean class="eu.com.cwsfe.cms.db.configuration.RestConfiguration"/>
 
-    <bean class="eu.com.cwsfe.cms.configuration.SwaggerConfig"/>
+    <bean class="eu.com.cwsfe.cms.db.configuration.SwaggerConfig"/>
 
-    <bean id="dbMigrationManager" class="eu.com.cwsfe.cms.version.DbMigrationManager"
+    <bean id="dbMigrationManager" class="eu.com.cwsfe.cms.db.version.DbMigrationManager"
           init-method="updateCmsDatabaseSchema">
-        <constructor-arg name="migrationDataSource" ref="dataSource"/>
+        <constructor-arg name="cwsfeCmsDataSource" ref="cwsfeCmsDataSource"/>
     </bean>
 
 </beans>

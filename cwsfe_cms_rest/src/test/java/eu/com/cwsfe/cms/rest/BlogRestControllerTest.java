@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.rest;
 
-import eu.com.cwsfe.cms.configuration.RestTestConfiguration;
+import eu.com.cwsfe.cms.db.configuration.RestTestConfiguration;
 import eu.com.cwsfe.cms.dao.BlogPostI18nContentsDAO;
 import eu.com.cwsfe.cms.dao.BlogPostsDAO;
 import eu.com.cwsfe.cms.dao.CmsLanguagesDAO;

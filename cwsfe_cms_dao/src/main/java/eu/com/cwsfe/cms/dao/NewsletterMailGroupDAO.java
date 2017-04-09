@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
-import eu.com.cwsfe.cms.domains.NewsletterMailGroupStatus;
+import eu.com.cwsfe.cms.db.domains.NewsletterMailGroupStatus;
 import eu.com.cwsfe.cms.model.NewsletterMailGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -1,9 +1,9 @@
 package eu.com.cwsfe.cms.web.blog;
 
+import eu.com.cwsfe.cms.db.blog.BlogKeywordsEntity;
+import eu.com.cwsfe.cms.db.blog.BlogKeywordsRepository;
+import eu.com.cwsfe.cms.services.model.Breadcrumb;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import eu.com.cwsfe.cms.dao.BlogKeywordsDAO;
-import eu.com.cwsfe.cms.model.BlogKeyword;
-import eu.com.cwsfe.cms.model.Breadcrumb;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +28,11 @@ import java.util.ResourceBundle;
 @Controller
 public class BlogKeywordsController extends JsonController {
 
-    private final BlogKeywordsDAO blogKeywordsDAO;
+    private final BlogKeywordsRepository blogKeywordsRepository;
 
     @Autowired
-    public BlogKeywordsController(BlogKeywordsDAO blogKeywordsDAO) {
-        this.blogKeywordsDAO = blogKeywordsDAO;
+    public BlogKeywordsController(BlogKeywordsRepository blogKeywordsRepository) {
+        this.blogKeywordsRepository = blogKeywordsRepository;
     }
 
     @RequestMapping(value = "/blogKeywords", method = RequestMethod.GET)
@@ -61,7 +61,7 @@ public class BlogKeywordsController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        final List<BlogKeyword> blogKeywords = blogKeywordsDAO.listAjax(iDisplayStart, iDisplayLength);
+        final List<BlogKeywordsEntity> blogKeywords = blogKeywordsRepository.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < blogKeywords.size(); i++) {
@@ -72,7 +72,7 @@ public class BlogKeywordsController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfBlogKeywords = blogKeywordsDAO.countForAjax();
+        final long numberOfBlogKeywords = blogKeywordsRepository.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfBlogKeywords);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfBlogKeywords);
         responseDetailsJson.put("aaData", jsonArray);
@@ -82,14 +82,14 @@ public class BlogKeywordsController extends JsonController {
     @RequestMapping(value = "/addBlogKeyword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addBlogKeyword(
-        @ModelAttribute(value = "blogKeyword") BlogKeyword blogKeyword,
+        @ModelAttribute(value = "blogKeyword") BlogKeywordsEntity blogKeyword,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "keywordName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("KeywordNameMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
             try {
-                blogKeywordsDAO.add(blogKeyword);
+                blogKeywordsRepository.add(blogKeyword);
                 addJsonSuccess(responseDetailsJson);
             } catch (DuplicateKeyException e) {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogKeywordsAlreadyExists"));
@@ -103,13 +103,13 @@ public class BlogKeywordsController extends JsonController {
     @RequestMapping(value = "/deleteBlogKeyword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteFolder(
-        @ModelAttribute(value = "blogKeyword") BlogKeyword blogKeyword,
+        @ModelAttribute(value = "blogKeyword") BlogKeywordsEntity blogKeyword,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogKeywordsDAO.delete(blogKeyword);
+            blogKeywordsRepository.delete(blogKeyword);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

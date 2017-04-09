@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.rest;
 
-import eu.com.cwsfe.cms.configuration.RestTestConfiguration;
+import eu.com.cwsfe.cms.db.configuration.RestTestConfiguration;
 import eu.com.cwsfe.cms.dao.CmsAuthorsDAO;
 import eu.com.cwsfe.cms.model.CmsAuthor;
 import org.junit.Before;

@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
-import eu.com.cwsfe.cms.domains.NewsletterDispatchedMailStatus;
+import eu.com.cwsfe.cms.db.domains.NewsletterDispatchedMailStatus;
 import eu.com.cwsfe.cms.model.NewsletterDispatchedMail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

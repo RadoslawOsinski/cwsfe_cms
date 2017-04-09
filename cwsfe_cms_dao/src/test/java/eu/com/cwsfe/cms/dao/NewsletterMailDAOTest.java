@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.DaoTestsConfiguration;
-import eu.com.cwsfe.cms.domains.NewsletterMailStatus;
+import eu.com.cwsfe.cms.db.domains.NewsletterMailStatus;
 import eu.com.cwsfe.cms.model.NewsletterMail;
 import eu.com.cwsfe.cms.model.NewsletterMailGroup;
 import org.junit.Before;

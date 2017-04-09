@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.model;
 
-import eu.com.cwsfe.cms.domains.NewsletterDispatchedMailStatus;
+import eu.com.cwsfe.cms.db.domains.NewsletterDispatchedMailStatus;
 
 import java.io.Serializable;
 

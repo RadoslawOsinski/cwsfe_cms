@@ -1,10 +1,12 @@
 package eu.com.cwsfe.cms.rest;
 
-import eu.com.cwsfe.cms.configuration.RestTestConfiguration;
-import eu.com.cwsfe.cms.dao.BlogKeywordsDAO;
+import eu.com.cwsfe.cms.db.blog.BlogKeywordsEntity;
+import eu.com.cwsfe.cms.db.blog.BlogKeywordsRepository;
+import eu.com.cwsfe.cms.db.common.NewDeletedStatus;
+import eu.com.cwsfe.cms.db.configuration.RestTestConfiguration;
 import eu.com.cwsfe.cms.dao.BlogPostKeywordsDAO;
 import eu.com.cwsfe.cms.dao.CmsTextI18nDAO;
-import eu.com.cwsfe.cms.domains.BlogKeywordStatus;
+import eu.com.cwsfe.cms.db.domains.BlogKeywordStatus;
 import eu.com.cwsfe.cms.model.BlogKeyword;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +40,7 @@ public class BlogKeywordsRestControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private BlogKeywordsDAO blogKeywordsDAO;
+    private BlogKeywordsRepository blogKeywordsRepository;
     @Mock
     private BlogPostKeywordsDAO blogPostKeywordsDAO;
     @Mock
@@ -57,13 +59,13 @@ public class BlogKeywordsRestControllerTest {
     public void testBlogKeywordsList() throws Exception {
         String blogKeywordI18n = "blogKeywordI18n";
         long id = 1L;
-        List<BlogKeyword> blogKeywords = new ArrayList<>();
-        BlogKeyword blogKeyword = new BlogKeyword();
+        List<BlogKeywordsEntity> blogKeywords = new ArrayList<>();
+        BlogKeywordsEntity blogKeyword = new BlogKeywordsEntity();
         blogKeyword.setId(id);
         blogKeyword.setKeywordName("keyword");
-        blogKeyword.setStatus(BlogKeywordStatus.NEW);
+        blogKeyword.setStatus(NewDeletedStatus.NEW);
         blogKeywords.add(blogKeyword);
-        when(blogKeywordsDAO.list()).thenReturn(blogKeywords);
+        when(blogKeywordsRepository.list()).thenReturn(blogKeywords);
         when(cmsTextI18nDAO.findTranslation(anyString(), anyString(), anyString())).thenReturn(blogKeywordI18n);
 
         ResultActions resultActions = mockMvc.perform(get("/rest/blogKeywordsList")
@@ -81,13 +83,13 @@ public class BlogKeywordsRestControllerTest {
     public void testBlogKeywordsListWithMissingTranslation() throws Exception {
         String keyword = "keyword";
         long id = 1L;
-        List<BlogKeyword> blogKeywords = new ArrayList<>();
-        BlogKeyword blogKeyword = new BlogKeyword();
+        List<BlogKeywordsEntity> blogKeywords = new ArrayList<>();
+        BlogKeywordsEntity blogKeyword = new BlogKeywordsEntity();
         blogKeyword.setId(id);
         blogKeyword.setKeywordName(keyword);
-        blogKeyword.setStatus(BlogKeywordStatus.NEW);
+        blogKeyword.setStatus(NewDeletedStatus.NEW);
         blogKeywords.add(blogKeyword);
-        when(blogKeywordsDAO.list()).thenReturn(blogKeywords);
+        when(blogKeywordsRepository.list()).thenReturn(blogKeywords);
         when(cmsTextI18nDAO.findTranslation(anyString(), anyString(), anyString())).thenThrow(new EmptyResultDataAccessException(1));
 
         ResultActions resultActions = mockMvc.perform(get("/rest/blogKeywordsList")

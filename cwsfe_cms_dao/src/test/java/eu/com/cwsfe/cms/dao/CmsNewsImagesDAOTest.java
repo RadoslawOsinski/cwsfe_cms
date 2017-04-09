@@ -1,8 +1,8 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.DaoTestsConfiguration;
-import eu.com.cwsfe.cms.domains.CmsNewsImageStatus;
-import eu.com.cwsfe.cms.domains.CmsNewsStatus;
+import eu.com.cwsfe.cms.db.domains.CmsNewsImageStatus;
+import eu.com.cwsfe.cms.db.domains.CmsNewsStatus;
 import eu.com.cwsfe.cms.model.*;
 import org.junit.Before;
 import org.junit.Test;

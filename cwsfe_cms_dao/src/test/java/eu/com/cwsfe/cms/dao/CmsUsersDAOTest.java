@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.DaoTestsConfiguration;
-import eu.com.cwsfe.cms.domains.CmsUserStatus;
+import eu.com.cwsfe.cms.db.domains.CmsUserStatus;
 import eu.com.cwsfe.cms.model.CmsUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;

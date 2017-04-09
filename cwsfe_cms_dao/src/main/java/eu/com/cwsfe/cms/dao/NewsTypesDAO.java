@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
-import eu.com.cwsfe.cms.domains.NewsTypeStatus;
+import eu.com.cwsfe.cms.db.domains.NewsTypeStatus;
 import eu.com.cwsfe.cms.model.NewsType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

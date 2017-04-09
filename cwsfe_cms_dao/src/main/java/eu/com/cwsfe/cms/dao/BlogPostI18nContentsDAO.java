@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
-import eu.com.cwsfe.cms.domains.BlogPostI18nContentStatus;
+import eu.com.cwsfe.cms.db.domains.BlogPostI18nContentStatus;
 import eu.com.cwsfe.cms.model.BlogPostI18nContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

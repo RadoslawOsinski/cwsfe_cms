@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
-import eu.com.cwsfe.cms.domains.CmsUserStatus;
+import eu.com.cwsfe.cms.db.domains.CmsUserStatus;
 import eu.com.cwsfe.cms.model.CmsUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class CmsUsersDAO {
     public boolean isActiveUsernameInDatabase(String username) {
         Object[] dbParams = new Object[1];
         dbParams[0] = username;
-        String query = "SELECT COUNT(*) FROM CMS_USERS WHERE USERNAME = ? and status in ('N')";
+        String query = "SELECT COUNT(*) FROM CMS_USERS WHERE USERNAME = ? and status in ('NEW')";
         Integer numberOfUsers = jdbcTemplate.queryForObject(query, dbParams, Integer.class);
         return numberOfUsers == 1;
     }
@@ -64,7 +64,7 @@ public class CmsUsersDAO {
             "SELECT " +
                 " id, username, password_hash, status" +
                 " FROM CMS_USERS " +
-                " WHERE status = 'N'" +
+                " WHERE status = 'NEW'" +
                 " ORDER BY username";
         return jdbcTemplate.query(query, (resultSet, rowNum) ->
             mapCmsUser(resultSet));
@@ -92,7 +92,7 @@ public class CmsUsersDAO {
             "SELECT " +
                 " id, username, password_hash, status" +
                 " FROM CMS_USERS " +
-                " WHERE status = 'N' AND lower(username) LIKE lower(?) " +
+                " WHERE status = 'NEW' AND lower(username) LIKE lower(?) " +
                 " ORDER BY username" +
                 " LIMIT ?";
         return jdbcTemplate.query(query, dbParams, (resultSet, rowNum) ->
@@ -125,7 +125,7 @@ public class CmsUsersDAO {
         dbParams[1] = cmsUser.getUserName();
         dbParams[2] = cmsUser.getPasswordHash();
         jdbcTemplate.update(
-            "INSERT INTO CMS_USERS(id, username, password_hash, status) VALUES (?, ?, ?, 'N')",
+            "INSERT INTO CMS_USERS(id, username, password_hash, status) VALUES (?, ?, ?, 'NEW')",
             dbParams
         );
         return id;
@@ -181,7 +181,7 @@ public class CmsUsersDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = cmsUser.getId();
         jdbcTemplate.update(
-            "UPDATE CMS_USERS SET status = 'N' WHERE id = ?",
+            "UPDATE CMS_USERS SET status = 'NEW' WHERE id = ?",
             dbParams
         );
     }
@@ -201,7 +201,7 @@ public class CmsUsersDAO {
         Object[] dbParams = new Object[1];
         dbParams[0] = cmsUser.getId();
         jdbcTemplate.update(
-            "UPDATE CMS_USERS SET status = 'N' WHERE id = ?",
+            "UPDATE CMS_USERS SET status = 'NEW' WHERE id = ?",
             dbParams
         );
     }

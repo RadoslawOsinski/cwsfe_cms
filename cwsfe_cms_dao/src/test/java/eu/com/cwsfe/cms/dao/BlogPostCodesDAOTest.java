@@ -1,8 +1,8 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.DaoTestsConfiguration;
-import eu.com.cwsfe.cms.domains.BlogPostCodeStatus;
-import eu.com.cwsfe.cms.domains.BlogPostStatus;
+import eu.com.cwsfe.cms.db.domains.BlogPostCodeStatus;
+import eu.com.cwsfe.cms.db.domains.BlogPostStatus;
 import eu.com.cwsfe.cms.model.BlogPost;
 import eu.com.cwsfe.cms.model.BlogPostCode;
 import eu.com.cwsfe.cms.model.CmsAuthor;

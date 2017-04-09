@@ -2,7 +2,7 @@ package eu.com.cwsfe.cms.web.newsletter;
 
 import eu.com.cwsfe.cms.dao.CmsLanguagesDAO;
 import eu.com.cwsfe.cms.dao.NewsletterTemplateDAO;
-import eu.com.cwsfe.cms.domains.NewsletterTemplateStatus;
+import eu.com.cwsfe.cms.db.domains.NewsletterTemplateStatus;
 import eu.com.cwsfe.cms.model.Language;
 import eu.com.cwsfe.cms.model.NewsletterTemplate;
 import org.junit.Before;

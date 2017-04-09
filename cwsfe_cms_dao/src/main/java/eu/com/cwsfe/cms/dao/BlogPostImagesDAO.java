@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
-import eu.com.cwsfe.cms.domains.BlogPostImageStatus;
+import eu.com.cwsfe.cms.db.domains.BlogPostImageStatus;
 import eu.com.cwsfe.cms.model.BlogPostImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.model;
 
-import eu.com.cwsfe.cms.domains.BlogPostCommentStatus;
+import eu.com.cwsfe.cms.db.domains.BlogPostCommentStatus;
 
 import java.io.Serializable;
 import java.util.Date;

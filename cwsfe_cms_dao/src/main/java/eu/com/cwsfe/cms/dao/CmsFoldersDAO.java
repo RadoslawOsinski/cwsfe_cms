@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
-import eu.com.cwsfe.cms.domains.CmsFolderStatus;
+import eu.com.cwsfe.cms.db.domains.CmsFolderStatus;
 import eu.com.cwsfe.cms.model.CmsFolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;

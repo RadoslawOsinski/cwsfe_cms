@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
-import eu.com.cwsfe.cms.domains.BlogKeywordStatus;
+import eu.com.cwsfe.cms.db.domains.BlogKeywordStatus;
 import eu.com.cwsfe.cms.model.BlogKeyword;
 import eu.com.cwsfe.cms.model.BlogKeywordAssignment;
 import eu.com.cwsfe.cms.model.BlogPostKeyword;

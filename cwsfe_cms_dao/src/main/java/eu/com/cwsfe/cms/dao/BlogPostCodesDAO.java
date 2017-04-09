@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.dao;
 
-import eu.com.cwsfe.cms.domains.BlogPostCodeStatus;
+import eu.com.cwsfe.cms.db.domains.BlogPostCodeStatus;
 import eu.com.cwsfe.cms.model.BlogPostCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;

@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.dao;
 
 import eu.com.cwsfe.cms.DaoTestsConfiguration;
-import eu.com.cwsfe.cms.domains.CmsTextI18nCategoryStatus;
+import eu.com.cwsfe.cms.db.domains.CmsTextI18nCategoryStatus;
 import eu.com.cwsfe.cms.model.CmsTextI18nCategory;
 import org.junit.Test;
 import org.junit.runner.RunWith;

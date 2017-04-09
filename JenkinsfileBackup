@@ -1,0 +1,10 @@
+ node {
+    stage('Backup CMS database') {
+        sh 'ssh root@serverWithPostgres "sudo su - postgres;/Library/PostgreSQL/9.5/bin/pg_dumpall > /opt/cms_backup/cwsfeCmsBackup-\"date +%Y%m%d-%H%M\".sql'
+        sh 'rsync root@serverWithPostgres:/opt/cms_backup/ /opt/cms_backup/'
+        sh 'ssh root@serverWithPostgres "rm -f /opt/cms_backup/*"'
+    }
+    stage('Backup CMS images') {
+        sh './gradlew --no-daemon wrapper'
+    }
+ }

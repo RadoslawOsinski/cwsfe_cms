@@ -1,9 +1,10 @@
 package eu.com.cwsfe.cms.web.blog;
 
 import eu.com.cwsfe.cms.dao.*;
-import eu.com.cwsfe.cms.domains.BlogKeywordStatus;
-import eu.com.cwsfe.cms.domains.BlogPostI18nContentStatus;
+import eu.com.cwsfe.cms.db.domains.BlogKeywordStatus;
+import eu.com.cwsfe.cms.db.blog.BlogPostI18nContentStatus;
 import eu.com.cwsfe.cms.model.*;
+import eu.com.cwsfe.cms.services.BlogKeywordsService;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class BlogPostsControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private BlogKeywordsDAO blogKeywordsDAO;
+    private BlogKeywordsService blogKeywordsService;
     @Mock
     private BlogPostKeywordsDAO blogPostKeywordsDAO;
     @Mock
@@ -179,7 +180,7 @@ public class BlogPostsControllerTest {
         when(blogPostsDAO.get(anyLong())).thenReturn(new BlogPost());
         when(cmsLanguagesDAO.listAll()).thenReturn(new ArrayList<>());
         when(blogPostKeywordsDAO.listForPost(anyLong())).thenReturn(new ArrayList<>());
-        when(blogKeywordsDAO.list()).thenReturn(new ArrayList<>());
+        when(blogKeywordsService.list()).thenReturn(new ArrayList<>());
         when(cmsAuthorsDAO.get(anyLong())).thenReturn(new CmsAuthor());
 
         ResultActions resultActions = mockMvc.perform(get("/blogPosts/1"));
@@ -205,7 +206,7 @@ public class BlogPostsControllerTest {
         blogPostI18nContent.setPostTitle(postTitle);
         blogPostI18nContent.setPostShortcut(postShortcut);
         blogPostI18nContent.setPostDescription(postDescription);
-        blogPostI18nContent.setStatus(BlogPostI18nContentStatus.NEW);
+        blogPostI18nContent.setStatus(eu.com.cwsfe.cms.db.domains.BlogPostI18nContentStatus.NEW);
         when(blogPostI18nContentsDAO.getByLanguageForPost(anyLong(), anyLong())).thenReturn(blogPostI18nContent);
 
         ResultActions resultActions = mockMvc.perform(get("/blogPosts/1/2")).andExpect(status().isOk());

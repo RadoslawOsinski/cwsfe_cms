@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.model;
 
-import eu.com.cwsfe.cms.domains.CmsNewsStatus;
+import eu.com.cwsfe.cms.db.domains.CmsNewsStatus;
 
 import java.io.Serializable;
 import java.util.Date;

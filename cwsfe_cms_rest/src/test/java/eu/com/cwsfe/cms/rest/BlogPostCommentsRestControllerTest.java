@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.rest;
 
-import eu.com.cwsfe.cms.configuration.RestTestConfiguration;
+import eu.com.cwsfe.cms.db.configuration.RestTestConfiguration;
 import eu.com.cwsfe.cms.dao.BlogPostCommentsDAO;
 import org.junit.Before;
 import org.junit.Test;
