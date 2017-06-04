@@ -26,12 +26,12 @@ import static org.junit.Assert.assertNotNull;
 public class CmsUserRolesDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private CmsUsersDAO usersDao;
+    private CmsUsersRepository usersDao;
     @Autowired
-    private CmsRolesDAO rolesDao;
+    private CmsRolesRepository rolesDao;
 
     @Autowired
-    private CmsUserRolesDAO dao;
+    private CmsUserRolesRepository dao;
 
     @Test
     public void testListForUser() throws Exception {

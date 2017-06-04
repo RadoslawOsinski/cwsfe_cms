@@ -23,9 +23,9 @@ import static org.junit.Assert.*;
 public class NewsletterTemplateDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private NewsletterTemplateDAO dao;
+    private NewsletterTemplateRepository dao;
     @Autowired
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    private CmsLanguagesRepository cmsLanguagesDAO;
 
     @Test
     public void testCountForAjax() throws Exception {

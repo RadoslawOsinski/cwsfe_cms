@@ -4,6 +4,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -13,9 +15,19 @@ import javax.persistence.Table;
  * Created by Radoslaw Osinski.
  */
 @Entity
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NamedQuery(name = CmsNewsTypesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(nt) FROM CmsNewsTypesEntity nt WHERE status <> 'DELETED'")
+@NamedQuery(name = CmsNewsTypesEntity.LIST, query = "SELECT nt FROM CmsNewsTypesEntity nt WHERE status = 'NEW' order by type")
+@NamedQuery(name = CmsNewsTypesEntity.LIST_FOR_DROP_LIST, query = "SELECT nt FROM CmsNewsTypesEntity nt WHERE status = 'NEW' lower(type) LIKE lower(:type) order by type")
+@NamedQuery(name = CmsNewsTypesEntity.GET_BY_TYPE, query = "SELECT nt FROM CmsNewsTypesEntity nt WHERE type = :type")
 @Table(name = "cms_news_types")
 public class CmsNewsTypesEntity {
+
+    public static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "CmsNewsTypesEntity.countForAjax";
+    public static final String LIST = "CmsNewsTypesEntity.list";
+    public static final String LIST_FOR_DROP_LIST = "CmsNewsTypesEntity.listNewsTypesForDropList";
+    public static final String GET_BY_TYPE = "CmsNewsTypesEntity.getByType";
+
     private long id;
     private String type;
     private String status;

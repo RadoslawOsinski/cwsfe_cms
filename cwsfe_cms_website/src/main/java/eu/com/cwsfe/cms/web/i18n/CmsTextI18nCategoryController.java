@@ -27,11 +27,11 @@ import java.util.ResourceBundle;
 @Controller
 public class CmsTextI18nCategoryController extends JsonController {
 
-    private final CmsTextI18nCategoryDAO cmsTextI18nCategoryDAO;
+    private final CmsTextI18nCategoryRepository cmsTextI18nCategoryDAO;
 
     @Autowired
-    public CmsTextI18nCategoryController(CmsTextI18nCategoryDAO cmsTextI18nCategoryDAO) {
-        this.cmsTextI18nCategoryDAO = cmsTextI18nCategoryDAO;
+    public CmsTextI18nCategoryController(CmsTextI18nCategoryRepository cmsTextI18nCategoryDAO) {
+        this.cmsTextI18nCategoryRepository = cmsTextI18nCategoryDAO;
     }
 
     @RequestMapping(value = "/cmsTextI18nCategories", method = RequestMethod.GET)

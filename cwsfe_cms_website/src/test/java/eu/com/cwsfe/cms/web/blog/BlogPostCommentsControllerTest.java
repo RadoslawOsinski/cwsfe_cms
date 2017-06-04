@@ -30,7 +30,7 @@ public class BlogPostCommentsControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private BlogPostCommentsDAO blogPostCommentsDAO;
+    private BlogPostCommentsRepository blogPostCommentsDAO;
 
     @InjectMocks
     private BlogPostCommentsController blogPostCommentsController;

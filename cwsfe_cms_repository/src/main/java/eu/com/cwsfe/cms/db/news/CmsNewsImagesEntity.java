@@ -4,6 +4,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -14,9 +16,28 @@ import java.sql.Timestamp;
  * Created by Radoslaw Osinski.
  */
 @Entity
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NamedQuery(name = CmsNewsImagesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(cni) FROM CmsNewsImagesEntity cni WHERE status <> 'DELETED'")
+@NamedQuery(name = CmsNewsImagesEntity.SEARCH_BY_AJAX_QUERY, query = "SELECT cni FROM CmsNewsImagesEntity cni WHERE status <> 'DELETED' AND newsId = :newsId ORDER BY created DESC")
+@NamedQuery(name = CmsNewsImagesEntity.COUNT_TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(cni) FROM CmsNewsImagesEntity cni WHERE status <> 'DELETED' AND newsId = :newsId ORDER BY created DESC")
+@NamedQuery(name = CmsNewsImagesEntity.LIST_IMAGES_FOR_NEWS_WITHOUT_THUBNAILS, query = "SELECT count(cni) FROM CmsNewsImagesEntity cni WHERE status = 'NEW' AND newsId = :newsId AND title NOT LIKE 'thumbnail_%' ORDER BY created DESC")
+@NamedQuery(name = CmsNewsImagesEntity.GET_THUBNAIL_FOR_NEWS, query = "SELECT count(cni) FROM CmsNewsImagesEntity cni WHERE status = 'NEW' AND newsId = :newsId AND title LIKE 'thumbnail_%' ORDER BY created DESC")
 @Table(name = "cms_news_images")
 public class CmsNewsImagesEntity {
+
+    String query =
+        "SELECT " +
+            " id, news_id, title, file_name, file_size, width, height," +
+            " mime_type, created, last_modified, status, url" +
+            " FROM CMS_NEWS_IMAGES " +
+            "WHERE news_id = ? AND status = 'N' AND title NOT LIKE 'thumbnail_%'";
+
+    public static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "CmsNewsImagesEntity.getTotalNumberNotDeleted";
+    public static final String COUNT_TOTAL_NUMBER_NOT_DELETED_QUERY = "CmsNewsImagesEntity.searchByAjaxCountWithoutContent";
+    public static final String SEARCH_BY_AJAX_QUERY = "CmsNewsImagesEntity.searchByAjaxWithoutContent";
+    public static final String LIST_IMAGES_FOR_NEWS_WITHOUT_THUBNAILS = "CmsNewsImagesEntity.listImagesForNewsWithoutThumbnails";
+    public static final String GET_THUBNAIL_FOR_NEWS = "CmsNewsImagesEntity.getThumbnailForNews";
+
     private long id;
     private long newsId;
     private String title;

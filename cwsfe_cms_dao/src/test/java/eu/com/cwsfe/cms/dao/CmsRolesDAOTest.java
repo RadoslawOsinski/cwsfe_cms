@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 public class CmsRolesDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private CmsRolesDAO dao;
+    private CmsRolesRepository dao;
 
     @Test
     public void testListUserRoles() throws Exception {

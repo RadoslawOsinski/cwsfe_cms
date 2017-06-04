@@ -40,11 +40,11 @@ public class CmsTextI18nControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsTextI18nDAO cmsTextI18nDAO;
+    private CmsTextI18nRepository cmsTextI18nDAO;
     @Mock
-    private CmsTextI18nCategoryDAO cmsTextI18nCategoryDAO;
+    private CmsTextI18nCategoryRepository cmsTextI18nCategoryDAO;
     @Mock
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    private CmsLanguagesRepository cmsLanguagesDAO;
 
     @InjectMocks
     private CmsTextI18nController cmsTextI18nController;

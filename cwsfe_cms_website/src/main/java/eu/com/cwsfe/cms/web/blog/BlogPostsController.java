@@ -34,19 +34,19 @@ public class BlogPostsController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BlogPostsController.class);
 
-    private final BlogPostKeywordsDAO blogPostKeywordsDAO;
-    private final BlogPostI18nContentsDAO blogPostI18nContentsDAO;
-    private final BlogPostsDAO blogPostsDAO;
-    private final CmsAuthorsDAO cmsAuthorsDAO;
-    private final CmsLanguagesDAO cmsLanguagesDAO;
+    private final BlogPostKeywordsRepository blogPostKeywordsDAO;
+    private final BlogPostI18nContentsRepository blogPostI18nContentsDAO;
+    private final BlogPostsRepository blogPostsDAO;
+    private final CmsAuthorsRepository cmsAuthorsDAO;
+    private final CmsLanguagesRepository cmsLanguagesDAO;
 
     @Autowired
-    public BlogPostsController(CmsAuthorsDAO cmsAuthorsDAO, BlogPostsDAO blogPostsDAO, CmsLanguagesDAO cmsLanguagesDAO, BlogPostI18nContentsDAO blogPostI18nContentsDAO, BlogPostKeywordsDAO blogPostKeywordsDAO) {
-        this.cmsAuthorsDAO = cmsAuthorsDAO;
-        this.blogPostsDAO = blogPostsDAO;
-        this.cmsLanguagesDAO = cmsLanguagesDAO;
-        this.blogPostI18nContentsDAO = blogPostI18nContentsDAO;
-        this.blogPostKeywordsDAO = blogPostKeywordsDAO;
+    public BlogPostsController(CmsAuthorsRepository cmsAuthorsDAO, BlogPostsRepository blogPostsDAO, CmsLanguagesRepository cmsLanguagesDAO, BlogPostI18nContentsRepository blogPostI18nContentsDAO, BlogPostKeywordsRepository blogPostKeywordsDAO) {
+        this.cmsAuthorsRepository = cmsAuthorsDAO;
+        this.blogPostsRepository = blogPostsDAO;
+        this.cmsLanguagesRepository = cmsLanguagesDAO;
+        this.blogPostI18nContentsRepository = blogPostI18nContentsDAO;
+        this.blogPostKeywordsRepository = blogPostKeywordsDAO;
     }
 
     @RequestMapping(value = "/blogPosts", method = RequestMethod.GET)

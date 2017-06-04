@@ -1,9 +1,12 @@
 package eu.com.cwsfe.cms.db.author;
 
+import eu.com.cwsfe.cms.db.common.NewDeletedStatus;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -13,14 +16,22 @@ import javax.persistence.Table;
  * Created by Radoslaw Osinski.
  */
 @Entity
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NamedQuery(name = CmsAuthorsEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(a) FROM CmsAuthorsEntity a WHERE status <> 'DELETED'")
+@NamedQuery(name = CmsAuthorsEntity.LIST, query = "SELECT a FROM CmsAuthorsEntity a WHERE status = 'NEW' ORDER BY last_name, first_name")
+@NamedQuery(name = CmsAuthorsEntity.LIST_AUTHORS_FOR_DROP_LIST, query = "SELECT a FROM CmsAuthorsEntity a WHERE status = 'NEW' (lower(first_name) LIKE lower(:firstName) OR lower(last_name) LIKE lower(:lastName)) ORDER BY last_name, first_name")
 @Table(name = "cms_authors")
 public class CmsAuthorsEntity {
+
+    public static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "CmsAuthorsEntity.countForAjax";
+    public static final String LIST = "CmsAuthorsEntity.list";
+    public static final String LIST_AUTHORS_FOR_DROP_LIST = "CmsAuthorsEntity.listAuthorsForDropList";
+
     private long id;
     private String firstName;
     private String lastName;
     private String googlePlusAuthorLink;
-    private String status;
+    private NewDeletedStatus status;
 
     @Id
     @Column(name = "id", nullable = false, precision = 0)
@@ -66,11 +77,11 @@ public class CmsAuthorsEntity {
 
     @Basic
     @Column(name = "status", nullable = false, length = -1)
-    public String getStatus() {
+    public NewDeletedStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(NewDeletedStatus status) {
         this.status = status;
     }
 

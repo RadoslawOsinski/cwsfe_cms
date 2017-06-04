@@ -35,7 +35,7 @@ public class CmsTextI18nCategoryControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsTextI18nCategoryDAO cmsTextI18nCategoryDAO;
+    private CmsTextI18nCategoryRepository cmsTextI18nCategoryDAO;
 
     @InjectMocks
     private CmsTextI18nCategoryController cmsTextI18nCategoryController;

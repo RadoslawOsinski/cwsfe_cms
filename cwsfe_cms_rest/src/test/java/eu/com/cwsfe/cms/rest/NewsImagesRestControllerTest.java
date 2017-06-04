@@ -33,7 +33,7 @@ public class NewsImagesRestControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsNewsImagesDAO cmsNewsImagesDAO;
+    private CmsNewsImagesRepository cmsNewsImagesDAO;
 
     @InjectMocks
     private NewsImagesRestController newsImagesRestController;

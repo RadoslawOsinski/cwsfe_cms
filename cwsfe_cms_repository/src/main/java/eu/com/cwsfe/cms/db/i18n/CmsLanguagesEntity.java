@@ -3,19 +3,31 @@ package eu.com.cwsfe.cms.db.i18n;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * Created by Radoslaw Osinski.
  */
 @Entity
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NamedQuery(name = CmsLanguagesEntity.COUNT_FOR_AJAX_N, query = "SELECT count(l) FROM CmsLanguagesEntity l")
+@NamedQuery(name = CmsLanguagesEntity.LIST, query = "SELECT l FROM CmsLanguagesEntity l where status = 'NEW' order by code")
+@NamedQuery(name = CmsLanguagesEntity.LIST_FOR_DROP_LIST, query = "SELECT l FROM CmsLanguagesEntity l where status = 'NEW' and (lower(code) like lower(:code) or lower(name) like lower(:name)) order by code, name")
+@NamedQuery(name = CmsLanguagesEntity.GET_BY_CODE, query = "SELECT l FROM CmsLanguagesEntity l where code = :code")
+@NamedQuery(name = CmsLanguagesEntity.GET_BY_CODE_IGNORE_CASE, query = "SELECT l FROM CmsLanguagesEntity l where lower(code) = lower(:code)")
 @Table(name = "cms_languages")
 public class CmsLanguagesEntity {
+
+    public static final String COUNT_FOR_AJAX_N = "CmsLanguagesEntity.countForAjax";
+    public static final String LIST = "CmsLanguages.list";
+    public static final String LIST_FOR_DROP_LIST = "CmsLanguages.listForDroplist";
+    public static final String GET_BY_CODE = "CmsLanguages.getByCode";
+    public static final String GET_BY_CODE_IGNORE_CASE = "CmsLanguages.getByCodeIgnoreCase";
+
     private long id;
     private String code;
     private String status;

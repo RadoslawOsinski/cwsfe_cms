@@ -3,22 +3,35 @@ package eu.com.cwsfe.cms.db.users;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * Created by Radoslaw Osinski.
  */
 @Entity
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NamedQuery(name = CmsRolesEntity.LIST_USER_ROLES, query = "SELECT r FROM CmsRolesEntity r WHERE r.cmsUser.id = :userId")
+@NamedQuery(name = CmsRolesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(r) FROM CmsRolesEntity r")
+@NamedQuery(name = CmsRolesEntity.LIST, query = "SELECT r FROM CmsRolesEntity r order by roleName")
+@NamedQuery(name = CmsRolesEntity.LIST_FOR_DROP_LIST, query = "SELECT r FROM CmsRolesEntity r where lower(roleName) like lower(:roleName) order by roleName")
+@NamedQuery(name = CmsRolesEntity.GET_BY_CODE, query = "SELECT r FROM CmsRolesEntity r where roleCode = :roleCode")
 @Table(name = "cms_roles")
 public class CmsRolesEntity {
+
+    public static final String LIST_USER_ROLES = "CmsRolesEntity.listUserRoles";
+    public static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "CmsRolesEntity.countForAjax";
+    public static final String LIST = "CmsRolesEntity.list";
+    public static final String LIST_FOR_DROP_LIST = "CmsRolesEntity.listForDropList";
+    public static final String GET_BY_CODE = "CmsRolesEntity.getByCode";
+
     private long id;
     private String roleCode;
     private String roleName;
+    private CmsUsersEntity cmsUser;
 
     @Id
     @Column(name = "id", nullable = false, precision = 0)
@@ -50,6 +63,16 @@ public class CmsRolesEntity {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cms_user_id", nullable = false)
+    public CmsUsersEntity getCmsUser() {
+        return cmsUser;
+    }
+
+    public void setCmsUser(CmsUsersEntity cmsUser) {
+        this.cmsUser = cmsUser;
     }
 
     @Override

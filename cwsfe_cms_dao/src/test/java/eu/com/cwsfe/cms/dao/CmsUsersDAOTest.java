@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 public class CmsUsersDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private CmsUsersDAO dao;
+    private CmsUsersRepository dao;
 
     @Test
     public void testIsActiveUsernameInDatabase() throws Exception {

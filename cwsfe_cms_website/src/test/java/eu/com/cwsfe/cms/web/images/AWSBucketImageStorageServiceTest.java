@@ -40,7 +40,7 @@ public class AWSBucketImageStorageServiceTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalFileSystemImageStorageServiceTest.class);
 
     @Autowired
-    private CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    private CmsGlobalParamsRepository cmsGlobalParamsDAO;
 
     @Autowired
     private AmazonS3 amazonS3;

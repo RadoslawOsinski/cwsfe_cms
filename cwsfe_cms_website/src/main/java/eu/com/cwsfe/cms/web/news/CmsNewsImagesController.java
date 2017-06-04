@@ -34,14 +34,14 @@ public class CmsNewsImagesController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsNewsImagesController.class);
 
-    private final CmsNewsImagesDAO cmsNewsImagesDAO;
+    private final CmsNewsImagesRepository cmsNewsImagesDAO;
 
     private final ImageStorageService imageStorageService;
 
     @Autowired
-    public CmsNewsImagesController(ImageStorageService imageStorageService, CmsNewsImagesDAO cmsNewsImagesDAO) {
+    public CmsNewsImagesController(ImageStorageService imageStorageService, CmsNewsImagesRepository cmsNewsImagesDAO) {
         this.imageStorageService = imageStorageService;
-        this.cmsNewsImagesDAO = cmsNewsImagesDAO;
+        this.cmsNewsImagesRepository = cmsNewsImagesDAO;
     }
 
     @RequestMapping(value = "/news/cmsNewsImagesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

@@ -25,11 +25,11 @@ import static org.junit.Assert.*;
 public class NewsletterMailDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private NewsletterMailDAO dao;
+    private NewsletterMailRepository dao;
     @Autowired
-    private NewsletterMailGroupDAO newsletterMailGroupDAO;
+    private NewsletterMailGroupRepository newsletterMailGroupDAO;
     @Autowired
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    private CmsLanguagesRepository cmsLanguagesDAO;
 
     private static final NewsletterMailGroup RECIPIENT_GROUP = new NewsletterMailGroup();
 

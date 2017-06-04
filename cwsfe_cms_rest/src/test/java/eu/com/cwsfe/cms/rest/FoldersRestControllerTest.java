@@ -33,9 +33,9 @@ public class FoldersRestControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsFoldersDAO cmsFoldersDAO;
+    private CmsFoldersRepository cmsFoldersDAO;
     @Mock
-    private CmsTextI18nDAO cmsTextI18nDAO;
+    private CmsTextI18nRepository cmsTextI18nDAO;
 
     @InjectMocks
     private FoldersRestController foldersRestController;

@@ -28,11 +28,11 @@ import java.util.ResourceBundle;
 @Controller
 class NewsTypesController extends JsonController {
 
-    private final NewsTypesDAO newsTypesDAO;
+    private final NewsTypesRepository newsTypesDAO;
 
     @Autowired
-    public NewsTypesController(NewsTypesDAO newsTypesDAO) {
-        this.newsTypesDAO = newsTypesDAO;
+    public NewsTypesController(NewsTypesRepository newsTypesDAO) {
+        this.newsTypesRepository = newsTypesDAO;
     }
 
     @RequestMapping(value = "/newsTypes", method = RequestMethod.GET)

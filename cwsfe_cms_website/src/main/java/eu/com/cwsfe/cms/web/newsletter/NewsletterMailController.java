@@ -39,17 +39,17 @@ public class NewsletterMailController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NewsletterMailController.class);
 
-    private final NewsletterMailDAO newsletterMailDAO;
-    private final NewsletterMailAddressDAO newsletterMailAddressDAO;
-    private final NewsletterMailGroupDAO newsletterMailGroupDAO;
+    private final NewsletterMailRepository newsletterMailDAO;
+    private final NewsletterMailAddressRepository newsletterMailAddressDAO;
+    private final NewsletterMailGroupRepository newsletterMailGroupDAO;
     private final CmsMailSender cmsMailSender;
 
     @Autowired
-    public NewsletterMailController(NewsletterMailAddressDAO newsletterMailAddressDAO, NewsletterMailDAO newsletterMailDAO, CmsMailSender cmsMailSender, NewsletterMailGroupDAO newsletterMailGroupDAO) {
-        this.newsletterMailAddressDAO = newsletterMailAddressDAO;
-        this.newsletterMailDAO = newsletterMailDAO;
+    public NewsletterMailController(NewsletterMailAddressRepository newsletterMailAddressDAO, NewsletterMailRepository newsletterMailDAO, CmsMailSender cmsMailSender, NewsletterMailGroupRepository newsletterMailGroupDAO) {
+        this.newsletterMailAddressRepository = newsletterMailAddressDAO;
+        this.newsletterMailRepository = newsletterMailDAO;
         this.cmsMailSender = cmsMailSender;
-        this.newsletterMailGroupDAO = newsletterMailGroupDAO;
+        this.newsletterMailGroupRepository = newsletterMailGroupDAO;
     }
 
     @RequestMapping(value = "/newsletterMails", method = RequestMethod.GET)

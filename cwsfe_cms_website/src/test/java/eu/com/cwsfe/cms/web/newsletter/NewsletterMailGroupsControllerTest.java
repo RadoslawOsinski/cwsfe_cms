@@ -41,11 +41,11 @@ public class NewsletterMailGroupsControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private NewsletterMailGroupDAO newsletterMailGroupDAO;
+    private NewsletterMailGroupRepository newsletterMailGroupDAO;
     @Mock
-    private NewsletterMailAddressDAO newsletterMailAddressDAO;
+    private NewsletterMailAddressRepository newsletterMailAddressDAO;
     @Mock
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    private CmsLanguagesRepository cmsLanguagesDAO;
 
     @InjectMocks
     private NewsletterMailGroupsController newsletterMailGroupsController;

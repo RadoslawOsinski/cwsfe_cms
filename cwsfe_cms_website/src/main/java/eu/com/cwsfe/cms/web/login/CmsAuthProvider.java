@@ -30,23 +30,23 @@ public class CmsAuthProvider implements AuthenticationProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsAuthProvider.class);
 
-    private CmsUsersDAO cmsUsersDAO;
-    private CmsRolesDAO cmsRolesDAO;
-    private CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO;
+    private CmsUsersRepository cmsUsersDAO;
+    private CmsRolesRepository cmsRolesDAO;
+    private CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressDAO;
 
     @Autowired
-    public void setCmsUsersDAO(CmsUsersDAO cmsUsersDAO) {
-        this.cmsUsersDAO = cmsUsersDAO;
+    public void setCmsUsersDAO(CmsUsersRepository cmsUsersDAO) {
+        this.cmsUsersRepository = cmsUsersDAO;
     }
 
     @Autowired
-    public void setCmsRolesDAO(CmsRolesDAO cmsRolesDAO) {
-        this.cmsRolesDAO = cmsRolesDAO;
+    public void setCmsRolesDAO(CmsRolesRepository cmsRolesDAO) {
+        this.cmsRolesRepository = cmsRolesDAO;
     }
 
     @Autowired
-    public void setCmsUserAllowedNetAddressDAO(CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO) {
-        this.cmsUserAllowedNetAddressDAO = cmsUserAllowedNetAddressDAO;
+    public void setCmsUserAllowedNetAddressDAO(CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressDAO) {
+        this.cmsUserAllowedNetAddressRepository = cmsUserAllowedNetAddressDAO;
     }
 
     @Override

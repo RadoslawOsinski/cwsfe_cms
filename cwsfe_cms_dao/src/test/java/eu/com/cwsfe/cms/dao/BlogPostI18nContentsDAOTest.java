@@ -29,16 +29,16 @@ import static org.junit.Assert.assertNotNull;
 public class BlogPostI18nContentsDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private BlogPostI18nContentsDAO dao;
+    private BlogPostI18nContentsRepository dao;
 
     @Autowired
-    private BlogPostsDAO postsDao;
+    private BlogPostsRepository postsDao;
 
     @Autowired
-    private CmsAuthorsDAO authorsDao;
+    private CmsAuthorsRepository authorsDao;
 
     @Autowired
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    private CmsLanguagesRepository cmsLanguagesDAO;
 
     private static final CmsAuthor CMS_AUTHOR = new CmsAuthor();
     private static final BlogPost BLOG_POST = new BlogPost();

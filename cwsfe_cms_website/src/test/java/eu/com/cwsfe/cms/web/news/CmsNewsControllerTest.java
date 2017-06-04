@@ -37,17 +37,17 @@ public class CmsNewsControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsNewsDAO cmsNewsDAO;
+    private CmsNewsRepository cmsNewsDAO;
     @Mock
-    private CmsAuthorsDAO cmsAuthorsDAO;
+    private CmsAuthorsRepository cmsAuthorsDAO;
     @Mock
-    private CmsNewsI18nContentsDAO cmsNewsI18nContentsDAO;
+    private CmsNewsI18nContentsRepository cmsNewsI18nContentsDAO;
     @Mock
-    private CmsFoldersDAO cmsFoldersDAO;
+    private CmsFoldersRepository cmsFoldersDAO;
     @Mock
-    private NewsTypesDAO newsTypesDAO;
+    private NewsTypesRepository newsTypesDAO;
     @Mock
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    private CmsLanguagesRepository cmsLanguagesDAO;
 
     @InjectMocks
     private CmsNewsController cmsNewsController;

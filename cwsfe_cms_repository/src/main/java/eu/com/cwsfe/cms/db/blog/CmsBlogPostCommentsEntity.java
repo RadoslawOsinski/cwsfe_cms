@@ -4,19 +4,33 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * Created by Radoslaw Osinski.
  */
 @Entity
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "cms_blog_post_comments")
+@NamedQuery(name = CmsBlogPostCommentsEntity.COUNT_FOR_AJAX_N, query = "SELECT count(cbpc) FROM CmsBlogPostCommentsEntity cbpc where cbpc.status <> 'DELETED'")
+@NamedQuery(name = CmsBlogPostCommentsEntity.LIST_PUBLISHED_FOR_POST_I18N_CONTENT, query = "SELECT cbpc FROM CmsBlogPostCommentsEntity cbpc where cbpc.status = 'PUBLISHED' and cbpc.blogPostI18NContentId = :blogPostI18NContentId ORDER BY cbpc.created")
+@NamedQuery(name = CmsBlogPostCommentsEntity.SEARCH_BY_AJAX, query = "SELECT cbpc FROM CmsBlogPostCommentsEntity cbpc ORDER BY cbpc.created desc")
+@NamedQuery(name = CmsBlogPostCommentsEntity.SEARCH_BY_AJAX_COUNT, query = "SELECT COUNT(cbpc) FROM CmsBlogPostCommentsEntity cbpc ORDER BY cbpc.created desc")
+@NamedQuery(name = CmsBlogPostCommentsEntity.COUNT_COMMENTS_FOR_POST_I18N, query = "SELECT COUNT(cbpc) FROM CmsBlogPostCommentsEntity cbpc where cbpc.status = 'PUBLISHED' and cbpc.blogPostI18NContentId = :blogPostI18NContentId ORDER BY cbpc.created desc")
 public class CmsBlogPostCommentsEntity {
+
+    public static final String COUNT_FOR_AJAX_N = "CmsBlogPostCommentsEntity.getTotalNumberNotDeleted";
+    public static final String LIST_PUBLISHED_FOR_POST_I18N_CONTENT = "CmsBlogPostCommentsEntity.listPublishedForPostI18nContent";
+    public static final String SEARCH_BY_AJAX = "CmsBlogPostCommentsEntity.searchByAjax";
+    public static final String SEARCH_BY_AJAX_COUNT = "CmsBlogPostCommentsEntity.searchByAjaxCount";
+    public static final String COUNT_COMMENTS_FOR_POST_I18N = "CmsBlogPostCommentsEntity.countCommentsForPostI18n";
+
     private long id;
     private Integer parentCommentId;
     private long blogPostI18NContentId;
@@ -24,7 +38,7 @@ public class CmsBlogPostCommentsEntity {
     private String userName;
     private String email;
     private String status;
-    private Timestamp created;
+    private LocalDateTime created;
 
     @Id
     @Column(name = "id", nullable = false, precision = 0)
@@ -100,11 +114,11 @@ public class CmsBlogPostCommentsEntity {
 
     @Basic
     @Column(name = "created", nullable = false)
-    public Timestamp getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(Timestamp created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 

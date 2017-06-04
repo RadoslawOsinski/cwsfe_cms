@@ -34,20 +34,20 @@ class InitialConfigurationController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InitialConfigurationController.class);
 
-    private final CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    private final CmsGlobalParamsRepository cmsGlobalParamsDAO;
 
-    private final CmsUsersDAO cmsUsersDAO;
+    private final CmsUsersRepository cmsUsersDAO;
 
-    private final CmsRolesDAO cmsRolesDAO;
+    private final CmsRolesRepository cmsRolesDAO;
 
-    private final CmsUserRolesDAO cmsUserRolesDAO;
+    private final CmsUserRolesRepository cmsUserRolesDAO;
 
     @Autowired
-    public InitialConfigurationController(CmsUsersDAO cmsUsersDAO, CmsUserRolesDAO cmsUserRolesDAO, CmsRolesDAO cmsRolesDAO, CmsGlobalParamsDAO cmsGlobalParamsDAO) {
-        this.cmsUsersDAO = cmsUsersDAO;
-        this.cmsUserRolesDAO = cmsUserRolesDAO;
-        this.cmsRolesDAO = cmsRolesDAO;
-        this.cmsGlobalParamsDAO = cmsGlobalParamsDAO;
+    public InitialConfigurationController(CmsUsersRepository cmsUsersDAO, CmsUserRolesRepository cmsUserRolesDAO, CmsRolesRepository cmsRolesDAO, CmsGlobalParamsRepository cmsGlobalParamsDAO) {
+        this.cmsUsersRepository = cmsUsersDAO;
+        this.cmsUserRolesRepository = cmsUserRolesDAO;
+        this.cmsRolesRepository = cmsRolesDAO;
+        this.cmsGlobalParamsRepository = cmsGlobalParamsDAO;
     }
 
     @RequestMapping(value = "/configuration/initialConfiguration", method = RequestMethod.GET)

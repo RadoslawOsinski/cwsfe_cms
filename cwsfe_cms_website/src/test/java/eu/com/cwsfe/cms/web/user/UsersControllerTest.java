@@ -42,11 +42,11 @@ public class UsersControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsUsersDAO cmsUsersDAO;
+    private CmsUsersRepository cmsUsersDAO;
     @Mock
-    private CmsRolesDAO cmsRolesDAO;
+    private CmsRolesRepository cmsRolesDAO;
     @Mock
-    private CmsUserRolesDAO cmsUserRolesDAO;
+    private CmsUserRolesRepository cmsUserRolesDAO;
 
     @InjectMocks
     private UsersController usersController;

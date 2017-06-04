@@ -32,7 +32,7 @@ public class BlogPostCodeRestControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private BlogPostCodesDAO blogPostCodesDAO;
+    private BlogPostCodesRepository blogPostCodesDAO;
 
     @InjectMocks
     private BlogPostCodeRestController blogPostCodeRestController;

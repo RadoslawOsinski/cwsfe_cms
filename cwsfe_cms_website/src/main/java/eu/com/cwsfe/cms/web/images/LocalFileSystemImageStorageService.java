@@ -25,11 +25,11 @@ public class LocalFileSystemImageStorageService implements ImageStorageService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsNewsImagesController.class);
 
-    private final CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    private final CmsGlobalParamsRepository cmsGlobalParamsDAO;
 
     @Autowired
-    public LocalFileSystemImageStorageService(CmsGlobalParamsDAO cmsGlobalParamsDAO) {
-        this.cmsGlobalParamsDAO = cmsGlobalParamsDAO;
+    public LocalFileSystemImageStorageService(CmsGlobalParamsRepository cmsGlobalParamsDAO) {
+        this.cmsGlobalParamsRepository = cmsGlobalParamsDAO;
     }
 
     public String storeNewsImage(CmsNewsImage cmsNewsImage) {

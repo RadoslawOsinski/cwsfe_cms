@@ -43,11 +43,11 @@ public class BlogPostImagesControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private BlogPostImagesDAO blogPostImagesDAO;
+    private BlogPostImagesRepository blogPostImagesDAO;
     @Mock
     private ImageStorageService imageStorageService;
     @Mock
-    private CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    private CmsGlobalParamsRepository cmsGlobalParamsDAO;
 
     @InjectMocks
     private BlogPostImagesController blogPostImagesController;

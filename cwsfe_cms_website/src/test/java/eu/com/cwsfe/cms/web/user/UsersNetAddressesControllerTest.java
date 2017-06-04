@@ -37,10 +37,10 @@ public class UsersNetAddressesControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsUsersDAO cmsUsersDAO;
+    private CmsUsersRepository cmsUsersDAO;
 
     @Mock
-    private CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO;
+    private CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressDAO;
 
     @InjectMocks
     private UsersNetAddressesController usersNetAddressesController;

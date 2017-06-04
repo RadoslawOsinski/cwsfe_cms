@@ -36,7 +36,7 @@ public class MainCmsControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private BlogPostCommentsDAO blogPostCommentsDAO;
+    private BlogPostCommentsRepository blogPostCommentsDAO;
 
     @InjectMocks
     private MainCmsController mainCmsController;

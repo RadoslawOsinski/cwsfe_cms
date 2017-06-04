@@ -4,6 +4,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -13,9 +15,20 @@ import javax.persistence.Table;
  * Created by Radoslaw Osinski.
  */
 @Entity
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NamedQuery(name = CmsTextI18NEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(t) FROM CmsTextI18NEntity t")
+@NamedQuery(name = CmsTextI18NEntity.LIST, query = "SELECT t FROM CmsTextI18NEntity t order by i18NKey, i18NCategory")
+@NamedQuery(name = CmsTextI18NEntity.FIND_TRANSLATION, query = "SELECT t.i18NText FROM CmsTextI18NEntity t where " +
+    "t.langId in (select l.id from CmsLanguagesEntity l where l.code = :language2LetterCode) and " +
+    "t.i18NCategory IN (SELECT tc.ID FROM CmsTextI18NCategoriesEntity tc WHERE tc.category = :category) AND " +
+    "t.i18NKey = :key")
 @Table(name = "cms_text_i18n")
 public class CmsTextI18NEntity {
+
+    public static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "CmsTextI18NEntity.countForAjax";
+    public static final String LIST = "CmsTextI18NEntity.list";
+    public static final String FIND_TRANSLATION = "CmsTextI18NEntity.findTranslation";
+
     private long id;
     private long langId;
     private long i18NCategory;

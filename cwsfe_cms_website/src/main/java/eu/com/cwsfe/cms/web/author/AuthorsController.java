@@ -27,11 +27,11 @@ import java.util.ResourceBundle;
 @Controller
 public class AuthorsController extends JsonController {
 
-    private final CmsAuthorsDAO cmsAuthorsDAO;
+    private final CmsAuthorsRepository cmsAuthorsDAO;
 
     @Autowired
-    public AuthorsController(CmsAuthorsDAO cmsAuthorsDAO) {
-        this.cmsAuthorsDAO = cmsAuthorsDAO;
+    public AuthorsController(CmsAuthorsRepository cmsAuthorsDAO) {
+        this.cmsAuthorsRepository = cmsAuthorsDAO;
     }
 
     @RequestMapping(value = "/authors", method = RequestMethod.GET)

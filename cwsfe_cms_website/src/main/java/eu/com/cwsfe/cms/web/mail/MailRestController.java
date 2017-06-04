@@ -28,7 +28,7 @@ public class MailRestController {
 
     private JWTDecoratorService jwtDecoratorService;
 
-    private CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    private CmsGlobalParamsRepository cmsGlobalParamsDAO;
 
     @Lazy
     @Autowired
@@ -42,8 +42,8 @@ public class MailRestController {
     }
 
     @Autowired
-    public void setCmsGlobalParamsDAO(CmsGlobalParamsDAO cmsGlobalParamsDAO) {
-        this.cmsGlobalParamsDAO = cmsGlobalParamsDAO;
+    public void setCmsGlobalParamsDAO(CmsGlobalParamsRepository cmsGlobalParamsDAO) {
+        this.cmsGlobalParamsRepository = cmsGlobalParamsDAO;
     }
 
     @RequestMapping(value = "/rest/sendEmail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")

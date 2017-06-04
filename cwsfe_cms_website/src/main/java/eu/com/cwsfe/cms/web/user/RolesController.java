@@ -28,11 +28,11 @@ import java.util.ResourceBundle;
 @Controller
 public class RolesController extends JsonController {
 
-    private final CmsRolesDAO cmsRolesDAO;
+    private final CmsRolesRepository cmsRolesDAO;
 
     @Autowired
-    public RolesController(CmsRolesDAO cmsRolesDAO) {
-        this.cmsRolesDAO = cmsRolesDAO;
+    public RolesController(CmsRolesRepository cmsRolesDAO) {
+        this.cmsRolesRepository = cmsRolesDAO;
     }
 
     @RequestMapping(value = "/roles", method = RequestMethod.GET)

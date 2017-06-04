@@ -43,11 +43,11 @@ public class CmsNewsImagesControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsNewsImagesDAO cmsNewsImagesDAO;
+    private CmsNewsImagesRepository cmsNewsImagesDAO;
     @Mock
     private ImageStorageService imageStorageService;
     @Mock
-    private CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    private CmsGlobalParamsRepository cmsGlobalParamsDAO;
 
     @InjectMocks
     private CmsNewsImagesController cmsNewsImagesController;

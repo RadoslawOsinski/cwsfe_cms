@@ -26,13 +26,13 @@ import static org.junit.Assert.*;
 public class CmsTextI18nDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private CmsTextI18nDAO dao;
+    private CmsTextI18nRepository dao;
 
     @Autowired
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    private CmsLanguagesRepository cmsLanguagesDAO;
 
     @Autowired
-    private CmsTextI18nCategoryDAO cmsTextI18nCategoryDAO;
+    private CmsTextI18nCategoryRepository cmsTextI18nCategoryDAO;
 
     private static final Language LANGUAGE_EN = new Language();
     private static final CmsTextI18nCategory CATEGORY = new CmsTextI18nCategory();

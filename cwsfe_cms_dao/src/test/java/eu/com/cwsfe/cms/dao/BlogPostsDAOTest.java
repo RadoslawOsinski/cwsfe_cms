@@ -27,13 +27,13 @@ import static org.junit.Assert.*;
 public class BlogPostsDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private BlogPostsDAO dao;
+    private BlogPostsRepository dao;
 
     @Autowired
-    private CmsAuthorsDAO authorsDao;
+    private CmsAuthorsRepository authorsDao;
 
     @Autowired
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    private CmsLanguagesRepository cmsLanguagesDAO;
 
     private static final CmsAuthor CMS_AUTHOR = new CmsAuthor();
     private static final Language LANGUAGE_EN = new Language();

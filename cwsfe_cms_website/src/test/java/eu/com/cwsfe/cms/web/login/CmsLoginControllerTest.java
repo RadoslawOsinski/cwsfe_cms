@@ -29,7 +29,7 @@ public class CmsLoginControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    private CmsGlobalParamsRepository cmsGlobalParamsDAO;
 
     @InjectMocks
     private CmsLoginController cmsLoginController;

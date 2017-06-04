@@ -16,11 +16,11 @@ import java.util.Properties;
 @Service
 public class CmsMailSender extends JavaMailSenderImpl {
 
-    private final CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    private final CmsGlobalParamsRepository cmsGlobalParamsDAO;
 
     @Autowired
-    public CmsMailSender(CmsGlobalParamsDAO cmsGlobalParamsDAO) {
-        this.cmsGlobalParamsDAO = cmsGlobalParamsDAO;
+    public CmsMailSender(CmsGlobalParamsRepository cmsGlobalParamsDAO) {
+        this.cmsGlobalParamsRepository = cmsGlobalParamsDAO;
     }
 
     @PostConstruct

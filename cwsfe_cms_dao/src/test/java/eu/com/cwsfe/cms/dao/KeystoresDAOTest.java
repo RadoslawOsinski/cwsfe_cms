@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 public class KeystoresDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private KeystoresDAO dao;
+    private KeystoresRepository dao;
 
     @Test
     public void add() throws Exception {

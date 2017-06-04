@@ -4,6 +4,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -13,9 +15,17 @@ import javax.persistence.Table;
  * Created by Radoslaw Osinski.
  */
 @Entity
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NamedQuery(name = CmsNewsI18NContentsEntity.LIST, query = "SELECT cni FROM CmsNewsI18NContentsEntity cni WHERE status <> 'DELETED' ORDER BY newsId DESC")
+@NamedQuery(name = CmsNewsI18NContentsEntity.LIST_FOR_NEWS, query = "SELECT cni FROM CmsNewsI18NContentsEntity cni WHERE status <> 'DELETED' ORDER BY newsId DESC")
+@NamedQuery(name = CmsNewsI18NContentsEntity.GET_BY_LANGUAGE_FOR_NEWS, query = "SELECT cni FROM CmsNewsI18NContentsEntity cni WHERE newsId = :newsId and languageId = :languageId")
 @Table(name = "cms_news_i18n_contents")
 public class CmsNewsI18NContentsEntity {
+
+    public static final String LIST = "CmsNewsI18NContentsEntity.list";
+    public static final String LIST_FOR_NEWS = "CmsNewsI18NContentsEntity.listForNews";
+    public static final String GET_BY_LANGUAGE_FOR_NEWS = "CmsNewsI18NContentsEntity.getByLanguageForNews";
+
     private long id;
     private long newsId;
     private long languageId;

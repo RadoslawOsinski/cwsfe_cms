@@ -28,7 +28,7 @@ public class JWTDecoratorService {
     private Environment environment;
 
     @Resource
-    private KeystoresDAO keystoresDAO;
+    private KeystoresRepository keystoresDAO;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JWTDecoratorService.class);
 

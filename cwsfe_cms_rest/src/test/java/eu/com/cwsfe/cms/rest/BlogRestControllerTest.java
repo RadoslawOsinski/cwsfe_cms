@@ -38,11 +38,11 @@ public class BlogRestControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private BlogPostsDAO blogPostsDAO;
+    private BlogPostsRepository blogPostsDAO;
     @Mock
-    private BlogPostI18nContentsDAO blogPostI18nContentsDAO;
+    private BlogPostI18nContentsRepository blogPostI18nContentsDAO;
     @Mock
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    private CmsLanguagesRepository cmsLanguagesDAO;
 
     @InjectMocks
     private BlogRestController blogRestController;

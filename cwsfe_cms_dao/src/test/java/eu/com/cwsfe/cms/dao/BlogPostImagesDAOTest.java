@@ -28,13 +28,13 @@ import static org.junit.Assert.*;
 public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private BlogPostImagesDAO dao;
+    private BlogPostImagesRepository dao;
 
     @Autowired
-    private BlogPostsDAO postsDao;
+    private BlogPostsRepository postsDao;
 
     @Autowired
-    private CmsAuthorsDAO authorsDao;
+    private CmsAuthorsRepository authorsDao;
 
     private static final CmsAuthor CMS_AUTHOR = new CmsAuthor();
     private static final BlogPost BLOG_POST = new BlogPost();
@@ -99,16 +99,6 @@ public class BlogPostImagesDAOTest extends AbstractTransactionalJUnit4SpringCont
         //given
         //when
         List<BlogPostImage> blogPostImages = dao.listForPost(1L);
-
-        //then
-        assertNotNull(blogPostImages);
-    }
-
-    @Test
-    public void testListWithContent() throws Exception {
-        //given
-        //when
-        List<BlogPostImage> blogPostImages = dao.listWithContent();
 
         //then
         assertNotNull(blogPostImages);

@@ -37,15 +37,15 @@ import java.util.stream.Collectors;
 @Controller
 class UsersController extends JsonController {
 
-    private final CmsUsersDAO cmsUsersDAO;
-    private final CmsRolesDAO cmsRolesDAO;
-    private final CmsUserRolesDAO cmsUserRolesDAO;
+    private final CmsUsersRepository cmsUsersDAO;
+    private final CmsRolesRepository cmsRolesDAO;
+    private final CmsUserRolesRepository cmsUserRolesDAO;
 
     @Autowired
-    public UsersController(CmsUsersDAO cmsUsersDAO, CmsRolesDAO cmsRolesDAO, CmsUserRolesDAO cmsUserRolesDAO) {
-        this.cmsUsersDAO = cmsUsersDAO;
-        this.cmsRolesDAO = cmsRolesDAO;
-        this.cmsUserRolesDAO = cmsUserRolesDAO;
+    public UsersController(CmsUsersRepository cmsUsersDAO, CmsRolesRepository cmsRolesDAO, CmsUserRolesRepository cmsUserRolesDAO) {
+        this.cmsUsersRepository = cmsUsersDAO;
+        this.cmsRolesRepository = cmsRolesDAO;
+        this.cmsUserRolesRepository = cmsUserRolesDAO;
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)

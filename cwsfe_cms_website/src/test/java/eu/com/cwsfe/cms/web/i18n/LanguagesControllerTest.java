@@ -36,7 +36,7 @@ public class LanguagesControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    private CmsLanguagesRepository cmsLanguagesDAO;
 
     @InjectMocks
     private LanguagesController languagesController;

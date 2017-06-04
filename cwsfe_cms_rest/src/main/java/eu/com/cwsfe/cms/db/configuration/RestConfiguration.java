@@ -20,7 +20,7 @@ import java.util.ArrayList;
  */
 @ComponentScan("eu.com.cwsfe.cms.rest")
 @Configuration
-@Import(value = {DaoConfiguration.class, RepositoryConfiguration.class})
+@Import(value = {RepositoryConfiguration.class, RepositoryConfiguration.class})
 @EnableWebMvc
 public class RestConfiguration extends WebMvcConfigurationSupport {
 

@@ -1,7 +1,5 @@
-//rootProject.name = 'caap_cms'
-include "cwsfe_cms_dao"
 include "cwsfe_cms_repository"
 include "cwsfe_cms_services"
-include "cwsfe_cms_rest"
-include "cwsfe_cms_website"
-include "cwsfe_cms_website_integration_tests"
+//include "cwsfe_cms_rest" //todo to uncomment!
+//include "cwsfe_cms_website"  //todo to uncomment!
+//include "cwsfe_cms_website_integration_tests"  //todo to uncomment!

@@ -28,13 +28,13 @@ public class AWSBucketImageStorageService implements ImageStorageService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsNewsImagesController.class);
 
-    private final CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    private final CmsGlobalParamsRepository cmsGlobalParamsDAO;
 
     private final AmazonS3 amazonS3;
 
     @Autowired
-    public AWSBucketImageStorageService(CmsGlobalParamsDAO cmsGlobalParamsDAO, AmazonS3 amazonS3) {
-        this.cmsGlobalParamsDAO = cmsGlobalParamsDAO;
+    public AWSBucketImageStorageService(CmsGlobalParamsRepository cmsGlobalParamsDAO, AmazonS3 amazonS3) {
+        this.cmsGlobalParamsRepository = cmsGlobalParamsDAO;
         this.amazonS3 = amazonS3;
     }
 

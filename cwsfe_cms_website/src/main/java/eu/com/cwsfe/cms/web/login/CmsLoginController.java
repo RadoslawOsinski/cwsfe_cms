@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 class CmsLoginController {
 
-    private final CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    private final CmsGlobalParamsRepository cmsGlobalParamsDAO;
 
     @Autowired
-    public CmsLoginController(CmsGlobalParamsDAO cmsGlobalParamsDAO) {
-        this.cmsGlobalParamsDAO = cmsGlobalParamsDAO;
+    public CmsLoginController(CmsGlobalParamsRepository cmsGlobalParamsDAO) {
+        this.cmsGlobalParamsRepository = cmsGlobalParamsDAO;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)

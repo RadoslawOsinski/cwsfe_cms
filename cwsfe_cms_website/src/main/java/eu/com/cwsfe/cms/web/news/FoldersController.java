@@ -28,11 +28,11 @@ import java.util.ResourceBundle;
 @Controller
 public class FoldersController extends JsonController {
 
-    private final CmsFoldersDAO cmsFoldersDAO;
+    private final CmsFoldersRepository cmsFoldersDAO;
 
     @Autowired
-    public FoldersController(CmsFoldersDAO cmsFoldersDAO) {
-        this.cmsFoldersDAO = cmsFoldersDAO;
+    public FoldersController(CmsFoldersRepository cmsFoldersDAO) {
+        this.cmsFoldersRepository = cmsFoldersDAO;
     }
 
     @RequestMapping(value = "/folders", method = RequestMethod.GET)

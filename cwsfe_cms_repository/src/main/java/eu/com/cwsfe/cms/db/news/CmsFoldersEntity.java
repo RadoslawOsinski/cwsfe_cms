@@ -4,6 +4,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -13,9 +15,19 @@ import javax.persistence.Table;
  * Created by Radoslaw Osinski.
  */
 @Entity
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NamedQuery(name = CmsFoldersEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(f) FROM CmsFoldersEntity f WHERE status <> 'DELETED'")
+@NamedQuery(name = CmsFoldersEntity.LIST, query = "SELECT f FROM CmsFoldersEntity f WHERE status = 'NEW' ORDER BY order_number")
+@NamedQuery(name = CmsFoldersEntity.LIST_FOLDERS_FOR_DROP_LIST, query = "SELECT f FROM CmsFoldersEntity f WHERE status = 'NEW' lower(folderName) LIKE lower(:folderName) ORDER BY orderNumber")
+@NamedQuery(name = CmsFoldersEntity.GET_BY_FOLDER_NAME, query = "SELECT f FROM CmsFoldersEntity f WHERE folderName = :folderName")
 @Table(name = "cms_folders")
 public class CmsFoldersEntity {
+
+    public static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "CmsFoldersEntity.countForAjax";
+    public static final String LIST = "CmsFoldersEntity.list";
+    public static final String LIST_FOLDERS_FOR_DROP_LIST = "CmsFoldersEntity.listFoldersForDropList";
+    public static final String GET_BY_FOLDER_NAME = "CmsFoldersEntity.listFoldersForDropList";
+
     private long id;
     private Integer parentId;
     private String folderName;

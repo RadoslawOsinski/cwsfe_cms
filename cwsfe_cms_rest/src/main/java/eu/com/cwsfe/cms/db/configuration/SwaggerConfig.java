@@ -2,6 +2,7 @@ package eu.com.cwsfe.cms.db.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.PathSelectors;
@@ -22,9 +23,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
         return new Docket(DocumentationType.SWAGGER_2)
             .groupName("CWSFE CMS Rest API")
             .select()
-            .apis(RequestHandlerSelectors.any())
-            .paths(PathSelectors.ant("/rest/**"))
-            .build();
+            .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class)).build();
     }
 
     @Override

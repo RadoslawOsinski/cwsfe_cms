@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 public class CmsFoldersDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private CmsFoldersDAO dao;
+    private CmsFoldersRepository dao;
 
     @Test
     public void testCountForAjax() throws Exception {

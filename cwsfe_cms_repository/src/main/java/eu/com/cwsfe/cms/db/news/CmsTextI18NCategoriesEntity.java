@@ -4,6 +4,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -13,9 +15,17 @@ import javax.persistence.Table;
  * Created by Radoslaw Osinski.
  */
 @Entity
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NamedQuery(name = CmsTextI18NCategoriesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(tic) FROM CmsTextI18NCategoriesEntity tic")
+@NamedQuery(name = CmsTextI18NCategoriesEntity.LIST, query = "SELECT tic FROM CmsTextI18NCategoriesEntity tic order by category")
+@NamedQuery(name = CmsTextI18NCategoriesEntity.LIST_FOR_DROP_LIST, query = "SELECT tic FROM CmsTextI18NCategoriesEntity tic status = 'NEW' AND lower(category) LIKE lower(:category) order by category")
 @Table(name = "cms_text_i18n_categories")
 public class CmsTextI18NCategoriesEntity {
+
+    public static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "CmsTextI18NCategoriesEntity.countForAjax";
+    public static final String LIST = "CmsTextI18NCategoriesEntity.list";
+    public static final String LIST_FOR_DROP_LIST = "CmsTextI18NCategoriesEntity.listForDropList";
+
     private long id;
     private String category;
     private String status;

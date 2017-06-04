@@ -27,14 +27,14 @@ import java.util.List;
 @Controller
 class MainCmsController extends JsonController {
 
-    private final BlogPostCommentsDAO blogPostCommentsDAO;
+    private final BlogPostCommentsRepository blogPostCommentsDAO;
 
     private static final DateTimeFormatter DATE_FORMAT = new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd HH:mm:ss").
         toFormatter().withZone(ZoneId.systemDefault());
 
     @Autowired
-    public MainCmsController(BlogPostCommentsDAO blogPostCommentsDAO) {
-        this.blogPostCommentsDAO = blogPostCommentsDAO;
+    public MainCmsController(BlogPostCommentsRepository blogPostCommentsDAO) {
+        this.blogPostCommentsRepository = blogPostCommentsDAO;
     }
 
     @RequestMapping(value = "/Main", method = RequestMethod.GET)

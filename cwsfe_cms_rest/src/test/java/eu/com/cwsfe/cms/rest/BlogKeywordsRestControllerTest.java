@@ -42,9 +42,9 @@ public class BlogKeywordsRestControllerTest {
     @Mock
     private BlogKeywordsRepository blogKeywordsRepository;
     @Mock
-    private BlogPostKeywordsDAO blogPostKeywordsDAO;
+    private BlogPostKeywordsRepository blogPostKeywordsDAO;
     @Mock
-    private CmsTextI18nDAO cmsTextI18nDAO;
+    private CmsTextI18nRepository cmsTextI18nDAO;
 
     @InjectMocks
     private BlogKeywordsRestController blogKeywordsRestController;

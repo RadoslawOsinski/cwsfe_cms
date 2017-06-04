@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 public class CmsGlobalParamsDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private CmsGlobalParamsDAO dao;
+    private CmsGlobalParamsRepository dao;
 
     @Test
     public void testCountForAjax() throws Exception {

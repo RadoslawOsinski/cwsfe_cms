@@ -30,15 +30,15 @@ import java.util.ResourceBundle;
 @Controller
 public class CmsTextI18nController extends JsonController {
 
-    private final CmsTextI18nDAO cmsTextI18nDAO;
-    private final CmsTextI18nCategoryDAO cmsTextI18nCategoryDAO;
-    private final CmsLanguagesDAO cmsLanguagesDAO;
+    private final CmsTextI18nRepository cmsTextI18nDAO;
+    private final CmsTextI18nCategoryRepository cmsTextI18nCategoryDAO;
+    private final CmsLanguagesRepository cmsLanguagesDAO;
 
     @Autowired
-    public CmsTextI18nController(CmsTextI18nCategoryDAO cmsTextI18nCategoryDAO, CmsLanguagesDAO cmsLanguagesDAO, CmsTextI18nDAO cmsTextI18nDAO) {
-        this.cmsTextI18nCategoryDAO = cmsTextI18nCategoryDAO;
-        this.cmsLanguagesDAO = cmsLanguagesDAO;
-        this.cmsTextI18nDAO = cmsTextI18nDAO;
+    public CmsTextI18nController(CmsTextI18nCategoryRepository cmsTextI18nCategoryDAO, CmsLanguagesRepository cmsLanguagesDAO, CmsTextI18nRepository cmsTextI18nDAO) {
+        this.cmsTextI18nCategoryRepository = cmsTextI18nCategoryDAO;
+        this.cmsLanguagesRepository = cmsLanguagesDAO;
+        this.cmsTextI18nRepository = cmsTextI18nDAO;
     }
 
     @RequestMapping(value = "/cmsTextI18n", method = RequestMethod.GET)

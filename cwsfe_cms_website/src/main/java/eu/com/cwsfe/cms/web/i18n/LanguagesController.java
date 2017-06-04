@@ -28,11 +28,11 @@ import java.util.ResourceBundle;
 @Controller
 class LanguagesController extends JsonController {
 
-    private final CmsLanguagesDAO cmsLanguagesDAO;
+    private final CmsLanguagesRepository cmsLanguagesDAO;
 
     @Autowired
-    public LanguagesController(CmsLanguagesDAO cmsLanguagesDAO) {
-        this.cmsLanguagesDAO = cmsLanguagesDAO;
+    public LanguagesController(CmsLanguagesRepository cmsLanguagesDAO) {
+        this.cmsLanguagesRepository = cmsLanguagesDAO;
     }
 
     @RequestMapping(value = "/languages", method = RequestMethod.GET)

@@ -36,7 +36,7 @@ public class NewsTypesControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private NewsTypesDAO newsTypesDAO;
+    private NewsTypesRepository newsTypesDAO;
 
     @InjectMocks
     private NewsTypesController newsTypesController;

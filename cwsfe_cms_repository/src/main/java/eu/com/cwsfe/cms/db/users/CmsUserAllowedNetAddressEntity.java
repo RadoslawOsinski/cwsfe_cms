@@ -3,19 +3,29 @@ package eu.com.cwsfe.cms.db.users;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * Created by Radoslaw Osinski.
  */
 @Entity
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NamedQuery(name = CmsUserAllowedNetAddressEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(uana) FROM CmsUserAllowedNetAddressEntity uana")
+@NamedQuery(name = CmsUserAllowedNetAddressEntity.LIST, query = "SELECT uana FROM CmsUserAllowedNetAddressEntity uana ORDER BY inetAddress")
+@NamedQuery(name = CmsUserAllowedNetAddressEntity.COUNT_ADDRESSES_FOR_USER, query = "SELECT count(uana) FROM CmsUserAllowedNetAddressEntity uana where userId = :userId")
+@NamedQuery(name = CmsUserAllowedNetAddressEntity.LIST_FOR_USER, query = "SELECT uana FROM CmsUserAllowedNetAddressEntity uana where userId = :userId ORDER BY inetAddress")
 @Table(name = "cms_user_allowed_net_address")
 public class CmsUserAllowedNetAddressEntity {
+
+    public static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "CmsUserAllowedNetAddressEntity.countForAjax";
+    public static final String LIST = "CmsUserAllowedNetAddressEntity.list";
+    public static final String COUNT_ADDRESSES_FOR_USER = "CmsUserAllowedNetAddressEntity.countAddressesForUser";
+    public static final String LIST_FOR_USER = "CmsUserAllowedNetAddressEntity.listForUser";
+
     private long id;
     private long userId;
     private String inetAddress;

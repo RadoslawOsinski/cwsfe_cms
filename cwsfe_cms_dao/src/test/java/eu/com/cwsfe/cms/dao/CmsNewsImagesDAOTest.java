@@ -28,19 +28,19 @@ import static org.junit.Assert.*;
 public class CmsNewsImagesDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private CmsNewsImagesDAO dao;
+    private CmsNewsImagesRepository dao;
 
     @Autowired
-    private CmsNewsDAO newsDao;
+    private CmsNewsRepository newsDao;
 
     @Autowired
-    private NewsTypesDAO newsTypesDAO;
+    private NewsTypesRepository newsTypesDAO;
 
     @Autowired
-    private CmsFoldersDAO cmsFoldersDAO;
+    private CmsFoldersRepository cmsFoldersDAO;
 
     @Autowired
-    private CmsAuthorsDAO authorsDao;
+    private CmsAuthorsRepository authorsDao;
 
     private static final CmsAuthor CMS_AUTHOR = new CmsAuthor();
     private static final NewsType NEWS_TYPE = new NewsType();

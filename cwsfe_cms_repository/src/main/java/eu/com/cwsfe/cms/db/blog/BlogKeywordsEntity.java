@@ -51,7 +51,7 @@ public class BlogKeywordsEntity {
     }
 
     @Basic
-    @Column(name = "status", nullable = false, length = 1)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     public NewDeletedStatus getStatus() {
         return status;

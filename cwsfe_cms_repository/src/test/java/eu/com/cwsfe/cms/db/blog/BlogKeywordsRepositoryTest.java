@@ -2,6 +2,7 @@ package eu.com.cwsfe.cms.db.blog;
 
 import eu.com.cwsfe.cms.RepositoriesTestsConfiguration;
 import eu.com.cwsfe.cms.db.common.NewDeletedStatus;
+import eu.com.cwsfe.cms.db.version.DbMigrationManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ import static org.junit.Assert.*;
 @ExtendWith(SpringExtension.class)
 @Transactional
 @Rollback
-@ContextConfiguration(classes = {RepositoriesTestsConfiguration.class, BlogKeywordsRepository.class, BlogKeywordsEntity.class})
-@IfProfileValue(name = "test-groups", values = {"integration-tests-local"})
+@ContextConfiguration(classes = {RepositoriesTestsConfiguration.class, DbMigrationManager.class, BlogKeywordsRepository.class, BlogKeywordsEntity.class})
+//@IfProfileValue(name = "test-groups", values = {"integration-tests-local"})
 class BlogKeywordsRepositoryTest {
 
     @Autowired

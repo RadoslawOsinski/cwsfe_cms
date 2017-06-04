@@ -34,14 +34,14 @@ public class BlogPostImagesController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BlogPostImagesController.class);
 
-    private final BlogPostImagesDAO blogPostImagesDAO;
+    private final BlogPostImagesRepository blogPostImagesDAO;
 
     private final ImageStorageService imageStorageService;
 
     @Autowired
-    public BlogPostImagesController(ImageStorageService imageStorageService, BlogPostImagesDAO blogPostImagesDAO) {
+    public BlogPostImagesController(ImageStorageService imageStorageService, BlogPostImagesRepository blogPostImagesDAO) {
         this.imageStorageService = imageStorageService;
-        this.blogPostImagesDAO = blogPostImagesDAO;
+        this.blogPostImagesRepository = blogPostImagesDAO;
     }
 
     @RequestMapping(value = "/blogPosts/blogPostImagesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

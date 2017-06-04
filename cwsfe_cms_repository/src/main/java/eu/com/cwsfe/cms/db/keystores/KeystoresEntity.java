@@ -1,9 +1,12 @@
 package eu.com.cwsfe.cms.db.keystores;
 
+import eu.com.cwsfe.cms.db.blog.CmsBlogPostCommentsEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -13,9 +16,13 @@ import javax.persistence.Table;
  * Created by Radoslaw Osinski.
  */
 @Entity
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NamedQuery(name = KeystoresEntity.GET_BY_NAME, query = "SELECT k FROM KeystoresEntity k where name = :name")
 @Table(name = "keystores")
 public class KeystoresEntity {
+
+    public static final String GET_BY_NAME = "KeystoresEntity.getByName";
+
     private long id;
     private String name;
     private byte[] content;

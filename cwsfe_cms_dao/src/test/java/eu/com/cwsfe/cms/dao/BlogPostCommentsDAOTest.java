@@ -33,19 +33,19 @@ import static org.junit.Assert.*;
 public class BlogPostCommentsDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private BlogPostCommentsDAO dao;
+    private BlogPostCommentsRepository dao;
 
     @Autowired
-    private BlogPostsDAO postsDao;
+    private BlogPostsRepository postsDao;
 
     @Autowired
-    private BlogPostI18nContentsDAO blogPostI18nContentsDAO;
+    private BlogPostI18nContentsRepository blogPostI18nContentsDAO;
 
     @Autowired
-    private CmsAuthorsDAO authorsDao;
+    private CmsAuthorsRepository authorsDao;
 
     @Autowired
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    private CmsLanguagesRepository cmsLanguagesDAO;
 
     private static final CmsAuthor CMS_AUTHOR = new CmsAuthor();
     private static final BlogPost BLOG_POST = new BlogPost();

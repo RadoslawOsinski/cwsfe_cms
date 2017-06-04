@@ -35,7 +35,7 @@ public class FoldersControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsFoldersDAO cmsFoldersDAO;
+    private CmsFoldersRepository cmsFoldersDAO;
 
     @InjectMocks
     private FoldersController foldersController;

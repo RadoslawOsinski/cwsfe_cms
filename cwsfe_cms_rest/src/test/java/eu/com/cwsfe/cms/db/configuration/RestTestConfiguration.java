@@ -54,7 +54,7 @@ public class RestTestConfiguration extends WebMvcConfigurationSupport {
     }
 
     /**
-     * DAO already tested. Mock tests should be fast
+     * Repository already tested. Mock tests should be fast
      */
     @Bean
     public JdbcTemplate getJdbcTemplate() {

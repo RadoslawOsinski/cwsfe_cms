@@ -28,11 +28,11 @@ public class AWSClientInitializer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AWSClientInitializer.class);
 
-    private final CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    private final CmsGlobalParamsRepository cmsGlobalParamsDAO;
 
     @Autowired
-    public AWSClientInitializer(CmsGlobalParamsDAO cmsGlobalParamsDAO) {
-        this.cmsGlobalParamsDAO = cmsGlobalParamsDAO;
+    public AWSClientInitializer(CmsGlobalParamsRepository cmsGlobalParamsDAO) {
+        this.cmsGlobalParamsRepository = cmsGlobalParamsDAO;
     }
 
     @Bean

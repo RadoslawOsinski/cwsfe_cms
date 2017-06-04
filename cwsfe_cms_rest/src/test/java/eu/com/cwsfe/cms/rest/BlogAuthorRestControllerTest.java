@@ -30,7 +30,7 @@ public class BlogAuthorRestControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsAuthorsDAO cmsAuthorsDAO;
+    private CmsAuthorsRepository cmsAuthorsDAO;
 
     @InjectMocks
     private BlogAuthorRestController blogAuthorRestController;

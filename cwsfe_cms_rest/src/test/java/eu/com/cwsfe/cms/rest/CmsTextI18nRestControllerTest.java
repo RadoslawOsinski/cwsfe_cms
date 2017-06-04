@@ -30,7 +30,7 @@ public class CmsTextI18nRestControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsTextI18nDAO cmsTextI18nDAO;
+    private CmsTextI18nRepository cmsTextI18nDAO;
 
     @InjectMocks
     private CmsTextI18nRestController cmsTextI18nRestController;

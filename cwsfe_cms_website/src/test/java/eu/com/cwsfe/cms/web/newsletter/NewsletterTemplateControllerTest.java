@@ -39,9 +39,9 @@ public class NewsletterTemplateControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private NewsletterTemplateDAO newsletterTemplateDAO;
+    private NewsletterTemplateRepository newsletterTemplateDAO;
     @Mock
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    private CmsLanguagesRepository cmsLanguagesDAO;
     @Mock
     private JavaMailSender cmsMailSender;
 

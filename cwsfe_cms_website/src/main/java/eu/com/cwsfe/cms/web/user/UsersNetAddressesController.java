@@ -29,14 +29,14 @@ import java.util.ResourceBundle;
 @Controller
 class UsersNetAddressesController extends JsonController {
 
-    private final CmsUsersDAO cmsUsersDAO;
+    private final CmsUsersRepository cmsUsersDAO;
 
-    private final CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO;
+    private final CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressDAO;
 
     @Autowired
-    public UsersNetAddressesController(CmsUserAllowedNetAddressDAO cmsUserAllowedNetAddressDAO, CmsUsersDAO cmsUsersDAO) {
-        this.cmsUserAllowedNetAddressDAO = cmsUserAllowedNetAddressDAO;
-        this.cmsUsersDAO = cmsUsersDAO;
+    public UsersNetAddressesController(CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressDAO, CmsUsersRepository cmsUsersDAO) {
+        this.cmsUserAllowedNetAddressRepository = cmsUserAllowedNetAddressDAO;
+        this.cmsUsersRepository = cmsUsersDAO;
     }
 
     @RequestMapping(value = "/usersNetAddresses", method = RequestMethod.GET)

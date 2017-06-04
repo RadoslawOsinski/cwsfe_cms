@@ -33,7 +33,7 @@ public class RolesControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsRolesDAO cmsRolesDAO;
+    private CmsRolesRepository cmsRolesDAO;
 
     @InjectMocks
     private RolesController rolesController;

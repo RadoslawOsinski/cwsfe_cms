@@ -25,10 +25,10 @@ import static org.junit.Assert.*;
 public class CmsUserAllowedNetAddressDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private CmsUserAllowedNetAddressDAO dao;
+    private CmsUserAllowedNetAddressRepository dao;
 
     @Autowired
-    private CmsUsersDAO userDao;
+    private CmsUsersRepository userDao;
 
     private static final CmsUser CMS_USER = new CmsUser();
 

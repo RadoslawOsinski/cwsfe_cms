@@ -39,13 +39,13 @@ public class InitialConfigurationControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    private CmsGlobalParamsRepository cmsGlobalParamsDAO;
     @Mock
-    private CmsUsersDAO cmsUsersDAO;
+    private CmsUsersRepository cmsUsersDAO;
     @Mock
-    private CmsRolesDAO cmsRolesDAO;
+    private CmsRolesRepository cmsRolesDAO;
     @Mock
-    private CmsUserRolesDAO cmsUserRolesDAO;
+    private CmsUserRolesRepository cmsUserRolesDAO;
 
     @InjectMocks
     private InitialConfigurationController initialConfigurationController;

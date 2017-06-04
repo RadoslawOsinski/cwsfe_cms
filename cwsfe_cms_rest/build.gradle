@@ -16,7 +16,6 @@ group = "eu.com.cwsfe.cms"
 compileJava.options.encoding = 'UTF-8'
 
 dependencies {
-    compile project(':cwsfe_cms_dao')
     compile project(':cwsfe_cms_services')
     compile group: 'org.springframework', name: 'spring-webmvc', version: project.ext.spring_version
     compile group: 'org.springframework', name: 'spring-tx', version: project.ext.spring_version
@@ -31,7 +30,6 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: project.ext.jackson_version
     compile group: 'io.springfox', name: 'springfox-swagger2', version: project.ext.swagger_version
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: project.ext.swagger_version
-    testCompile project(path: ':cwsfe_cms_dao', configuration: 'tests')
     testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: project.ext.servlet_api_version //3.1.0 -newer version has problems with tests
     testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: project.ext.junit5_platform_version
     testCompile group: 'org.springframework', name: 'spring-test', version: project.ext.spring_version

@@ -29,10 +29,10 @@ public class DataSourceTestConfiguration {
     public DataSource getTestCwsfeCmsDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(environment.getProperty("cwsfe_cms.jdbc.driverClassName", "org.postgresql.Driver"));
-        dataSource.setUrl(environment.getProperty("cwsfe_cms.jdbc.url"));
-        dataSource.setUsername(environment.getProperty("cwsfe_cms.jdbc.user"));
-        dataSource.setPassword(environment.getProperty("cwsfe_cms.jdbc.password"));
-        dataSource.setSchema(environment.getProperty("cwsfe_cms.jdbc.schema"));
+        dataSource.setUrl(environment.getProperty("cwsfe_cms.jdbc.url", "jdbc:postgresql://localhost:55432/postgres"));
+        dataSource.setUsername(environment.getProperty("cwsfe_cms.jdbc.user", "postgres"));
+        dataSource.setPassword(environment.getProperty("cwsfe_cms.jdbc.password", "postgres"));
+        dataSource.setSchema(environment.getProperty("cwsfe_cms.jdbc.schema", "postgres"));
         return dataSource;
     }
 

@@ -4,6 +4,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -14,9 +16,17 @@ import java.sql.Timestamp;
  * Created by Radoslaw Osinski.
  */
 @Entity
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NamedQuery(name = BlogPostImagesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(bpi) FROM BlogPostImagesEntity bpi WHERE status <> 'DELETED'")
+@NamedQuery(name = BlogPostImagesEntity.SEARCH_BY_AJAX_QUERY, query = "SELECT bpi FROM BlogPostImagesEntity bpi WHERE status <> 'DELETED' AND blogPostId = :postId ORDER BY created DESC")
+@NamedQuery(name = BlogPostImagesEntity.COUNT_TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(bpi) FROM BlogPostImagesEntity bpi WHERE status <> 'DELETED' AND blogPostId = :postId ORDER BY created DESC")
 @Table(name = "blog_post_images")
 public class BlogPostImagesEntity {
+
+    public static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "BlogPostImagesEntity.getTotalNumberNotDeleted";
+    public static final String SEARCH_BY_AJAX_QUERY = "BlogPostImagesEntity.searchByAjaxWithoutContent";
+    public static final String COUNT_TOTAL_NUMBER_NOT_DELETED_QUERY = "BlogPostImagesEntity.searchByAjaxCountWithoutContent";
+
     private long id;
     private long blogPostId;
     private String title;

@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 public class NewsTypesDAOTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private NewsTypesDAO dao;
+    private NewsTypesRepository dao;
 
     @Test
     public void testCountForAjax() throws Exception {

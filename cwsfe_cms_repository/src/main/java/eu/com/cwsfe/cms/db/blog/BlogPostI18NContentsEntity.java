@@ -3,19 +3,23 @@ package eu.com.cwsfe.cms.db.blog;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * Created by Radoslaw Osinski.
  */
 @Entity
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NamedQuery(name = BlogPostI18NContentsEntity.GET_BY_LANGUAGE_FOR_POST, query = "SELECT count(bpic) FROM BlogPostI18NContentsEntity bpic WHERE languageId = :languageId AND postId = :postId")
 @Table(name = "blog_post_i18n_contents")
 public class BlogPostI18NContentsEntity {
+
+    public static final String GET_BY_LANGUAGE_FOR_POST = "BlogPostI18NContentsEntity.getByLanguageForPost";
+
     private long id;
     private long postId;
     private long languageId;

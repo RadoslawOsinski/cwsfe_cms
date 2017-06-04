@@ -42,15 +42,15 @@ public class BlogPostsControllerTest {
     @Mock
     private BlogKeywordsService blogKeywordsService;
     @Mock
-    private BlogPostKeywordsDAO blogPostKeywordsDAO;
+    private BlogPostKeywordsRepository blogPostKeywordsDAO;
     @Mock
-    private BlogPostI18nContentsDAO blogPostI18nContentsDAO;
+    private BlogPostI18nContentsRepository blogPostI18nContentsDAO;
     @Mock
-    private BlogPostsDAO blogPostsDAO;
+    private BlogPostsRepository blogPostsDAO;
     @Mock
-    private CmsAuthorsDAO cmsAuthorsDAO;
+    private CmsAuthorsRepository cmsAuthorsDAO;
     @Mock
-    private CmsLanguagesDAO cmsLanguagesDAO;
+    private CmsLanguagesRepository cmsLanguagesDAO;
 
     @InjectMocks
     private BlogPostsController blogPostsController;

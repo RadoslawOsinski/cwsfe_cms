@@ -19,11 +19,11 @@ class ErrorController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorController.class);
 
-    private final CmsGlobalParamsDAO cmsGlobalParamsDAO;
+    private final CmsGlobalParamsRepository cmsGlobalParamsDAO;
 
     @Autowired
-    public ErrorController(CmsGlobalParamsDAO cmsGlobalParamsDAO) {
-        this.cmsGlobalParamsDAO = cmsGlobalParamsDAO;
+    public ErrorController(CmsGlobalParamsRepository cmsGlobalParamsDAO) {
+        this.cmsGlobalParamsRepository = cmsGlobalParamsDAO;
     }
 
     @RequestMapping(value = "/error", method = RequestMethod.GET)

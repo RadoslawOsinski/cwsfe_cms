@@ -34,7 +34,7 @@ public class AuthorsControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsAuthorsDAO cmsAuthorsDAO;
+    private CmsAuthorsRepository cmsAuthorsDAO;
 
     @InjectMocks
     private AuthorsController authorsController;

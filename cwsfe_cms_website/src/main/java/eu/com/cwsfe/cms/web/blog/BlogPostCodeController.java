@@ -28,11 +28,11 @@ public class BlogPostCodeController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BlogPostCodeController.class);
 
-    private final BlogPostCodesDAO blogPostCodesDAO;
+    private final BlogPostCodesRepository blogPostCodesDAO;
 
     @Autowired
-    public BlogPostCodeController(BlogPostCodesDAO blogPostCodesDAO) {
-        this.blogPostCodesDAO = blogPostCodesDAO;
+    public BlogPostCodeController(BlogPostCodesRepository blogPostCodesDAO) {
+        this.blogPostCodesRepository = blogPostCodesDAO;
     }
 
     @RequestMapping(value = "/blogPosts/blogPostCodesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
