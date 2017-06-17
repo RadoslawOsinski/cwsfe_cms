@@ -42,7 +42,7 @@ dependencies {
     compile group: 'commons-io', name: 'commons-io', version: project.ext.commons_io_version
     testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: project.ext.junit5_platform_version
 
-    //    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: project.ext.junit5_version
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: project.ext.junit5_version
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: project.ext.junit5_version
     testCompile group: 'org.junit.platform', name: 'junit-platform-launcher', version: project.ext.junit5_platform_version
 
