@@ -74,7 +74,7 @@ dependencies {
 
 //default war for wildfly
 war {
-    from (project(':cwsfe_cms_dao').file('src/main/resources/'));
+    from (project(':cwsfe_cms_repository').file('src/main/resources/'));
     exclude "resources-cwsfe-cms/css";
     exclude "resources-cwsfe-cms/js";
     from("build/webapp/resources-cwsfe-cms/css") {

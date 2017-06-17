@@ -1,9 +1,9 @@
 package eu.com.cwsfe.cms.web.news;
 
+import eu.com.cwsfe.cms.db.news.CmsFoldersEntity;
+import eu.com.cwsfe.cms.db.news.CmsFoldersRepository;
+import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import eu.com.cwsfe.cms.dao.CmsFoldersDAO;
-import eu.com.cwsfe.cms.model.Breadcrumb;
-import eu.com.cwsfe.cms.model.CmsFolder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +28,11 @@ import java.util.ResourceBundle;
 @Controller
 public class FoldersController extends JsonController {
 
-    private final CmsFoldersRepository cmsFoldersDAO;
+    private final CmsFoldersRepository cmsFoldersRepository;
 
     @Autowired
-    public FoldersController(CmsFoldersRepository cmsFoldersDAO) {
-        this.cmsFoldersRepository = cmsFoldersDAO;
+    public FoldersController(CmsFoldersRepository cmsFoldersRepository) {
+        this.cmsFoldersRepository = cmsFoldersRepository;
     }
 
     @RequestMapping(value = "/folders", method = RequestMethod.GET)
@@ -46,9 +46,9 @@ public class FoldersController extends JsonController {
         return contextPath + "/resources-cwsfe-cms/js/cms/folders/Folders.js";
     }
 
-    private List<Breadcrumb> getBreadcrumbs(Locale locale) {
-        List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
-        breadcrumbs.add(new Breadcrumb(
+    private List<BreadcrumbDTO> getBreadcrumbs(Locale locale) {
+        List<BreadcrumbDTO> breadcrumbs = new ArrayList<>(1);
+        breadcrumbs.add(new BreadcrumbDTO(
             ServletUriComponentsBuilder.fromCurrentContextPath().path("/folders").build().toUriString(),
             ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FoldersManagement")));
         return breadcrumbs;
@@ -61,7 +61,7 @@ public class FoldersController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        final List<CmsFolder> cmsFolders = cmsFoldersDAO.listAjax(iDisplayStart, iDisplayLength);
+        final List<CmsFoldersEntity> cmsFolders = cmsFoldersRepository.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < cmsFolders.size(); i++) {
@@ -73,7 +73,7 @@ public class FoldersController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfFolders = cmsFoldersDAO.countForAjax();
+        final int numberOfFolders = cmsFoldersRepository.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfFolders);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfFolders);
         responseDetailsJson.put("aaData", jsonArray);
@@ -86,10 +86,10 @@ public class FoldersController extends JsonController {
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
-        final List<CmsFolder> results = cmsFoldersDAO.listFoldersForDropList(term, limit);
+        final List<CmsFoldersEntity> results = cmsFoldersRepository.listFoldersForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
-        for (CmsFolder cmsFolder : results) {
+        for (CmsFoldersEntity cmsFolder : results) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("id", cmsFolder.getId());
             formDetailsJson.put("folderName", cmsFolder.getFolderName());
@@ -102,14 +102,14 @@ public class FoldersController extends JsonController {
     @RequestMapping(value = "/addFolder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addFolder(
-        @ModelAttribute(value = "cmsFolder") CmsFolder cmsFolder,
+        @ModelAttribute(value = "cmsFolder") CmsFoldersEntity cmsFolder,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "folderName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderNameMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
             try {
-                cmsFoldersDAO.add(cmsFolder);
+                cmsFoldersRepository.add(cmsFolder);
                 addJsonSuccess(responseDetailsJson);
             } catch (DuplicateKeyException e) {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderNameAlreadyExist"));
@@ -123,13 +123,13 @@ public class FoldersController extends JsonController {
     @RequestMapping(value = "/deleteFolder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteFolder(
-        @ModelAttribute(value = "cmsFolder") CmsFolder cmsFolder,
+        @ModelAttribute(value = "cmsFolder") CmsFoldersEntity cmsFolder,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsFoldersDAO.delete(cmsFolder);
+            cmsFoldersRepository.delete(cmsFolder);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

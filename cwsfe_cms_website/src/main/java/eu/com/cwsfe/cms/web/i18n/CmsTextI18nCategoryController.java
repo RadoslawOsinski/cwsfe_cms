@@ -1,9 +1,9 @@
 package eu.com.cwsfe.cms.web.i18n;
 
+import eu.com.cwsfe.cms.db.news.CmsTextI18NCategoriesEntity;
+import eu.com.cwsfe.cms.db.news.CmsTextI18nCategoryRepository;
+import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import eu.com.cwsfe.cms.dao.CmsTextI18nCategoryDAO;
-import eu.com.cwsfe.cms.model.Breadcrumb;
-import eu.com.cwsfe.cms.model.CmsTextI18nCategory;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +27,11 @@ import java.util.ResourceBundle;
 @Controller
 public class CmsTextI18nCategoryController extends JsonController {
 
-    private final CmsTextI18nCategoryRepository cmsTextI18nCategoryDAO;
+    private final CmsTextI18nCategoryRepository cmsTextI18nCategoryRepository;
 
     @Autowired
-    public CmsTextI18nCategoryController(CmsTextI18nCategoryRepository cmsTextI18nCategoryDAO) {
-        this.cmsTextI18nCategoryRepository = cmsTextI18nCategoryDAO;
+    public CmsTextI18nCategoryController(CmsTextI18nCategoryRepository cmsTextI18nCategoryRepository) {
+        this.cmsTextI18nCategoryRepository = cmsTextI18nCategoryRepository;
     }
 
     @RequestMapping(value = "/cmsTextI18nCategories", method = RequestMethod.GET)
@@ -45,9 +45,9 @@ public class CmsTextI18nCategoryController extends JsonController {
         return contextPath + "/resources-cwsfe-cms/js/cms/textI18nCategories/TextI18nCategories.js";
     }
 
-    private List<Breadcrumb> getBreadcrumbs(Locale locale) {
-        List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
-        breadcrumbs.add(new Breadcrumb(
+    private List<BreadcrumbDTO> getBreadcrumbs(Locale locale) {
+        List<BreadcrumbDTO> breadcrumbs = new ArrayList<>(1);
+        breadcrumbs.add(new BreadcrumbDTO(
             ServletUriComponentsBuilder.fromCurrentContextPath().path("/cmsTextI18nCategories").build().toUriString(),
             ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TranslationCategoriesManagement")));
         return breadcrumbs;
@@ -60,7 +60,7 @@ public class CmsTextI18nCategoryController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        final List<CmsTextI18nCategory> cmsTextI18nCategories = cmsTextI18nCategoryDAO.listAjax(iDisplayStart, iDisplayLength);
+        final List<CmsTextI18NCategoriesEntity> cmsTextI18nCategories = cmsTextI18nCategoryRepository.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < cmsTextI18nCategories.size(); i++) {
@@ -72,7 +72,7 @@ public class CmsTextI18nCategoryController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfCategories = cmsTextI18nCategoryDAO.countForAjax();
+        final int numberOfCategories = cmsTextI18nCategoryRepository.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfCategories);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfCategories);
         responseDetailsJson.put("aaData", jsonArray);
@@ -85,10 +85,10 @@ public class CmsTextI18nCategoryController extends JsonController {
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
-        final List<CmsTextI18nCategory> cmsTextI18nCategories = cmsTextI18nCategoryDAO.listForDropList(term, limit);
+        final List<CmsTextI18NCategoriesEntity> cmsTextI18nCategories = cmsTextI18nCategoryRepository.listForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
-        for (CmsTextI18nCategory lang : cmsTextI18nCategories) {
+        for (CmsTextI18NCategoriesEntity lang : cmsTextI18nCategories) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("id", lang.getId());
             formDetailsJson.put("category", lang.getCategory());
@@ -102,13 +102,13 @@ public class CmsTextI18nCategoryController extends JsonController {
     @RequestMapping(value = "/addCmsTextI18nCategory", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addTextI18nCategory(
-        @ModelAttribute(value = "cmsTextI18nCategory") CmsTextI18nCategory cmsTextI18nCategory,
+        @ModelAttribute(value = "cmsTextI18nCategory") CmsTextI18NCategoriesEntity cmsTextI18nCategory,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "category", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CategoryMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsTextI18nCategoryDAO.add(cmsTextI18nCategory);
+            cmsTextI18nCategoryRepository.add(cmsTextI18nCategory);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -119,13 +119,13 @@ public class CmsTextI18nCategoryController extends JsonController {
     @RequestMapping(value = "/deleteCmsTextI18nCategory", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteTextI18nCategory(
-        @ModelAttribute(value = "cmsTextI18nCategory") CmsTextI18nCategory cmsTextI18nCategory,
+        @ModelAttribute(value = "cmsTextI18nCategory") CmsTextI18NCategoriesEntity cmsTextI18nCategory,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TextI18nCategoryMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsTextI18nCategoryDAO.delete(cmsTextI18nCategory);
+            cmsTextI18nCategoryRepository.delete(cmsTextI18nCategory);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

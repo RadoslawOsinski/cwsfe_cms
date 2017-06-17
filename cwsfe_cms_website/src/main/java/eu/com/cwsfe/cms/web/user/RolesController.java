@@ -1,9 +1,9 @@
 package eu.com.cwsfe.cms.web.user;
 
+import eu.com.cwsfe.cms.db.users.CmsRolesEntity;
+import eu.com.cwsfe.cms.db.users.CmsRolesRepository;
+import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import eu.com.cwsfe.cms.dao.CmsRolesDAO;
-import eu.com.cwsfe.cms.model.Breadcrumb;
-import eu.com.cwsfe.cms.model.CmsRole;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +28,11 @@ import java.util.ResourceBundle;
 @Controller
 public class RolesController extends JsonController {
 
-    private final CmsRolesRepository cmsRolesDAO;
+    private final CmsRolesRepository cmsRolesRepository;
 
     @Autowired
-    public RolesController(CmsRolesRepository cmsRolesDAO) {
-        this.cmsRolesRepository = cmsRolesDAO;
+    public RolesController(CmsRolesRepository cmsRolesRepository) {
+        this.cmsRolesRepository = cmsRolesRepository;
     }
 
     @RequestMapping(value = "/roles", method = RequestMethod.GET)
@@ -46,9 +46,9 @@ public class RolesController extends JsonController {
         return contextPath + "/resources-cwsfe-cms/js/cms/roles/Roles.js";
     }
 
-    private List<Breadcrumb> getBreadcrumbs(Locale locale) {
-        List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
-        breadcrumbs.add(new Breadcrumb(
+    private List<BreadcrumbDTO> getBreadcrumbs(Locale locale) {
+        List<BreadcrumbDTO> breadcrumbs = new ArrayList<>(1);
+        breadcrumbs.add(new BreadcrumbDTO(
             ServletUriComponentsBuilder.fromCurrentContextPath().path("/roles").build().toUriString(),
             ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("RolesManagement")));
         return breadcrumbs;
@@ -61,7 +61,7 @@ public class RolesController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        final List<CmsRole> cmsRoles = cmsRolesDAO.listAjax(iDisplayStart, iDisplayLength);
+        final List<CmsRolesEntity> cmsRoles = cmsRolesRepository.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < cmsRoles.size(); i++) {
@@ -72,7 +72,7 @@ public class RolesController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfRoles = cmsRolesDAO.countForAjax();
+        final int numberOfRoles = cmsRolesRepository.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfRoles);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfRoles);
         responseDetailsJson.put("aaData", jsonArray);
@@ -85,10 +85,10 @@ public class RolesController extends JsonController {
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
-        final List<CmsRole> cmsRoles = cmsRolesDAO.listRolesForDropList(term, limit);
+        final List<CmsRolesEntity> cmsRoles = cmsRolesRepository.listRolesForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
-        for (CmsRole cmsRole : cmsRoles) {
+        for (CmsRolesEntity cmsRole : cmsRoles) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("id", cmsRole.getId());
             formDetailsJson.put("roleName", cmsRole.getRoleName());

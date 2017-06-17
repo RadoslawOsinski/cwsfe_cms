@@ -1,9 +1,9 @@
 package eu.com.cwsfe.cms.web.news;
 
+import eu.com.cwsfe.cms.db.news.CmsNewsTypesEntity;
+import eu.com.cwsfe.cms.db.news.NewsTypesRepository;
+import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import eu.com.cwsfe.cms.dao.NewsTypesDAO;
-import eu.com.cwsfe.cms.model.Breadcrumb;
-import eu.com.cwsfe.cms.model.NewsType;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +28,11 @@ import java.util.ResourceBundle;
 @Controller
 class NewsTypesController extends JsonController {
 
-    private final NewsTypesRepository newsTypesDAO;
+    private final NewsTypesRepository newsTypesRepository;
 
     @Autowired
-    public NewsTypesController(NewsTypesRepository newsTypesDAO) {
-        this.newsTypesRepository = newsTypesDAO;
+    public NewsTypesController(NewsTypesRepository newsTypesRepository) {
+        this.newsTypesRepository = newsTypesRepository;
     }
 
     @RequestMapping(value = "/newsTypes", method = RequestMethod.GET)
@@ -46,9 +46,9 @@ class NewsTypesController extends JsonController {
         return contextPath + "/resources-cwsfe-cms/js/cms/newsTypes/NewsTypes.js";
     }
 
-    private List<Breadcrumb> getBreadcrumbs(Locale locale) {
-        List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
-        breadcrumbs.add(new Breadcrumb(
+    private List<BreadcrumbDTO> getBreadcrumbs(Locale locale) {
+        List<BreadcrumbDTO> breadcrumbs = new ArrayList<>(1);
+        breadcrumbs.add(new BreadcrumbDTO(
             ServletUriComponentsBuilder.fromCurrentContextPath().path("/newsTypes").build().toUriString(),
             ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypesManagement")));
         return breadcrumbs;
@@ -61,7 +61,7 @@ class NewsTypesController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        final List<NewsType> cmsNewsTypes = newsTypesDAO.listAjax(iDisplayStart, iDisplayLength);
+        final List<CmsNewsTypesEntity> cmsNewsTypes = newsTypesRepository.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < cmsNewsTypes.size(); i++) {
@@ -72,7 +72,7 @@ class NewsTypesController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfNewsTypes = newsTypesDAO.countForAjax();
+        final int numberOfNewsTypes = newsTypesRepository.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfNewsTypes);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfNewsTypes);
         responseDetailsJson.put("aaData", jsonArray);
@@ -85,10 +85,10 @@ class NewsTypesController extends JsonController {
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
-        final List<NewsType> results = newsTypesDAO.listNewsTypesForDropList(term, limit);
+        final List<CmsNewsTypesEntity> results = newsTypesRepository.listNewsTypesForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
-        for (NewsType newsType : results) {
+        for (CmsNewsTypesEntity newsType : results) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("id", newsType.getId());
             formDetailsJson.put("type", newsType.getType());
@@ -101,14 +101,14 @@ class NewsTypesController extends JsonController {
     @RequestMapping(value = "/addNewsType", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addNewsType(
-        @ModelAttribute(value = "newsType") NewsType newsType,
+        @ModelAttribute(value = "newsType") CmsNewsTypesEntity newsType,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "type", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
             try {
-                newsTypesDAO.add(newsType);
+                newsTypesRepository.add(newsType);
                 addJsonSuccess(responseDetailsJson);
             } catch (DuplicateKeyException e) {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeAlreadyAdded"));
@@ -122,13 +122,13 @@ class NewsTypesController extends JsonController {
     @RequestMapping(value = "/deleteNewsType", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteNewsType(
-        @ModelAttribute(value = "cmsNewsType") NewsType cmsNewsType,
+        @ModelAttribute(value = "cmsNewsType") CmsNewsTypesEntity cmsNewsType,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            newsTypesDAO.delete(cmsNewsType);
+            newsTypesRepository.delete(cmsNewsType);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

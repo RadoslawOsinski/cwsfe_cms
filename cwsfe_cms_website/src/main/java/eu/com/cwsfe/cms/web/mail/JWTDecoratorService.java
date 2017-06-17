@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.web.mail;
 
-import eu.com.cwsfe.cms.dao.KeystoresDAO;
-import eu.com.cwsfe.cms.model.Keystore;
+import eu.com.cwsfe.cms.db.keystores.KeystoresEntity;
+import eu.com.cwsfe.cms.db.keystores.KeystoresRepository;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +9,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.Key;
 import java.security.KeyStore;
@@ -28,7 +31,7 @@ public class JWTDecoratorService {
     private Environment environment;
 
     @Resource
-    private KeystoresRepository keystoresDAO;
+    private KeystoresRepository keystoresRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JWTDecoratorService.class);
 
@@ -54,8 +57,8 @@ public class JWTDecoratorService {
     private Key getFrontendWebsitePublicKey() {
         try {
             KeyStore keystore = KeyStore.getInstance("JKS");
-            Keystore frontendApplicationKeystore = keystoresDAO.getByName("frontendApplicationKeystore");
-            keystore.load(frontendApplicationKeystore.getContent(), environment.getRequiredProperty("keystore.password").toCharArray());
+            KeystoresEntity frontendApplicationKeystore = keystoresRepository.getByName("frontendApplicationKeystore");
+            keystore.load(new BufferedInputStream(new ByteArrayInputStream(frontendApplicationKeystore.getContent())), environment.getRequiredProperty("keystore.password").toCharArray());
             final Certificate frontendWebsiteCertificate = keystore.getCertificate(environment.getRequiredProperty("keystore.frontendWebsiteCertificate"));
             return frontendWebsiteCertificate.getPublicKey();
         } catch (CertificateException | NoSuchAlgorithmException | IOException | KeyStoreException e) {

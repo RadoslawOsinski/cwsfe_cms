@@ -1,11 +1,11 @@
 package eu.com.cwsfe.cms.web.user;
 
+import eu.com.cwsfe.cms.db.users.CmsUserAllowedNetAddressEntity;
+import eu.com.cwsfe.cms.db.users.CmsUserAllowedNetAddressRepository;
+import eu.com.cwsfe.cms.db.users.CmsUsersEntity;
+import eu.com.cwsfe.cms.db.users.CmsUsersRepository;
+import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import eu.com.cwsfe.cms.dao.CmsUserAllowedNetAddressDAO;
-import eu.com.cwsfe.cms.dao.CmsUsersDAO;
-import eu.com.cwsfe.cms.model.Breadcrumb;
-import eu.com.cwsfe.cms.model.CmsUser;
-import eu.com.cwsfe.cms.model.CmsUserAllowedNetAddress;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +29,14 @@ import java.util.ResourceBundle;
 @Controller
 class UsersNetAddressesController extends JsonController {
 
-    private final CmsUsersRepository cmsUsersDAO;
+    private final CmsUsersRepository cmsUsersRepository;
 
-    private final CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressDAO;
+    private final CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressRepository;
 
     @Autowired
-    public UsersNetAddressesController(CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressDAO, CmsUsersRepository cmsUsersDAO) {
-        this.cmsUserAllowedNetAddressRepository = cmsUserAllowedNetAddressDAO;
-        this.cmsUsersRepository = cmsUsersDAO;
+    public UsersNetAddressesController(CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressRepository, CmsUsersRepository cmsUsersRepository) {
+        this.cmsUserAllowedNetAddressRepository = cmsUserAllowedNetAddressRepository;
+        this.cmsUsersRepository = cmsUsersRepository;
     }
 
     @RequestMapping(value = "/usersNetAddresses", method = RequestMethod.GET)
@@ -50,11 +50,11 @@ class UsersNetAddressesController extends JsonController {
         return contextPath + "/resources-cwsfe-cms/js/cms/usersNetAddresses/UsersNetAddresses.js";
     }
 
-    private List<Breadcrumb> getBreadcrumbs(Locale locale) {
-        List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
+    private List<BreadcrumbDTO> getBreadcrumbs(Locale locale) {
+        List<BreadcrumbDTO> breadcrumbs = new ArrayList<>(1);
         String breadCrumbUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path("usersNetAddresses").build().toUriString();
         String breadCrumbText = ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UsersNetAddressesManagement");
-        breadcrumbs.add(new Breadcrumb(breadCrumbUrl, breadCrumbText));
+        breadcrumbs.add(new BreadcrumbDTO(breadCrumbUrl, breadCrumbText));
         return breadcrumbs;
     }
 
@@ -65,20 +65,20 @@ class UsersNetAddressesController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        List<CmsUserAllowedNetAddress> cmsUserAllowedNetAddresses = cmsUserAllowedNetAddressDAO.listAjax(iDisplayStart, iDisplayLength);
+        List<CmsUserAllowedNetAddressEntity> cmsUserAllowedNetAddresses = cmsUserAllowedNetAddressRepository.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < cmsUserAllowedNetAddresses.size(); i++) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("#", iDisplayStart + i + 1);
-            CmsUser cmsUser = cmsUsersDAO.get(cmsUserAllowedNetAddresses.get(i).getUserId());
-            formDetailsJson.put("userName", cmsUser == null ? "---" : cmsUser.getUserName());
+            CmsUsersEntity cmsUser = cmsUsersRepository.get(cmsUserAllowedNetAddresses.get(i).getUserId());
+            formDetailsJson.put("userName", cmsUser == null ? "---" : cmsUser.getUsername());
             formDetailsJson.put("inetAddress", cmsUserAllowedNetAddresses.get(i).getInetAddress());
             formDetailsJson.put("id", cmsUserAllowedNetAddresses.get(i).getId());
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfAllowedNetAddresses = cmsUserAllowedNetAddressDAO.countForAjax();
+        final int numberOfAllowedNetAddresses = cmsUserAllowedNetAddressRepository.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfAllowedNetAddresses);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfAllowedNetAddresses);
         responseDetailsJson.put("aaData", jsonArray);
@@ -88,7 +88,7 @@ class UsersNetAddressesController extends JsonController {
     @RequestMapping(value = "/addNetAddress", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addNetAddress(
-        @ModelAttribute(value = "cmsUserAllowedNetAddress") CmsUserAllowedNetAddress cmsUserAllowedNetAddress,
+        @ModelAttribute(value = "cmsUserAllowedNetAddress") CmsUserAllowedNetAddressEntity cmsUserAllowedNetAddress,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "userId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UsernameMustBeSet"));
@@ -96,7 +96,7 @@ class UsersNetAddressesController extends JsonController {
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
             try {
-                cmsUserAllowedNetAddressDAO.add(cmsUserAllowedNetAddress);
+                cmsUserAllowedNetAddressRepository.add(cmsUserAllowedNetAddress);
                 addJsonSuccess(responseDetailsJson);
             } catch (Exception e) {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NetAddressIsIncorrect"));
@@ -110,13 +110,13 @@ class UsersNetAddressesController extends JsonController {
     @RequestMapping(value = "/deleteNetAddress", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteUser(
-        @ModelAttribute(value = "cmsUserAllowedNetAddress") CmsUserAllowedNetAddress cmsUserAllowedNetAddress,
+        @ModelAttribute(value = "cmsUserAllowedNetAddress") CmsUserAllowedNetAddressEntity cmsUserAllowedNetAddress,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NetAddressMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsUserAllowedNetAddressDAO.delete(cmsUserAllowedNetAddress);
+            cmsUserAllowedNetAddressRepository.delete(cmsUserAllowedNetAddress);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

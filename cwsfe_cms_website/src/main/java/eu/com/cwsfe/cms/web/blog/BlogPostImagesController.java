@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.web.blog;
 
-import eu.com.cwsfe.cms.dao.BlogPostImagesDAO;
-import eu.com.cwsfe.cms.model.BlogPostImage;
+import eu.com.cwsfe.cms.db.blog.BlogPostImagesEntity;
+import eu.com.cwsfe.cms.db.blog.BlogPostImagesRepository;
 import eu.com.cwsfe.cms.web.images.ImageStorageService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
@@ -21,6 +21,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -34,14 +35,14 @@ public class BlogPostImagesController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BlogPostImagesController.class);
 
-    private final BlogPostImagesRepository blogPostImagesDAO;
+    private final BlogPostImagesRepository blogPostImagesRepository;
 
     private final ImageStorageService imageStorageService;
 
     @Autowired
-    public BlogPostImagesController(ImageStorageService imageStorageService, BlogPostImagesRepository blogPostImagesDAO) {
+    public BlogPostImagesController(ImageStorageService imageStorageService, BlogPostImagesRepository blogPostImagesRepository) {
         this.imageStorageService = imageStorageService;
-        this.blogPostImagesRepository = blogPostImagesDAO;
+        this.blogPostImagesRepository = blogPostImagesRepository;
     }
 
     @RequestMapping(value = "/blogPosts/blogPostImagesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -58,14 +59,14 @@ public class BlogPostImagesController extends JsonController {
         } catch (NumberFormatException e) {
             LOGGER.error("Blog post id is not a number {}", webRequest.getParameter("blogPostId"));
         }
-        List<BlogPostImage> dbList = blogPostImagesDAO.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, blogPostId);
-        Integer dbListDisplayRecordsSize = blogPostImagesDAO.searchByAjaxCountWithoutContent(blogPostId);
+        List<BlogPostImagesEntity> dbList = blogPostImagesRepository.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, blogPostId);
+        Integer dbListDisplayRecordsSize = blogPostImagesRepository.searchByAjaxCountWithoutContent(blogPostId);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < dbList.size(); i++) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("#", iDisplayStart + i + 1);
-            final BlogPostImage object = dbList.get(i);
+            final BlogPostImagesEntity object = dbList.get(i);
             formDetailsJson.put("image", object.getId());
             formDetailsJson.put("title", object.getTitle());
             formDetailsJson.put("fileName", object.getFileName());
@@ -74,7 +75,7 @@ public class BlogPostImagesController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        responseDetailsJson.put("iTotalRecords", blogPostImagesDAO.getTotalNumberNotDeleted());
+        responseDetailsJson.put("iTotalRecords", blogPostImagesRepository.getTotalNumberNotDeleted());
         responseDetailsJson.put("iTotalDisplayRecords", dbListDisplayRecordsSize);
         responseDetailsJson.put("aaData", jsonArray);
         return responseDetailsJson.toString();
@@ -82,28 +83,28 @@ public class BlogPostImagesController extends JsonController {
 
     @RequestMapping(value = "/blogPosts/addBlogPostImage", method = RequestMethod.POST)
     public ModelAndView addBlogPostImage(
-        @ModelAttribute(value = "blogPostImage") BlogPostImage blogPostImage,
+        @ModelAttribute(value = "blogPostImage") BlogPostImagesEntity blogPostImage,
         BindingResult result, Locale locale
     ) {
         BufferedImage image;
-        try {
-            image = ImageIO.read(blogPostImage.getFile().getInputStream());
-            blogPostImage.setWidth(image.getWidth());
-            blogPostImage.setHeight(image.getHeight());
-        } catch (IOException e) {
-            LOGGER.error("Problem with reading image", e);
-        }
-        blogPostImage.setFileName(blogPostImage.getFile().getOriginalFilename());
-        blogPostImage.setFileSize(blogPostImage.getFile().getSize());
-        blogPostImage.setMimeType(blogPostImage.getFile().getContentType());
-        blogPostImage.setCreated(new Date());
+//        try {
+//            image = ImageIO.read(blogPostImage.getFile().getInputStream());
+//            blogPostImage.setWidth(image.getWidth());
+//            blogPostImage.setHeight(image.getHeight());
+//        } catch (IOException e) {
+//            LOGGER.error("Problem with reading image", e);
+//        }
+//        blogPostImage.setFileName(blogPostImage.getFile().getOriginalFilename());
+//        blogPostImage.setFileSize(blogPostImage.getFile().getSize());
+//        blogPostImage.setMimeType(blogPostImage.getFile().getContentType());
+        blogPostImage.setCreated(Timestamp.from(new Date().toInstant()));
         blogPostImage.setLastModified(blogPostImage.getCreated());
         ValidationUtils.rejectIfEmpty(result, "title", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TitleMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "blogPostId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));
         if (!result.hasErrors()) {
-            blogPostImage.setId(blogPostImagesDAO.add(blogPostImage));
+            blogPostImage.setId(blogPostImagesRepository.add(blogPostImage));
             blogPostImage.setUrl(imageStorageService.storeBlogImage(blogPostImage));
-            blogPostImagesDAO.updateUrl(blogPostImage);
+            blogPostImagesRepository.updateUrl(blogPostImage);
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("/blogPosts/" + blogPostImage.getBlogPostId(), true, false, false));
@@ -113,13 +114,13 @@ public class BlogPostImagesController extends JsonController {
     @RequestMapping(value = "/blogPosts/deleteBlogPostImage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteBlogPostImage(
-        @ModelAttribute(value = "blogPostImage") BlogPostImage blogPostImage,
+        @ModelAttribute(value = "blogPostImage") BlogPostImagesEntity blogPostImage,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("ImageMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogPostImagesDAO.delete(blogPostImage);
+            blogPostImagesRepository.delete(blogPostImage);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

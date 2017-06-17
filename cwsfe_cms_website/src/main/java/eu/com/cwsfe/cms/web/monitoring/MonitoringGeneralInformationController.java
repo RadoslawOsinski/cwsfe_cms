@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.web.monitoring;
 
+import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import eu.com.cwsfe.cms.model.Breadcrumb;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,9 +47,9 @@ public class MonitoringGeneralInformationController extends JsonController {
         return httpServletRequest.getContextPath() + "/resources-cwsfe-cms/js/cms/monitoring/GeneralInformation";
     }
 
-    private List<Breadcrumb> getBreadcrumbs(Locale locale) {
-        List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
-        breadcrumbs.add(new Breadcrumb(
+    private List<BreadcrumbDTO> getBreadcrumbs(Locale locale) {
+        List<BreadcrumbDTO> breadcrumbs = new ArrayList<>(1);
+        breadcrumbs.add(new BreadcrumbDTO(
             ServletUriComponentsBuilder.fromCurrentContextPath().path("/monitoring/generalInformation").build().toUriString(),
             ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("MonitoringGeneralInformation")));
         return breadcrumbs;

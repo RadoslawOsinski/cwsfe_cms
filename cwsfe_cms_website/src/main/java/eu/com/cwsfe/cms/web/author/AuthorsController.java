@@ -1,9 +1,9 @@
 package eu.com.cwsfe.cms.web.author;
 
+import eu.com.cwsfe.cms.db.author.CmsAuthorsEntity;
+import eu.com.cwsfe.cms.db.author.CmsAuthorsRepository;
+import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import eu.com.cwsfe.cms.dao.CmsAuthorsDAO;
-import eu.com.cwsfe.cms.model.Breadcrumb;
-import eu.com.cwsfe.cms.model.CmsAuthor;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +27,11 @@ import java.util.ResourceBundle;
 @Controller
 public class AuthorsController extends JsonController {
 
-    private final CmsAuthorsRepository cmsAuthorsDAO;
+    private final CmsAuthorsRepository cmsAuthorsRepository;
 
     @Autowired
-    public AuthorsController(CmsAuthorsRepository cmsAuthorsDAO) {
-        this.cmsAuthorsRepository = cmsAuthorsDAO;
+    public AuthorsController(CmsAuthorsRepository cmsAuthorsRepository) {
+        this.cmsAuthorsRepository = cmsAuthorsRepository;
     }
 
     @RequestMapping(value = "/authors", method = RequestMethod.GET)
@@ -45,9 +45,9 @@ public class AuthorsController extends JsonController {
         return contextPath + "/resources-cwsfe-cms/js/cms/authors/Authors.js";
     }
 
-    private List<Breadcrumb> getBreadcrumbs(Locale locale) {
-        List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
-        breadcrumbs.add(new Breadcrumb(
+    private List<BreadcrumbDTO> getBreadcrumbs(Locale locale) {
+        List<BreadcrumbDTO> breadcrumbs = new ArrayList<>(1);
+        breadcrumbs.add(new BreadcrumbDTO(
             ServletUriComponentsBuilder.fromCurrentContextPath().path("/authors").build().toUriString(),
             ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("AuthorsManagement")));
         return breadcrumbs;
@@ -60,7 +60,7 @@ public class AuthorsController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        final List<CmsAuthor> cmsAuthors = cmsAuthorsDAO.listAjax(iDisplayStart, iDisplayLength);
+        final List<CmsAuthorsEntity> cmsAuthors = cmsAuthorsRepository.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < cmsAuthors.size(); i++) {
@@ -73,7 +73,7 @@ public class AuthorsController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfAuthors = cmsAuthorsDAO.countForAjax();
+        final int numberOfAuthors = cmsAuthorsRepository.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfAuthors);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfAuthors);
         responseDetailsJson.put("aaData", jsonArray);
@@ -86,10 +86,10 @@ public class AuthorsController extends JsonController {
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
-        final List<CmsAuthor> cmsAuthors = cmsAuthorsDAO.listAuthorsForDropList(term, limit);
+        final List<CmsAuthorsEntity> cmsAuthors = cmsAuthorsRepository.listAuthorsForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
-        for (CmsAuthor cmsAuthor : cmsAuthors) {
+        for (CmsAuthorsEntity cmsAuthor : cmsAuthors) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("id", cmsAuthor.getId());
             formDetailsJson.put("lastName", cmsAuthor.getLastName());
@@ -104,14 +104,14 @@ public class AuthorsController extends JsonController {
     @RequestMapping(value = "/addAuthor", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addAuthor(
-        @ModelAttribute(value = "cmsAuthor") CmsAuthor cmsAuthor,
+        @ModelAttribute(value = "cmsAuthor") CmsAuthorsEntity cmsAuthor,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "firstName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FirstNameMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "lastName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LastNameMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsAuthorsDAO.add(cmsAuthor);
+            cmsAuthorsRepository.add(cmsAuthor);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -122,13 +122,13 @@ public class AuthorsController extends JsonController {
     @RequestMapping(value = "/deleteAuthor", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteAuthor(
-        @ModelAttribute(value = "cmsAuthor") CmsAuthor cmsAuthor,
+        @ModelAttribute(value = "cmsAuthor") CmsAuthorsEntity cmsAuthor,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("AuthorMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsAuthorsDAO.delete(cmsAuthor);
+            cmsAuthorsRepository.delete(cmsAuthor);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

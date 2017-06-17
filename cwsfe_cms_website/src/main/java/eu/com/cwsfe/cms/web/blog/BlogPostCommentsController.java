@@ -1,8 +1,8 @@
 package eu.com.cwsfe.cms.web.blog;
 
+import eu.com.cwsfe.cms.db.blog.BlogPostCommentsRepository;
+import eu.com.cwsfe.cms.db.blog.CmsBlogPostCommentsEntity;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import eu.com.cwsfe.cms.dao.BlogPostCommentsDAO;
-import eu.com.cwsfe.cms.model.BlogPostComment;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,23 +23,23 @@ import java.util.ResourceBundle;
 @Controller
 public class BlogPostCommentsController extends JsonController {
 
-    private final BlogPostCommentsRepository blogPostCommentsDAO;
+    private final BlogPostCommentsRepository blogPostCommentsRepository;
 
     @Autowired
-    public BlogPostCommentsController(BlogPostCommentsRepository blogPostCommentsDAO) {
-        this.blogPostCommentsRepository = blogPostCommentsDAO;
+    public BlogPostCommentsController(BlogPostCommentsRepository blogPostCommentsRepository) {
+        this.blogPostCommentsRepository = blogPostCommentsRepository;
     }
 
     @RequestMapping(value = "/publishBlogPostComment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String blogPostCommentPublish(
-        @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
+        @ModelAttribute(value = "blogPostComment") CmsBlogPostCommentsEntity blogPostComment,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CommentMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogPostCommentsDAO.publish(blogPostComment);
+            blogPostCommentsRepository.publish(blogPostComment);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -50,13 +50,13 @@ public class BlogPostCommentsController extends JsonController {
     @RequestMapping(value = "/blockBlogPostComment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String blogPostCommentBlock(
-        @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
+        @ModelAttribute(value = "blogPostComment") CmsBlogPostCommentsEntity blogPostComment,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CommentMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogPostCommentsDAO.block(blogPostComment);
+            blogPostCommentsRepository.block(blogPostComment);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -67,13 +67,13 @@ public class BlogPostCommentsController extends JsonController {
     @RequestMapping(value = "/markAsSpamBlogPostComment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String blogPostCommentMarkAsSpam(
-        @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
+        @ModelAttribute(value = "blogPostComment") CmsBlogPostCommentsEntity blogPostComment,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CommentMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogPostCommentsDAO.markAsSpam(blogPostComment);
+            blogPostCommentsRepository.markAsSpam(blogPostComment);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -84,13 +84,13 @@ public class BlogPostCommentsController extends JsonController {
     @RequestMapping(value = "/deleteBlogPostComment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String blogPostCommentDelete(
-        @ModelAttribute(value = "blogPostComment") BlogPostComment blogPostComment,
+        @ModelAttribute(value = "blogPostComment") CmsBlogPostCommentsEntity blogPostComment,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CommentMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogPostCommentsDAO.delete(blogPostComment);
+            blogPostCommentsRepository.delete(blogPostComment);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

@@ -5,10 +5,10 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
-import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
-import eu.com.cwsfe.cms.model.BlogPostImage;
-import eu.com.cwsfe.cms.model.CmsGlobalParam;
-import eu.com.cwsfe.cms.model.CmsNewsImage;
+import eu.com.cwsfe.cms.db.blog.BlogPostImagesEntity;
+import eu.com.cwsfe.cms.db.news.CmsNewsImagesEntity;
+import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsEntity;
+import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsRepository;
 import eu.com.cwsfe.cms.web.news.CmsNewsImagesController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,28 +28,28 @@ public class AWSBucketImageStorageService implements ImageStorageService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsNewsImagesController.class);
 
-    private final CmsGlobalParamsRepository cmsGlobalParamsDAO;
+    private final CmsGlobalParamsRepository cmsGlobalParamsRepository;
 
     private final AmazonS3 amazonS3;
 
     @Autowired
-    public AWSBucketImageStorageService(CmsGlobalParamsRepository cmsGlobalParamsDAO, AmazonS3 amazonS3) {
-        this.cmsGlobalParamsRepository = cmsGlobalParamsDAO;
+    public AWSBucketImageStorageService(CmsGlobalParamsRepository cmsGlobalParamsRepository, AmazonS3 amazonS3) {
+        this.cmsGlobalParamsRepository = cmsGlobalParamsRepository;
         this.amazonS3 = amazonS3;
     }
 
-    public String storeNewsImage(CmsNewsImage cmsNewsImage) {
-        CmsGlobalParam newsImagesBucket = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_S3_NEWS_IMAGES_PATH");
-        storeImage(cmsNewsImage.getFile(), newsImagesBucket.getValue());
-        CmsGlobalParam rootBucketName = cmsGlobalParamsDAO.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
-        return ((AmazonS3Client) amazonS3).getUrl(rootBucketName.getValue(), newsImagesBucket.getValue() + "/" + cmsNewsImage.getFileName()).toString();
+    public String storeNewsImage(CmsNewsImagesEntity cmsNewsImage) {
+        CmsGlobalParamsEntity newsImagesBucket = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_S3_NEWS_IMAGES_PATH");
+//        storeImage(cmsNewsImage.getFile(), newsImagesBucket.getValue());
+        CmsGlobalParamsEntity rootBucketName = cmsGlobalParamsRepository.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
+        return amazonS3.getUrl(rootBucketName.getValue(), newsImagesBucket.getValue() + "/" + cmsNewsImage.getFileName()).toString();
     }
 
-    public String storeBlogImage(BlogPostImage blogPostImage) {
-        CmsGlobalParam blogImagesBucket = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_S3_BLOG_IMAGES_PATH");
-        storeImage(blogPostImage.getFile(), blogImagesBucket.getValue());
-        CmsGlobalParam rootBucketName = cmsGlobalParamsDAO.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
-        return ((AmazonS3Client) amazonS3).getUrl(rootBucketName.getValue(), blogImagesBucket.getValue() + "/" + blogPostImage.getFileName()).toString();
+    public String storeBlogImage(BlogPostImagesEntity blogPostImage) {
+        CmsGlobalParamsEntity blogImagesBucket = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_S3_BLOG_IMAGES_PATH");
+//        storeImage(blogPostImage.getFile(), blogImagesBucket.getValue());
+        CmsGlobalParamsEntity rootBucketName = cmsGlobalParamsRepository.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
+        return amazonS3.getUrl(rootBucketName.getValue(), blogImagesBucket.getValue() + "/" + blogPostImage.getFileName()).toString();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class AWSBucketImageStorageService implements ImageStorageService {
     }
 
     private void storeImage(MultipartFile image, String imagePath) {
-        CmsGlobalParam rootBucketName = cmsGlobalParamsDAO.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
+        CmsGlobalParamsEntity rootBucketName = cmsGlobalParamsRepository.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
         try {
             PutObjectRequest putObjectRequest = new PutObjectRequest(rootBucketName.getValue(), imagePath + "/" + image.getOriginalFilename(),
                 image.getInputStream(), new ObjectMetadata());

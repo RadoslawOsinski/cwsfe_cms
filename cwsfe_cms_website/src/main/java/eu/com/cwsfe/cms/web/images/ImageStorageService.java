@@ -1,16 +1,16 @@
 package eu.com.cwsfe.cms.web.images;
 
-import eu.com.cwsfe.cms.model.BlogPostImage;
-import eu.com.cwsfe.cms.model.CmsNewsImage;
+import eu.com.cwsfe.cms.db.blog.BlogPostImagesEntity;
+import eu.com.cwsfe.cms.db.news.CmsNewsImagesEntity;
 
 /**
  * @author Radoslaw Osinski
  */
 public interface ImageStorageService {
 
-    String storeNewsImage(CmsNewsImage cmsNewsImage);
+    String storeNewsImage(CmsNewsImagesEntity cmsNewsImage);
 
-    String storeBlogImage(BlogPostImage cmsNewsImage);
+    String storeBlogImage(BlogPostImagesEntity cmsNewsImage);
 
     boolean isBlogImagesStorageInitialized();
 

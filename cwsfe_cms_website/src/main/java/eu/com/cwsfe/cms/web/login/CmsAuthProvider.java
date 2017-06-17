@@ -1,7 +1,6 @@
 package eu.com.cwsfe.cms.web.login;
 
-import eu.com.cwsfe.cms.dao.CmsUserAllowedNetAddressDAO;
-import eu.com.cwsfe.cms.model.CmsUserAllowedNetAddress;
+import eu.com.cwsfe.cms.db.users.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import eu.com.cwsfe.cms.dao.CmsRolesDAO;
-import eu.com.cwsfe.cms.dao.CmsUsersDAO;
-import eu.com.cwsfe.cms.model.CmsRole;
-import eu.com.cwsfe.cms.model.CmsUser;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
@@ -30,23 +25,23 @@ public class CmsAuthProvider implements AuthenticationProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsAuthProvider.class);
 
-    private CmsUsersRepository cmsUsersDAO;
-    private CmsRolesRepository cmsRolesDAO;
-    private CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressDAO;
+    private CmsUsersRepository cmsUsersRepository;
+    private CmsRolesRepository cmsRolesRepository;
+    private CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressRepository;
 
     @Autowired
-    public void setCmsUsersDAO(CmsUsersRepository cmsUsersDAO) {
-        this.cmsUsersRepository = cmsUsersDAO;
+    public void setCmsUsersRepository(CmsUsersRepository cmsUsersRepository) {
+        this.cmsUsersRepository = cmsUsersRepository;
     }
 
     @Autowired
-    public void setCmsRolesDAO(CmsRolesRepository cmsRolesDAO) {
-        this.cmsRolesRepository = cmsRolesDAO;
+    public void setCmsRolesRepository(CmsRolesRepository cmsRolesRepository) {
+        this.cmsRolesRepository = cmsRolesRepository;
     }
 
     @Autowired
-    public void setCmsUserAllowedNetAddressDAO(CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressDAO) {
-        this.cmsUserAllowedNetAddressRepository = cmsUserAllowedNetAddressDAO;
+    public void setCmsUserAllowedNetAddressRepository(CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressRepository) {
+        this.cmsUserAllowedNetAddressRepository = cmsUserAllowedNetAddressRepository;
     }
 
     @Override
@@ -61,18 +56,18 @@ public class CmsAuthProvider implements AuthenticationProvider {
         String userIPAddress = webAuthenticationDetails.getRemoteAddress();
         LOGGER.debug("User login: {}, IP Address: {}", login, userIPAddress);
 
-        if (cmsUsersDAO.isActiveUsernameInDatabase(String.valueOf(login))) {
+        if (cmsUsersRepository.isActiveUsernameInDatabase(String.valueOf(login))) {
             final Object password = auth.getCredentials();
-            CmsUser cmsUser = cmsUsersDAO.getByUsername((String) login);
+            CmsUsersEntity cmsUser = cmsUsersRepository.getByUsername((String) login);
             boolean userIsUsingIPFiltering = userIsUsingIPFiltering(cmsUser.getId());
             if (!userIsUsingIPFiltering || (userIsUsingAllowedAddress(userIPAddress, cmsUser.getId()))) {
                 if (BCrypt.checkpw(String.valueOf(password), cmsUser.getPasswordHash())) {
-                    final List<CmsRole> cmsRoles = cmsRolesDAO.listUserRoles(cmsUser.getId());
+                    final List<CmsRolesEntity> cmsRoles = cmsRolesRepository.listUserRoles(cmsUser.getId());
                     List<GrantedAuthority> authorities = new ArrayList<>(cmsRoles.size());
-                    for (CmsRole cmsRole : cmsRoles) {
+                    for (CmsRolesEntity cmsRole : cmsRoles) {
                         authorities.add(new SimpleGrantedAuthority(cmsRole.getRoleCode()));
                     }
-                    LOGGER.info("User {} has granted access with roles: {}", login, cmsRoles.stream().map(CmsRole::getRoleName).collect(Collectors.toList()));
+                    LOGGER.info("User {} has granted access with roles: {}", login, cmsRoles.stream().map(CmsRolesEntity::getRoleName).collect(Collectors.toList()));
                     return new CmsUsernamePasswordAuthenticationToken(auth.getName(), password, authorities);
                 } else {
                     LOGGER.error("User {} password is incorrect", login);
@@ -91,9 +86,9 @@ public class CmsAuthProvider implements AuthenticationProvider {
      * @return true if user is allowed to enter from this IP. Otherwise false.
      */
     private boolean userIsUsingAllowedAddress(String userIPAddress, long userId) {
-        List<CmsUserAllowedNetAddress> cmsUserAllowedNetAddresses = cmsUserAllowedNetAddressDAO.listForUser(userId);
+        List<CmsUserAllowedNetAddressEntity> cmsUserAllowedNetAddresses = cmsUserAllowedNetAddressRepository.listForUser(userId);
         return cmsUserAllowedNetAddresses.stream().
-            map(CmsUserAllowedNetAddress::getInetAddress).collect(Collectors.toList()).
+            map(CmsUserAllowedNetAddressEntity::getInetAddress).collect(Collectors.toList()).
             contains(userIPAddress);
     }
 
@@ -101,7 +96,7 @@ public class CmsAuthProvider implements AuthenticationProvider {
      * @return true if user is using IP filtering during logging in. Otherwise false.
      */
     private boolean userIsUsingIPFiltering(long userId) {
-        return cmsUserAllowedNetAddressDAO.countAddressesForUser(userId) > 0;
+        return cmsUserAllowedNetAddressRepository.countAddressesForUser(userId) > 0;
     }
 
 }

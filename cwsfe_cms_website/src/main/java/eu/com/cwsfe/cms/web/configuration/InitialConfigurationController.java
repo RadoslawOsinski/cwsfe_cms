@@ -1,14 +1,9 @@
 package eu.com.cwsfe.cms.web.configuration;
 
+import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsEntity;
+import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsRepository;
+import eu.com.cwsfe.cms.db.users.*;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
-import eu.com.cwsfe.cms.dao.CmsRolesDAO;
-import eu.com.cwsfe.cms.dao.CmsUserRolesDAO;
-import eu.com.cwsfe.cms.dao.CmsUsersDAO;
-import eu.com.cwsfe.cms.model.CmsGlobalParam;
-import eu.com.cwsfe.cms.model.CmsRole;
-import eu.com.cwsfe.cms.model.CmsUser;
-import eu.com.cwsfe.cms.model.CmsUserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,26 +29,26 @@ class InitialConfigurationController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InitialConfigurationController.class);
 
-    private final CmsGlobalParamsRepository cmsGlobalParamsDAO;
+    private final CmsGlobalParamsRepository cmsGlobalParamsRepository;
 
-    private final CmsUsersRepository cmsUsersDAO;
+    private final CmsUsersRepository cmsUsersRepository;
 
-    private final CmsRolesRepository cmsRolesDAO;
+    private final CmsRolesRepository cmsRolesRepository;
 
-    private final CmsUserRolesRepository cmsUserRolesDAO;
+    private final CmsUserRolesRepository cmsUserRolesRepository;
 
     @Autowired
-    public InitialConfigurationController(CmsUsersRepository cmsUsersDAO, CmsUserRolesRepository cmsUserRolesDAO, CmsRolesRepository cmsRolesDAO, CmsGlobalParamsRepository cmsGlobalParamsDAO) {
-        this.cmsUsersRepository = cmsUsersDAO;
-        this.cmsUserRolesRepository = cmsUserRolesDAO;
-        this.cmsRolesRepository = cmsRolesDAO;
-        this.cmsGlobalParamsRepository = cmsGlobalParamsDAO;
+    public InitialConfigurationController(CmsUsersRepository cmsUsersRepository, CmsUserRolesRepository cmsUserRolesRepository, CmsRolesRepository cmsRolesRepository, CmsGlobalParamsRepository cmsGlobalParamsRepository) {
+        this.cmsUsersRepository = cmsUsersRepository;
+        this.cmsUserRolesRepository = cmsUserRolesRepository;
+        this.cmsRolesRepository = cmsRolesRepository;
+        this.cmsGlobalParamsRepository = cmsGlobalParamsRepository;
     }
 
     @RequestMapping(value = "/configuration/initialConfiguration", method = RequestMethod.GET)
     public String showInitialConfiguration() {
         try {
-            CmsGlobalParam cwsfeCmsIsConfigured = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_IS_CONFIGURED");
+            CmsGlobalParamsEntity cwsfeCmsIsConfigured = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_IS_CONFIGURED");
             if (cwsfeCmsIsConfigured == null || cwsfeCmsIsConfigured.getValue() == null || "N".equals(cwsfeCmsIsConfigured.getValue())) {
                 return "cms/configuration/InitialConfiguration";
             } else {
@@ -67,21 +62,24 @@ class InitialConfigurationController extends JsonController {
 
     @RequestMapping(value = "/configuration/addAdminUser", method = RequestMethod.POST)
     public ModelAndView addAdminUser(
-        @ModelAttribute(value = "cmsUser") CmsUser cmsUser,
+        @ModelAttribute(value = "cmsUser") CmsUsersEntity cmsUser,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "userName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FirstNameMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "password", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("PasswordMustBeSet"));
         ModelAndView modelAndView = new ModelAndView();
         if (!result.hasErrors()) {
-            CmsGlobalParam cwsfeCmsIsConfigured = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_IS_CONFIGURED");
+            CmsGlobalParamsEntity cwsfeCmsIsConfigured = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_IS_CONFIGURED");
             if ("N".equals(cwsfeCmsIsConfigured.getValue())) {
-                cmsUser.setPasswordHash(BCrypt.hashpw(cmsUser.getPassword(), BCrypt.gensalt()));
-                cmsUser.setId(cmsUsersDAO.add(cmsUser));
-                CmsRole cwsfeCmsAdminRole = cmsRolesDAO.getByCode("ROLE_CWSFE_CMS_ADMIN");
-                cmsUserRolesDAO.add(new CmsUserRole(cmsUser.getId(), cwsfeCmsAdminRole.getId()));
+//                cmsUser.setPasswordHash(BCrypt.hashpw(cmsUser.getPassword(), BCrypt.gensalt()));
+                cmsUser.setId(cmsUsersRepository.add(cmsUser));
+                CmsRolesEntity cwsfeCmsAdminRole = cmsRolesRepository.getByCode("ROLE_CWSFE_CMS_ADMIN");
+                CmsUserRolesEntity cmsUserRole = new CmsUserRolesEntity();
+                cmsUserRole.setCmsUserId(cmsUser.getId());
+                cmsUserRole.setRoleId(cwsfeCmsAdminRole.getId());
+                cmsUserRolesRepository.add(cmsUserRole);
                 cwsfeCmsIsConfigured.setValue("Y");
-                cmsGlobalParamsDAO.update(cwsfeCmsIsConfigured);
+                cmsGlobalParamsRepository.update(cwsfeCmsIsConfigured);
             }
             modelAndView.setView(new RedirectView("/", true, false, false));
         } else {

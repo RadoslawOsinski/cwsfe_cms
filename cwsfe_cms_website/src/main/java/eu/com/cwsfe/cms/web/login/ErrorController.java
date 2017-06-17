@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.web.login;
 
-import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
+import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +19,11 @@ class ErrorController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorController.class);
 
-    private final CmsGlobalParamsRepository cmsGlobalParamsDAO;
+    private final CmsGlobalParamsRepository cmsGlobalParamsRepository;
 
     @Autowired
-    public ErrorController(CmsGlobalParamsRepository cmsGlobalParamsDAO) {
-        this.cmsGlobalParamsRepository = cmsGlobalParamsDAO;
+    public ErrorController(CmsGlobalParamsRepository cmsGlobalParamsRepository) {
+        this.cmsGlobalParamsRepository = cmsGlobalParamsRepository;
     }
 
     @RequestMapping(value = "/error", method = RequestMethod.GET)
@@ -38,7 +38,7 @@ class ErrorController {
     }
 
     private void addMainSiteUrl(ModelMap model) {
-        model.addAttribute("mainSiteUrl", cmsGlobalParamsDAO.getByCode("MAIN_SITE").getValue());
+        model.addAttribute("mainSiteUrl", cmsGlobalParamsRepository.getByCode("MAIN_SITE").getValue());
     }
 
 }

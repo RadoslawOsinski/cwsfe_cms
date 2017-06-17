@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.web.news;
 
-import eu.com.cwsfe.cms.dao.CmsNewsImagesDAO;
-import eu.com.cwsfe.cms.model.CmsNewsImage;
+import eu.com.cwsfe.cms.db.news.CmsNewsImagesEntity;
+import eu.com.cwsfe.cms.db.news.CmsNewsImagesRepository;
 import eu.com.cwsfe.cms.web.images.ImageStorageService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
@@ -18,10 +18,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -34,14 +31,14 @@ public class CmsNewsImagesController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsNewsImagesController.class);
 
-    private final CmsNewsImagesRepository cmsNewsImagesDAO;
+    private final CmsNewsImagesRepository cmsNewsImagesRepository;
 
     private final ImageStorageService imageStorageService;
 
     @Autowired
-    public CmsNewsImagesController(ImageStorageService imageStorageService, CmsNewsImagesRepository cmsNewsImagesDAO) {
+    public CmsNewsImagesController(ImageStorageService imageStorageService, CmsNewsImagesRepository cmsNewsImagesRepository) {
         this.imageStorageService = imageStorageService;
-        this.cmsNewsImagesRepository = cmsNewsImagesDAO;
+        this.cmsNewsImagesRepository = cmsNewsImagesRepository;
     }
 
     @RequestMapping(value = "/news/cmsNewsImagesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -58,14 +55,14 @@ public class CmsNewsImagesController extends JsonController {
         } catch (NumberFormatException e) {
             LOGGER.error("Cms news id is not a number: {}", webRequest.getParameter("cmsNewsId"));
         }
-        List<CmsNewsImage> dbList = cmsNewsImagesDAO.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, newsId);
-        Integer dbListDisplayRecordsSize = cmsNewsImagesDAO.searchByAjaxCountWithoutContent(newsId);
+        List<CmsNewsImagesEntity> dbList = cmsNewsImagesRepository.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, newsId);
+        Integer dbListDisplayRecordsSize = cmsNewsImagesRepository.searchByAjaxCountWithoutContent(newsId);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < dbList.size(); i++) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("#", iDisplayStart + i + 1);
-            final CmsNewsImage object = dbList.get(i);
+            final CmsNewsImagesEntity object = dbList.get(i);
             formDetailsJson.put("image", object.getId());
             formDetailsJson.put("title", object.getTitle());
             formDetailsJson.put("fileName", object.getFileName());
@@ -74,7 +71,7 @@ public class CmsNewsImagesController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        responseDetailsJson.put("iTotalRecords", cmsNewsImagesDAO.getTotalNumberNotDeleted());
+        responseDetailsJson.put("iTotalRecords", cmsNewsImagesRepository.getTotalNumberNotDeleted());
         responseDetailsJson.put("iTotalDisplayRecords", dbListDisplayRecordsSize);
         responseDetailsJson.put("aaData", jsonArray);
         return responseDetailsJson.toString();
@@ -82,28 +79,28 @@ public class CmsNewsImagesController extends JsonController {
 
     @RequestMapping(value = "/news/addCmsNewsImage", method = RequestMethod.POST)
     public ModelAndView addCmsNewsImage(
-        @ModelAttribute(value = "cmsNewsImage") CmsNewsImage cmsNewsImage,
+        @ModelAttribute(value = "cmsNewsImage") CmsNewsImagesEntity cmsNewsImage,
         BindingResult result, Locale locale
     ) {
         BufferedImage image;
-        try {
-            image = ImageIO.read(cmsNewsImage.getFile().getInputStream());
-            cmsNewsImage.setWidth(image.getWidth());
-            cmsNewsImage.setHeight(image.getHeight());
-        } catch (IOException e) {
-            LOGGER.error("Problem with reading image", e);
-        }
-        cmsNewsImage.setFileName(cmsNewsImage.getFile().getOriginalFilename());
-        cmsNewsImage.setFileSize(cmsNewsImage.getFile().getSize());
-        cmsNewsImage.setMimeType(cmsNewsImage.getFile().getContentType());
-        cmsNewsImage.setCreated(new Date());
+//        try {
+//            image = ImageIO.read(cmsNewsImage.getFile().getInputStream());
+//            cmsNewsImage.setWidth(image.getWidth());
+//            cmsNewsImage.setHeight(image.getHeight());
+//        } catch (IOException e) {
+//            LOGGER.error("Problem with reading image", e);
+//        }
+//        cmsNewsImage.setFileName(cmsNewsImage.getFile().getOriginalFilename());
+//        cmsNewsImage.setFileSize(cmsNewsImage.getFile().getSize());
+//        cmsNewsImage.setMimeType(cmsNewsImage.getFile().getContentType());
+//        cmsNewsImage.setCreated(new Date());
         cmsNewsImage.setLastModified(cmsNewsImage.getCreated());
         ValidationUtils.rejectIfEmpty(result, "title", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TitleMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "newsId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CmsNewsMustBeSet"));
         if (!result.hasErrors()) {
-            cmsNewsImage.setId(cmsNewsImagesDAO.add(cmsNewsImage));
-            cmsNewsImage.setUrl(imageStorageService.storeNewsImage(cmsNewsImage));
-            cmsNewsImagesDAO.updateUrl(cmsNewsImage);
+            cmsNewsImage.setId(cmsNewsImagesRepository.add(cmsNewsImage));
+//            cmsNewsImage.setUrl(imageStorageService.storeNewsImage(cmsNewsImage));
+            cmsNewsImagesRepository.updateUrl(cmsNewsImage);
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("/news/" + cmsNewsImage.getNewsId(), true, false, false));
@@ -113,13 +110,13 @@ public class CmsNewsImagesController extends JsonController {
     @RequestMapping(value = "/news/deleteCmsNewsImage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteCmsNewsImage(
-        @ModelAttribute(value = "cmsNewsImage") CmsNewsImage cmsNewsImage,
+        @ModelAttribute(value = "cmsNewsImage") CmsNewsImagesEntity cmsNewsImage,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("ImageMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsNewsImagesDAO.delete(cmsNewsImage);
+            cmsNewsImagesRepository.delete(cmsNewsImage);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

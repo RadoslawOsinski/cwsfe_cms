@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.web.blog;
 
-import eu.com.cwsfe.cms.dao.BlogPostCodesDAO;
-import eu.com.cwsfe.cms.model.BlogPostCode;
+import eu.com.cwsfe.cms.db.blog.BlogPostCodeEntity;
+import eu.com.cwsfe.cms.db.blog.BlogPostCodesRepository;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -28,11 +28,11 @@ public class BlogPostCodeController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BlogPostCodeController.class);
 
-    private final BlogPostCodesRepository blogPostCodesDAO;
+    private final BlogPostCodesRepository blogPostCodesRepository;
 
     @Autowired
-    public BlogPostCodeController(BlogPostCodesRepository blogPostCodesDAO) {
-        this.blogPostCodesRepository = blogPostCodesDAO;
+    public BlogPostCodeController(BlogPostCodesRepository blogPostCodesRepository) {
+        this.blogPostCodesRepository = blogPostCodesRepository;
     }
 
     @RequestMapping(value = "/blogPosts/blogPostCodesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -49,14 +49,14 @@ public class BlogPostCodeController extends JsonController {
         } catch (NumberFormatException e) {
             LOGGER.error("Blog post id is not a number: {}", webRequest.getParameter("blogPostId"));
         }
-        List<BlogPostCode> dbList = blogPostCodesDAO.searchByAjax(iDisplayStart, iDisplayLength, blogPostId);
-        Integer dbListDisplayRecordsSize = blogPostCodesDAO.searchByAjaxCount(blogPostId);
+        List<BlogPostCodeEntity> dbList = blogPostCodesRepository.searchByAjax(iDisplayStart, iDisplayLength, blogPostId);
+        Integer dbListDisplayRecordsSize = blogPostCodesRepository.searchByAjaxCount(blogPostId);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < dbList.size(); i++) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("#", iDisplayStart + i + 1);
-            final BlogPostCode object = dbList.get(i);
+            final BlogPostCodeEntity object = dbList.get(i);
             formDetailsJson.put("codeId", object.getCodeId());
             if (object.getCode() == null || object.getCode().isEmpty()) {
                 formDetailsJson.put("code", "---");
@@ -67,7 +67,7 @@ public class BlogPostCodeController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        responseDetailsJson.put("iTotalRecords", blogPostCodesDAO.getTotalNumberNotDeleted());
+        responseDetailsJson.put("iTotalRecords", blogPostCodesRepository.getTotalNumberNotDeleted());
         responseDetailsJson.put("iTotalDisplayRecords", dbListDisplayRecordsSize);
         responseDetailsJson.put("aaData", jsonArray);
         return responseDetailsJson.toString();
@@ -76,15 +76,15 @@ public class BlogPostCodeController extends JsonController {
     @RequestMapping(value = "/blogPosts/addBlogPostCode", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addBlogPostCode(
-        @ModelAttribute(value = "blogPostCode") BlogPostCode blogPostCode,
+        @ModelAttribute(value = "blogPostCode") BlogPostCodeEntity blogPostCode,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "codeId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CodeIdMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "blogPostId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "code", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CodeMustBeSet"));
-        BlogPostCode existingCode;
+        BlogPostCodeEntity existingCode;
         try {
-            existingCode = blogPostCodesDAO.getCodeForPostByCodeId(blogPostCode.getBlogPostId(), blogPostCode.getCodeId());
+            existingCode = blogPostCodesRepository.getCodeForPostByCodeId(blogPostCode.getBlogPostId(), blogPostCode.getCodeId());
         } catch (EmptyResultDataAccessException e) {
             existingCode = null;
         }
@@ -93,7 +93,7 @@ public class BlogPostCodeController extends JsonController {
         }
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogPostCodesDAO.add(blogPostCode);
+            blogPostCodesRepository.add(blogPostCode);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -104,14 +104,14 @@ public class BlogPostCodeController extends JsonController {
     @RequestMapping(value = "/blogPosts/deleteBlogPostCode", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String blogPostCodeDelete(
-        @ModelAttribute(value = "blogPostCode") BlogPostCode blogPostCode,
+        @ModelAttribute(value = "blogPostCode") BlogPostCodeEntity blogPostCode,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "codeId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CodeIdMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "blogPostId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogPostCodesDAO.delete(blogPostCode);
+            blogPostCodesRepository.delete(blogPostCode);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

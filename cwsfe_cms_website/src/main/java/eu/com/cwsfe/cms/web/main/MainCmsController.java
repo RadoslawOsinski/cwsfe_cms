@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.web.main;
 
-import eu.com.cwsfe.cms.dao.BlogPostCommentsDAO;
-import eu.com.cwsfe.cms.model.BlogPostComment;
+import eu.com.cwsfe.cms.db.blog.BlogPostCommentsRepository;
+import eu.com.cwsfe.cms.db.blog.CmsBlogPostCommentsEntity;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -27,14 +27,14 @@ import java.util.List;
 @Controller
 class MainCmsController extends JsonController {
 
-    private final BlogPostCommentsRepository blogPostCommentsDAO;
+    private final BlogPostCommentsRepository blogPostCommentsRepository;
 
     private static final DateTimeFormatter DATE_FORMAT = new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd HH:mm:ss").
         toFormatter().withZone(ZoneId.systemDefault());
 
     @Autowired
-    public MainCmsController(BlogPostCommentsRepository blogPostCommentsDAO) {
-        this.blogPostCommentsRepository = blogPostCommentsDAO;
+    public MainCmsController(BlogPostCommentsRepository blogPostCommentsRepository) {
+        this.blogPostCommentsRepository = blogPostCommentsRepository;
     }
 
     @RequestMapping(value = "/Main", method = RequestMethod.GET)
@@ -56,23 +56,23 @@ class MainCmsController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        List<BlogPostComment> dbList = blogPostCommentsDAO.searchByAjax(iDisplayStart, iDisplayLength);
-        Integer dbListDisplayRecordsSize = blogPostCommentsDAO.searchByAjaxCount();
+        List<CmsBlogPostCommentsEntity> dbList = blogPostCommentsRepository.searchByAjax(iDisplayStart, iDisplayLength);
+        Integer dbListDisplayRecordsSize = blogPostCommentsRepository.searchByAjaxCount();
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < dbList.size(); i++) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("#", iDisplayStart + i + 1);
-            final BlogPostComment objects = dbList.get(i);
+            final CmsBlogPostCommentsEntity objects = dbList.get(i);
             formDetailsJson.put("userName", objects.getUserName() + "[" + objects.getEmail() + "]");
             formDetailsJson.put("comment", objects.getComment());
-            formDetailsJson.put("created", DATE_FORMAT.format(objects.getCreated().toInstant()));
+//            formDetailsJson.put("created", DATE_FORMAT.format(objects.getCreated().toInstant()));
             formDetailsJson.put("status", objects.getStatus());
             formDetailsJson.put("id", objects.getId());
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        responseDetailsJson.put("iTotalRecords", blogPostCommentsDAO.getTotalNumberNotDeleted());
+        responseDetailsJson.put("iTotalRecords", blogPostCommentsRepository.getTotalNumberNotDeleted());
         responseDetailsJson.put("iTotalDisplayRecords", dbListDisplayRecordsSize);
         responseDetailsJson.put("aaData", jsonArray);
         return responseDetailsJson.toString();

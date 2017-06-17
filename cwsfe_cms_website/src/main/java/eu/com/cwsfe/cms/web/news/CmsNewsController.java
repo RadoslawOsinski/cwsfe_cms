@@ -1,11 +1,10 @@
 package eu.com.cwsfe.cms.web.news;
 
-import eu.com.cwsfe.cms.db.news.CmsNewsI18nContentStatus;
+import eu.com.cwsfe.cms.db.author.CmsAuthorsRepository;
+import eu.com.cwsfe.cms.db.i18n.CmsLanguagesRepository;
+import eu.com.cwsfe.cms.db.news.*;
+import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import eu.com.cwsfe.cms.dao.*;
-import eu.com.cwsfe.cms.model.Breadcrumb;
-import eu.com.cwsfe.cms.model.CmsNews;
-import eu.com.cwsfe.cms.model.CmsNewsI18nContent;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -34,21 +33,21 @@ public class CmsNewsController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsNewsController.class);
 
-    private final CmsNewsRepository cmsNewsDAO;
-    private final CmsNewsI18nContentsRepository cmsNewsI18nContentsDAO;
-    private final CmsAuthorsRepository cmsAuthorsDAO;
-    private final CmsFoldersRepository cmsFoldersDAO;
-    private final NewsTypesRepository newsTypesDAO;
-    private final CmsLanguagesRepository cmsLanguagesDAO;
+    private final CmsNewsRepository cmsNewsRepository;
+    private final CmsNewsI18nContentsRepository cmsNewsI18nContentsRepository;
+    private final CmsAuthorsRepository cmsAuthorsRepository;
+    private final CmsFoldersRepository cmsFoldersRepository;
+    private final NewsTypesRepository newsTypesRepository;
+    private final CmsLanguagesRepository cmsLanguagesRepository;
 
     @Autowired
-    public CmsNewsController(CmsLanguagesRepository cmsLanguagesDAO, CmsNewsRepository cmsNewsDAO, CmsAuthorsRepository cmsAuthorsDAO, CmsFoldersRepository cmsFoldersDAO, NewsTypesRepository newsTypesDAO, CmsNewsI18nContentsRepository cmsNewsI18nContentsDAO) {
-        this.cmsLanguagesRepository = cmsLanguagesDAO;
-        this.cmsNewsRepository = cmsNewsDAO;
-        this.cmsAuthorsRepository = cmsAuthorsDAO;
-        this.cmsFoldersRepository = cmsFoldersDAO;
+    public CmsNewsController(CmsLanguagesRepository cmsLanguagesRepository, CmsNewsRepository cmsNewsRepository, CmsAuthorsRepository cmsAuthorsRepository, CmsFoldersRepository cmsFoldersRepository, NewsTypesRepository newsTypesDAO, CmsNewsI18nContentsRepository cmsNewsI18nContentsRepository) {
+        this.cmsLanguagesRepository = cmsLanguagesRepository;
+        this.cmsNewsRepository = cmsNewsRepository;
+        this.cmsAuthorsRepository = cmsAuthorsRepository;
+        this.cmsFoldersRepository = cmsFoldersRepository;
         this.newsTypesRepository = newsTypesDAO;
-        this.cmsNewsI18nContentsRepository = cmsNewsI18nContentsDAO;
+        this.cmsNewsI18nContentsRepository = cmsNewsI18nContentsRepository;
     }
 
     @RequestMapping(value = "/news", method = RequestMethod.GET)
@@ -62,8 +61,8 @@ public class CmsNewsController extends JsonController {
         return contextPath + "/resources-cwsfe-cms/js/cms/news/News.js";
     }
 
-    private List<Breadcrumb> getBreadcrumbs(Locale locale) {
-        List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
+    private List<BreadcrumbDTO> getBreadcrumbs(Locale locale) {
+        List<BreadcrumbDTO> breadcrumbs = new ArrayList<>(1);
         addCmsNewsManagementBreadCrumb(locale, breadcrumbs);
         return breadcrumbs;
     }
@@ -72,17 +71,17 @@ public class CmsNewsController extends JsonController {
         return contextPath + "/resources-cwsfe-cms/js/cms/news/SingleNews.js";
     }
 
-    private List<Breadcrumb> getSingleNewsBreadcrumbs(Locale locale, Long id) {
-        List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
+    private List<BreadcrumbDTO> getSingleNewsBreadcrumbs(Locale locale, Long id) {
+        List<BreadcrumbDTO> breadcrumbs = new ArrayList<>(1);
         addCmsNewsManagementBreadCrumb(locale, breadcrumbs);
-        breadcrumbs.add(new Breadcrumb(
+        breadcrumbs.add(new BreadcrumbDTO(
             ServletUriComponentsBuilder.fromCurrentContextPath().path("/news/" + id).build().toUriString(),
             ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CurrentNews")));
         return breadcrumbs;
     }
 
-    private void addCmsNewsManagementBreadCrumb(Locale locale, List<Breadcrumb> breadcrumbs) {
-        breadcrumbs.add(new Breadcrumb(
+    private void addCmsNewsManagementBreadCrumb(Locale locale, List<BreadcrumbDTO> breadcrumbs) {
+        breadcrumbs.add(new BreadcrumbDTO(
             ServletUriComponentsBuilder.fromCurrentContextPath().path("/news").build().toUriString(),
             ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CmsNewsManagement")));
     }
@@ -105,36 +104,36 @@ public class CmsNewsController extends JsonController {
                 LOGGER.error("Search author id is not a number: {}", searchAuthorIdText);
             }
         }
-        List<Object[]> dbList = cmsNewsDAO.searchByAjax(iDisplayStart, iDisplayLength, searchAuthorId, searchNewsCode);
-        Integer dbListDisplayRecordsSize = cmsNewsDAO.searchByAjaxCount(searchAuthorId, searchNewsCode);
+//        List<Object[]> dbList = cmsNewsRepository.searchByAjax(iDisplayStart, iDisplayLength, searchAuthorId, searchNewsCode);
+//        Integer dbListDisplayRecordsSize = cmsNewsRepository.searchByAjaxCount(searchAuthorId, searchNewsCode);
         JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < dbList.size(); i++) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("#", iDisplayStart + i + 1);
-            final Object[] objects = dbList.get(i);
-            if (objects[1] == null || ((String) objects[1]).isEmpty()) {
-                formDetailsJson.put("author", "---");
-            } else {
-                formDetailsJson.put("author", objects[1]);
-            }
-            formDetailsJson.put("newsCode", objects[5]);
-            //todo reconsider time management
-            formDetailsJson.put("creationDate", ((java.sql.Date) objects[4]).toLocalDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-            formDetailsJson.put("id", objects[0]);
-            jsonArray.add(formDetailsJson);
-        }
-        responseDetailsJson.put("sEcho", sEcho);
-        responseDetailsJson.put("iTotalRecords", cmsNewsDAO.getTotalNumberNotDeleted());
-        responseDetailsJson.put("iTotalDisplayRecords", dbListDisplayRecordsSize);
-        responseDetailsJson.put("aaData", jsonArray);
+//        JSONArray jsonArray = new JSONArray();
+//        for (int i = 0; i < dbList.size(); i++) {
+//            JSONObject formDetailsJson = new JSONObject();
+//            formDetailsJson.put("#", iDisplayStart + i + 1);
+//            final Object[] objects = dbList.get(i);
+//            if (objects[1] == null || ((String) objects[1]).isEmpty()) {
+//                formDetailsJson.put("author", "---");
+//            } else {
+//                formDetailsJson.put("author", objects[1]);
+//            }
+//            formDetailsJson.put("newsCode", objects[5]);
+//            //todo reconsider time management
+//            formDetailsJson.put("creationDate", ((java.sql.Date) objects[4]).toLocalDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+//            formDetailsJson.put("id", objects[0]);
+//            jsonArray.add(formDetailsJson);
+//        }
+//        responseDetailsJson.put("sEcho", sEcho);
+//        responseDetailsJson.put("iTotalRecords", cmsNewsRepository.getTotalNumberNotDeleted());
+//        responseDetailsJson.put("iTotalDisplayRecords", dbListDisplayRecordsSize);
+//        responseDetailsJson.put("aaData", jsonArray);
         return responseDetailsJson.toString();
     }
 
     @RequestMapping(value = "/addNews", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addNews(
-        @ModelAttribute(value = "cmsNews") CmsNews cmsNews,
+        @ModelAttribute(value = "cmsNews") CmsNewsEntity cmsNews,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "authorId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("AuthorMustBeSet"));
@@ -144,8 +143,8 @@ public class CmsNewsController extends JsonController {
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
             //todo reconsider time management
-            cmsNews.setCreationDate(new Date());
-            cmsNewsDAO.add(cmsNews);
+//            cmsNews.setCreationDate(new Date().toInstant());
+            cmsNewsRepository.add(cmsNews);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -156,7 +155,7 @@ public class CmsNewsController extends JsonController {
     @RequestMapping(value = "/news/updateNewsBasicInfo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updateNewsBasicInfo(
-        @ModelAttribute(value = "cmsNews") CmsNews cmsNews,
+        @ModelAttribute(value = "cmsNews") CmsNewsEntity cmsNews,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "newsTypeId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeMustBeSet"));
@@ -165,7 +164,7 @@ public class CmsNewsController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "status", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("StatusMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsNewsDAO.updatePostBasicInfo(cmsNews);
+            cmsNewsRepository.updatePostBasicInfo(cmsNews);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -176,13 +175,13 @@ public class CmsNewsController extends JsonController {
     @RequestMapping(value = "/deleteNews", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteFolder(
-        @ModelAttribute(value = "cmsNews") CmsNews cmsNews,
+        @ModelAttribute(value = "cmsNews") CmsNewsEntity cmsNews,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsNewsDAO.delete(cmsNews);
+            cmsNewsRepository.delete(cmsNews);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -194,12 +193,12 @@ public class CmsNewsController extends JsonController {
     public String browseNews(ModelMap model, Locale locale, @PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         model.addAttribute("mainJavaScript", setSingleNewsAdditionalJS(httpServletRequest.getContextPath()));
         model.addAttribute("breadcrumbs", getSingleNewsBreadcrumbs(locale, id));
-        final CmsNews cmsNews = cmsNewsDAO.get(id);
-        model.addAttribute("cmsLanguages", cmsLanguagesDAO.listAll());
+        final CmsNewsEntity cmsNews = cmsNewsRepository.get(id);
+        model.addAttribute("cmsLanguages", cmsLanguagesRepository.listAll());
         model.addAttribute("cmsNews", cmsNews);
-        model.addAttribute("cmsAuthor", cmsAuthorsDAO.get(cmsNews.getAuthorId()));
-        model.addAttribute("newsType", newsTypesDAO.get(cmsNews.getNewsTypeId()));
-        model.addAttribute("newsFolder", cmsFoldersDAO.get(cmsNews.getNewsFolderId()));
+        model.addAttribute("cmsAuthor", cmsAuthorsRepository.get(cmsNews.getAuthorId()));
+        model.addAttribute("newsType", newsTypesRepository.get(cmsNews.getNewsTypeId()));
+//        model.addAttribute("newsFolder", cmsFoldersRepository.get(cmsNews.getNewsFolderId()));
         return "cms/news/SingleNews";
     }
 
@@ -215,15 +214,15 @@ public class CmsNewsController extends JsonController {
         }
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            CmsNewsI18nContent cmsNewsI18nContent = cmsNewsI18nContentsDAO.getByLanguageForNews(newsId, langId);
+            CmsNewsI18NContentsEntity cmsNewsI18nContent = cmsNewsI18nContentsRepository.getByLanguageForNews(newsId, langId);
             if (cmsNewsI18nContent == null) {
-                cmsNewsI18nContent = new CmsNewsI18nContent();
+                cmsNewsI18nContent = new CmsNewsI18NContentsEntity();
                 cmsNewsI18nContent.setNewsId(newsId);
                 cmsNewsI18nContent.setLanguageId(langId);
                 cmsNewsI18nContent.setNewsTitle("");
                 cmsNewsI18nContent.setNewsShortcut("");
                 cmsNewsI18nContent.setNewsDescription("");
-                cmsNewsI18nContent.setStatus(CmsNewsI18nContentStatus.HIDDEN);
+//                cmsNewsI18nContent.setStatus(CmsNewsI18nContentStatus.HIDDEN);
             }
             addJsonSuccess(responseDetailsJson);
             JSONObject data = new JSONObject();
@@ -240,10 +239,10 @@ public class CmsNewsController extends JsonController {
 
     @RequestMapping(value = "/news/addNewsI18nContent", method = RequestMethod.POST)
     public ModelAndView addNewsI18nContent(
-        @ModelAttribute(value = "cmsNewsI18nContent") CmsNewsI18nContent cmsNewsI18nContent,
+        @ModelAttribute(value = "cmsNewsI18nContent") CmsNewsI18NContentsEntity cmsNewsI18nContent,
         ModelMap model, Locale locale, HttpServletRequest httpServletRequest
     ) {
-        cmsNewsI18nContentsDAO.add(cmsNewsI18nContent);
+        cmsNewsI18nContentsRepository.add(cmsNewsI18nContent);
         browseNews(model, locale, cmsNewsI18nContent.getNewsId(), httpServletRequest);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("/news/" + cmsNewsI18nContent.getNewsId(), true, false, false));
@@ -254,7 +253,7 @@ public class CmsNewsController extends JsonController {
     @RequestMapping(value = "/news/updateNewsI18nContent", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String updateNewsI18nContent(
-        @ModelAttribute(value = "cmsNewsI18nContent") CmsNewsI18nContent cmsNewsI18nContent,
+        @ModelAttribute(value = "cmsNewsI18nContent") CmsNewsI18NContentsEntity cmsNewsI18nContent,
         BindingResult result, ModelMap model, Locale locale, HttpServletRequest httpServletRequest
     ) {
         ValidationUtils.rejectIfEmpty(result, "newsId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsMustBeSet"));
@@ -267,20 +266,20 @@ public class CmsNewsController extends JsonController {
         if (cmsNewsI18nContent.getNewsDescription() != null) {
             cmsNewsI18nContent.setNewsDescription(cmsNewsI18nContent.getNewsDescription().trim());
         }
-        CmsNewsI18nContent existingI18nContent;
+        CmsNewsI18NContentsEntity existingI18nContent;
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
             try {
-                existingI18nContent = cmsNewsI18nContentsDAO.getByLanguageForNews(cmsNewsI18nContent.getNewsId(), cmsNewsI18nContent.getLanguageId());
+                existingI18nContent = cmsNewsI18nContentsRepository.getByLanguageForNews(cmsNewsI18nContent.getNewsId(), cmsNewsI18nContent.getLanguageId());
             } catch (EmptyResultDataAccessException e) {
                 existingI18nContent = null;
             }
             try {
                 if (existingI18nContent == null) {
-                    cmsNewsI18nContentsDAO.add(cmsNewsI18nContent);
+                    cmsNewsI18nContentsRepository.add(cmsNewsI18nContent);
                 } else {
                     cmsNewsI18nContent.setId(existingI18nContent.getId());
-                    cmsNewsI18nContentsDAO.updateContentWithStatus(cmsNewsI18nContent);
+                    cmsNewsI18nContentsRepository.updateContentWithStatus(cmsNewsI18nContent);
                 }
                 addJsonSuccess(responseDetailsJson);
             } catch (Exception e) {

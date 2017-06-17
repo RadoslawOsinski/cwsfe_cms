@@ -1,9 +1,9 @@
 package eu.com.cwsfe.cms.web.images;
 
-import eu.com.cwsfe.cms.dao.CmsGlobalParamsDAO;
-import eu.com.cwsfe.cms.model.BlogPostImage;
-import eu.com.cwsfe.cms.model.CmsGlobalParam;
-import eu.com.cwsfe.cms.model.CmsNewsImage;
+import eu.com.cwsfe.cms.db.blog.BlogPostImagesEntity;
+import eu.com.cwsfe.cms.db.news.CmsNewsImagesEntity;
+import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsEntity;
+import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsRepository;
 import eu.com.cwsfe.cms.web.news.CmsNewsImagesController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,44 +25,44 @@ public class LocalFileSystemImageStorageService implements ImageStorageService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsNewsImagesController.class);
 
-    private final CmsGlobalParamsRepository cmsGlobalParamsDAO;
+    private final CmsGlobalParamsRepository cmsGlobalParamsRepository;
 
     @Autowired
-    public LocalFileSystemImageStorageService(CmsGlobalParamsRepository cmsGlobalParamsDAO) {
-        this.cmsGlobalParamsRepository = cmsGlobalParamsDAO;
+    public LocalFileSystemImageStorageService(CmsGlobalParamsRepository cmsGlobalParamsRepository) {
+        this.cmsGlobalParamsRepository = cmsGlobalParamsRepository;
     }
 
-    public String storeNewsImage(CmsNewsImage cmsNewsImage) {
-        CmsGlobalParam newsImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
-        storeImage(cmsNewsImage.getFile(), newsImagesPath.getValue());
-        CmsGlobalParam cmsMainUrl = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_MAIN_URL");
+    public String storeNewsImage(CmsNewsImagesEntity cmsNewsImage) {
+        CmsGlobalParamsEntity newsImagesPath = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
+//        storeImage(cmsNewsImage.getFile(), newsImagesPath.getValue());
+        CmsGlobalParamsEntity cmsMainUrl = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_MAIN_URL");
         return cmsMainUrl.getValue() + "/newsImages/" + cmsNewsImage.getFileName();   //todo extract in spring security hardcoded /newsImages
     }
 
-    public String storeBlogImage(BlogPostImage blogPostImage) {
-        CmsGlobalParam blogImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH");
-        storeImage(blogPostImage.getFile(), blogImagesPath.getValue());
-        CmsGlobalParam cmsMainUrl = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_MAIN_URL");
+    public String storeBlogImage(BlogPostImagesEntity blogPostImage) {
+        CmsGlobalParamsEntity blogImagesPath = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH");
+//        storeImage(blogPostImage.getFile(), blogImagesPath.getValue());
+        CmsGlobalParamsEntity cmsMainUrl = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_MAIN_URL");
         return cmsMainUrl.getValue() + "/blogPostImages/" + blogPostImage.getFileName();  //todo extract in spring security hardcoded /blogPostImages
     }
 
     @Override
     public boolean isBlogImagesStorageInitialized() {
-        CmsGlobalParam newsImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH");
+        CmsGlobalParamsEntity newsImagesPath = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH");
         File newsImagesDirectory = new File(newsImagesPath.getValue());
         return newsImagesDirectory.exists() && newsImagesDirectory.isDirectory();
     }
 
     @Override
     public boolean isNewsImagesStorageInitialized() {
-        CmsGlobalParam newsImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
+        CmsGlobalParamsEntity newsImagesPath = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
         File newsImagesDirectory = new File(newsImagesPath.getValue());
         return newsImagesDirectory.exists() && newsImagesDirectory.isDirectory();
     }
 
     @Override
     public void initializeBlogImagesStorage() {
-        CmsGlobalParam newsImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH");
+        CmsGlobalParamsEntity newsImagesPath = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH");
         File newsImagesDirectory = new File(newsImagesPath.getValue());
         if (newsImagesDirectory.mkdir()) {
             LOGGER.error("Failed to create folder: " + newsImagesPath.getValue());
@@ -71,7 +71,7 @@ public class LocalFileSystemImageStorageService implements ImageStorageService {
 
     @Override
     public void initializeNewsImagesStorage() {
-        CmsGlobalParam newsImagesPath = cmsGlobalParamsDAO.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
+        CmsGlobalParamsEntity newsImagesPath = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
         File newsImagesDirectory = new File(newsImagesPath.getValue());
         if (newsImagesDirectory.mkdir()) {
             LOGGER.error("Failed to create folder: " + newsImagesPath.getValue());

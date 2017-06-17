@@ -2,7 +2,7 @@ package eu.com.cwsfe.cms.web.blog;
 
 import eu.com.cwsfe.cms.db.blog.BlogKeywordsEntity;
 import eu.com.cwsfe.cms.db.blog.BlogKeywordsRepository;
-import eu.com.cwsfe.cms.services.model.Breadcrumb;
+import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -46,9 +46,9 @@ public class BlogKeywordsController extends JsonController {
         return contextPath + "/resources-cwsfe-cms/js/cms/blogkeywords/Blogkeywords.js";
     }
 
-    private List<Breadcrumb> getBreadcrumbs(Locale locale) {
-        List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
-        breadcrumbs.add(new Breadcrumb(
+    private List<BreadcrumbDTO> getBreadcrumbs(Locale locale) {
+        List<BreadcrumbDTO> breadcrumbs = new ArrayList<>(1);
+        breadcrumbs.add(new BreadcrumbDTO(
             ServletUriComponentsBuilder.fromCurrentContextPath().path("/blogKeywords").build().toUriString(),
             ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogKeywordsManagement")));
         return breadcrumbs;

@@ -1,9 +1,9 @@
 package eu.com.cwsfe.cms.web.i18n;
 
+import eu.com.cwsfe.cms.db.i18n.CmsLanguagesEntity;
+import eu.com.cwsfe.cms.db.i18n.CmsLanguagesRepository;
+import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import eu.com.cwsfe.cms.dao.CmsLanguagesDAO;
-import eu.com.cwsfe.cms.model.Breadcrumb;
-import eu.com.cwsfe.cms.model.Language;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +28,11 @@ import java.util.ResourceBundle;
 @Controller
 class LanguagesController extends JsonController {
 
-    private final CmsLanguagesRepository cmsLanguagesDAO;
+    private final CmsLanguagesRepository cmsLanguagesRepository;
 
     @Autowired
-    public LanguagesController(CmsLanguagesRepository cmsLanguagesDAO) {
-        this.cmsLanguagesRepository = cmsLanguagesDAO;
+    public LanguagesController(CmsLanguagesRepository cmsLanguagesRepository) {
+        this.cmsLanguagesRepository = cmsLanguagesRepository;
     }
 
     @RequestMapping(value = "/languages", method = RequestMethod.GET)
@@ -46,9 +46,9 @@ class LanguagesController extends JsonController {
         return contextPath + "/resources-cwsfe-cms/js/cms/languages/Languages.js";
     }
 
-    private List<Breadcrumb> getBreadcrumbs(Locale locale) {
-        List<Breadcrumb> breadcrumbs = new ArrayList<>(1);
-        breadcrumbs.add(new Breadcrumb(
+    private List<BreadcrumbDTO> getBreadcrumbs(Locale locale) {
+        List<BreadcrumbDTO> breadcrumbs = new ArrayList<>(1);
+        breadcrumbs.add(new BreadcrumbDTO(
             ServletUriComponentsBuilder.fromCurrentContextPath().path("/languages").build().toUriString(),
             ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguagesManagement")));
         return breadcrumbs;
@@ -61,7 +61,7 @@ class LanguagesController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        final List<Language> cmsLanguages = cmsLanguagesDAO.listAjax(iDisplayStart, iDisplayLength);
+        final List<CmsLanguagesEntity> cmsLanguages = cmsLanguagesRepository.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < cmsLanguages.size(); i++) {
@@ -73,7 +73,7 @@ class LanguagesController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfLanguages = cmsLanguagesDAO.countForAjax();
+        final int numberOfLanguages = cmsLanguagesRepository.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfLanguages);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfLanguages);
         responseDetailsJson.put("aaData", jsonArray);
@@ -86,10 +86,10 @@ class LanguagesController extends JsonController {
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
-        final List<Language> languages = cmsLanguagesDAO.listForDropList(term, limit);
+        final List<CmsLanguagesEntity> languages = cmsLanguagesRepository.listForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
-        for (Language lang : languages) {
+        for (CmsLanguagesEntity lang : languages) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("id", lang.getId());
             formDetailsJson.put("code", lang.getCode());
@@ -103,7 +103,7 @@ class LanguagesController extends JsonController {
     @RequestMapping(value = "/addLanguage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addLanguage(
-        @ModelAttribute(value = "cmsLanguage") Language cmsLanguage,
+        @ModelAttribute(value = "cmsLanguage") CmsLanguagesEntity cmsLanguage,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "code", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageCodeMustBeSet"));
@@ -114,7 +114,7 @@ class LanguagesController extends JsonController {
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
             try {
-                cmsLanguagesDAO.add(cmsLanguage);
+                cmsLanguagesRepository.add(cmsLanguage);
                 addJsonSuccess(responseDetailsJson);
             } catch (DuplicateKeyException e) {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageAlreadyExists"));
@@ -128,13 +128,13 @@ class LanguagesController extends JsonController {
     @RequestMapping(value = "/deleteLanguage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String deleteLanguage(
-        @ModelAttribute(value = "cmsLanguage") Language cmsLanguage,
+        @ModelAttribute(value = "cmsLanguage") CmsLanguagesEntity cmsLanguage,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsLanguagesDAO.delete(cmsLanguage);
+            cmsLanguagesRepository.delete(cmsLanguage);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
