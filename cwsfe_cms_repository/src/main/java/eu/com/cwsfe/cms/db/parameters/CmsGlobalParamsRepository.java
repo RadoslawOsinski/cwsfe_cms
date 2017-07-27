@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class CmsGlobalParamsRepository {
         return sessionFactory.getCurrentSession().get(CmsGlobalParamsEntity.class, id);
     }
 
+    @Transactional
     public CmsGlobalParamsEntity getByCode(String code) {
         Query query = sessionFactory.getCurrentSession().getNamedQuery(CmsGlobalParamsEntity.GET_BY_CODE);
         query.setParameter("code", code);

@@ -3,6 +3,7 @@ package eu.com.cwsfe.cms.db.users;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQuery;
@@ -88,7 +89,7 @@ public class CmsUserAllowedNetAddressEntity {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE)
             .append("id", id)
             .append("userId", userId)
             .append("inetAddress", inetAddress)

@@ -1,0 +1,14 @@
+-Dspring.profiles.active=tomcat-jndi,localFileSystemImageStorage
+-Dlogback.configurationFile=/.../logback.xml
+-Dhazelcast.config=/.../cwsfeCmsHazelcast.xml
+-DlogbackLogsDir=/tmp
+-Dcors.allowed.origins=*
+-Duser.timezone=Europe/Warsaw
+-DdataSource.driverClassName=org.postgresql.Driver
+-DdataSource.url=jdbc:postgresql://localhost:5432/CWSFEDB
+-DdataSource.username=
+-DdataSource.password=
+-Dcwsfe.eu.com.cwsfe.cms.hazelcast.instanceName=CwsfeCmsCacheNode1
+-Dcwsfe.eu.com.cwsfe.cms.hazelcast.members=127.0.0.1:5000
+-Dcwsfe.eu.com.cwsfe.cms.hazelcast.name=CwsfeCms
+-Dcwsfe.eu.com.cwsfe.cms.hazelcast.password=

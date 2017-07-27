@@ -4,6 +4,7 @@ import eu.com.cwsfe.cms.db.common.NewDeletedStatus;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.NamedQuery;
@@ -69,7 +70,6 @@ public class BlogPostCodeEntity {
 
     @Basic
     @Column(name = "status", nullable = false, length = -1)
-    @Convert(converter = NewDeletedStatus.class)
     public NewDeletedStatus getStatus() {
         return status;
     }
@@ -106,7 +106,7 @@ public class BlogPostCodeEntity {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE)
             .append("codeId", codeId)
             .append("blogPostId", blogPostId)
             .append("code", code)

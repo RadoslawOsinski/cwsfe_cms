@@ -3,6 +3,7 @@ package eu.com.cwsfe.cms.db.news;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.NamedQuery;
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQuery(name = CmsFoldersEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(f) FROM CmsFoldersEntity f WHERE status <> 'DELETED'")
 @NamedQuery(name = CmsFoldersEntity.LIST, query = "SELECT f FROM CmsFoldersEntity f WHERE status = 'NEW' ORDER BY order_number")
-@NamedQuery(name = CmsFoldersEntity.LIST_FOLDERS_FOR_DROP_LIST, query = "SELECT f FROM CmsFoldersEntity f WHERE status = 'NEW' lower(folderName) LIKE lower(:folderName) ORDER BY orderNumber")
+@NamedQuery(name = CmsFoldersEntity.LIST_FOLDERS_FOR_DROP_LIST, query = "SELECT f FROM CmsFoldersEntity f WHERE status = 'NEW' and lower(folderName) LIKE lower(:folderName) ORDER BY orderNumber")
 @NamedQuery(name = CmsFoldersEntity.GET_BY_FOLDER_NAME, query = "SELECT f FROM CmsFoldersEntity f WHERE folderName = :folderName")
 @Table(name = "cms_folders")
 public class CmsFoldersEntity {
@@ -26,7 +27,7 @@ public class CmsFoldersEntity {
     public static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "CmsFoldersEntity.countForAjax";
     public static final String LIST = "CmsFoldersEntity.list";
     public static final String LIST_FOLDERS_FOR_DROP_LIST = "CmsFoldersEntity.listFoldersForDropList";
-    public static final String GET_BY_FOLDER_NAME = "CmsFoldersEntity.listFoldersForDropList";
+    public static final String GET_BY_FOLDER_NAME = "CmsFoldersEntity.GET_BY_FOLDER_NAME";
 
     private long id;
     private Integer parentId;
@@ -116,7 +117,7 @@ public class CmsFoldersEntity {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE)
             .append("id", id)
             .append("parentId", parentId)
             .append("folderName", folderName)

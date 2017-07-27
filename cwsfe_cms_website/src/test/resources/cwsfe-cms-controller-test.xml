@@ -1,80 +1,80 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<beans xmlns="http://www.springframework.org/schema/beans"-->
+       <!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+       <!--xmlns:context="http://www.springframework.org/schema/context"-->
+       <!--xmlns:mvc="http://www.springframework.org/schema/mvc"-->
+       <!--xmlns:p="http://www.springframework.org/schema/p"-->
+       <!--xsi:schemaLocation="http://www.springframework.org/schema/beans-->
+        <!--http://www.springframework.org/schema/beans/spring-beans.xsd-->
+        <!--http://www.springframework.org/schema/context-->
+        <!--http://www.springframework.org/schema/context/spring-context.xsd-->
+        <!--http://www.springframework.org/schema/mvc-->
+        <!--http://www.springframework.org/schema/mvc/spring-mvc.xsd">-->
 
-    <context:component-scan base-package="eu.com.cwsfe.cms.web"/>
-    <context:component-scan base-package="eu.com.cwsfe.cms.dao"/>
-    <context:component-scan base-package="eu.com.cwsfe.cms.db.repository"/>
-    <context:component-scan base-package="eu.com.cwsfe.cms.model"/>
+    <!--<context:component-scan base-package="eu.com.cwsfe.cms.web"/>-->
+    <!--<context:component-scan base-package="eu.com.cwsfe.cms.dao"/>-->
+    <!--<context:component-scan base-package="eu.com.cwsfe.cms.db.repository"/>-->
+    <!--<context:component-scan base-package="eu.com.cwsfe.cms.model"/>-->
 
-    <context:annotation-config/>
-    <mvc:annotation-driven>
-        <!-- register custom converter that returns UTF-8 encoded response-body by defualt -->
-        <mvc:message-converters register-defaults="true">
-            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-                <constructor-arg index="0" name="defaultCharset" value="UTF-8"/>
-            </bean>
-        </mvc:message-converters>
-    </mvc:annotation-driven>
+    <!--<context:annotation-config/>-->
+    <!--<mvc:annotation-driven>-->
+        <!--&lt;!&ndash; register custom converter that returns UTF-8 encoded response-body by defualt &ndash;&gt;-->
+        <!--<mvc:message-converters register-defaults="true">-->
+            <!--<bean class="org.springframework.http.converter.StringHttpMessageConverter">-->
+                <!--<constructor-arg index="0" name="defaultCharset" value="UTF-8"/>-->
+            <!--</bean>-->
+        <!--</mvc:message-converters>-->
+    <!--</mvc:annotation-driven>-->
 
-    <bean id="cwsfeCmsBeanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+    <!--<bean id="cwsfeCmsBeanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver"/>-->
 
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="2000000000"/>
-    </bean>
+    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+        <!--<property name="maxUploadSize" value="2000000000"/>-->
+    <!--</bean>-->
 
-    <bean id="cwsfeCmsInternalResourceViewResolver"
-          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/pages/"/>
-        <property name="suffix" value=".jsp"/>
-    </bean>
+    <!--<bean id="cwsfeCmsInternalResourceViewResolver"-->
+          <!--class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+        <!--<property name="prefix" value="/pages/"/>-->
+        <!--<property name="suffix" value=".jsp"/>-->
+    <!--</bean>-->
 
-    <bean id="cwsfeCmsLocaleResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-        <property name="defaultLocale" value="en"/>
-    </bean>
+    <!--<bean id="cwsfeCmsLocaleResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">-->
+        <!--<property name="defaultLocale" value="en"/>-->
+    <!--</bean>-->
 
-    <bean id="cwsfeCmsLocaleChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-        <property name="paramName" value="cmsLanguage"/>
-    </bean>
+    <!--<bean id="cwsfeCmsLocaleChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">-->
+        <!--<property name="paramName" value="cmsLanguage"/>-->
+    <!--</bean>-->
 
-    <bean id="handlerMapping"
-          class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-        <property name="interceptors" ref="cwsfeCmsLocaleChangeInterceptor"/>
-    </bean>
+    <!--<bean id="handlerMapping"-->
+          <!--class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">-->
+        <!--<property name="interceptors" ref="cwsfeCmsLocaleChangeInterceptor"/>-->
+    <!--</bean>-->
 
-    <!-- spring sucks in definining different id than messageSource :( -->
-    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
-          p:basename="classpath:cwsfe_cms_i18n" p:defaultEncoding="UTF-8" p:fileEncodings="UTF-8" p:cacheSeconds="10"/>
+    <!--&lt;!&ndash; spring sucks in definining different id than messageSource :( &ndash;&gt;-->
+    <!--<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource"-->
+          <!--p:basename="classpath:cwsfe_cms_i18n" p:defaultEncoding="UTF-8" p:fileEncodings="UTF-8" p:cacheSeconds="10"/>-->
 
-    <bean id="cwsfeCmsControllerClassNameHandlerMapping"
-          class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping">
-        <property name="interceptors">
-            <list>
-                <ref bean="cwsfeCmsLocaleChangeInterceptor"/>
-            </list>
-        </property>
-    </bean>
+    <!--<bean id="cwsfeCmsControllerClassNameHandlerMapping"-->
+          <!--class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping">-->
+        <!--<property name="interceptors">-->
+            <!--<list>-->
+                <!--<ref bean="cwsfeCmsLocaleChangeInterceptor"/>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
 
-    <!-- Handles HTTP GET requests for /resources-cwsfe-cms/** by efficiently serving up static resources in the ${webappRoot}/resources-cwsfe-cms/ directory -->
-    <mvc:resources mapping="/resources-cwsfe-cms/**" location="/resources-cwsfe-cms/" cache-period="31556926"/>
+    <!--&lt;!&ndash; Handles HTTP GET requests for /resources-cwsfe-cms/** by efficiently serving up static resources in the ${webappRoot}/resources-cwsfe-cms/ directory &ndash;&gt;-->
+    <!--<mvc:resources mapping="/resources-cwsfe-cms/**" location="/resources-cwsfe-cms/" cache-period="31556926"/>-->
 
-    <!-- Repository already tested. Mock tests should be fast -->
-    <bean id="jdbcTemplate" class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg value="org.springframework.jdbc.core.JdbcTemplate"/>
-    </bean>
+    <!--&lt;!&ndash; Repository already tested. Mock tests should be fast &ndash;&gt;-->
+    <!--<bean id="jdbcTemplate" class="org.mockito.Mockito" factory-method="mock">-->
+        <!--<constructor-arg value="org.springframework.jdbc.core.JdbcTemplate"/>-->
+    <!--</bean>-->
 
-    <!--Mail services are mocked-->
-    <bean id="cmsMailSender" class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg value="org.springframework.mail.javamail.JavaMailSender"/>
-    </bean>
+    <!--&lt;!&ndash;Mail services are mocked&ndash;&gt;-->
+    <!--<bean id="cmsMailSender" class="org.mockito.Mockito" factory-method="mock">-->
+        <!--<constructor-arg value="org.springframework.mail.javamail.JavaMailSender"/>-->
+    <!--</bean>-->
 
-</beans>
+<!--</beans>-->

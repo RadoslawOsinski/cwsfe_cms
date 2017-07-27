@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.web.author;
 
-import eu.com.cwsfe.cms.dao.CmsAuthorsDAO;
-import eu.com.cwsfe.cms.model.CmsAuthor;
+import eu.com.cwsfe.cms.db.author.CmsAuthorsEntity;
+import eu.com.cwsfe.cms.db.author.CmsAuthorsRepository;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.anything;
 import static org.mockito.Mockito.*;
@@ -34,7 +35,7 @@ public class AuthorsControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private CmsAuthorsRepository cmsAuthorsDAO;
+    private CmsAuthorsRepository cmsAuthorsRepository;
 
     @InjectMocks
     private AuthorsController authorsController;
@@ -60,8 +61,8 @@ public class AuthorsControllerTest {
         int iDisplayLength = 2;
         String sEcho = "1";
         int numberOfAuthors = 1;
-        ArrayList<CmsAuthor> authors = new ArrayList<>();
-        CmsAuthor cmsAuthor = new CmsAuthor();
+        List<CmsAuthorsEntity> authors = new ArrayList<>();
+        CmsAuthorsEntity cmsAuthor = new CmsAuthorsEntity();
         long authorId = 2L;
         String lastName = "Osinski";
         String firstName = "Radoslaw";
@@ -71,8 +72,8 @@ public class AuthorsControllerTest {
         cmsAuthor.setFirstName(firstName);
         cmsAuthor.setGooglePlusAuthorLink(googlePlusAuthorLink);
         authors.add(cmsAuthor);
-        when(cmsAuthorsDAO.listAjax(iDisplayStart, iDisplayLength)).thenReturn(authors);
-        when(cmsAuthorsDAO.countForAjax()).thenReturn(numberOfAuthors);
+        when(cmsAuthorsRepository.listAjax(iDisplayStart, iDisplayLength)).thenReturn(authors);
+        when(cmsAuthorsRepository.countForAjax()).thenReturn(numberOfAuthors);
 
         ResultActions resultActions = mockMvc.perform(get("/authorsList")
             .param("iDisplayStart", String.valueOf(iDisplayStart))
@@ -91,16 +92,16 @@ public class AuthorsControllerTest {
             .andExpect(jsonPath("$.aaData[0].lastName").value(lastName))
             .andExpect(jsonPath("$.aaData[0].firstName").value(firstName))
             .andExpect(jsonPath("$.aaData[0].googlePlusAuthorLink").value(googlePlusAuthorLink));
-        verify(cmsAuthorsDAO, times(1)).listAjax(anyInt(), anyInt());
-        verify(cmsAuthorsDAO, times(1)).countForAjax();
-        verifyNoMoreInteractions(cmsAuthorsDAO);
+        verify(cmsAuthorsRepository, times(1)).listAjax(anyInt(), anyInt());
+        verify(cmsAuthorsRepository, times(1)).countForAjax();
+        verifyNoMoreInteractions(cmsAuthorsRepository);
     }
 
     @Test
     public void testListAuthorsForDropList() throws Exception {
         int limit = 1;
-        ArrayList<CmsAuthor> authors = new ArrayList<>();
-        CmsAuthor cmsAuthor = new CmsAuthor();
+        ArrayList<CmsAuthorsEntity> authors = new ArrayList<>();
+        CmsAuthorsEntity cmsAuthor = new CmsAuthorsEntity();
         long authorId = 2L;
         String lastName = "Osinski";
         String firstName = "Radoslaw";
@@ -110,7 +111,7 @@ public class AuthorsControllerTest {
         cmsAuthor.setFirstName(firstName);
         cmsAuthor.setGooglePlusAuthorLink(googlePlusAuthorLink);
         authors.add(cmsAuthor);
-        when(cmsAuthorsDAO.listAuthorsForDropList(anyString(), anyInt())).thenReturn(authors);
+        when(cmsAuthorsRepository.listAuthorsForDropList(anyString(), anyInt())).thenReturn(authors);
 
         ResultActions resultActions = mockMvc.perform(get("/authorsDropList")
             .param("term", lastName)
@@ -125,13 +126,13 @@ public class AuthorsControllerTest {
             .andExpect(jsonPath("$.data[0].lastName").value(lastName))
             .andExpect(jsonPath("$.data[0].firstName").value(firstName))
             .andExpect(jsonPath("$.data[0].googlePlusAuthorLink").value(googlePlusAuthorLink));
-        verify(cmsAuthorsDAO, times(1)).listAuthorsForDropList(anyString(), anyInt());
-        verifyNoMoreInteractions(cmsAuthorsDAO);
+        verify(cmsAuthorsRepository, times(1)).listAuthorsForDropList(anyString(), anyInt());
+        verifyNoMoreInteractions(cmsAuthorsRepository);
     }
 
     @Test
     public void testAddAuthor() throws Exception {
-        CmsAuthor cmsAuthor = new CmsAuthor();
+        CmsAuthorsEntity cmsAuthor = new CmsAuthorsEntity();
         long authorId = 2L;
         String lastName = "Osinski";
         String firstName = "Radoslaw";
@@ -140,7 +141,7 @@ public class AuthorsControllerTest {
         cmsAuthor.setLastName(lastName);
         cmsAuthor.setFirstName(firstName);
         cmsAuthor.setGooglePlusAuthorLink(googlePlusAuthorLink);
-        when(cmsAuthorsDAO.add(any(CmsAuthor.class))).thenReturn(1L);
+        when(cmsAuthorsRepository.add(any(CmsAuthorsEntity.class))).thenReturn(1L);
 
         ResultActions resultActions = mockMvc.perform(post("/addAuthor")
             .param("firstName", firstName)
@@ -151,14 +152,14 @@ public class AuthorsControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
             .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
-        verify(cmsAuthorsDAO, times(1)).add(any(CmsAuthor.class));
-        verifyNoMoreInteractions(cmsAuthorsDAO);
+        verify(cmsAuthorsRepository, times(1)).add(any(CmsAuthorsEntity.class));
+        verifyNoMoreInteractions(cmsAuthorsRepository);
     }
 
     @Test
     public void testDeleteAuthor() throws Exception {
         int id = 1;
-        CmsAuthor cmsAuthor = new CmsAuthor();
+        CmsAuthorsEntity cmsAuthor = new CmsAuthorsEntity();
         long authorId = 2L;
         String lastName = "Osinski";
         String firstName = "Radoslaw";
@@ -167,7 +168,7 @@ public class AuthorsControllerTest {
         cmsAuthor.setLastName(lastName);
         cmsAuthor.setFirstName(firstName);
         cmsAuthor.setGooglePlusAuthorLink(googlePlusAuthorLink);
-        doNothing().when(cmsAuthorsDAO).delete(any(CmsAuthor.class));
+        doNothing().when(cmsAuthorsRepository).delete(any(CmsAuthorsEntity.class));
 
         ResultActions resultActions = mockMvc.perform(post("/deleteAuthor")
             .param("id", String.valueOf(id)))
@@ -177,7 +178,7 @@ public class AuthorsControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
             .andExpect(jsonPath("$." + AuthorsController.JSON_STATUS).value(AuthorsController.JSON_STATUS_SUCCESS));
-        verify(cmsAuthorsDAO, times(1)).delete(any(CmsAuthor.class));
-        verifyNoMoreInteractions(cmsAuthorsDAO);
+        verify(cmsAuthorsRepository, times(1)).delete(any(CmsAuthorsEntity.class));
+        verifyNoMoreInteractions(cmsAuthorsRepository);
     }
 }

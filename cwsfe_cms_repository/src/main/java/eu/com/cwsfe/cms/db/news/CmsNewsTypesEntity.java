@@ -3,6 +3,7 @@ package eu.com.cwsfe.cms.db.news;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.NamedQuery;
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQuery(name = CmsNewsTypesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(nt) FROM CmsNewsTypesEntity nt WHERE status <> 'DELETED'")
 @NamedQuery(name = CmsNewsTypesEntity.LIST, query = "SELECT nt FROM CmsNewsTypesEntity nt WHERE status = 'NEW' order by type")
-@NamedQuery(name = CmsNewsTypesEntity.LIST_FOR_DROP_LIST, query = "SELECT nt FROM CmsNewsTypesEntity nt WHERE status = 'NEW' lower(type) LIKE lower(:type) order by type")
+@NamedQuery(name = CmsNewsTypesEntity.LIST_FOR_DROP_LIST, query = "SELECT nt FROM CmsNewsTypesEntity nt WHERE status = 'NEW' and lower(type) LIKE lower(:type) order by type")
 @NamedQuery(name = CmsNewsTypesEntity.GET_BY_TYPE, query = "SELECT nt FROM CmsNewsTypesEntity nt WHERE type = :type")
 @Table(name = "cms_news_types")
 public class CmsNewsTypesEntity {
@@ -90,7 +91,7 @@ public class CmsNewsTypesEntity {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE)
             .append("id", id)
             .append("type", type)
             .append("status", status)

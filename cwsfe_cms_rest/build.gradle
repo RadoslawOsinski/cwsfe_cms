@@ -1,7 +1,7 @@
 buildscript {
     repositories {
-        mavenLocal();
-        mavenCentral();
+        mavenLocal()
+        mavenCentral()
     }
 }
 
@@ -30,7 +30,9 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: project.ext.jackson_version
     compile group: 'io.springfox', name: 'springfox-swagger2', version: project.ext.swagger_version
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: project.ext.swagger_version
-    testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: project.ext.servlet_api_version //3.1.0 -newer version has problems with tests
+//    testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: project.ext.servlet_api_version //3.1.0 -newer version has problems with tests
+    testCompile group: 'javax.servlet', name: 'servlet-api', version: project.ext.old_servlet_api_version //3.1.0 -newer version has problems with tests
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: project.ext.junit5_version
     testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: project.ext.junit5_platform_version
     testCompile group: 'org.springframework', name: 'spring-test', version: project.ext.spring_version
     testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: project.ext.json_path_version

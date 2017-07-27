@@ -3,6 +3,7 @@ package eu.com.cwsfe.cms.db.news;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.NamedQuery;
@@ -18,10 +19,7 @@ import javax.persistence.Table;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQuery(name = CmsTextI18NEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(t) FROM CmsTextI18NEntity t")
 @NamedQuery(name = CmsTextI18NEntity.LIST, query = "SELECT t FROM CmsTextI18NEntity t order by i18NKey, i18NCategory")
-@NamedQuery(name = CmsTextI18NEntity.FIND_TRANSLATION, query = "SELECT t.i18NText FROM CmsTextI18NEntity t where " +
-    "t.langId in (select l.id from CmsLanguagesEntity l where l.code = :language2LetterCode) and " +
-    "t.i18NCategory IN (SELECT tc.ID FROM CmsTextI18NCategoriesEntity tc WHERE tc.category = :category) AND " +
-    "t.i18NKey = :key")
+@NamedQuery(name = CmsTextI18NEntity.FIND_TRANSLATION, query = "SELECT t.i18NText FROM CmsTextI18NEntity t where t.langId in (select l.id from CmsLanguagesEntity l where l.code = :language2LetterCode) and t.i18NCategory in (select tc.id FROM CmsTextI18NCategoriesEntity tc WHERE tc.category = :category) AND t.i18NKey = :key")
 @Table(name = "cms_text_i18n")
 public class CmsTextI18NEntity {
 
@@ -117,7 +115,7 @@ public class CmsTextI18NEntity {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE)
             .append("id", id)
             .append("langId", langId)
             .append("i18NCategory", i18NCategory)

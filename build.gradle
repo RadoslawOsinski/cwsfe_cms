@@ -44,10 +44,6 @@ subprojects {
         }
     }
 
-    dependencies {
-//        testCompile group: 'org.pitest', name: 'pitest-maven', version: '1.2.0'   //todo uncomment!
-    }
-
     pitest {
         threads = 4
         if (project.name in ['module-without-any-test']) {
@@ -83,7 +79,8 @@ subprojects {
         mail_api_version = '1.5.6'
         activation_version = '1.1.1'
         jsp_api_version = '2.2.1-b03'
-        servlet_api_version = '2.5'
+        old_servlet_api_version = '3.0.1'
+//        servlet_api_version = '4.0.0-b07'
         mail_version = '1.5.0-b01'
         javax_ejb_version = '3.0'
         jstl_version = '1.2'
@@ -120,8 +117,13 @@ subprojects {
         hazelcast_version = '3.8.2'
         modelmapper_version = '1.0.0'
         mockito_version = '2.8.9'
-        junit5_version = '5.0.0-M4'
+        junit5_version = '5.0.0-M5'
         junit5_platform_version = '1.0.0-M4'
         jacoco_version = '0.7.8'
+    }
+
+    dependencies {
+        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: project.ext.junit5_version
+//        testCompile group: 'org.pitest', name: 'pitest-maven', version: '1.2.0'   //todo uncomment!
     }
 }

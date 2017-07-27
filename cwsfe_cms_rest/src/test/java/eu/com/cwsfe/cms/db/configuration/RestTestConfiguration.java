@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by Radoslaw Osinski.
  */
-@ComponentScan({"eu.com.cwsfe.cms.rest", "eu.com.cwsfe.cms.dao", "eu.com.cwsfe.cms.db.repository", "eu.com.cwsfe.cms.model"})
+@ComponentScan({"eu.com.cwsfe.cms.rest", "eu.com.cwsfe.cms.db", "eu.com.cwsfe.cms"})
 @Configuration
 @EnableWebMvc
 public class RestTestConfiguration extends WebMvcConfigurationSupport {

@@ -3,6 +3,7 @@ package eu.com.cwsfe.cms.db.parameters;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQuery;
@@ -14,7 +15,7 @@ import javax.persistence.*;
  */
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-@NamedQuery(name = CmsGlobalParamsEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT gp FROM CmsGlobalParamsEntity gp WHERE code = :code")
+@NamedQuery(name = CmsGlobalParamsEntity.GET_BY_CODE, query = "SELECT gp FROM CmsGlobalParamsEntity gp WHERE code = :code")
 @NamedQuery(name = CmsGlobalParamsEntity.LIST_FOLDERS_FOR_DROP_LIST, query = "SELECT gp FROM CmsGlobalParamsEntity gp WHERE lower(CODE) LIKE lower(:code) ORDER BY CODE")
 @NamedQuery(name = CmsGlobalParamsEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(gp) FROM CmsGlobalParamsEntity gp")
 @NamedQuery(name = CmsGlobalParamsEntity.LIST, query = "SELECT gp FROM CmsGlobalParamsEntity gp ORDER BY CODE")
@@ -114,7 +115,7 @@ public class CmsGlobalParamsEntity {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE)
             .append("id", id)
             .append("code", code)
             .append("defaultValue", defaultValue)

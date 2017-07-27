@@ -3,7 +3,6 @@ package eu.com.cwsfe.cms.web.images;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import eu.com.cwsfe.cms.db.blog.BlogPostImagesEntity;
 import eu.com.cwsfe.cms.db.news.CmsNewsImagesEntity;

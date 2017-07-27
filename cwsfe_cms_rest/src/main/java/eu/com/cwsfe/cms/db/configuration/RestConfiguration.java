@@ -18,14 +18,13 @@ import java.util.ArrayList;
 /**
  * Created by Radoslaw Osinski.
  */
-@ComponentScan("eu.com.cwsfe.cms.rest")
 @Configuration
 @Import(value = {RepositoryConfiguration.class, RepositoryConfiguration.class})
 @EnableWebMvc
 public class RestConfiguration extends WebMvcConfigurationSupport {
 
     @Bean
-    public org.springframework.http.converter.json.MappingJackson2HttpMessageConverter getMappingJackson2HttpMessageConverter() {
+    public MappingJackson2HttpMessageConverter getMappingJackson2HttpMessageConverter() {
         MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
         ArrayList<MediaType> supportedMediaTypes = new ArrayList<>();
         supportedMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
@@ -34,7 +33,7 @@ public class RestConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter getRequestMappingHandlerAdapter() {
+    public RequestMappingHandlerAdapter getRequestMappingHandlerAdapter() {
         RequestMappingHandlerAdapter requestMappingHandlerAdapter = new RequestMappingHandlerAdapter();
         ArrayList<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
         messageConverters.add(getMappingJackson2HttpMessageConverter());
@@ -43,7 +42,7 @@ public class RestConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public org.springframework.http.converter.StringHttpMessageConverter getStringHttpMessageConverter() {
+    public StringHttpMessageConverter getStringHttpMessageConverter() {
         return new StringHttpMessageConverter(Charset.forName("UTF-8"));
     }
 

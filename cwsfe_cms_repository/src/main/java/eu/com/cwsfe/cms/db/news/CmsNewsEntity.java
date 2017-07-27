@@ -3,6 +3,7 @@ package eu.com.cwsfe.cms.db.news;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
@@ -131,7 +132,7 @@ public class CmsNewsEntity {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE)
             .append("id", id)
             .append("authorId", authorId)
             .append("newsTypeId", newsTypeId)

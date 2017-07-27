@@ -3,6 +3,7 @@ package eu.com.cwsfe.cms.db.news;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.NamedQuery;
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQuery(name = CmsTextI18NCategoriesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(tic) FROM CmsTextI18NCategoriesEntity tic")
 @NamedQuery(name = CmsTextI18NCategoriesEntity.LIST, query = "SELECT tic FROM CmsTextI18NCategoriesEntity tic order by category")
-@NamedQuery(name = CmsTextI18NCategoriesEntity.LIST_FOR_DROP_LIST, query = "SELECT tic FROM CmsTextI18NCategoriesEntity tic status = 'NEW' AND lower(category) LIKE lower(:category) order by category")
+@NamedQuery(name = CmsTextI18NCategoriesEntity.LIST_FOR_DROP_LIST, query = "SELECT tic FROM CmsTextI18NCategoriesEntity tic where status = 'NEW' AND lower(category) LIKE lower(:category) order by category")
 @Table(name = "cms_text_i18n_categories")
 public class CmsTextI18NCategoriesEntity {
 
@@ -88,7 +89,7 @@ public class CmsTextI18NCategoriesEntity {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE)
             .append("id", id)
             .append("category", category)
             .append("status", status)

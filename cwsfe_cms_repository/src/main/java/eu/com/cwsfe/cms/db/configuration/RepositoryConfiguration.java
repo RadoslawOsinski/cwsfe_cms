@@ -21,7 +21,7 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
-@Import(DataSourceConfiguration.class)
+@Import({DataSourceConfiguration.class, HazelcastIntegrationInstance.class})
 public class RepositoryConfiguration {
 
     private DataSource cwsfeCmsDataSource;
@@ -84,7 +84,7 @@ public class RepositoryConfiguration {
      * @return the annotation session factory bean
      */
     @Bean(name = "sessionFactory")
-    @DependsOn("dbMigrationManager")
+    @DependsOn({"dbMigrationManager", "hazelcastInstance"})
     public LocalSessionFactoryBean getAnnotationSessionFactoryBean() {
         final LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
         localSessionFactoryBean.setPackagesToScan("eu.com.cwsfe.cms.db");

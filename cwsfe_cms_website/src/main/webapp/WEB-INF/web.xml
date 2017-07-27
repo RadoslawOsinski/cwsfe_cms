@@ -48,16 +48,28 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
+    <context-param>
+        <param-name>contextClass</param-name>
+        <param-value>
+            org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+        </param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>eu.com.cwsfe.cms.web.configuration.CwsfeCmsApplicationConfig</param-value>
+    </context-param>
 
     <servlet>
         <servlet-name>cwsfe-cms-mvc-dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
+            <param-name>contextClass</param-name>
+            <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+        </init-param>
+        <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/cwsfe-cms-mvc-dispatcher-servlet.xml</param-value>
+            <param-value>eu.com.cwsfe.cms.web.configuration.CwsfeCmsWebContext</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
         <async-supported>true</async-supported>
@@ -67,15 +79,5 @@
         <servlet-name>cwsfe-cms-mvc-dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/cwsfe-cms-mvc-dispatcher-servlet.xml</param-value>
-    </context-param>
-
-    <!--<error-page>-->
-    <!--<exception-type>java.lang.Throwable</exception-type>-->
-    <!--<location>/error</location>-->
-    <!--</error-page>-->
 
 </web-app>

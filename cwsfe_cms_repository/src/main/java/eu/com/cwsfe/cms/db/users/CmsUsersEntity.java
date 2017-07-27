@@ -3,6 +3,7 @@ package eu.com.cwsfe.cms.db.users;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.NamedQuery;
@@ -18,7 +19,7 @@ import java.util.List;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQuery(name = CmsUsersEntity.IS_USER_ACTIVE, query = "SELECT count(u) FROM CmsUsersEntity u where username = :userName and status in ('NEW')")
-@NamedQuery(name = CmsUsersEntity.LIST, query = "SELECT u FROM CmsUsersEntity u status = 'NEW' order by username")
+@NamedQuery(name = CmsUsersEntity.LIST, query = "SELECT u FROM CmsUsersEntity u where status = 'NEW' order by username")
 @NamedQuery(name = CmsUsersEntity.GET_BY_USER_NAME, query = "SELECT u FROM CmsUsersEntity u where username = :userName")
 @NamedQuery(name = CmsUsersEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT u FROM CmsUsersEntity u where status <> 'DELETED'")
 @NamedQuery(name = CmsUsersEntity.LIST_FOR_DROP_LIST, query = "SELECT u FROM CmsUsersEntity u where status = 'NEW' AND lower(username) LIKE lower(:userName) order by username")
@@ -116,7 +117,7 @@ public class CmsUsersEntity {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE)
             .append("id", id)
             .append("username", username)
             .append("passwordHash", passwordHash)

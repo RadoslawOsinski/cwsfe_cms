@@ -4,6 +4,7 @@ import eu.com.cwsfe.cms.db.common.NewDeletedStatus;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.NamedQuery;
@@ -19,7 +20,7 @@ import javax.persistence.Table;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQuery(name = CmsAuthorsEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(a) FROM CmsAuthorsEntity a WHERE status <> 'DELETED'")
 @NamedQuery(name = CmsAuthorsEntity.LIST, query = "SELECT a FROM CmsAuthorsEntity a WHERE status = 'NEW' ORDER BY last_name, first_name")
-@NamedQuery(name = CmsAuthorsEntity.LIST_AUTHORS_FOR_DROP_LIST, query = "SELECT a FROM CmsAuthorsEntity a WHERE status = 'NEW' (lower(first_name) LIKE lower(:firstName) OR lower(last_name) LIKE lower(:lastName)) ORDER BY last_name, first_name")
+@NamedQuery(name = CmsAuthorsEntity.LIST_AUTHORS_FOR_DROP_LIST, query = "SELECT a FROM CmsAuthorsEntity a WHERE status = 'NEW' and (lower(first_name) LIKE lower(:firstName) OR lower(last_name) LIKE lower(:lastName)) ORDER BY last_name, first_name")
 @Table(name = "cms_authors")
 public class CmsAuthorsEntity {
 
@@ -115,7 +116,7 @@ public class CmsAuthorsEntity {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE)
             .append("id", id)
             .append("firstName", firstName)
             .append("lastName", lastName)
