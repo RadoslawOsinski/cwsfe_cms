@@ -7,7 +7,7 @@ import com.amazonaws.services.s3.model.*;
 import eu.com.cwsfe.cms.db.blog.BlogPostImagesEntity;
 import eu.com.cwsfe.cms.db.news.CmsNewsImagesEntity;
 import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsEntity;
-import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsRepository;
+import eu.com.cwsfe.cms.services.parameters.CmsGlobalParamsService;
 import eu.com.cwsfe.cms.web.news.CmsNewsImagesController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,27 +27,27 @@ public class AWSBucketImageStorageService implements ImageStorageService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsNewsImagesController.class);
 
-    private final CmsGlobalParamsRepository cmsGlobalParamsRepository;
+    private final CmsGlobalParamsService cmsGlobalParamsService;
 
     private final AmazonS3 amazonS3;
 
     @Autowired
-    public AWSBucketImageStorageService(CmsGlobalParamsRepository cmsGlobalParamsRepository, AmazonS3 amazonS3) {
-        this.cmsGlobalParamsRepository = cmsGlobalParamsRepository;
+    public AWSBucketImageStorageService(CmsGlobalParamsService cmsGlobalParamsService, AmazonS3 amazonS3) {
+        this.cmsGlobalParamsService = cmsGlobalParamsService;
         this.amazonS3 = amazonS3;
     }
 
     public String storeNewsImage(CmsNewsImagesEntity cmsNewsImage) {
-        CmsGlobalParamsEntity newsImagesBucket = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_S3_NEWS_IMAGES_PATH");
+        CmsGlobalParamsEntity newsImagesBucket = cmsGlobalParamsService.getByCode("CWSFE_CMS_S3_NEWS_IMAGES_PATH");
 //        storeImage(cmsNewsImage.getFile(), newsImagesBucket.getValue());
-        CmsGlobalParamsEntity rootBucketName = cmsGlobalParamsRepository.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
+        CmsGlobalParamsEntity rootBucketName = cmsGlobalParamsService.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
         return amazonS3.getUrl(rootBucketName.getValue(), newsImagesBucket.getValue() + "/" + cmsNewsImage.getFileName()).toString();
     }
 
     public String storeBlogImage(BlogPostImagesEntity blogPostImage) {
-        CmsGlobalParamsEntity blogImagesBucket = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_S3_BLOG_IMAGES_PATH");
+        CmsGlobalParamsEntity blogImagesBucket = cmsGlobalParamsService.getByCode("CWSFE_CMS_S3_BLOG_IMAGES_PATH");
 //        storeImage(blogPostImage.getFile(), blogImagesBucket.getValue());
-        CmsGlobalParamsEntity rootBucketName = cmsGlobalParamsRepository.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
+        CmsGlobalParamsEntity rootBucketName = cmsGlobalParamsService.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
         return amazonS3.getUrl(rootBucketName.getValue(), blogImagesBucket.getValue() + "/" + blogPostImage.getFileName()).toString();
     }
 
@@ -74,7 +74,7 @@ public class AWSBucketImageStorageService implements ImageStorageService {
     }
 
     private void storeImage(MultipartFile image, String imagePath) {
-        CmsGlobalParamsEntity rootBucketName = cmsGlobalParamsRepository.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
+        CmsGlobalParamsEntity rootBucketName = cmsGlobalParamsService.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
         try {
             PutObjectRequest putObjectRequest = new PutObjectRequest(rootBucketName.getValue(), imagePath + "/" + image.getOriginalFilename(),
                 image.getInputStream(), new ObjectMetadata());

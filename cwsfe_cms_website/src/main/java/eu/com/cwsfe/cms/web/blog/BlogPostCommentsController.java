@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.web.blog;
 
-import eu.com.cwsfe.cms.db.blog.BlogPostCommentsRepository;
 import eu.com.cwsfe.cms.db.blog.CmsBlogPostCommentsEntity;
+import eu.com.cwsfe.cms.services.blog.BlogPostCommentsService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,11 @@ import java.util.ResourceBundle;
 @Controller
 public class BlogPostCommentsController extends JsonController {
 
-    private final BlogPostCommentsRepository blogPostCommentsRepository;
+    private final BlogPostCommentsService blogPostCommentsService;
 
     @Autowired
-    public BlogPostCommentsController(BlogPostCommentsRepository blogPostCommentsRepository) {
-        this.blogPostCommentsRepository = blogPostCommentsRepository;
+    public BlogPostCommentsController(BlogPostCommentsService blogPostCommentsService) {
+        this.blogPostCommentsService = blogPostCommentsService;
     }
 
     @RequestMapping(value = "/publishBlogPostComment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -39,7 +39,7 @@ public class BlogPostCommentsController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CommentMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogPostCommentsRepository.publish(blogPostComment);
+            blogPostCommentsService.publish(blogPostComment);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -56,7 +56,7 @@ public class BlogPostCommentsController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CommentMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogPostCommentsRepository.block(blogPostComment);
+            blogPostCommentsService.block(blogPostComment);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -73,7 +73,7 @@ public class BlogPostCommentsController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CommentMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogPostCommentsRepository.markAsSpam(blogPostComment);
+            blogPostCommentsService.markAsSpam(blogPostComment);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -90,7 +90,7 @@ public class BlogPostCommentsController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CommentMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogPostCommentsRepository.delete(blogPostComment);
+            blogPostCommentsService.delete(blogPostComment);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

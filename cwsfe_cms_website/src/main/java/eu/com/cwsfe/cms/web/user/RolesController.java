@@ -1,8 +1,8 @@
 package eu.com.cwsfe.cms.web.user;
 
 import eu.com.cwsfe.cms.db.users.CmsRolesEntity;
-import eu.com.cwsfe.cms.db.users.CmsRolesRepository;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
+import eu.com.cwsfe.cms.services.users.CmsRolesService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -28,11 +28,11 @@ import java.util.ResourceBundle;
 @Controller
 public class RolesController extends JsonController {
 
-    private final CmsRolesRepository cmsRolesRepository;
+    private final CmsRolesService cmsRolesService;
 
     @Autowired
-    public RolesController(CmsRolesRepository cmsRolesRepository) {
-        this.cmsRolesRepository = cmsRolesRepository;
+    public RolesController(CmsRolesService cmsRolesService) {
+        this.cmsRolesService = cmsRolesService;
     }
 
     @RequestMapping(value = "/roles", method = RequestMethod.GET)
@@ -61,7 +61,7 @@ public class RolesController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        final List<CmsRolesEntity> cmsRoles = cmsRolesRepository.listAjax(iDisplayStart, iDisplayLength);
+        final List<CmsRolesEntity> cmsRoles = cmsRolesService.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < cmsRoles.size(); i++) {
@@ -72,7 +72,7 @@ public class RolesController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfRoles = cmsRolesRepository.countForAjax();
+        final int numberOfRoles = cmsRolesService.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfRoles);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfRoles);
         responseDetailsJson.put("aaData", jsonArray);
@@ -85,7 +85,7 @@ public class RolesController extends JsonController {
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
-        final List<CmsRolesEntity> cmsRoles = cmsRolesRepository.listRolesForDropList(term, limit);
+        final List<CmsRolesEntity> cmsRoles = cmsRolesService.listRolesForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (CmsRolesEntity cmsRole : cmsRoles) {

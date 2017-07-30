@@ -2,71 +2,80 @@ package eu.com.cwsfe.cms.db.author;
 
 import eu.com.cwsfe.cms.db.common.NewDeletedStatus;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class CmsAuthorsRepository {
 
-    private final SessionFactory sessionFactory;
-
-    public CmsAuthorsRepository(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    public int countForAjax() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery(CmsAuthorsEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
+    public int countForAjax(Session session) {
+        Query query = session.getNamedQuery(CmsAuthorsEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
         return (int) query.getSingleResult();
     }
 
-    public List<CmsAuthorsEntity> list() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery(CmsAuthorsEntity.LIST);
+    public List<CmsAuthorsEntity> list(Session session) {
+        Query query = session.getNamedQuery(CmsAuthorsEntity.LIST);
         return query.list();
     }
 
-    public List<CmsAuthorsEntity> listAjax(int offset, int limit) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery(CmsAuthorsEntity.LIST);
+    public List<CmsAuthorsEntity> listAjax(Session session, int offset, int limit) {
+        Query query = session.getNamedQuery(CmsAuthorsEntity.LIST);
         query.setMaxResults(limit);
         query.setFirstResult(offset);
         return query.getResultList();
     }
 
-    public List<CmsAuthorsEntity> listAuthorsForDropList(String term, int limit) {
-        //TODO BY CRITERIA
-        Query query = sessionFactory.getCurrentSession().getNamedQuery(CmsAuthorsEntity.LIST_AUTHORS_FOR_DROP_LIST);
-        query.setParameter("firstName", '%' + term + '%');
-        query.setParameter("lastName", '%' + term + '%');
-        query.setMaxResults(limit);
-        return query.getResultList();
+    public List<CmsAuthorsEntity> listAuthorsForDropList(Session session, String term, int limit) {
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<CmsAuthorsEntity> query = criteriaBuilder.createQuery(CmsAuthorsEntity.class);
+        Root<CmsAuthorsEntity> authors = query.from(CmsAuthorsEntity.class);
+        query.select(authors);
+        query.where(
+            criteriaBuilder.equal(authors.get("status"), NewDeletedStatus.NEW),
+            criteriaBuilder.or(
+                criteriaBuilder.like(criteriaBuilder.lower(authors.get("firstName")), "%" + term.toLowerCase() + "%"),
+                criteriaBuilder.like(criteriaBuilder.lower(authors.get("lastName")), "%" + term.toLowerCase() + "%")
+            )
+        );
+        List<Order> orders = new ArrayList<>();
+        orders.add(criteriaBuilder.asc(authors.get("firstName")));
+        orders.add(criteriaBuilder.asc(authors.get("lastName")));
+        query.orderBy(orders);
+        return session.createQuery(query)
+            .setMaxResults(limit)
+            .list();
     }
 
-    public CmsAuthorsEntity get(Long id) {
-        return sessionFactory.getCurrentSession().get(CmsAuthorsEntity.class, id);
+    public CmsAuthorsEntity get(Session session, Long id) {
+        return session.get(CmsAuthorsEntity.class, id);
     }
 
-    public Long add(CmsAuthorsEntity cmsAuthor) {
+    public Long add(Session session, CmsAuthorsEntity cmsAuthor) {
         cmsAuthor.setStatus(NewDeletedStatus.NEW);
-        Session currentSession = sessionFactory.getCurrentSession();
-        currentSession.saveOrUpdate(cmsAuthor);
-        currentSession.flush();
+        session.saveOrUpdate(cmsAuthor);
+        session.flush();
         return cmsAuthor.getId();
     }
 
-    public void update(CmsAuthorsEntity cmsAuthor) {
-        sessionFactory.getCurrentSession().update(cmsAuthor);
+    public void update(Session session, CmsAuthorsEntity cmsAuthor) {
+        session.update(cmsAuthor);
     }
 
-    public void delete(CmsAuthorsEntity cmsAuthor) {
+    public void delete(Session session, CmsAuthorsEntity cmsAuthor) {
         cmsAuthor.setStatus(NewDeletedStatus.DELETED);
-        sessionFactory.getCurrentSession().update(cmsAuthor);
+        session.update(cmsAuthor);
     }
 
-    public void undelete(CmsAuthorsEntity cmsAuthor) {
+    public void undelete(Session session, CmsAuthorsEntity cmsAuthor) {
         cmsAuthor.setStatus(NewDeletedStatus.NEW);
-        sessionFactory.getCurrentSession().update(cmsAuthor);
+        session.update(cmsAuthor);
     }
 
 }

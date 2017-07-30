@@ -1,8 +1,8 @@
 //package eu.com.cwsfe.cms.web.blog;
 //
-//import eu.com.cwsfe.cms.db.author.CmsAuthorsRepository;
+//import eu.com.cwsfe.cms.db.author.CmsAuthorsService;
 //import eu.com.cwsfe.cms.db.blog.*;
-//import eu.com.cwsfe.cms.db.i18n.CmsLanguagesRepository;
+//import eu.com.cwsfe.cms.db.i18n.CmsLanguagesService;
 //import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 //import eu.com.cwsfe.cms.web.mvc.JsonController;
 //import net.sf.json.JSONObject;
@@ -34,19 +34,19 @@
 //
 //    private static final Logger LOGGER = LoggerFactory.getLogger(BlogPostsController.class);
 //
-////    private final BlogPostKeywordsRepository blogPostKeywordsRepository;
-////    private final BlogPostI18nContentsRepository blogPostI18nContentsRepository;
-//    private final BlogPostsRepository blogPostsRepository;
-//    private final CmsAuthorsRepository cmsAuthorsRepository;
-//    private final CmsLanguagesRepository cmsLanguagesRepository;
+////    private final BlogPostKeywordsService blogPostKeywordsService;
+////    private final BlogPostI18nContentsService blogPostI18nContentsService;
+//    private final BlogPostsService blogPostsService;
+//    private final CmsAuthorsService cmsAuthorsService;
+//    private final CmsLanguagesService cmsLanguagesService;
 //
 //    @Autowired
-//    public BlogPostsController(CmsAuthorsRepository cmsAuthorsRepository, BlogPostsRepository blogPostsRepository, CmsLanguagesRepository cmsLanguagesRepository, /*BlogPostI18nContentsRepository blogPostI18nContentsRepository, BlogPostKeywordsRepository blogPostKeywordsRepository*/) {
-//        this.cmsAuthorsRepository = cmsAuthorsRepository;
-//        this.blogPostsRepository = blogPostsRepository;
-//        this.cmsLanguagesRepository = cmsLanguagesRepository;
-////        this.blogPostI18nContentsRepository = blogPostI18nContentsRepository;
-////        this.blogPostKeywordsRepository = blogPostKeywordsRepository;
+//    public BlogPostsController(CmsAuthorsService cmsAuthorsService, BlogPostsService blogPostsService, CmsLanguagesService cmsLanguagesService, /*BlogPostI18nContentsService blogPostI18nContentsService, BlogPostKeywordsService blogPostKeywordsService*/) {
+//        this.cmsAuthorsService = cmsAuthorsService;
+//        this.blogPostsService = blogPostsService;
+//        this.cmsLanguagesService = cmsLanguagesService;
+////        this.blogPostI18nContentsService = blogPostI18nContentsService;
+////        this.blogPostKeywordsService = blogPostKeywordsService;
 //    }
 //
 //    @RequestMapping(value = "/blogPosts", method = RequestMethod.GET)
@@ -97,8 +97,8 @@
 //                LOGGER.error("Search author id is not a number: {}", searchAuthorIdText);
 //            }
 //        }
-////        List<Object[]> dbList = blogPostsRepository.searchByAjax(iDisplayStart, iDisplayLength, searchAuthorId, searchPostTextCode);
-////        Integer dbListDisplayRecordsSize = blogPostsRepository.searchByAjaxCount(searchAuthorId, searchPostTextCode);
+////        List<Object[]> dbList = blogPostsService.searchByAjax(iDisplayStart, iDisplayLength, searchAuthorId, searchPostTextCode);
+////        Integer dbListDisplayRecordsSize = blogPostsService.searchByAjaxCount(searchAuthorId, searchPostTextCode);
 //        JSONObject responseDetailsJson = new JSONObject();
 ////        JSONArray jsonArray = new JSONArray();
 ////        for (int i = 0; i < dbList.size(); i++) {
@@ -117,7 +117,7 @@
 ////            jsonArray.add(formDetailsJson);
 ////        }
 //        responseDetailsJson.put("sEcho", sEcho);
-////        responseDetailsJson.put("iTotalRecords", blogPostsRepository.getTotalNumberNotDeleted());
+////        responseDetailsJson.put("iTotalRecords", blogPostsService.getTotalNumberNotDeleted());
 ////        responseDetailsJson.put("iTotalDisplayRecords", dbListDisplayRecordsSize);
 ////        responseDetailsJson.put("aaData", jsonArray);
 //        return responseDetailsJson.toString();
@@ -129,7 +129,7 @@
 //        @RequestParam long blogPostId,
 //        WebRequest webRequest
 //    ) {
-////        List<BlogKeywordAssignment> blogKeywordAssignments = blogPostKeywordsRepository.listValuesForPost(blogPostId);
+////        List<BlogKeywordAssignment> blogKeywordAssignments = blogPostKeywordsService.listValuesForPost(blogPostId);
 //        JSONObject responseDetailsJson = new JSONObject();
 ////        JSONArray jsonArray = new JSONArray();
 ////        for (BlogKeywordAssignment blogKeywordAssignment : blogKeywordAssignments) {
@@ -157,7 +157,7 @@
 //            //todo reconsider time management
 ////            blogPost.setPostCreationDate(new Date());
 ////            blogPost.setStatus(BlogPostStatus.HIDDEN);
-////            blogPostsRepository.add(blogPost);
+////            blogPostsService.add(blogPost);
 //            addJsonSuccess(responseDetailsJson);
 //        } else {
 //            prepareErrorResponse(result, responseDetailsJson);
@@ -174,7 +174,7 @@
 //        ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));
 //        JSONObject responseDetailsJson = new JSONObject();
 //        if (!result.hasErrors()) {
-////            blogPostsRepository.delete(blogPost);
+////            blogPostsService.delete(blogPost);
 //            addJsonSuccess(responseDetailsJson);
 //        } else {
 //            prepareErrorResponse(result, responseDetailsJson);
@@ -186,10 +186,10 @@
 //    public String browseBlogPost(ModelMap model, Locale locale, @PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
 //        model.addAttribute("mainJavaScript", httpServletRequest.getContextPath() + "/resources-cwsfe-cms/js/cms/blog/SinglePost.js");
 //        model.addAttribute("breadcrumbs", getSingleBlogPostsBreadcrumbs(locale, id));
-////        BlogPostsEntity blogPost = blogPostsRepository.get(id);
-////        model.addAttribute("cmsLanguages", cmsLanguagesRepository.listAll());
+////        BlogPostsEntity blogPost = blogPostsService.get(id);
+////        model.addAttribute("cmsLanguages", cmsLanguagesService.listAll());
 ////        model.addAttribute("blogPost", blogPost);
-////        model.addAttribute("cmsAuthor", cmsAuthorsRepository.get(blogPost.getPostAuthorId()));
+////        model.addAttribute("cmsAuthor", cmsAuthorsService.get(blogPost.getPostAuthorId()));
 //        return "cms/blog/SingleBlogPost";
 //    }
 //
@@ -207,7 +207,7 @@
 //        if (!result.hasErrors()) {
 //            BlogPostI18NContentsEntity cmsBlogPostI18nContent;
 ////            try {
-////                cmsBlogPostI18nContent = blogPostI18nContentsRepository.getByLanguageForPost(blogPostId, langId);
+////                cmsBlogPostI18nContent = blogPostI18nContentsService.getByLanguageForPost(blogPostId, langId);
 ////            } catch (EmptyResultDataAccessException ignored) {
 ////                cmsBlogPostI18nContent = new BlogPostI18nContent();
 ////                cmsBlogPostI18nContent.setPostId(blogPostId);
@@ -241,7 +241,7 @@
 //        ValidationUtils.rejectIfEmpty(result, "status", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("StatusMustBeSet"));
 //        JSONObject responseDetailsJson = new JSONObject();
 //        if (!result.hasErrors()) {
-////            blogPostsRepository.updatePostBasicInfo(blogPost);
+////            blogPostsService.updatePostBasicInfo(blogPost);
 //            addJsonSuccess(responseDetailsJson);
 //        } else {
 //            prepareErrorResponse(result, responseDetailsJson);
@@ -269,16 +269,16 @@
 //        JSONObject responseDetailsJson = new JSONObject();
 //        if (!result.hasErrors()) {
 ////            try {
-////                existingI18nContent = blogPostI18nContentsRepository.getByLanguageForPost(blogPostI18nContent.getPostId(), blogPostI18nContent.getLanguageId());
+////                existingI18nContent = blogPostI18nContentsService.getByLanguageForPost(blogPostI18nContent.getPostId(), blogPostI18nContent.getLanguageId());
 ////            } catch (EmptyResultDataAccessException e) {
 ////                existingI18nContent = null;
 ////            }
 ////            try {
 ////                if (existingI18nContent == null) {
-////                    blogPostI18nContentsRepository.add(blogPostI18nContent);
+////                    blogPostI18nContentsService.add(blogPostI18nContent);
 ////                } else {
 ////                    blogPostI18nContent.setId(existingI18nContent.getId());
-////                    blogPostI18nContentsRepository.updateContentWithStatus(blogPostI18nContent);
+////                    blogPostI18nContentsService.updateContentWithStatus(blogPostI18nContent);
 ////                }
 ////                addJsonSuccess(responseDetailsJson);
 ////            } catch (Exception e) {
@@ -307,15 +307,15 @@
 //        if (!result.hasErrors()) {
 //            BlogPostKeywordsEntity blogPostKeyword;
 ////            try {
-////                blogPostKeyword = blogPostKeywordsRepository.get(postId, blogKeywordAssignment.getId());
+////                blogPostKeyword = blogPostKeywordsService.get(postId, blogKeywordAssignment.getId());
 ////            } catch (EmptyResultDataAccessException e) {
 ////                blogPostKeyword = null;
 ////            }
 ////            try {
 ////                if (blogPostKeyword == null && blogKeywordAssignment.isAssigned()) {
-////                    blogPostKeywordsRepository.add(new BlogPostKeyword(postId, blogKeywordAssignment.getId()));
+////                    blogPostKeywordsService.add(new BlogPostKeyword(postId, blogKeywordAssignment.getId()));
 ////                } else if (blogPostKeyword != null && !blogKeywordAssignment.isAssigned()) {
-////                    blogPostKeywordsRepository.delete(postId, blogKeywordAssignment.getId());
+////                    blogPostKeywordsService.delete(postId, blogKeywordAssignment.getId());
 ////                }
 ////                addJsonSuccess(responseDetailsJson);
 ////            } catch (Exception e) {

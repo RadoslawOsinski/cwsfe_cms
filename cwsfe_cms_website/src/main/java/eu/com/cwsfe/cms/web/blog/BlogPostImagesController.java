@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.web.blog;
 
 import eu.com.cwsfe.cms.db.blog.BlogPostImagesEntity;
-import eu.com.cwsfe.cms.db.blog.BlogPostImagesRepository;
+import eu.com.cwsfe.cms.services.blog.BlogPostImagesService;
 import eu.com.cwsfe.cms.web.images.ImageStorageService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
@@ -33,14 +33,14 @@ public class BlogPostImagesController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BlogPostImagesController.class);
 
-    private final BlogPostImagesRepository blogPostImagesRepository;
+    private final BlogPostImagesService blogPostImagesService;
 
     private final ImageStorageService imageStorageService;
 
     @Autowired
-    public BlogPostImagesController(ImageStorageService imageStorageService, BlogPostImagesRepository blogPostImagesRepository) {
+    public BlogPostImagesController(ImageStorageService imageStorageService, BlogPostImagesService blogPostImagesService) {
         this.imageStorageService = imageStorageService;
-        this.blogPostImagesRepository = blogPostImagesRepository;
+        this.blogPostImagesService = blogPostImagesService;
     }
 
     @RequestMapping(value = "/blogPosts/blogPostImagesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -57,8 +57,8 @@ public class BlogPostImagesController extends JsonController {
         } catch (NumberFormatException e) {
             LOGGER.error("Blog post id is not a number {}", webRequest.getParameter("blogPostId"));
         }
-        List<BlogPostImagesEntity> dbList = blogPostImagesRepository.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, blogPostId);
-        Integer dbListDisplayRecordsSize = blogPostImagesRepository.searchByAjaxCountWithoutContent(blogPostId);
+        List<BlogPostImagesEntity> dbList = blogPostImagesService.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, blogPostId);
+        Integer dbListDisplayRecordsSize = blogPostImagesService.searchByAjaxCountWithoutContent(blogPostId);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < dbList.size(); i++) {
@@ -73,7 +73,7 @@ public class BlogPostImagesController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        responseDetailsJson.put("iTotalRecords", blogPostImagesRepository.getTotalNumberNotDeleted());
+        responseDetailsJson.put("iTotalRecords", blogPostImagesService.getTotalNumberNotDeleted());
         responseDetailsJson.put("iTotalDisplayRecords", dbListDisplayRecordsSize);
         responseDetailsJson.put("aaData", jsonArray);
         return responseDetailsJson.toString();
@@ -100,9 +100,9 @@ public class BlogPostImagesController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "title", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TitleMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "blogPostId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));
         if (!result.hasErrors()) {
-            blogPostImage.setId(blogPostImagesRepository.add(blogPostImage));
+            blogPostImage.setId(blogPostImagesService.add(blogPostImage));
             blogPostImage.setUrl(imageStorageService.storeBlogImage(blogPostImage));
-            blogPostImagesRepository.updateUrl(blogPostImage);
+            blogPostImagesService.updateUrl(blogPostImage);
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("/blogPosts/" + blogPostImage.getBlogPostId(), true, false, false));
@@ -118,7 +118,7 @@ public class BlogPostImagesController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("ImageMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogPostImagesRepository.delete(blogPostImage);
+            blogPostImagesService.delete(blogPostImage);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.db.blog;
 
-import org.hibernate.SessionFactory;
+import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -9,68 +9,62 @@ import java.util.List;
 @Repository
 public class BlogPostImagesRepository {
 
-    private final SessionFactory sessionFactory;
-
-    public BlogPostImagesRepository(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    public int getTotalNumberNotDeleted() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery(BlogPostImagesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
+    public int getTotalNumberNotDeleted(Session session) {
+        Query query = session.getNamedQuery(BlogPostImagesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
         return (int) query.getSingleResult();
     }
 
-    public int countForAjax() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery(BlogPostImagesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
+    public int countForAjax(Session session) {
+        Query query = session.getNamedQuery(BlogPostImagesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
         return (int) query.getSingleResult();
     }
 
-    public List<BlogPostImagesEntity> searchByAjaxWithoutContent(int iDisplayStart, int iDisplayLength, Long postId) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery(BlogPostImagesEntity.SEARCH_BY_AJAX_QUERY);
+    public List<BlogPostImagesEntity> searchByAjaxWithoutContent(Session session, int iDisplayStart, int iDisplayLength, Long postId) {
+        Query query = session.getNamedQuery(BlogPostImagesEntity.SEARCH_BY_AJAX_QUERY);
         query.setParameter("postId", postId);
         query.setMaxResults(iDisplayLength);
         query.setFirstResult(iDisplayStart);
         return query.getResultList();
     }
 
-    public int searchByAjaxCountWithoutContent(Long postId) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery(BlogPostImagesEntity.COUNT_TOTAL_NUMBER_NOT_DELETED_QUERY);
+    public int searchByAjaxCountWithoutContent(Session session, Long postId) {
+        Query query = session.getNamedQuery(BlogPostImagesEntity.COUNT_TOTAL_NUMBER_NOT_DELETED_QUERY);
         query.setParameter("postId", postId);
         return (int) query.getSingleResult();
     }
 
-    public List<BlogPostImagesEntity> listForPost(Long postId) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery(BlogPostImagesEntity.SEARCH_BY_AJAX_QUERY);
+    public List<BlogPostImagesEntity> listForPost(Session session, Long postId) {
+        Query query = session.getNamedQuery(BlogPostImagesEntity.SEARCH_BY_AJAX_QUERY);
         query.setParameter("postId", postId);
         return query.getResultList();
     }
 
-    public BlogPostImagesEntity getWithContent(Long id) {
-        return sessionFactory.getCurrentSession().get(BlogPostImagesEntity.class, id);
+    public BlogPostImagesEntity getWithContent(Session session, Long id) {
+        return session.get(BlogPostImagesEntity.class, id);
     }
 
-    public Long add(BlogPostImagesEntity blogPostImage) {
+    public Long add(Session session, BlogPostImagesEntity blogPostImage) {
         blogPostImage.setStatus("NEW");
-        BlogPostImagesEntity saved = (BlogPostImagesEntity) sessionFactory.getCurrentSession().save(blogPostImage);
+        BlogPostImagesEntity saved = (BlogPostImagesEntity) session.save(blogPostImage);
         return saved.getId();
     }
 
-    public void update(BlogPostImagesEntity blogPostImage) {
-        sessionFactory.getCurrentSession().update(blogPostImage);
+    public void update(Session session, BlogPostImagesEntity blogPostImage) {
+        session.update(blogPostImage);
     }
 
-    public void delete(BlogPostImagesEntity blogPostImage) {
+    public void delete(Session session, BlogPostImagesEntity blogPostImage) {
         blogPostImage.setStatus("DELETED");
-        sessionFactory.getCurrentSession().update(blogPostImage);
+        session.update(blogPostImage);
     }
 
-    public void undelete(BlogPostImagesEntity blogPostImage) {
+    public void undelete(Session session, BlogPostImagesEntity blogPostImage) {
         blogPostImage.setStatus("NEW");
-        sessionFactory.getCurrentSession().update(blogPostImage);
+        session.update(blogPostImage);
     }
 
-    public void updateUrl(BlogPostImagesEntity blogPostImage) {
-        sessionFactory.getCurrentSession().update(blogPostImage);
+    public void updateUrl(Session session, BlogPostImagesEntity blogPostImage) {
+        session.update(blogPostImage);
     }
 
 }

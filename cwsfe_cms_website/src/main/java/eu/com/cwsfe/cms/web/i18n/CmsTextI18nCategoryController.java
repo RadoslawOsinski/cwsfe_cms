@@ -1,8 +1,8 @@
 package eu.com.cwsfe.cms.web.i18n;
 
 import eu.com.cwsfe.cms.db.news.CmsTextI18NCategoriesEntity;
-import eu.com.cwsfe.cms.db.news.CmsTextI18nCategoryRepository;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
+import eu.com.cwsfe.cms.services.news.CmsTextI18nCategoryService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -27,11 +27,11 @@ import java.util.ResourceBundle;
 @Controller
 public class CmsTextI18nCategoryController extends JsonController {
 
-    private final CmsTextI18nCategoryRepository cmsTextI18nCategoryRepository;
+    private final CmsTextI18nCategoryService cmsTextI18nCategoryService;
 
     @Autowired
-    public CmsTextI18nCategoryController(CmsTextI18nCategoryRepository cmsTextI18nCategoryRepository) {
-        this.cmsTextI18nCategoryRepository = cmsTextI18nCategoryRepository;
+    public CmsTextI18nCategoryController(CmsTextI18nCategoryService cmsTextI18nCategoryService) {
+        this.cmsTextI18nCategoryService = cmsTextI18nCategoryService;
     }
 
     @RequestMapping(value = "/cmsTextI18nCategories", method = RequestMethod.GET)
@@ -60,7 +60,7 @@ public class CmsTextI18nCategoryController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        final List<CmsTextI18NCategoriesEntity> cmsTextI18nCategories = cmsTextI18nCategoryRepository.listAjax(iDisplayStart, iDisplayLength);
+        final List<CmsTextI18NCategoriesEntity> cmsTextI18nCategories = cmsTextI18nCategoryService.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < cmsTextI18nCategories.size(); i++) {
@@ -72,7 +72,7 @@ public class CmsTextI18nCategoryController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfCategories = cmsTextI18nCategoryRepository.countForAjax();
+        final int numberOfCategories = cmsTextI18nCategoryService.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfCategories);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfCategories);
         responseDetailsJson.put("aaData", jsonArray);
@@ -85,7 +85,7 @@ public class CmsTextI18nCategoryController extends JsonController {
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
-        final List<CmsTextI18NCategoriesEntity> cmsTextI18nCategories = cmsTextI18nCategoryRepository.listForDropList(term, limit);
+        final List<CmsTextI18NCategoriesEntity> cmsTextI18nCategories = cmsTextI18nCategoryService.listForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (CmsTextI18NCategoriesEntity lang : cmsTextI18nCategories) {
@@ -108,7 +108,7 @@ public class CmsTextI18nCategoryController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "category", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CategoryMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsTextI18nCategoryRepository.add(cmsTextI18nCategory);
+            cmsTextI18nCategoryService.add(cmsTextI18nCategory);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -125,7 +125,7 @@ public class CmsTextI18nCategoryController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TextI18nCategoryMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsTextI18nCategoryRepository.delete(cmsTextI18nCategory);
+            cmsTextI18nCategoryService.delete(cmsTextI18nCategory);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

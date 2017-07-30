@@ -16,14 +16,12 @@ import javax.persistence.*;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @NamedQuery(name = CmsGlobalParamsEntity.GET_BY_CODE, query = "SELECT gp FROM CmsGlobalParamsEntity gp WHERE code = :code")
-@NamedQuery(name = CmsGlobalParamsEntity.LIST_FOLDERS_FOR_DROP_LIST, query = "SELECT gp FROM CmsGlobalParamsEntity gp WHERE lower(CODE) LIKE lower(:code) ORDER BY CODE")
 @NamedQuery(name = CmsGlobalParamsEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(gp) FROM CmsGlobalParamsEntity gp")
 @NamedQuery(name = CmsGlobalParamsEntity.LIST, query = "SELECT gp FROM CmsGlobalParamsEntity gp ORDER BY CODE")
 @Table(name = "cms_global_params")
 public class CmsGlobalParamsEntity {
 
     public static final String GET_BY_CODE = "CmsGlobalParamsEntity.getByCode";
-    public static final String LIST_FOLDERS_FOR_DROP_LIST = "CmsGlobalParamsEntity.listForDropList";
     public static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "CmsGlobalParamsEntity.countForAjax";
     public static final String LIST = "CmsGlobalParamsEntity.list";
 

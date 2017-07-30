@@ -1,8 +1,11 @@
 package eu.com.cwsfe.cms.web.configuration;
 
 import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsEntity;
-import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsRepository;
 import eu.com.cwsfe.cms.db.users.*;
+import eu.com.cwsfe.cms.services.parameters.CmsGlobalParamsService;
+import eu.com.cwsfe.cms.services.users.CmsRolesService;
+import eu.com.cwsfe.cms.services.users.CmsUserRolesService;
+import eu.com.cwsfe.cms.services.users.CmsUsersService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,26 +31,26 @@ class InitialConfigurationController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InitialConfigurationController.class);
 
-    private final CmsGlobalParamsRepository cmsGlobalParamsRepository;
+    private final CmsGlobalParamsService cmsGlobalParamsService;
 
-    private final CmsUsersRepository cmsUsersRepository;
+    private final CmsUsersService cmsUsersService;
 
-    private final CmsRolesRepository cmsRolesRepository;
+    private final CmsRolesService cmsRolesService;
 
-    private final CmsUserRolesRepository cmsUserRolesRepository;
+    private final CmsUserRolesService cmsUserRolesService;
 
     @Autowired
-    public InitialConfigurationController(CmsUsersRepository cmsUsersRepository, CmsUserRolesRepository cmsUserRolesRepository, CmsRolesRepository cmsRolesRepository, CmsGlobalParamsRepository cmsGlobalParamsRepository) {
-        this.cmsUsersRepository = cmsUsersRepository;
-        this.cmsUserRolesRepository = cmsUserRolesRepository;
-        this.cmsRolesRepository = cmsRolesRepository;
-        this.cmsGlobalParamsRepository = cmsGlobalParamsRepository;
+    public InitialConfigurationController(CmsUsersService cmsUsersService, CmsUserRolesService cmsUserRolesService, CmsRolesService cmsRolesService, CmsGlobalParamsService cmsGlobalParamsService) {
+        this.cmsUsersService = cmsUsersService;
+        this.cmsUserRolesService = cmsUserRolesService;
+        this.cmsRolesService = cmsRolesService;
+        this.cmsGlobalParamsService = cmsGlobalParamsService;
     }
 
     @RequestMapping(value = "/configuration/initialConfiguration", method = RequestMethod.GET)
     public String showInitialConfiguration() {
         try {
-            CmsGlobalParamsEntity cwsfeCmsIsConfigured = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_IS_CONFIGURED");
+            CmsGlobalParamsEntity cwsfeCmsIsConfigured = cmsGlobalParamsService.getByCode("CWSFE_CMS_IS_CONFIGURED");
             if (cwsfeCmsIsConfigured == null || cwsfeCmsIsConfigured.getValue() == null || "N".equals(cwsfeCmsIsConfigured.getValue())) {
                 return "cms/configuration/InitialConfiguration";
             } else {
@@ -68,17 +71,17 @@ class InitialConfigurationController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "password", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("PasswordMustBeSet"));
         ModelAndView modelAndView = new ModelAndView();
         if (!result.hasErrors()) {
-            CmsGlobalParamsEntity cwsfeCmsIsConfigured = cmsGlobalParamsRepository.getByCode("CWSFE_CMS_IS_CONFIGURED");
+            CmsGlobalParamsEntity cwsfeCmsIsConfigured = cmsGlobalParamsService.getByCode("CWSFE_CMS_IS_CONFIGURED");
             if ("N".equals(cwsfeCmsIsConfigured.getValue())) {
 //                cmsUser.setPasswordHash(BCrypt.hashpw(cmsUser.getPassword(), BCrypt.gensalt()));
-                cmsUser.setId(cmsUsersRepository.add(cmsUser));
-                CmsRolesEntity cwsfeCmsAdminRole = cmsRolesRepository.getByCode("ROLE_CWSFE_CMS_ADMIN");
+                cmsUser.setId(cmsUsersService.add(cmsUser));
+                CmsRolesEntity cwsfeCmsAdminRole = cmsRolesService.getByCode("ROLE_CWSFE_CMS_ADMIN");
                 CmsUserRolesEntity cmsUserRole = new CmsUserRolesEntity();
                 cmsUserRole.setCmsUserId(cmsUser.getId());
                 cmsUserRole.setRoleId(cwsfeCmsAdminRole.getId());
-                cmsUserRolesRepository.add(cmsUserRole);
+                cmsUserRolesService.add(cmsUserRole);
                 cwsfeCmsIsConfigured.setValue("Y");
-                cmsGlobalParamsRepository.update(cwsfeCmsIsConfigured);
+                cmsGlobalParamsService.update(cwsfeCmsIsConfigured);
             }
             modelAndView.setView(new RedirectView("/", true, false, false));
         } else {

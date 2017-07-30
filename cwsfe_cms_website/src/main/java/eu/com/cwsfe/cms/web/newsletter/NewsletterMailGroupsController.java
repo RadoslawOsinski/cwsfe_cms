@@ -31,15 +31,15 @@
 //@Controller
 //class NewsletterMailGroupsController extends JsonController {
 //
-//    private final NewsletterMailGroupRepository newsletterMailGroupDAO;
-//    private final NewsletterMailAddressRepository newsletterMailAddressDAO;
-//    private final CmsLanguagesRepository cmsLanguagesDAO;
+//    private final NewsletterMailGroupService newsletterMailGroupDAO;
+//    private final NewsletterMailAddressService newsletterMailAddressDAO;
+//    private final CmsLanguagesService cmsLanguagesDAO;
 //
 //    @Autowired
-//    public NewsletterMailGroupsController(NewsletterMailAddressRepository newsletterMailAddressDAO, CmsLanguagesRepository cmsLanguagesDAO, NewsletterMailGroupRepository newsletterMailGroupDAO) {
-//        this.newsletterMailAddressRepository = newsletterMailAddressDAO;
-//        this.cmsLanguagesRepository = cmsLanguagesDAO;
-//        this.newsletterMailGroupRepository = newsletterMailGroupDAO;
+//    public NewsletterMailGroupsController(NewsletterMailAddressService newsletterMailAddressDAO, CmsLanguagesService cmsLanguagesDAO, NewsletterMailGroupService newsletterMailGroupDAO) {
+//        this.newsletterMailAddressService = newsletterMailAddressDAO;
+//        this.cmsLanguagesService = cmsLanguagesDAO;
+//        this.newsletterMailGroupService = newsletterMailGroupDAO;
 //    }
 //
 //    @RequestMapping(value = "/newsletterMailGroups", method = RequestMethod.GET)

@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.web.mail;
 
-import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsRepository;
+import eu.com.cwsfe.cms.services.parameters.CmsGlobalParamsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
@@ -16,22 +16,22 @@ import java.util.Properties;
 @Service
 public class CmsMailSender extends JavaMailSenderImpl {
 
-    private final CmsGlobalParamsRepository cmsGlobalParamsRepository;
+    private final CmsGlobalParamsService cmsGlobalParamsService;
 
     @Autowired
-    public CmsMailSender(CmsGlobalParamsRepository cmsGlobalParamsRepository) {
-        this.cmsGlobalParamsRepository = cmsGlobalParamsRepository;
+    public CmsMailSender(CmsGlobalParamsService cmsGlobalParamsService) {
+        this.cmsGlobalParamsService = cmsGlobalParamsService;
     }
 
     @PostConstruct
     private void initMailSessionFromDataBase() {
-        final String username = cmsGlobalParamsRepository.getByCode("MAIL_USER_NAME").getValue();
-        final String password = cmsGlobalParamsRepository.getByCode("MAIL_USER_PASSWORD").getValue();
+        final String username = cmsGlobalParamsService.getByCode("MAIL_USER_NAME").getValue();
+        final String password = cmsGlobalParamsService.getByCode("MAIL_USER_PASSWORD").getValue();
         Properties props = new Properties();
-        props.put("mail.smtp.auth", cmsGlobalParamsRepository.getByCode("MAIL_SMTP_AUTH").getValue());
-        props.put("mail.smtp.starttls.enable", cmsGlobalParamsRepository.getByCode("MAIL_SMTP_STARTTLS_ENABLE").getValue());
-        props.put("mail.smtp.host", cmsGlobalParamsRepository.getByCode("MAIL_SMTP_HOST").getValue());
-        props.put("mail.smtp.port", cmsGlobalParamsRepository.getByCode("MAIL_SMTP_PORT").getValue());
+        props.put("mail.smtp.auth", cmsGlobalParamsService.getByCode("MAIL_SMTP_AUTH").getValue());
+        props.put("mail.smtp.starttls.enable", cmsGlobalParamsService.getByCode("MAIL_SMTP_STARTTLS_ENABLE").getValue());
+        props.put("mail.smtp.host", cmsGlobalParamsService.getByCode("MAIL_SMTP_HOST").getValue());
+        props.put("mail.smtp.port", cmsGlobalParamsService.getByCode("MAIL_SMTP_PORT").getValue());
 
         Session session = Session.getInstance(props,
             new javax.mail.Authenticator() {

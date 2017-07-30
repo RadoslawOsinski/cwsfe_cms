@@ -5,13 +5,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class BlogPostsRepository {
 
-//    private final SessionFactory sessionFactory;
-//
-//    public BlogPostsRepository(SessionFactory sessionFactory) {
-//        this.sessionFactory = sessionFactory;
-//    }
-//
-//    public List<Object[]> listArchiveStatistics(Long languageId) {
+//    public List<Object[]> listArchiveStatistics(Session session, Long languageId) {
 //        Object[] dbParams = new Object[1];
 //        dbParams[0] = languageId;
 //        String query =
@@ -28,8 +22,8 @@ public class BlogPostsRepository {
 //            (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2), resultSet.getLong(3)});
 //    }
 //
-//    public List<Object[]> listArchiveStatistics() {
-//        Query query = sessionFactory.getCurrentSession().getNamedQuery(BlogKeywordsEntity.LIST_N);
+//    public List<Object[]> listArchiveStatistics(Session session) {
+//        Query query = session.getNamedQuery(BlogKeywordsEntity.LIST_N);
 //        return query.list();
 //
 //        String query =
@@ -45,8 +39,8 @@ public class BlogPostsRepository {
 //            (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2), resultSet.getLong(3)});
 //    }
 //
-//    public List<Object[]> listForPageWithPaging(Long languageId, Integer limit, Integer offset) {
-//        Query query = sessionFactory.getCurrentSession().getNamedQuery(BlogKeywordsEntity.LIST_N);
+//    public List<Object[]> listForPageWithPaging(Session session, Long languageId, Integer limit, Integer offset) {
+//        Query query = session.getNamedQuery(BlogKeywordsEntity.LIST_N);
 //        query.setMaxResults(limit);
 //        query.setFirstResult(offset);
 //        return query.getResultList();
@@ -69,8 +63,8 @@ public class BlogPostsRepository {
 //            (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
 //    }
 //
-//    public long listCountForPageWithPaging(Long languageId) {
-//        Query query = sessionFactory.getCurrentSession().getNamedQuery(BlogKeywordsEntity.COUNT_FOR_AJAX_N);
+//    public long listCountForPageWithPaging(Session session, Long languageId) {
+//        Query query = session.getNamedQuery(BlogKeywordsEntity.COUNT_FOR_AJAX_N);
 //        return (Long) query.uniqueResult();
 //
 //        Object[] dbParams = new Object[1];
@@ -89,8 +83,8 @@ public class BlogPostsRepository {
 //        return jdbcTemplate.queryForObject(query, dbParams, Long.class);
 //    }
 //
-//    public List<Object[]> listForPageWithCategoryAndPaging(Long categoryId, Long languageId, Integer limit, Integer offset) {
-//        Query query = sessionFactory.getCurrentSession().getNamedQuery(BlogKeywordsEntity.LIST_N);
+//    public List<Object[]> listForPageWithCategoryAndPaging(Session session, Long categoryId, Long languageId, Integer limit, Integer offset) {
+//        Query query = session.getNamedQuery(BlogKeywordsEntity.LIST_N);
 //        query.setMaxResults(limit);
 //        query.setFirstResult(offset);
 //        return query.getResultList();
@@ -116,8 +110,8 @@ public class BlogPostsRepository {
 //            (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
 //    }
 //
-//    public long listCountForPageWithCategoryAndPaging(Long categoryId, Long languageId) {
-//        Query query = sessionFactory.getCurrentSession().getNamedQuery(BlogKeywordsEntity.COUNT_FOR_AJAX_N);
+//    public long listCountForPageWithCategoryAndPaging(Session session, Long categoryId, Long languageId) {
+//        Query query = session.getNamedQuery(BlogKeywordsEntity.COUNT_FOR_AJAX_N);
 //        return (Long) query.uniqueResult();
 //
 //        Object[] dbParams = new Object[2];
@@ -139,8 +133,8 @@ public class BlogPostsRepository {
 //        return jdbcTemplate.queryForObject(query, dbParams, Long.class);
 //    }
 //
-//    public List<Object[]> listForPageWithSearchTextAndPaging(String searchText, Long languageId, Integer limit, Integer offset) {
-//        Query query = sessionFactory.getCurrentSession().getNamedQuery(BlogKeywordsEntity.LIST_N);
+//    public List<Object[]> listForPageWithSearchTextAndPaging(Session session, String searchText, Long languageId, Integer limit, Integer offset) {
+//        Query query = session.getNamedQuery(BlogKeywordsEntity.LIST_N);
 //        query.setMaxResults(limit);
 //        query.setFirstResult(offset);
 //        return query.getResultList();
@@ -171,8 +165,8 @@ public class BlogPostsRepository {
 //            (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
 //    }
 //
-//    public long listCountForPageWithSearchTextAndPaging(String searchText, Long languageId) {
-//        Query query = sessionFactory.getCurrentSession().getNamedQuery(BlogKeywordsEntity.LIST_N);
+//    public long listCountForPageWithSearchTextAndPaging(Session session, String searchText, Long languageId) {
+//        Query query = session.getNamedQuery(BlogKeywordsEntity.LIST_N);
 //        return query.list();
 //
 //        Object[] dbParams = new Object[4];
@@ -199,7 +193,7 @@ public class BlogPostsRepository {
 //        return jdbcTemplate.queryForObject(query, dbParams, Long.class);
 //    }
 //
-//    public List<Object[]> listForPageWithArchiveDateAndPaging(Date startDate, Date endDate, Long languageId, Integer limit, Integer offset) {
+//    public List<Object[]> listForPageWithArchiveDateAndPaging(Session session, Date startDate, Date endDate, Long languageId, Integer limit, Integer offset) {
 //        Object[] dbParams = new Object[5];
 //        dbParams[0] = languageId;
 //        dbParams[1] = startDate;
@@ -221,13 +215,13 @@ public class BlogPostsRepository {
 //            (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
 //    }
 //
-//    public long listCountForPageWithArchiveDateAndPaging(Date startDate, Date endDate, Long languageId) {
-//        Query query = sessionFactory.getCurrentSession().getNamedQuery(BlogKeywordsEntity.LIST_N);
+//    public long listCountForPageWithArchiveDateAndPaging(Session session, Date startDate, Date endDate, Long languageId) {
+//        Query query = session.getNamedQuery(BlogKeywordsEntity.LIST_N);
 //        query.setMaxResults(limit);
 //        query.setFirstResult(offset);
 //        return query.getResultList();
 //
-//        Query query = sessionFactory.getCurrentSession().getNamedQuery(BlogKeywordsEntity.LIST_N);
+//        Query query = session.getNamedQuery(BlogKeywordsEntity.LIST_N);
 //        return query.list();
 //
 //        Object[] dbParams = new Object[3];
@@ -249,12 +243,12 @@ public class BlogPostsRepository {
 //        return jdbcTemplate.queryForObject(query, dbParams, Long.class);
 //    }
 //
-//    public int getTotalNumberNotDeleted() {
+//    public int getTotalNumberNotDeleted(Session session) {
 //        return jdbcTemplate.queryForObject("select count(*) from BLOG_POSTS where status <> 'D'", Integer.class);
 //    }
 //
 //    public List<Object[]> searchByAjax(
-//        int iDisplayStart, int iDisplayLength, Integer searchAuthorId, String searchPostTextCode
+//        Session session, int iDisplayStart, int iDisplayLength, Integer searchAuthorId, String searchPostTextCode
 //    ) {
 //        int numberOfSearchParams = 0;
 //        String additionalQuery = "";
@@ -298,7 +292,7 @@ public class BlogPostsRepository {
 //            });
 //    }
 //
-//    public int searchByAjaxCount(Integer searchAuthorId, String searchPostTextCode) {
+//    public int searchByAjaxCount(Session session, Integer searchAuthorId, String searchPostTextCode) {
 //        int numberOfSearchParams = 0;
 //        String additionalQuery = "";
 //        List<Object> additionalParams = new ArrayList<>(5);
@@ -329,8 +323,8 @@ public class BlogPostsRepository {
 //        return jdbcTemplate.queryForObject(query, dbParamsForCount, Integer.class);
 //    }
 //
-//    public BlogPost get(Long id) {
-//        return sessionFactory.getCurrentSession().get(BlogKeywordsEntity.class, id);
+//    public BlogPost get(Session session, Long id) {
+//        return session.get(BlogKeywordsEntity.class, id);
 //        String query =
 //            "SELECT " +
 //                " id, post_author_id, post_text_code, post_creation_date, status" +
@@ -341,8 +335,8 @@ public class BlogPostsRepository {
 //        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPost(resultSet));
 //    }
 //
-//    public BlogPost getByCode(String code) {
-//        return sessionFactory.getCurrentSession().get(BlogKeywordsEntity.class, id);
+//    public BlogPost getByCode(Session session, String code) {
+//        return session.get(BlogKeywordsEntity.class, id);
 //        String query =
 //            "SELECT " +
 //                " id, post_author_id, post_text_code, post_creation_date, status" +
@@ -353,11 +347,10 @@ public class BlogPostsRepository {
 //        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapBlogPost(resultSet));
 //    }
 //
-//    public Long add(BlogPost blogPost) {
+//    public Long add(Session session, BlogPost blogPost) {
 //        blogKeyword.setStatus(NewDeletedStatus.NEW);
-//        Session currentSession = sessionFactory.getCurrentSession();
-//        currentSession.saveOrUpdate(blogKeyword);
-//        currentSession.flush();
+//        session.saveOrUpdate(blogKeyword);
+//        session.flush();
 //        return blogKeyword.getId();
 //
 //        Object[] dbParams = new Object[5];
@@ -372,8 +365,8 @@ public class BlogPostsRepository {
 //        return id;
 //    }
 //
-//    public void update(BlogPost blogPost) {
-//        sessionFactory.getCurrentSession().update(blogKeyword);
+//    public void update(Session session, BlogPost blogPost) {
+//        session.update(blogKeyword);
 //        Object[] dbParams = new Object[3];
 //        dbParams[0] = blogPost.getPostTextCode();
 //        dbParams[1] = blogPost.getStatus().getCode();
@@ -381,8 +374,8 @@ public class BlogPostsRepository {
 //        jdbcTemplate.update("UPDATE BLOG_POSTS SET post_text_code = ?, status = ? WHERE id = ?", dbParams);
 //    }
 //
-//    public void updatePostBasicInfo(BlogPost blogPost) {
-//        sessionFactory.getCurrentSession().update(blogKeyword);
+//    public void updatePostBasicInfo(Session session, BlogPost blogPost) {
+//        session.update(blogKeyword);
 //
 //        Object[] dbParams = new Object[3];
 //        dbParams[0] = blogPost.getPostTextCode();
@@ -391,34 +384,34 @@ public class BlogPostsRepository {
 //        jdbcTemplate.update("UPDATE BLOG_POSTS SET post_text_code = ?, status = ? WHERE id = ?", dbParams);
 //    }
 //
-//    public void delete(BlogPost blogPost) {
+//    public void delete(Session session, BlogPost blogPost) {
 //        blogKeyword.setStatus(NewDeletedStatus.DELETED);
-//        sessionFactory.getCurrentSession().update(blogKeyword);
+//        session.update(blogKeyword);
 //
 //        Object[] dbParams = new Object[1];
 //        dbParams[0] = blogPost.getId();
 //        jdbcTemplate.update("update BLOG_POSTS set status = 'D' where id = ?", dbParams);
 //    }
 //
-//    public void undelete(BlogPost blogPost) {
+//    public void undelete(Session session, BlogPost blogPost) {
 //        blogKeyword.setStatus(NewDeletedStatus.NEW);
-//        sessionFactory.getCurrentSession().update(blogKeyword);
+//        session.update(blogKeyword);
 //
 //        Object[] dbParams = new Object[1];
 //        dbParams[0] = blogPost.getId();
 //        jdbcTemplate.update("update BLOG_POSTS set status = 'H' where id = ?", dbParams);
 //    }
 //
-//    public void publish(BlogPost blogPost) {
+//    public void publish(Session session, BlogPost blogPost) {
 //        blogKeyword.setStatus(NewDeletedStatus.NEW);
-//        sessionFactory.getCurrentSession().update(blogKeyword);
+//        session.update(blogKeyword);
 //
 //        Object[] dbParams = new Object[1];
 //        dbParams[0] = blogPost.getId();
 //        jdbcTemplate.update("update BLOG_POSTS set status = 'P' where id = ?", dbParams);
 //    }
 //
-//    public List<Object[]> listI18nPosts(Long languageId) {
+//    public List<Object[]> listI18nPosts(Session session, Long languageId) {
 //        Object[] dbParams = new Object[1];
 //        dbParams[0] = languageId;
 //        String query =

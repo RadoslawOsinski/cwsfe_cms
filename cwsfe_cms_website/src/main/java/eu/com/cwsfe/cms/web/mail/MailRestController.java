@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.web.mail;
 
-import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsRepository;
+import eu.com.cwsfe.cms.services.parameters.CmsGlobalParamsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class MailRestController {
 
     private JWTDecoratorService jwtDecoratorService;
 
-    private CmsGlobalParamsRepository cmsGlobalParamsRepository;
+    private CmsGlobalParamsService cmsGlobalParamsService;
 
     @Lazy
     @Autowired
@@ -42,8 +42,8 @@ public class MailRestController {
     }
 
     @Autowired
-    public void setCmsGlobalParamsRepository(CmsGlobalParamsRepository cmsGlobalParamsRepository) {
-        this.cmsGlobalParamsRepository = cmsGlobalParamsRepository;
+    public void setCmsGlobalParamsService(CmsGlobalParamsService cmsGlobalParamsService) {
+        this.cmsGlobalParamsService = cmsGlobalParamsService;
     }
 
     @RequestMapping(value = "/rest/sendEmail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
@@ -61,7 +61,7 @@ public class MailRestController {
         MimeMessageHelper helper;
         try {
             helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
-            helper.setTo(cmsGlobalParamsRepository.getByCode("MAIL_USER_NAME").getValue());
+            helper.setTo(cmsGlobalParamsService.getByCode("MAIL_USER_NAME").getValue());
             mimeMessage.setContent(emailText, "text/html");
             helper.setSubject("[CMS] Contact mail from " + replayToEmail);
             helper.setReplyTo(replayToEmail);

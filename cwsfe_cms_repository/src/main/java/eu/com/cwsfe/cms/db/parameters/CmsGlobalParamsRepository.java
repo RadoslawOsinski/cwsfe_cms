@@ -1,71 +1,77 @@
 package eu.com.cwsfe.cms.db.parameters;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class CmsGlobalParamsRepository {
 
-    private final SessionFactory sessionFactory;
-
-    public CmsGlobalParamsRepository(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    public int countForAjax() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery(CmsGlobalParamsEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
+    public int countForAjax(Session session) {
+        Query query = session.getNamedQuery(CmsGlobalParamsEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
         return (int) query.getSingleResult();
     }
 
-    public List<CmsGlobalParamsEntity> list() {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery(CmsGlobalParamsEntity.LIST);
+    public List<CmsGlobalParamsEntity> list(Session session) {
+        Query query = session.getNamedQuery(CmsGlobalParamsEntity.LIST);
         return query.list();
     }
 
-    public List<CmsGlobalParamsEntity> listAjax(int offset, int limit) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery(CmsGlobalParamsEntity.LIST);
+    public List<CmsGlobalParamsEntity> listAjax(Session session, int offset, int limit) {
+        Query query = session.getNamedQuery(CmsGlobalParamsEntity.LIST);
         query.setMaxResults(limit);
         query.setFirstResult(offset);
         return query.getResultList();
     }
 
-    public List<CmsGlobalParamsEntity> listForDropList(String term, int limit) {
-        //TODO BY CRITERIA
-        Query query = sessionFactory.getCurrentSession().getNamedQuery(CmsGlobalParamsEntity.LIST_FOLDERS_FOR_DROP_LIST);
-        query.setParameter("code", '%' + term + '%');
-        query.setMaxResults(limit);
-        return query.getResultList();
+    public List<CmsGlobalParamsEntity> listForDropList(Session session, String term, int limit) {
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<CmsGlobalParamsEntity> query = criteriaBuilder.createQuery(CmsGlobalParamsEntity.class);
+        Root<CmsGlobalParamsEntity> params = query.from(CmsGlobalParamsEntity.class);
+        query.select(params);
+        query.where(
+            criteriaBuilder.like(criteriaBuilder.lower(params.get("code")), "%" + term.toLowerCase() + "%")
+        );
+        List<Order> orders = new ArrayList<>();
+        orders.add(criteriaBuilder.asc(params.get("code")));
+        query.orderBy(orders);
+        return session.createQuery(query)
+            .setMaxResults(limit)
+            .list();
     }
 
-    public CmsGlobalParamsEntity get(Long id) {
-        return sessionFactory.getCurrentSession().get(CmsGlobalParamsEntity.class, id);
+    public CmsGlobalParamsEntity get(Session session, Long id) {
+        return session.get(CmsGlobalParamsEntity.class, id);
     }
 
+    //todo move transactional to service!
     @Transactional
-    public CmsGlobalParamsEntity getByCode(String code) {
-        Query query = sessionFactory.getCurrentSession().getNamedQuery(CmsGlobalParamsEntity.GET_BY_CODE);
+    public CmsGlobalParamsEntity getByCode(Session session, String code) {
+        Query query = session.getNamedQuery(CmsGlobalParamsEntity.GET_BY_CODE);
         query.setParameter("code", code);
         return (CmsGlobalParamsEntity) query.getSingleResult();
     }
 
-    public Long add(CmsGlobalParamsEntity cmsGlobalParam) {
-        Session currentSession = sessionFactory.getCurrentSession();
-        currentSession.saveOrUpdate(cmsGlobalParam);
-        currentSession.flush();
+    public Long add(Session session, CmsGlobalParamsEntity cmsGlobalParam) {
+        session.saveOrUpdate(cmsGlobalParam);
+        session.flush();
         return cmsGlobalParam.getId();
     }
 
-    public void update(CmsGlobalParamsEntity cmsGlobalParam) {
-        sessionFactory.getCurrentSession().update(cmsGlobalParam);
+    public void update(Session session, CmsGlobalParamsEntity cmsGlobalParam) {
+        session.update(cmsGlobalParam);
     }
 
-    public void delete(CmsGlobalParamsEntity cmsGlobalParam) {
-        sessionFactory.getCurrentSession().delete(cmsGlobalParam);
+    public void delete(Session session, CmsGlobalParamsEntity cmsGlobalParam) {
+        session.delete(cmsGlobalParam);
     }
 
 }

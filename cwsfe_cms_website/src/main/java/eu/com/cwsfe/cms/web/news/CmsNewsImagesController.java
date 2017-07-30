@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.web.news;
 
 import eu.com.cwsfe.cms.db.news.CmsNewsImagesEntity;
-import eu.com.cwsfe.cms.db.news.CmsNewsImagesRepository;
+import eu.com.cwsfe.cms.services.news.CmsNewsImagesService;
 import eu.com.cwsfe.cms.web.images.ImageStorageService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
@@ -31,14 +31,14 @@ public class CmsNewsImagesController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsNewsImagesController.class);
 
-    private final CmsNewsImagesRepository cmsNewsImagesRepository;
+    private final CmsNewsImagesService cmsNewsImagesService;
 
     private final ImageStorageService imageStorageService;
 
     @Autowired
-    public CmsNewsImagesController(ImageStorageService imageStorageService, CmsNewsImagesRepository cmsNewsImagesRepository) {
+    public CmsNewsImagesController(ImageStorageService imageStorageService, CmsNewsImagesService cmsNewsImagesService) {
         this.imageStorageService = imageStorageService;
-        this.cmsNewsImagesRepository = cmsNewsImagesRepository;
+        this.cmsNewsImagesService = cmsNewsImagesService;
     }
 
     @RequestMapping(value = "/news/cmsNewsImagesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -55,8 +55,8 @@ public class CmsNewsImagesController extends JsonController {
         } catch (NumberFormatException e) {
             LOGGER.error("Cms news id is not a number: {}", webRequest.getParameter("cmsNewsId"));
         }
-        List<CmsNewsImagesEntity> dbList = cmsNewsImagesRepository.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, newsId);
-        Integer dbListDisplayRecordsSize = cmsNewsImagesRepository.searchByAjaxCountWithoutContent(newsId);
+        List<CmsNewsImagesEntity> dbList = cmsNewsImagesService.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, newsId);
+        Integer dbListDisplayRecordsSize = cmsNewsImagesService.searchByAjaxCountWithoutContent(newsId);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < dbList.size(); i++) {
@@ -71,7 +71,7 @@ public class CmsNewsImagesController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        responseDetailsJson.put("iTotalRecords", cmsNewsImagesRepository.getTotalNumberNotDeleted());
+        responseDetailsJson.put("iTotalRecords", cmsNewsImagesService.getTotalNumberNotDeleted());
         responseDetailsJson.put("iTotalDisplayRecords", dbListDisplayRecordsSize);
         responseDetailsJson.put("aaData", jsonArray);
         return responseDetailsJson.toString();
@@ -98,9 +98,9 @@ public class CmsNewsImagesController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "title", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TitleMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "newsId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CmsNewsMustBeSet"));
         if (!result.hasErrors()) {
-            cmsNewsImage.setId(cmsNewsImagesRepository.add(cmsNewsImage));
+            cmsNewsImage.setId(cmsNewsImagesService.add(cmsNewsImage));
 //            cmsNewsImage.setUrl(imageStorageService.storeNewsImage(cmsNewsImage));
-            cmsNewsImagesRepository.updateUrl(cmsNewsImage);
+            cmsNewsImagesService.updateUrl(cmsNewsImage);
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("/news/" + cmsNewsImage.getNewsId(), true, false, false));
@@ -116,7 +116,7 @@ public class CmsNewsImagesController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("ImageMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsNewsImagesRepository.delete(cmsNewsImage);
+            cmsNewsImagesService.delete(cmsNewsImage);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

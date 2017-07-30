@@ -38,18 +38,18 @@
 //
 //    private static final Logger LOGGER = LoggerFactory.getLogger(NewsletterTemplateController.class);
 //
-//    private NewsletterTemplateRepository newsletterTemplateDAO;
-//    private CmsLanguagesRepository cmsLanguagesDAO;
+//    private NewsletterTemplateService newsletterTemplateDAO;
+//    private CmsLanguagesService cmsLanguagesDAO;
 //    private JavaMailSender cmsMailSender;
 //
 //    @Autowired
-//    public void setNewsletterTemplateDAO(NewsletterTemplateRepository newsletterTemplateDAO) {
-//        this.newsletterTemplateRepository = newsletterTemplateDAO;
+//    public void setNewsletterTemplateDAO(NewsletterTemplateService newsletterTemplateDAO) {
+//        this.newsletterTemplateService = newsletterTemplateDAO;
 //    }
 //
 //    @Autowired
-//    public void setCmsLanguagesDAO(CmsLanguagesRepository cmsLanguagesDAO) {
-//        this.cmsLanguagesRepository = cmsLanguagesDAO;
+//    public void setCmsLanguagesDAO(CmsLanguagesService cmsLanguagesDAO) {
+//        this.cmsLanguagesService = cmsLanguagesDAO;
 //    }
 //
 //    @Lazy

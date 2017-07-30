@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.web.blog;
 
 import eu.com.cwsfe.cms.db.blog.BlogKeywordsEntity;
-import eu.com.cwsfe.cms.db.blog.BlogKeywordsRepository;
+import eu.com.cwsfe.cms.services.blog.BlogKeywordsService;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
@@ -28,11 +28,11 @@ import java.util.ResourceBundle;
 @Controller
 public class BlogKeywordsController extends JsonController {
 
-    private final BlogKeywordsRepository blogKeywordsRepository;
+    private final BlogKeywordsService blogKeywordsService;
 
     @Autowired
-    public BlogKeywordsController(BlogKeywordsRepository blogKeywordsRepository) {
-        this.blogKeywordsRepository = blogKeywordsRepository;
+    public BlogKeywordsController(BlogKeywordsService blogKeywordsService) {
+        this.blogKeywordsService = blogKeywordsService;
     }
 
     @RequestMapping(value = "/blogKeywords", method = RequestMethod.GET)
@@ -61,7 +61,7 @@ public class BlogKeywordsController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        final List<BlogKeywordsEntity> blogKeywords = blogKeywordsRepository.listAjax(iDisplayStart, iDisplayLength);
+        final List<BlogKeywordsEntity> blogKeywords = blogKeywordsService.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < blogKeywords.size(); i++) {
@@ -72,7 +72,7 @@ public class BlogKeywordsController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final long numberOfBlogKeywords = blogKeywordsRepository.countForAjax();
+        final long numberOfBlogKeywords = blogKeywordsService.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfBlogKeywords);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfBlogKeywords);
         responseDetailsJson.put("aaData", jsonArray);
@@ -89,7 +89,7 @@ public class BlogKeywordsController extends JsonController {
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
             try {
-                blogKeywordsRepository.add(blogKeyword);
+                blogKeywordsService.add(blogKeyword);
                 addJsonSuccess(responseDetailsJson);
             } catch (DuplicateKeyException e) {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogKeywordsAlreadyExists"));
@@ -109,7 +109,7 @@ public class BlogKeywordsController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogKeywordsRepository.delete(blogKeyword);
+            blogKeywordsService.delete(blogKeyword);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

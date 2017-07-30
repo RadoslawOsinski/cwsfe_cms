@@ -1,6 +1,9 @@
 package eu.com.cwsfe.cms.web.login;
 
 import eu.com.cwsfe.cms.db.users.*;
+import eu.com.cwsfe.cms.services.users.CmsRolesService;
+import eu.com.cwsfe.cms.services.users.CmsUserAllowedNetAddressService;
+import eu.com.cwsfe.cms.services.users.CmsUsersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,23 +28,23 @@ public class CmsAuthProvider implements AuthenticationProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsAuthProvider.class);
 
-    private CmsUsersRepository cmsUsersRepository;
-    private CmsRolesRepository cmsRolesRepository;
-    private CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressRepository;
+    private CmsUsersService cmsUsersService;
+    private CmsRolesService cmsRolesService;
+    private CmsUserAllowedNetAddressService cmsUserAllowedNetAddressService;
 
     @Autowired
-    public void setCmsUsersRepository(CmsUsersRepository cmsUsersRepository) {
-        this.cmsUsersRepository = cmsUsersRepository;
+    public void setCmsUsersService(CmsUsersService cmsUsersService) {
+        this.cmsUsersService = cmsUsersService;
     }
 
     @Autowired
-    public void setCmsRolesRepository(CmsRolesRepository cmsRolesRepository) {
-        this.cmsRolesRepository = cmsRolesRepository;
+    public void setCmsRolesService(CmsRolesService cmsRolesService) {
+        this.cmsRolesService = cmsRolesService;
     }
 
     @Autowired
-    public void setCmsUserAllowedNetAddressRepository(CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressRepository) {
-        this.cmsUserAllowedNetAddressRepository = cmsUserAllowedNetAddressRepository;
+    public void setCmsUserAllowedNetAddressService(CmsUserAllowedNetAddressService cmsUserAllowedNetAddressService) {
+        this.cmsUserAllowedNetAddressService = cmsUserAllowedNetAddressService;
     }
 
     @Override
@@ -56,13 +59,13 @@ public class CmsAuthProvider implements AuthenticationProvider {
         String userIPAddress = webAuthenticationDetails.getRemoteAddress();
         LOGGER.debug("User login: {}, IP Address: {}", login, userIPAddress);
 
-        if (cmsUsersRepository.isActiveUsernameInDatabase(String.valueOf(login))) {
+        if (cmsUsersService.isActiveUsernameInDatabase(String.valueOf(login))) {
             final Object password = auth.getCredentials();
-            CmsUsersEntity cmsUser = cmsUsersRepository.getByUsername((String) login);
+            CmsUsersEntity cmsUser = cmsUsersService.getByUsername((String) login);
             boolean userIsUsingIPFiltering = userIsUsingIPFiltering(cmsUser.getId());
             if (!userIsUsingIPFiltering || (userIsUsingAllowedAddress(userIPAddress, cmsUser.getId()))) {
                 if (BCrypt.checkpw(String.valueOf(password), cmsUser.getPasswordHash())) {
-                    final List<CmsRolesEntity> cmsRoles = cmsRolesRepository.listUserRoles(cmsUser.getId());
+                    final List<CmsRolesEntity> cmsRoles = cmsRolesService.listUserRoles(cmsUser.getId());
                     List<GrantedAuthority> authorities = new ArrayList<>(cmsRoles.size());
                     for (CmsRolesEntity cmsRole : cmsRoles) {
                         authorities.add(new SimpleGrantedAuthority(cmsRole.getRoleCode()));
@@ -86,7 +89,7 @@ public class CmsAuthProvider implements AuthenticationProvider {
      * @return true if user is allowed to enter from this IP. Otherwise false.
      */
     private boolean userIsUsingAllowedAddress(String userIPAddress, long userId) {
-        List<CmsUserAllowedNetAddressEntity> cmsUserAllowedNetAddresses = cmsUserAllowedNetAddressRepository.listForUser(userId);
+        List<CmsUserAllowedNetAddressEntity> cmsUserAllowedNetAddresses = cmsUserAllowedNetAddressService.listForUser(userId);
         return cmsUserAllowedNetAddresses.stream().
             map(CmsUserAllowedNetAddressEntity::getInetAddress).collect(Collectors.toList()).
             contains(userIPAddress);
@@ -96,7 +99,7 @@ public class CmsAuthProvider implements AuthenticationProvider {
      * @return true if user is using IP filtering during logging in. Otherwise false.
      */
     private boolean userIsUsingIPFiltering(long userId) {
-        return cmsUserAllowedNetAddressRepository.countAddressesForUser(userId) > 0;
+        return cmsUserAllowedNetAddressService.countAddressesForUser(userId) > 0;
     }
 
 }

@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.web.mail;
 
 import eu.com.cwsfe.cms.db.keystores.KeystoresEntity;
-import eu.com.cwsfe.cms.db.keystores.KeystoresRepository;
+import eu.com.cwsfe.cms.services.keystores.KeystoresService;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class JWTDecoratorService {
     private Environment environment;
 
     @Resource
-    private KeystoresRepository keystoresRepository;
+    private KeystoresService keystoresService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JWTDecoratorService.class);
 
@@ -56,7 +56,7 @@ public class JWTDecoratorService {
     private Key getFrontendWebsitePublicKey() {
         try {
             KeyStore keystore = KeyStore.getInstance("JKS");
-            KeystoresEntity frontendApplicationKeystore = keystoresRepository.getByName("frontendApplicationKeystore");
+            KeystoresEntity frontendApplicationKeystore = keystoresService.getByName("frontendApplicationKeystore");
             keystore.load(new BufferedInputStream(new ByteArrayInputStream(frontendApplicationKeystore.getContent())), environment.getRequiredProperty("keystore.password").toCharArray());
             final Certificate frontendWebsiteCertificate = keystore.getCertificate(environment.getRequiredProperty("keystore.frontendWebsiteCertificate"));
             return frontendWebsiteCertificate.getPublicKey();

@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.web.login;
 
-import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsRepository;
+import eu.com.cwsfe.cms.services.parameters.CmsGlobalParamsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 class CmsLoginController {
 
-    private final CmsGlobalParamsRepository cmsGlobalParamsRepository;
+    private final CmsGlobalParamsService cmsGlobalParamsService;
 
     @Autowired
-    public CmsLoginController(CmsGlobalParamsRepository cmsGlobalParamsRepository) {
-        this.cmsGlobalParamsRepository = cmsGlobalParamsRepository;
+    public CmsLoginController(CmsGlobalParamsService cmsGlobalParamsService) {
+        this.cmsGlobalParamsService = cmsGlobalParamsService;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -46,7 +46,7 @@ class CmsLoginController {
     }
 
     private void addMainSiteUrl(ModelMap model) {
-        model.addAttribute("mainSiteUrl", cmsGlobalParamsRepository.getByCode("MAIN_SITE").getValue());
+        model.addAttribute("mainSiteUrl", cmsGlobalParamsService.getByCode("MAIN_SITE").getValue());
     }
 
 }

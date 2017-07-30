@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.web.main;
 
-import eu.com.cwsfe.cms.db.blog.BlogPostCommentsRepository;
 import eu.com.cwsfe.cms.db.blog.CmsBlogPostCommentsEntity;
+import eu.com.cwsfe.cms.services.blog.BlogPostCommentsService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -27,14 +27,14 @@ import java.util.List;
 @Controller
 class MainCmsController extends JsonController {
 
-    private final BlogPostCommentsRepository blogPostCommentsRepository;
+    private final BlogPostCommentsService blogPostCommentsService;
 
     private static final DateTimeFormatter DATE_FORMAT = new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd HH:mm:ss").
         toFormatter().withZone(ZoneId.systemDefault());
 
     @Autowired
-    public MainCmsController(BlogPostCommentsRepository blogPostCommentsRepository) {
-        this.blogPostCommentsRepository = blogPostCommentsRepository;
+    public MainCmsController(BlogPostCommentsService blogPostCommentsService) {
+        this.blogPostCommentsService = blogPostCommentsService;
     }
 
     @RequestMapping(value = "/Main", method = RequestMethod.GET)
@@ -56,8 +56,8 @@ class MainCmsController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        List<CmsBlogPostCommentsEntity> dbList = blogPostCommentsRepository.searchByAjax(iDisplayStart, iDisplayLength);
-        Integer dbListDisplayRecordsSize = blogPostCommentsRepository.searchByAjaxCount();
+        List<CmsBlogPostCommentsEntity> dbList = blogPostCommentsService.searchByAjax(iDisplayStart, iDisplayLength);
+        Integer dbListDisplayRecordsSize = blogPostCommentsService.searchByAjaxCount();
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < dbList.size(); i++) {
@@ -72,7 +72,7 @@ class MainCmsController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        responseDetailsJson.put("iTotalRecords", blogPostCommentsRepository.getTotalNumberNotDeleted());
+        responseDetailsJson.put("iTotalRecords", blogPostCommentsService.getTotalNumberNotDeleted());
         responseDetailsJson.put("iTotalDisplayRecords", dbListDisplayRecordsSize);
         responseDetailsJson.put("aaData", jsonArray);
         return responseDetailsJson.toString();

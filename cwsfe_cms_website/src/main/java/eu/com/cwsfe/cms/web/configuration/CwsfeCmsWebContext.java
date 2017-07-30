@@ -1,14 +1,13 @@
 package eu.com.cwsfe.cms.web.configuration;
 
-import eu.com.cwsfe.cms.db.configuration.HazelcastIntegrationInstance;
-import eu.com.cwsfe.cms.db.configuration.RepositoryConfiguration;
-import eu.com.cwsfe.cms.db.configuration.RestConfiguration;
-import eu.com.cwsfe.cms.db.configuration.SwaggerConfig;
+import eu.com.cwsfe.cms.db.configuration.*;
+import eu.com.cwsfe.cms.web.login.SecurityConfig;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
@@ -16,6 +15,10 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -26,9 +29,13 @@ import java.util.Locale;
  */
 @Configuration
 @EnableWebMvc
-@Import(value = {RestConfiguration.class, SwaggerConfig.class})
+@EnableSwagger2
+//@Import(value = {RestConfiguration.class})
 @ComponentScan(value = "eu.com.cwsfe.cms", excludeFilters = @ComponentScan.Filter(
-    value = {CwsfeCmsApplicationConfig.class, RestConfiguration.class, RepositoryConfiguration.class, HazelcastIntegrationInstance.class}, type = FilterType.ASSIGNABLE_TYPE
+    value = {
+        CwsfeCmsApplicationConfig.class, RestConfiguration.class, HazelcastIntegrationInstance.class,
+        DataSourceConfiguration.class, SecurityConfig.class
+    }, type = FilterType.ASSIGNABLE_TYPE
 ))
 public class CwsfeCmsWebContext extends WebMvcConfigurerAdapter {
 
@@ -109,7 +116,17 @@ public class CwsfeCmsWebContext extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources-cwsfe-cms/**").addResourceLocations("/resources-cwsfe-cms/");
+        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
         super.addResourceHandlers(registry);
+    }
+
+    @Bean
+    public Docket privilegesApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+            .groupName("CWSFE CMS Rest API")
+            .select()
+            .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class)).build();
     }
 
     @Override
@@ -117,4 +134,5 @@ public class CwsfeCmsWebContext extends WebMvcConfigurerAdapter {
         converters.add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
         super.configureMessageConverters(converters);
     }
+
 }

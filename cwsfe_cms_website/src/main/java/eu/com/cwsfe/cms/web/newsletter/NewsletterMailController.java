@@ -32,17 +32,17 @@
 //
 //    private static final Logger LOGGER = LoggerFactory.getLogger(NewsletterMailController.class);
 //
-//    private final NewsletterMailRepository newsletterMailDAO;
-//    private final NewsletterMailAddressRepository newsletterMailAddressDAO;
-//    private final NewsletterMailGroupRepository newsletterMailGroupDAO;
+//    private final NewsletterMailService newsletterMailDAO;
+//    private final NewsletterMailAddressService newsletterMailAddressDAO;
+//    private final NewsletterMailGroupService newsletterMailGroupDAO;
 //    private final CmsMailSender cmsMailSender;
 //
 //    @Autowired
-//    public NewsletterMailController(NewsletterMailAddressRepository newsletterMailAddressDAO, NewsletterMailRepository newsletterMailDAO, CmsMailSender cmsMailSender, NewsletterMailGroupRepository newsletterMailGroupDAO) {
-//        this.newsletterMailAddressRepository = newsletterMailAddressDAO;
-//        this.newsletterMailRepository = newsletterMailDAO;
+//    public NewsletterMailController(NewsletterMailAddressService newsletterMailAddressDAO, NewsletterMailService newsletterMailDAO, CmsMailSender cmsMailSender, NewsletterMailGroupService newsletterMailGroupDAO) {
+//        this.newsletterMailAddressService = newsletterMailAddressDAO;
+//        this.newsletterMailService = newsletterMailDAO;
 //        this.cmsMailSender = cmsMailSender;
-//        this.newsletterMailGroupRepository = newsletterMailGroupDAO;
+//        this.newsletterMailGroupService = newsletterMailGroupDAO;
 //    }
 //
 //    @RequestMapping(value = "/newsletterMails", method = RequestMethod.GET)

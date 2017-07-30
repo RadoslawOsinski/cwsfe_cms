@@ -1,7 +1,7 @@
 package eu.com.cwsfe.cms.web.blog;
 
 import eu.com.cwsfe.cms.db.blog.BlogPostCodeEntity;
-import eu.com.cwsfe.cms.db.blog.BlogPostCodesRepository;
+import eu.com.cwsfe.cms.services.blog.BlogPostCodesService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -28,11 +28,11 @@ public class BlogPostCodeController extends JsonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BlogPostCodeController.class);
 
-    private final BlogPostCodesRepository blogPostCodesRepository;
+    private final BlogPostCodesService blogPostCodesService;
 
     @Autowired
-    public BlogPostCodeController(BlogPostCodesRepository blogPostCodesRepository) {
-        this.blogPostCodesRepository = blogPostCodesRepository;
+    public BlogPostCodeController(BlogPostCodesService blogPostCodesService) {
+        this.blogPostCodesService = blogPostCodesService;
     }
 
     @RequestMapping(value = "/blogPosts/blogPostCodesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -49,8 +49,8 @@ public class BlogPostCodeController extends JsonController {
         } catch (NumberFormatException e) {
             LOGGER.error("Blog post id is not a number: {}", webRequest.getParameter("blogPostId"));
         }
-        List<BlogPostCodeEntity> dbList = blogPostCodesRepository.searchByAjax(iDisplayStart, iDisplayLength, blogPostId);
-        Integer dbListDisplayRecordsSize = blogPostCodesRepository.searchByAjaxCount(blogPostId);
+        List<BlogPostCodeEntity> dbList = blogPostCodesService.searchByAjax(iDisplayStart, iDisplayLength, blogPostId);
+        Integer dbListDisplayRecordsSize = blogPostCodesService.searchByAjaxCount(blogPostId);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < dbList.size(); i++) {
@@ -67,7 +67,7 @@ public class BlogPostCodeController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        responseDetailsJson.put("iTotalRecords", blogPostCodesRepository.getTotalNumberNotDeleted());
+        responseDetailsJson.put("iTotalRecords", blogPostCodesService.getTotalNumberNotDeleted());
         responseDetailsJson.put("iTotalDisplayRecords", dbListDisplayRecordsSize);
         responseDetailsJson.put("aaData", jsonArray);
         return responseDetailsJson.toString();
@@ -84,7 +84,7 @@ public class BlogPostCodeController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "code", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CodeMustBeSet"));
         BlogPostCodeEntity existingCode;
         try {
-            existingCode = blogPostCodesRepository.getCodeForPostByCodeId(blogPostCode.getBlogPostId(), blogPostCode.getCodeId());
+            existingCode = blogPostCodesService.getCodeForPostByCodeId(blogPostCode.getBlogPostId(), blogPostCode.getCodeId());
         } catch (EmptyResultDataAccessException e) {
             existingCode = null;
         }
@@ -93,7 +93,7 @@ public class BlogPostCodeController extends JsonController {
         }
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogPostCodesRepository.add(blogPostCode);
+            blogPostCodesService.add(blogPostCode);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -111,7 +111,7 @@ public class BlogPostCodeController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "blogPostId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("BlogPostMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            blogPostCodesRepository.delete(blogPostCode);
+            blogPostCodesService.delete(blogPostCode);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

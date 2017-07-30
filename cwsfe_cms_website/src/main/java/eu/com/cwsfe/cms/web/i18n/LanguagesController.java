@@ -1,8 +1,8 @@
 package eu.com.cwsfe.cms.web.i18n;
 
 import eu.com.cwsfe.cms.db.i18n.CmsLanguagesEntity;
-import eu.com.cwsfe.cms.db.i18n.CmsLanguagesRepository;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
+import eu.com.cwsfe.cms.services.i18n.CmsLanguagesService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -28,11 +28,11 @@ import java.util.ResourceBundle;
 @Controller
 class LanguagesController extends JsonController {
 
-    private final CmsLanguagesRepository cmsLanguagesRepository;
+    private final CmsLanguagesService cmsLanguagesService;
 
     @Autowired
-    public LanguagesController(CmsLanguagesRepository cmsLanguagesRepository) {
-        this.cmsLanguagesRepository = cmsLanguagesRepository;
+    public LanguagesController(CmsLanguagesService cmsLanguagesService) {
+        this.cmsLanguagesService = cmsLanguagesService;
     }
 
     @RequestMapping(value = "/languages", method = RequestMethod.GET)
@@ -61,7 +61,7 @@ class LanguagesController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        final List<CmsLanguagesEntity> cmsLanguages = cmsLanguagesRepository.listAjax(iDisplayStart, iDisplayLength);
+        final List<CmsLanguagesEntity> cmsLanguages = cmsLanguagesService.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < cmsLanguages.size(); i++) {
@@ -73,7 +73,7 @@ class LanguagesController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfLanguages = cmsLanguagesRepository.countForAjax();
+        final int numberOfLanguages = cmsLanguagesService.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfLanguages);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfLanguages);
         responseDetailsJson.put("aaData", jsonArray);
@@ -86,7 +86,7 @@ class LanguagesController extends JsonController {
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
-        final List<CmsLanguagesEntity> languages = cmsLanguagesRepository.listForDropList(term, limit);
+        final List<CmsLanguagesEntity> languages = cmsLanguagesService.listForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (CmsLanguagesEntity lang : languages) {
@@ -114,7 +114,7 @@ class LanguagesController extends JsonController {
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
             try {
-                cmsLanguagesRepository.add(cmsLanguage);
+                cmsLanguagesService.add(cmsLanguage);
                 addJsonSuccess(responseDetailsJson);
             } catch (DuplicateKeyException e) {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageAlreadyExists"));
@@ -134,7 +134,7 @@ class LanguagesController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsLanguagesRepository.delete(cmsLanguage);
+            cmsLanguagesService.delete(cmsLanguage);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

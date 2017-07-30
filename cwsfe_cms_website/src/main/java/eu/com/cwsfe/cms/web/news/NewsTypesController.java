@@ -1,8 +1,8 @@
 package eu.com.cwsfe.cms.web.news;
 
 import eu.com.cwsfe.cms.db.news.CmsNewsTypesEntity;
-import eu.com.cwsfe.cms.db.news.NewsTypesRepository;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
+import eu.com.cwsfe.cms.services.news.NewsTypesService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -28,11 +28,11 @@ import java.util.ResourceBundle;
 @Controller
 class NewsTypesController extends JsonController {
 
-    private final NewsTypesRepository newsTypesRepository;
+    private final NewsTypesService newsTypesService;
 
     @Autowired
-    public NewsTypesController(NewsTypesRepository newsTypesRepository) {
-        this.newsTypesRepository = newsTypesRepository;
+    public NewsTypesController(NewsTypesService newsTypesService) {
+        this.newsTypesService = newsTypesService;
     }
 
     @RequestMapping(value = "/newsTypes", method = RequestMethod.GET)
@@ -61,7 +61,7 @@ class NewsTypesController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        final List<CmsNewsTypesEntity> cmsNewsTypes = newsTypesRepository.listAjax(iDisplayStart, iDisplayLength);
+        final List<CmsNewsTypesEntity> cmsNewsTypes = newsTypesService.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < cmsNewsTypes.size(); i++) {
@@ -72,7 +72,7 @@ class NewsTypesController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfNewsTypes = newsTypesRepository.countForAjax();
+        final int numberOfNewsTypes = newsTypesService.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfNewsTypes);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfNewsTypes);
         responseDetailsJson.put("aaData", jsonArray);
@@ -85,7 +85,7 @@ class NewsTypesController extends JsonController {
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
-        final List<CmsNewsTypesEntity> results = newsTypesRepository.listNewsTypesForDropList(term, limit);
+        final List<CmsNewsTypesEntity> results = newsTypesService.listNewsTypesForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (CmsNewsTypesEntity newsType : results) {
@@ -108,7 +108,7 @@ class NewsTypesController extends JsonController {
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
             try {
-                newsTypesRepository.add(newsType);
+                newsTypesService.add(newsType);
                 addJsonSuccess(responseDetailsJson);
             } catch (DuplicateKeyException e) {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeAlreadyAdded"));
@@ -128,7 +128,7 @@ class NewsTypesController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            newsTypesRepository.delete(cmsNewsType);
+            newsTypesService.delete(cmsNewsType);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);

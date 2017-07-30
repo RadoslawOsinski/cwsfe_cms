@@ -1,20 +1,13 @@
 package eu.com.cwsfe.cms.db.news;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class CmsNewsRepository {
 
-    private final SessionFactory sessionFactory;
-
-    public CmsNewsRepository(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-//    public int getTotalNumberNotDeleted() {
-//        Query query = sessionFactory.getCurrentSession().getNamedQuery(CmsNewsEntity.COUNT_FOR_AJAX_N);
+//    public int getTotalNumberNotDeleted(Session session) {
+//        Query query = session.getNamedQuery(CmsNewsEntity.COUNT_FOR_AJAX_N);
 //        return (Long) query.uniqueResult();
 //
 //        String query = "SELECT count(*) FROM CMS_NEWS WHERE status <> 'D'";
@@ -22,7 +15,7 @@ public class CmsNewsRepository {
 //    }
 
 //    public List<Object[]> searchByAjax(
-//        int iDisplayStart, int iDisplayLength, Integer searchAuthorId, String searchNewsCode
+//        Session session, int iDisplayStart, int iDisplayLength, Integer searchAuthorId, String searchNewsCode
 //    ) {
 //        int numberOfSearchParams = 0;
 //        String additionalQuery = "";
@@ -68,7 +61,7 @@ public class CmsNewsRepository {
 //            });
 //    }
 //
-//    public int searchByAjaxCount(Integer searchAuthorId, String searchNewsCode) {
+//    public int searchByAjaxCount(Session session, Integer searchAuthorId, String searchNewsCode) {
 //        int numberOfSearchParams = 0;
 //        String additionalQuery = "";
 //        List<Object> additionalParams = new ArrayList<>(5);
@@ -99,8 +92,8 @@ public class CmsNewsRepository {
 //        return jdbcTemplate.queryForObject(query, dbParamsForCount, Integer.class);
 //    }
 //
-//    public List<CmsNewsEntity> listAll() {
-//        Query query = sessionFactory.getCurrentSession().getNamedQuery(CmsNewsEntity.LIST_N);
+//    public List<CmsNewsEntity> listAll(Session session) {
+//        Query query = session.getNamedQuery(CmsNewsEntity.LIST_N);
 //        return query.getResultList();
 //
 //        String query =
@@ -112,11 +105,11 @@ public class CmsNewsRepository {
 //        return jdbcTemplate.query(query, (resultSet, rowNum) -> mapCmsNews(resultSet));
 //    }
 
-    public CmsNewsEntity get(Long id) {
-        return sessionFactory.getCurrentSession().get(CmsNewsEntity.class, id);
+    public CmsNewsEntity get(Session session, Long id) {
+        return session.get(CmsNewsEntity.class, id);
     }
 
-//    public CmsNews getByNewsTypeFolderAndNewsCode(Long newsTypeId, Long newsFolderId, String newsCode) {
+//    public CmsNews getByNewsTypeFolderAndNewsCode(Session session, Long newsTypeId, Long newsFolderId, String newsCode) {
 //        String query =
 //            "SELECT " +
 //                " id, author_id, news_type_id, folder_id, creation_date, news_code, status" +
@@ -129,37 +122,36 @@ public class CmsNewsRepository {
 //        return jdbcTemplate.queryForObject(query, dbParams, (resultSet, rowNum) -> mapCmsNews(resultSet));
 //    }
 
-    public Long add(CmsNewsEntity news) {
+    public Long add(Session session, CmsNewsEntity news) {
         news.setStatus("NEW");
-        Session currentSession = sessionFactory.getCurrentSession();
-        currentSession.saveOrUpdate(news);
-        currentSession.flush();
+        session.saveOrUpdate(news);
+        session.flush();
         return news.getId();
     }
 
-    public void update(CmsNewsEntity newsPost) {
-        sessionFactory.getCurrentSession().update(newsPost);
+    public void update(Session session, CmsNewsEntity newsPost) {
+        session.update(newsPost);
     }
 
-    public void updatePostBasicInfo(CmsNewsEntity newsPost) {
-        sessionFactory.getCurrentSession().update(newsPost);
+    public void updatePostBasicInfo(Session session, CmsNewsEntity newsPost) {
+        session.update(newsPost);
     }
 
-    public void delete(CmsNewsEntity newsPost) {
+    public void delete(Session session, CmsNewsEntity newsPost) {
         newsPost.setStatus("DELETED");
-        sessionFactory.getCurrentSession().update(newsPost);
+        session.update(newsPost);
     }
 
-    public void undelete(CmsNewsEntity newsPost) {
+    public void undelete(Session session, CmsNewsEntity newsPost) {
         newsPost.setStatus("HIDDEN");
-        sessionFactory.getCurrentSession().update(newsPost);
+        session.update(newsPost);
     }
 
-    public void publish(CmsNewsEntity newsPost) {
+    public void publish(Session session, CmsNewsEntity newsPost) {
         newsPost.setStatus("PUBLISHED");
-        sessionFactory.getCurrentSession().update(newsPost);    }
+        session.update(newsPost);    }
 
-//    public List<Object[]> listByFolderLangAndNewsWithPaging(Integer newsFolderId, Long languageId, String newsType, int newsPerPage, int offset) {
+//    public List<Object[]> listByFolderLangAndNewsWithPaging(Session session, Integer newsFolderId, Long languageId, String newsType, int newsPerPage, int offset) {
 //        Object[] dbParams = new Object[6];
 //        dbParams[0] = newsFolderId;
 //        dbParams[1] = newsFolderId;
@@ -183,7 +175,7 @@ public class CmsNewsRepository {
 //            (resultSet, i) -> new Object[]{resultSet.getLong(1), resultSet.getLong(2)});
 //    }
 //
-//    public Integer countListByFolderLangAndNewsWithPaging(Integer newsFolderId, Long languageId, String newsType) {
+//    public Integer countListByFolderLangAndNewsWithPaging(Session session, Integer newsFolderId, Long languageId, String newsType) {
 //        Object[] dbParams = new Object[4];
 //        dbParams[0] = newsFolderId;
 //        dbParams[1] = newsFolderId;

@@ -2,6 +2,9 @@ package eu.com.cwsfe.cms.web.user;
 
 import eu.com.cwsfe.cms.db.users.*;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
+import eu.com.cwsfe.cms.services.users.CmsRolesService;
+import eu.com.cwsfe.cms.services.users.CmsUserRolesService;
+import eu.com.cwsfe.cms.services.users.CmsUsersService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -32,15 +35,15 @@ import java.util.stream.Collectors;
 @Controller
 class UsersController extends JsonController {
 
-    private final CmsUsersRepository cmsUsersRepository;
-    private final CmsRolesRepository cmsRolesRepository;
-    private final CmsUserRolesRepository cmsUserRolesRepository;
+    private final CmsUsersService cmsUsersService;
+    private final CmsRolesService cmsRolesService;
+    private final CmsUserRolesService cmsUserRolesService;
 
     @Autowired
-    public UsersController(CmsUsersRepository cmsUsersRepository, CmsRolesRepository cmsRolesRepository, CmsUserRolesRepository cmsUserRolesRepository) {
-        this.cmsUsersRepository = cmsUsersRepository;
-        this.cmsRolesRepository = cmsRolesRepository;
-        this.cmsUserRolesRepository = cmsUserRolesRepository;
+    public UsersController(CmsUsersService cmsUsersService, CmsRolesService cmsRolesService, CmsUserRolesService cmsUserRolesService) {
+        this.cmsUsersService = cmsUsersService;
+        this.cmsRolesService = cmsRolesService;
+        this.cmsUserRolesService = cmsUserRolesService;
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -80,7 +83,7 @@ class UsersController extends JsonController {
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
-        final List<CmsUsersEntity> cmsUsers = cmsUsersRepository.listAjax(iDisplayStart, iDisplayLength);
+        final List<CmsUsersEntity> cmsUsers = cmsUsersService.listAjax(iDisplayStart, iDisplayLength);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < cmsUsers.size(); i++) {
@@ -92,7 +95,7 @@ class UsersController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfUsers = cmsUsersRepository.countForAjax();
+        final int numberOfUsers = cmsUsersService.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfUsers);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfUsers);
         responseDetailsJson.put("aaData", jsonArray);
@@ -105,7 +108,7 @@ class UsersController extends JsonController {
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
-        final List<CmsUsersEntity> cmsUsers = cmsUsersRepository.listUsersForDropList(term, limit);
+        final List<CmsUsersEntity> cmsUsers = cmsUsersService.listUsersForDropList(term, limit);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (CmsUsersEntity cmsUser : cmsUsers) {
@@ -130,10 +133,10 @@ class UsersController extends JsonController {
         if (!result.hasErrors()) {
             cmsUser.setPasswordHash(BCrypt.hashpw(cmsUser.getPasswordHash(), BCrypt.gensalt(13)));
             try {
-                cmsUsersRepository.getByUsername(cmsUser.getUsername());
+                cmsUsersService.getByUsername(cmsUser.getUsername());
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserAlreadyExists"));
             } catch (EmptyResultDataAccessException e) {
-                cmsUsersRepository.add(cmsUser);
+                cmsUsersService.add(cmsUser);
                 addJsonSuccess(responseDetailsJson);
             }
         } else {
@@ -151,7 +154,7 @@ class UsersController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsUsersRepository.delete(cmsUser);
+            cmsUsersService.delete(cmsUser);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -168,7 +171,7 @@ class UsersController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsUsersRepository.lock(cmsUser);
+            cmsUsersService.lock(cmsUser);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -185,7 +188,7 @@ class UsersController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsUsersRepository.unlock(cmsUser);
+            cmsUsersService.unlock(cmsUser);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -197,13 +200,13 @@ class UsersController extends JsonController {
     public String browseUser(ModelMap model, Locale locale, @PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         model.addAttribute("mainJavaScript", setSingleUserAdditionalJS(httpServletRequest.getContextPath()));
         model.addAttribute("breadcrumbs", getSingleUserBreadcrumbs(locale, id));
-        final CmsUsersEntity cmsUser = cmsUsersRepository.get(id);
+        final CmsUsersEntity cmsUser = cmsUsersService.get(id);
         model.addAttribute("cmsUser", cmsUser);
-        cmsUser.setUserRoles(cmsRolesRepository.listUserRoles(cmsUser.getId()));
+        cmsUser.setUserRoles(cmsRolesService.listUserRoles(cmsUser.getId()));
         List<Long> userSelectedRoles = new ArrayList<>(5);
         userSelectedRoles.addAll(cmsUser.getUserRoles().stream().map(CmsRolesEntity::getId).collect(Collectors.toList()));
         model.addAttribute("userSelectedRoles", userSelectedRoles);
-        model.addAttribute("cmsRoles", cmsRolesRepository.list());
+        model.addAttribute("cmsRoles", cmsRolesService.list());
         return "cms/users/SingleUser";
     }
 
@@ -215,13 +218,13 @@ class UsersController extends JsonController {
     ) {
         String[] userRolesStrings = webRequest.getParameterValues("cmsUserRoles");
         //todo add transactions!
-        cmsUserRolesRepository.deleteForUser(cmsUser.getId());
+        cmsUserRolesService.deleteForUser(cmsUser.getId());
         if (userRolesStrings != null) {
             for (String roleIdString : userRolesStrings) {
                 CmsUserRolesEntity cmsUserRole = new CmsUserRolesEntity();
                 cmsUserRole.setCmsUserId(cmsUser.getId());
                 cmsUserRole.setRoleId(Long.parseLong(roleIdString));
-                cmsUserRolesRepository.add(cmsUserRole);
+                cmsUserRolesService.add(cmsUserRole);
             }
         }
 //        /////////// end transaction
@@ -242,7 +245,7 @@ class UsersController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "status", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("StatusMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            cmsUsersRepository.updatePostBasicInfo(cmsUser);
+            cmsUsersService.updatePostBasicInfo(cmsUser);
             addJsonSuccess(responseDetailsJson);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
