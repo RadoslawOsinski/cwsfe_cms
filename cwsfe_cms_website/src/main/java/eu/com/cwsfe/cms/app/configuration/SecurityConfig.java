@@ -1,7 +1,9 @@
-package eu.com.cwsfe.cms.web.login;
+package eu.com.cwsfe.cms.app.configuration;
 
+import eu.com.cwsfe.cms.web.login.CmsAuthProvider;
+import eu.com.cwsfe.cms.web.login.CmsAuthenticationProcessingFilter;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -20,8 +22,8 @@ import java.util.List;
 /**
  * Created by Radoslaw Osinski.
  */
-@Configuration
 @EnableWebSecurity
+@Import(BeforeSecurityConfiguration.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean

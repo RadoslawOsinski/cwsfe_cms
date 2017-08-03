@@ -70,7 +70,7 @@ public class DataSourceConfiguration {
     }
 
     @Profile("tomcat-jndi")
-    @Bean(name = "cwsfeCmsDataSource", value = "cwsfeCmsDataSource")
+    @Bean(name = "cwsfeCmsDataSource")
     public DataSource getTomcatJndiDataSource() {
         LOGGER.info("Attaching to tomcat jndi data source");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();

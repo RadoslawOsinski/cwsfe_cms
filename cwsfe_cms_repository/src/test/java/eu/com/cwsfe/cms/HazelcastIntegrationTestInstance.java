@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class HazelcastIntegrationTestInstance {
 
-    @Bean("hazelcastInstance")
+    @Bean(name = "hazelcastInstance")
     public HazelcastInstance getHazelcastInstance() {
         Config config = new Config();
         config.setInstanceName("cwsfeCmsHazelcastInstance1");

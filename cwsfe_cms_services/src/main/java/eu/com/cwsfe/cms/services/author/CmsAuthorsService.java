@@ -5,6 +5,7 @@ import eu.com.cwsfe.cms.db.author.CmsAuthorsRepository;
 import org.hibernate.SessionFactory;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,27 +25,33 @@ public class CmsAuthorsService {
         this.sessionFactory = sessionFactory;
     }
 
+    @Transactional
     public CmsAuthorDTO get(long authorId) {
         CmsAuthorsEntity cmsAuthorsEntity = cmsAuthorsRepository.get(sessionFactory.getCurrentSession(), authorId);
         return modelMapper.map(cmsAuthorsEntity, CmsAuthorDTO.class);
     }
 
+    @Transactional
     public List<CmsAuthorsEntity> listAjax(int iDisplayStart, int iDisplayLength) {
         return cmsAuthorsRepository.listAjax(sessionFactory.getCurrentSession(), iDisplayStart, iDisplayLength);
     }
 
+    @Transactional
     public int countForAjax() {
         return cmsAuthorsRepository.countForAjax(sessionFactory.getCurrentSession());
     }
 
+    @Transactional
     public List<CmsAuthorsEntity> listAuthorsForDropList(String term, Integer limit) {
         return cmsAuthorsRepository.listAuthorsForDropList(sessionFactory.getCurrentSession(), term, limit);
     }
 
-    public void add(CmsAuthorsEntity cmsAuthor) {
-        cmsAuthorsRepository.add(sessionFactory.getCurrentSession(), cmsAuthor);
+    @Transactional
+    public Long add(CmsAuthorsEntity cmsAuthor) {
+        return cmsAuthorsRepository.add(sessionFactory.getCurrentSession(), cmsAuthor);
     }
 
+    @Transactional
     public void delete(CmsAuthorsEntity cmsAuthor) {
         cmsAuthorsRepository.delete(sessionFactory.getCurrentSession(), cmsAuthor);
     }

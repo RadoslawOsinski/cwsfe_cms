@@ -22,11 +22,6 @@
         </init-param>
     </filter>
 
-    <filter>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    </filter>
-
     <locale-encoding-mapping-list>
         <locale-encoding-mapping>
             <locale>en</locale>
@@ -42,42 +37,5 @@
         <filter-name>cwsfe-encoding-filter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
-    <filter-mapping>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <context-param>
-        <param-name>contextClass</param-name>
-        <param-value>
-            org.springframework.web.context.support.AnnotationConfigWebApplicationContext
-        </param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>eu.com.cwsfe.cms.web.configuration.CwsfeCmsApplicationConfig</param-value>
-    </context-param>
-
-    <servlet>
-        <servlet-name>cwsfe-cms-mvc-dispatcher</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>
-            <param-name>contextClass</param-name>
-            <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
-        </init-param>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value>eu.com.cwsfe.cms.web.configuration.CwsfeCmsWebContext</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-        <async-supported>true</async-supported>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>cwsfe-cms-mvc-dispatcher</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
 
 </web-app>

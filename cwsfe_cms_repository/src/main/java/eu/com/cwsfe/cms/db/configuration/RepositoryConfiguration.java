@@ -24,7 +24,6 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
-@Import({DataSourceConfiguration.class, HazelcastIntegrationInstance.class})
 public class RepositoryConfiguration {
 
     private DataSource cwsfeCmsDataSource;
@@ -96,7 +95,7 @@ public class RepositoryConfiguration {
         return localSessionFactoryBean;
     }
 
-    @Bean("transactionManager")
+    @Bean(name = "transactionManager")
     @DependsOn("sessionFactory")
     public PlatformTransactionManager getTransactionManager(SessionFactory sessionFactory) {
         final HibernateTransactionManager hibernateTransactionManager = new HibernateTransactionManager();

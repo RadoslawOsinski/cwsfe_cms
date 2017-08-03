@@ -21,10 +21,10 @@ public class CmsUserAllowedNetAddressRepository {
         return query.getResultList();
     }
 
-    public int countAddressesForUser(Session session, long userId) {
+    public Long countAddressesForUser(Session session, long userId) {
         Query query = session.getNamedQuery(CmsUserAllowedNetAddressEntity.COUNT_ADDRESSES_FOR_USER);
         query.setParameter("userId", userId);
-        return (int) query.getSingleResult();
+        return (Long) query.getSingleResult();
     }
 
     public List<CmsUserAllowedNetAddressEntity> listForUser(Session session, long userId) {

@@ -15,7 +15,7 @@ public class CmsUsersRepository {
     public boolean isActiveUsernameInDatabase(Session session, String username) {
         Query query = session.getNamedQuery(CmsUsersEntity.IS_USER_ACTIVE);
         query.setParameter("userName", username);
-        Integer numberOfUsers = (Integer) query.getSingleResult();
+        Long numberOfUsers = (Long) query.getSingleResult();
         return numberOfUsers == 1;
     }
 

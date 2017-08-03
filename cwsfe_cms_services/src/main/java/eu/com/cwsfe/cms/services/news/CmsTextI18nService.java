@@ -4,6 +4,7 @@ import eu.com.cwsfe.cms.db.news.CmsTextI18NEntity;
 import eu.com.cwsfe.cms.db.news.CmsTextI18nRepository;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,18 +22,22 @@ public class CmsTextI18nService {
         this.sessionFactory = sessionFactory;
     }
 
+    @Transactional
     public List<CmsTextI18NEntity> listAjax(int iDisplayStart, int iDisplayLength) {
         return cmsTextI18nRepository.listAjax(sessionFactory.getCurrentSession(), iDisplayStart, iDisplayLength);
     }
 
+    @Transactional
     public int countForAjax() {
         return cmsTextI18nRepository.countForAjax(sessionFactory.getCurrentSession());
     }
 
+    @Transactional
     public void add(CmsTextI18NEntity cmsTextI18n) {
         cmsTextI18nRepository.add(sessionFactory.getCurrentSession(), cmsTextI18n);
     }
 
+    @Transactional
     public void delete(CmsTextI18NEntity cmsTextI18n) {
         cmsTextI18nRepository.delete(sessionFactory.getCurrentSession(), cmsTextI18n);
     }

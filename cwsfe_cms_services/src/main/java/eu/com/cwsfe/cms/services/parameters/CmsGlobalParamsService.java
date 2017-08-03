@@ -4,6 +4,7 @@ import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsEntity;
 import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsRepository;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by Radosław Osiński
@@ -19,10 +20,12 @@ public class CmsGlobalParamsService {
         this.cmsGlobalParamsRepository = cmsGlobalParamsRepository;
     }
 
+    @Transactional
     public CmsGlobalParamsEntity getByCode(String code) {
         return cmsGlobalParamsRepository.getByCode(sessionFactory.getCurrentSession(), code);
     }
 
+    @Transactional
     public void update(CmsGlobalParamsEntity param) {
         cmsGlobalParamsRepository.update(sessionFactory.getCurrentSession(), param);
     }

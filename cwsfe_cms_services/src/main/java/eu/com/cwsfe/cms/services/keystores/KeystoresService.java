@@ -4,6 +4,7 @@ import eu.com.cwsfe.cms.db.keystores.KeystoresEntity;
 import eu.com.cwsfe.cms.db.keystores.KeystoresRepository;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by Radosław Osiński
@@ -19,6 +20,7 @@ public class KeystoresService {
         this.sessionFactory = sessionFactory;
     }
 
+    @Transactional
     public KeystoresEntity getByName(String frontendApplicationKeystore) {
         return keystoresRepository.getByName(sessionFactory.getCurrentSession(), frontendApplicationKeystore);
     }

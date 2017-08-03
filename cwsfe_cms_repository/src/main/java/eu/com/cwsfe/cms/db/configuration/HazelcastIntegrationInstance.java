@@ -20,7 +20,7 @@ public class HazelcastIntegrationInstance {
      *
      * @return the new hazelcast instance
      */
-    @Bean("hazelcastInstance")
+    @Bean(name = "hazelcastInstance")
     public HazelcastInstance getHazelcastInstance() {
         LOGGER.info("Registering hazelcast instance in spring context as bean.");
         return Hazelcast.newHazelcastInstance();
