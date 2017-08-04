@@ -15,7 +15,6 @@ import javax.persistence.*;
  */
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@NamedQuery(name = CmsRolesEntity.LIST_USER_ROLES, query = "SELECT r FROM CmsRolesEntity r WHERE r.cmsUser.id = :userId")
 @NamedQuery(name = CmsRolesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(r) FROM CmsRolesEntity r")
 @NamedQuery(name = CmsRolesEntity.LIST, query = "SELECT r FROM CmsRolesEntity r order by roleName")
 @NamedQuery(name = CmsRolesEntity.LIST_FOR_DROP_LIST, query = "SELECT r FROM CmsRolesEntity r where lower(roleName) like lower(:roleName) order by roleName")
@@ -23,7 +22,6 @@ import javax.persistence.*;
 @Table(name = "cms_roles")
 public class CmsRolesEntity {
 
-    public static final String LIST_USER_ROLES = "CmsRolesEntity.listUserRoles";
     public static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "CmsRolesEntity.countForAjax";
     public static final String LIST = "CmsRolesEntity.list";
     public static final String LIST_FOR_DROP_LIST = "CmsRolesEntity.listForDropList";
@@ -32,7 +30,6 @@ public class CmsRolesEntity {
     private long id;
     private String roleCode;
     private String roleName;
-    private CmsUsersEntity cmsUser;
 
     @Id
     @Column(name = "id", nullable = false, precision = 0)
@@ -64,16 +61,6 @@ public class CmsRolesEntity {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cms_user_id", nullable = false)
-    public CmsUsersEntity getCmsUser() {
-        return cmsUser;
-    }
-
-    public void setCmsUser(CmsUsersEntity cmsUser) {
-        this.cmsUser = cmsUser;
     }
 
     @Override

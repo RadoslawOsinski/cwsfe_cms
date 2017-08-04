@@ -5,13 +5,14 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class NewsTypesRepository {
 
-    public int countForAjax(Session session) {
+    public Long countForAjax(Session session) {
         Query query = session.getNamedQuery(CmsNewsTypesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
-        return (int) query.getSingleResult();
+        return (Long) query.getSingleResult();
     }
 
     public List<CmsNewsTypesEntity> list(Session session) {
@@ -37,10 +38,10 @@ public class NewsTypesRepository {
         return session.get(CmsNewsTypesEntity.class, id);
     }
 
-    public CmsNewsTypesEntity getByType(Session session, String type) {
+    public Optional<CmsNewsTypesEntity> getByType(Session session, String type) {
         Query query = session.getNamedQuery(CmsNewsTypesEntity.GET_BY_TYPE);
         query.setParameter("type", type);
-        return (CmsNewsTypesEntity) query.getSingleResult();
+        return (Optional<CmsNewsTypesEntity>) query.uniqueResultOptional();
     }
 
     public Long add(Session session, CmsNewsTypesEntity newsType) {
@@ -55,13 +56,15 @@ public class NewsTypesRepository {
     }
 
     public void delete(Session session, CmsNewsTypesEntity newsType) {
-        newsType.setStatus("DELETED");
-        session.update(newsType);
+        CmsNewsTypesEntity cmsNewsTypesEntity = session.get(CmsNewsTypesEntity.class, newsType.getId());
+        cmsNewsTypesEntity.setStatus("DELETED");
+        session.update(cmsNewsTypesEntity);
     }
 
     public void undelete(Session session, CmsNewsTypesEntity newsType) {
-        newsType.setStatus("NEW");
-        session.update(newsType);
+        CmsNewsTypesEntity cmsNewsTypesEntity = session.get(CmsNewsTypesEntity.class, newsType.getId());
+        cmsNewsTypesEntity.setStatus("NEW");
+        session.update(cmsNewsTypesEntity);
     }
 
 }

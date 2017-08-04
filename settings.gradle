@@ -2,4 +2,4 @@ include "cwsfe_cms_repository"
 include "cwsfe_cms_services"
 include "cwsfe_cms_rest"
 include "cwsfe_cms_website"
-//include "cwsfe_cms_website_integration_tests"  //todo to uncomment!
+include "cwsfe_cms_website_integration_tests"

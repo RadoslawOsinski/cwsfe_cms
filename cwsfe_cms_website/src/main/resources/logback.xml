@@ -18,12 +18,24 @@
         </rollingPolicy>
     </appender>
 
+    <appender name="CWSFE_CMS_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
 
-    <logger name="eu.com.cwsfe" level="debug"/>
-    <logger name="org.springframework" level="info"/>
+    <logger name="com.hazelcast" level="INFO"/>
 
-    <root level="warn">
+    <!--hibernate debugging-->
+    <!--<logger name="org.hibernate.SQL" level="DEBUG"/>-->
+    <!--<logger name="org.hibernate.type" level="TRACE"/>-->
+
+    <logger name="eu.com.cwsfe" level="INFO"/>
+    <logger name="org.springframework" level="INFO"/>
+
+    <root level="INFO">
         <appender-ref ref="CWSFE_CMS_LOG"/>
+        <appender-ref ref="CWSFE_CMS_CONSOLE"/>
     </root>
 
 </configuration>

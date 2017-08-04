@@ -1,50 +1,46 @@
 package integration.page.login;
 
-import integration.page.layout.MainPage;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.By;
 
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 import static org.junit.Assert.assertTrue;
-
 /**
  * Created by Radosław Osiński
  */
-@Ignore("Automate this test with profile usage on jenkins+gradle+sonarqube")
+//@Ignore("Automate this test with profile usage on jenkins+gradle+sonarqube")
 public class LoginTest {
 
-    private static WebDriver driver;
+    public static final String LOGIN_BUTTON_XPATH = "//*[@id=\"emailLogin\"]/button";
 
     @Test
     public void shouldLogIntoApplication() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
+        //given
+        open("http://localhost:8081/CWSFE_CMS");
+        $(By.name("userName")).sendKeys("CWSFE_CMS_ADMIN");
+        $(By.id("password")).sendKeys("admin");
 
-        MainPage mainPage = loginPage.correctLogin();
+        //when
+        $(By.xpath(LOGIN_BUTTON_XPATH)).click();
 
-        assertTrue(mainPage.isOpened());
+        //then
+//        assertEquals("http://localhost:8080/CWSFE_CMS/Main");
+        assertTrue($(By.className("breadcrumbs")).isDisplayed());
     }
 
     @Test
     public void shouldNotLogIntoApplication() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
+        open("http://localhost:8081/CWSFE_CMS");
+        $(By.name("userName")).sendKeys("admin");
+        $(By.id("password")).sendKeys("adminXXXXX");
 
-        LoginPage failedLoginPage = loginPage.incorrectLogin();
+        //when
+        $(By.xpath(LOGIN_BUTTON_XPATH)).click();
 
-        assertTrue(failedLoginPage.isFailedLoginOpened());
+        //then
+//        assertEquals("http://localhost:8080/CWSFE_CMS/loginFailed");
+//        assertTrue(driver.findElement(By.cssSelector("some error message")).isDisplayed());
     }
 
-    @BeforeClass
-    public static void setUp() {
-        driver = new FirefoxDriver();
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        driver.close();
-    }
 }

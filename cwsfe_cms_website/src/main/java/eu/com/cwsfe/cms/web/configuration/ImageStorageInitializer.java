@@ -21,9 +21,6 @@ public class ImageStorageInitializer {
 
     @PostConstruct
     public void initializeImageStorage() {
-        if (!imageStorageService.isBlogImagesStorageInitialized()) {
-            imageStorageService.initializeBlogImagesStorage();
-        }
         if (!imageStorageService.isNewsImagesStorageInitialized()) {
             imageStorageService.initializeNewsImagesStorage();
         }

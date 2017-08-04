@@ -11,13 +11,14 @@ import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
 
+
 /**
  * Created by Radoslaw Osinski.
  */
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQuery(name = CmsAuthorsEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(a) FROM CmsAuthorsEntity a WHERE status <> 'DELETED'")
-@NamedQuery(name = CmsAuthorsEntity.LIST, query = "SELECT a FROM CmsAuthorsEntity a WHERE status = 'NEW' ORDER BY last_name, first_name")
+@NamedQuery(name = CmsAuthorsEntity.LIST, query = "SELECT a FROM CmsAuthorsEntity a WHERE status = :status ORDER BY last_name, first_name")
 @Table(name = "cms_authors")
 public class CmsAuthorsEntity {
 
@@ -73,7 +74,8 @@ public class CmsAuthorsEntity {
     }
 
     @Basic
-    @Column(name = "status", nullable = false, length = -1)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     public NewDeletedStatus getStatus() {
         return status;
     }

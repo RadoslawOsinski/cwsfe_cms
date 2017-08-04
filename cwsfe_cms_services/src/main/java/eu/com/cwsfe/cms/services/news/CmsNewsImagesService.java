@@ -3,10 +3,13 @@ package eu.com.cwsfe.cms.services.news;
 import eu.com.cwsfe.cms.db.news.CmsNewsImagesEntity;
 import eu.com.cwsfe.cms.db.news.CmsNewsImagesRepository;
 import org.hibernate.SessionFactory;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by Radosław Osiński
@@ -16,10 +19,12 @@ public class CmsNewsImagesService {
 
     private final CmsNewsImagesRepository cmsNewsImagesRepository;
     private final SessionFactory sessionFactory;
+    private final ModelMapper modelMapper;
 
-    public CmsNewsImagesService(CmsNewsImagesRepository cmsNewsImagesRepository, SessionFactory sessionFactory) {
+    public CmsNewsImagesService(CmsNewsImagesRepository cmsNewsImagesRepository, SessionFactory sessionFactory, ModelMapper modelMapper) {
         this.cmsNewsImagesRepository = cmsNewsImagesRepository;
         this.sessionFactory = sessionFactory;
+        this.modelMapper = modelMapper;
     }
 
     @Transactional
@@ -28,12 +33,12 @@ public class CmsNewsImagesService {
     }
 
     @Transactional
-    public Integer searchByAjaxCountWithoutContent(Long newsId) {
+    public Long searchByAjaxCountWithoutContent(Long newsId) {
         return cmsNewsImagesRepository.searchByAjaxCountWithoutContent(sessionFactory.getCurrentSession(), newsId);
     }
 
     @Transactional
-    public Integer getTotalNumberNotDeleted() {
+    public Long getTotalNumberNotDeleted() {
         return cmsNewsImagesRepository.getTotalNumberNotDeleted(sessionFactory.getCurrentSession());
     }
 
@@ -50,5 +55,15 @@ public class CmsNewsImagesService {
     @Transactional
     public void delete(CmsNewsImagesEntity cmsNewsImage) {
         cmsNewsImagesRepository.delete(sessionFactory.getCurrentSession(), cmsNewsImage);
+    }
+
+    public CmsNewsImageDTO getThumbnailForNews(long newsId) {
+        Optional<CmsNewsImagesEntity> thumbnailForNews = cmsNewsImagesRepository.getThumbnailForNews(sessionFactory.getCurrentSession(), newsId);
+        return modelMapper.map(thumbnailForNews.get(), CmsNewsImageDTO.class);
+    }
+
+    public List<CmsNewsImageDTO> listImagesForNewsWithoutThumbnails(long newsId) {
+        List<CmsNewsImagesEntity> cmsNewsImagesEntities = cmsNewsImagesRepository.listImagesForNewsWithoutThumbnails(sessionFactory.getCurrentSession(), newsId);
+        return cmsNewsImagesEntities.stream().map(cmsNewsImagesEntity -> modelMapper.map(cmsNewsImagesEntity, CmsNewsImageDTO.class)).collect(Collectors.toList());
     }
 }

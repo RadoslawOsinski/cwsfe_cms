@@ -16,7 +16,6 @@
 //import org.springframework.test.web.servlet.ResultActions;
 //import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 //
-//import java.sql.Timestamp;
 //import java.util.ArrayList;
 //import java.util.List;
 //
@@ -68,7 +67,7 @@
 //        BlogPostComment blogPostComment = new BlogPostComment();
 //        blogPostComment.setId(id);
 //        blogPostComment.setStatus(BlogPostCommentStatus.NEW);
-//        blogPostComment.setCreated(new Timestamp(1));
+//        blogPostComment.setCreated(new ZonedDateTime(1));
 //        blogPostComment.setComment(comment);
 //        blogPostComment.setUserName(userName);
 //        blogPostComment.setEmail(email);

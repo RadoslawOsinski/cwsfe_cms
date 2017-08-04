@@ -5,13 +5,14 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CmsTextI18nRepository {
 
-    public int countForAjax(Session session) {
+    public Long countForAjax(Session session) {
         Query query = session.getNamedQuery(CmsTextI18NEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
-        return (int) query.getSingleResult();
+        return (Long) query.getSingleResult();
     }
 
     public List<CmsTextI18NEntity> list(Session session) {
@@ -30,12 +31,12 @@ public class CmsTextI18nRepository {
         return session.get(CmsTextI18NEntity.class, id);
     }
 
-    public String findTranslation(Session session, String language2LetterCode, String category, String key) {
+    public Optional<String> findTranslation(Session session, String language2LetterCode, String category, String key) {
         Query query = session.getNamedQuery(CmsTextI18NEntity.FIND_TRANSLATION);
         query.setParameter("language2LetterCode", language2LetterCode);
         query.setParameter("category", category);
         query.setParameter("key", key);
-        return (String) query.getSingleResult();
+        return query.uniqueResultOptional();
     }
 
     public Long add(Session session, CmsTextI18NEntity cmsTextI18n) {
@@ -52,4 +53,11 @@ public class CmsTextI18nRepository {
         session.delete(cmsTextI18n);
     }
 
+    public Optional<CmsTextI18NEntity> get(Session session, long langId, long i18nCategory, String i18NKey) {
+            Query query = session.getNamedQuery(CmsTextI18NEntity.GET_EXISTING);
+            query.setParameter("langId", langId);
+            query.setParameter("i18nCategory", i18nCategory);
+            query.setParameter("i18NKey", i18NKey);
+            return (Optional<CmsTextI18NEntity>) query.uniqueResultOptional();
+    }
 }

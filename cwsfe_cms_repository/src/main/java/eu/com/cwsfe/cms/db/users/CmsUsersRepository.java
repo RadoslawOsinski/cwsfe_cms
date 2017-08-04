@@ -5,6 +5,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Radoslaw Osinski.
@@ -19,15 +20,15 @@ public class CmsUsersRepository {
         return numberOfUsers == 1;
     }
 
-    public CmsUsersEntity getByUsername(Session session, String username) {
+    public Optional<CmsUsersEntity> getByUsername(Session session, String username) {
         Query query = session.getNamedQuery(CmsUsersEntity.GET_BY_USER_NAME);
         query.setParameter("userName", username);
-        return (CmsUsersEntity) query.getSingleResult();
+        return (Optional<CmsUsersEntity>) query.uniqueResultOptional();
     }
 
-    public int countForAjax(Session session) {
+    public Long countForAjax(Session session) {
         Query query = session.getNamedQuery(CmsUsersEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
-        return (int) query.getSingleResult();
+        return (Long) query.getSingleResult();
     }
 
     public List<CmsUsersEntity> list(Session session) {
@@ -65,7 +66,10 @@ public class CmsUsersRepository {
     }
 
     public void updatePostBasicInfo(Session session, CmsUsersEntity cmsUser) {
-        session.update(cmsUser);
+        CmsUsersEntity cmsUsersEntity = session.get(CmsUsersEntity.class, cmsUser.getId());
+        cmsUsersEntity.setUserName(cmsUser.getUserName());
+        cmsUsersEntity.setStatus(cmsUser.getStatus());
+        session.update(cmsUsersEntity);
     }
 
     public void updateWithoutPassword(Session session, CmsUsersEntity cmsUser) {
@@ -73,23 +77,27 @@ public class CmsUsersRepository {
     }
 
     public void delete(Session session, CmsUsersEntity cmsUser) {
-        cmsUser.setStatus("DELETED");
-        session.update(cmsUser);
+        CmsUsersEntity cmsUsersEntity = session.get(CmsUsersEntity.class, cmsUser.getId());
+        cmsUsersEntity.setStatus("DELETED");
+        session.update(cmsUsersEntity);
     }
 
     public void undelete(Session session, CmsUsersEntity cmsUser) {
-        cmsUser.setStatus("NEW");
-        session.update(cmsUser);
+        CmsUsersEntity cmsUsersEntity = session.get(CmsUsersEntity.class, cmsUser.getId());
+        cmsUsersEntity.setStatus("NEW");
+        session.update(cmsUsersEntity);
     }
 
     public void lock(Session session, CmsUsersEntity cmsUser) {
-        cmsUser.setStatus("LOCK");
-        session.update(cmsUser);
+        CmsUsersEntity cmsUsersEntity = session.get(CmsUsersEntity.class, cmsUser.getId());
+        cmsUsersEntity.setStatus("LOCK");
+        session.update(cmsUsersEntity);
     }
 
     public void unlock(Session session, CmsUsersEntity cmsUser) {
-        cmsUser.setStatus("NEW");
-        session.update(cmsUser);
+        CmsUsersEntity cmsUsersEntity = session.get(CmsUsersEntity.class, cmsUser.getId());
+        cmsUsersEntity.setStatus("NEW");
+        session.update(cmsUsersEntity);
     }
 
 }

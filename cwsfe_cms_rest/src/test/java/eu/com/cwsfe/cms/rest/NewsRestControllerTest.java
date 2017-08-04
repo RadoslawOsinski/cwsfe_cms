@@ -1,7 +1,7 @@
 //package eu.com.cwsfe.cms.rest;
 //
 //import eu.com.cwsfe.cms.db.configuration.RestTestConfiguration;
-//import eu.com.cwsfe.cms.db.news.CmsNewsI18nContentStatus;
+//import eu.com.cwsfe.cms.db.common.PublishedHiddenStatus;
 //import eu.com.cwsfe.cms.db.news.CmsNewsStatus;
 //import org.junit.Before;
 //import org.junit.Ignore;
@@ -197,7 +197,7 @@
 //        cmsNewsI18nContent.setLanguageId(languageId);
 //        cmsNewsI18nContent.setNewsShortcut(shortcut);
 //        cmsNewsI18nContent.setNewsTitle(title);
-//        cmsNewsI18nContent.setStatus(CmsNewsI18nContentStatus.NEW);
+//        cmsNewsI18nContent.setStatus(PublishedHiddenStatus.NEW);
 //        when(cmsLanguagesDAO.getByCode(anyString())).thenReturn(language);
 //        when(cmsNewsI18nContentsDAO.getByLanguageForNews(anyLong(), anyLong())).thenReturn(cmsNewsI18nContent);
 //
@@ -232,7 +232,7 @@
 //        cmsNewsI18nContent.setLanguageId(languageId);
 //        cmsNewsI18nContent.setNewsShortcut(shortcut);
 //        cmsNewsI18nContent.setNewsTitle(title);
-//        cmsNewsI18nContent.setStatus(CmsNewsI18nContentStatus.NEW);
+//        cmsNewsI18nContent.setStatus(PublishedHiddenStatus.NEW);
 //        when(cmsNewsI18nContentsDAO.get(anyLong())).thenReturn(cmsNewsI18nContent);
 //
 //        ResultActions resultActions = mockMvc.perform(get("/rest/singleNewsI18nContent")
@@ -282,7 +282,7 @@
 //        cmsNewsI18nContent.setLanguageId(languageId);
 //        cmsNewsI18nContent.setNewsShortcut(shortcut);
 //        cmsNewsI18nContent.setNewsTitle(title);
-//        cmsNewsI18nContent.setStatus(CmsNewsI18nContentStatus.PUBLISHED);
+//        cmsNewsI18nContent.setStatus(PublishedHiddenStatus.PUBLISHED);
 //        when(cmsFoldersDAO.getByFolderName(anyString())).thenReturn(cmsFolder);
 //        when(newsTypesDAO.getByType(anyString())).thenReturn(newsType);
 //        when(cmsNewsDAO.getByNewsTypeFolderAndNewsCode(anyLong(), anyLong(), anyString())).thenReturn(cmsNews);

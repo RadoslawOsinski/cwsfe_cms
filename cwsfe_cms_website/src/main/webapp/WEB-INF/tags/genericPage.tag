@@ -115,11 +115,6 @@
         <spring:url value="/folders" var="foldersUrl" htmlEscape="true"/>
         <spring:url value="/news" var="newsUrl" htmlEscape="true"/>
         <spring:url value="/newsTypes" var="newsTypesUrl" htmlEscape="true"/>
-        <spring:url value="/blogPosts" var="blogUrl" htmlEscape="true"/>
-        <spring:url value="/blogKeywords" var="blogKeywordsUrl" htmlEscape="true"/>
-        <spring:url value="/newsletterMailGroups" var="newsletterMailGroupsManagementUrl" htmlEscape="true"/>
-        <spring:url value="/newsletterTemplates" var="newsletterTemplatesManagementUrl" htmlEscape="true"/>
-        <spring:url value="/newsletterMails" var="newsletterMailsManagementUrl" htmlEscape="true"/>
         <spring:url value="/languages" var="languagesUrl" htmlEscape="true"/>
         <spring:url value="/cmsTextI18n" var="cmsTextI18nUrl" htmlEscape="true"/>
         <spring:url value="/cmsTextI18nCategories" var="cmsTextI18nCategoriesUrl" htmlEscape="true"/>
@@ -144,41 +139,6 @@
                         test="${pageContext.request.requestURI.contains('cms/folders/Folders')}"> class="active"</c:if>>
                         <a id="menuFoldersLink" href="${foldersUrl}" tabindex="-1"><spring:message code="Folders"/></a>
                     </li>
-                </ul>
-            </li>
-            <li class="withSubMenu"><a id="menuBlogSubMenu" href="#" tabindex="-1"><spring:message code="Blog"/></a>
-                <ul class="subMenu">
-                    <li role="menuitem" <c:if
-                        test="${pageContext.request.requestURI.contains('cms/blog/')}"> class="active"</c:if>>
-                        <a id="menuBlogPostManagementLink" href="${blogUrl}" tabindex="-1"><spring:message
-                            code="BlogPostManagement"/></a>
-                    </li>
-                    <li role="menuitem" <c:if
-                        test="${pageContext.request.requestURI.contains('cms/blogkeywords/BlogKeywords')}"> class="active"</c:if>>
-                        <a id="menuKeywordsLink" href="${blogKeywordsUrl}" tabindex="-1"><spring:message
-                            code="Keywords"/></a>
-                    </li>
-                </ul>
-            </li>
-            <li class="withSubMenu"><a id="menuNewsletterSubMenu" href="#" tabindex="-1"><spring:message
-                code="Newsletter"/></a>
-                <ul class="subMenu">
-                    <li role="menuitem" <c:if
-                        test="${pageContext.request.requestURI.contains('cms/newsletterMailGroups/NewsletterMailGroups')}"> class="active"</c:if>>
-                        <a id="menuNewsletterMailGroupsManagementLink" href="${newsletterMailGroupsManagementUrl}"
-                           tabindex="-1"><spring:message
-                            code="NewsletterMailGroupsManagement"/></a>
-                    </li>
-                    <li role="menuitem" <c:if
-                        test="${pageContext.request.requestURI.contains('cms/newsletterTemplates/NewsletterTemplates')}"> class="active"</c:if>>
-                        <a id="menuNewsletterTemplatesManagementLink" href="${newsletterTemplatesManagementUrl}"
-                           tabindex="-1"><spring:message
-                            code="NewsletterTemplatesManagement"/></a></li>
-                    <li role="menuitem" <c:if
-                        test="${pageContext.request.requestURI.contains('cms/newsletterMails/NewsletterMails')}"> class="active"</c:if>>
-                        <a id="menuNewsletterMailsManagementLink" href="${newsletterMailsManagementUrl}"
-                           tabindex="-1"><spring:message
-                            code="NewsletterMailsManagement"/></a></li>
                 </ul>
             </li>
             <li role="menuitem" <c:if

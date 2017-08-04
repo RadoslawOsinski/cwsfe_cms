@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.web.mail;
 
+import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsEntity;
 import eu.com.cwsfe.cms.services.parameters.CmsGlobalParamsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.Optional;
 
 /**
  * @author Radoslaw Osinski
@@ -57,18 +59,23 @@ public class MailRestController {
 
     private void sendEmail(String replayToEmail, String emailText) {
         LOGGER.info("Sending email from {} with text: {}", replayToEmail, emailText);
-        MimeMessage mimeMessage = cmsMailSender.createMimeMessage();
-        MimeMessageHelper helper;
-        try {
-            helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
-            helper.setTo(cmsGlobalParamsService.getByCode("MAIL_USER_NAME").getValue());
-            mimeMessage.setContent(emailText, "text/html");
-            helper.setSubject("[CMS] Contact mail from " + replayToEmail);
-            helper.setReplyTo(replayToEmail);
-        } catch (MessagingException e) {
-            LOGGER.error("Problem with sending message", e);
+        Optional<CmsGlobalParamsEntity> mailUserName = cmsGlobalParamsService.getByCode("MAIL_USER_NAME");
+        if (!mailUserName.isPresent()) {
+            LOGGER.error("Missing configuration MAIL_USER_NAME");
+        } else {
+            MimeMessage mimeMessage = cmsMailSender.createMimeMessage();
+            MimeMessageHelper helper;
+            try {
+                helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
+                helper.setTo(((Optional<CmsGlobalParamsEntity>) mailUserName).get().getValue());
+                mimeMessage.setContent(emailText, "text/html");
+                helper.setSubject("[CMS] Contact mail from " + replayToEmail);
+                helper.setReplyTo(replayToEmail);
+            } catch (MessagingException e) {
+                LOGGER.error("Problem with sending message", e);
+            }
+            cmsMailSender.send(mimeMessage);
         }
-        cmsMailSender.send(mimeMessage);
     }
 
 }

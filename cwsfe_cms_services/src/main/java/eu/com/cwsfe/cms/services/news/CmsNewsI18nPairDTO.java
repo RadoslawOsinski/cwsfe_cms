@@ -1,10 +1,6 @@
 //package eu.com.cwsfe.cms.services.news;
 //
-//import java.io.Serializable;
-//
-//public class CmsNewsI18nPairDTO implements Serializable {
-//
-//    private static final long serialVersionUID = -2521708732548778417L;
+//public class CmsNewsI18nPairDTO {
 //
 //    private CmsNews cmsNews;
 //

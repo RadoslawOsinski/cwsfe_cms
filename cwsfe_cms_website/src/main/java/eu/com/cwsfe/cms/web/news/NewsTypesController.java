@@ -7,7 +7,6 @@ import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * @author Radoslaw Osinski
@@ -72,7 +68,7 @@ class NewsTypesController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfNewsTypes = newsTypesService.countForAjax();
+        final Long numberOfNewsTypes = newsTypesService.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfNewsTypes);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfNewsTypes);
         responseDetailsJson.put("aaData", jsonArray);
@@ -107,10 +103,11 @@ class NewsTypesController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "type", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            try {
+            Optional<CmsNewsTypesEntity> existingNewsType = newsTypesService.getByType(newsType.getType());
+            if (!existingNewsType.isPresent()) {
                 newsTypesService.add(newsType);
                 addJsonSuccess(responseDetailsJson);
-            } catch (DuplicateKeyException e) {
+            } else {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeAlreadyAdded"));
             }
         } else {

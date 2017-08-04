@@ -1,11 +1,8 @@
 package eu.com.cwsfe.cms.web.configuration;
 
 import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsEntity;
-import eu.com.cwsfe.cms.db.users.*;
+import eu.com.cwsfe.cms.db.users.CmsUsersEntity;
 import eu.com.cwsfe.cms.services.parameters.CmsGlobalParamsService;
-import eu.com.cwsfe.cms.services.users.CmsRolesService;
-import eu.com.cwsfe.cms.services.users.CmsUserRolesService;
-import eu.com.cwsfe.cms.services.users.CmsUsersService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -33,25 +31,21 @@ class InitialConfigurationController extends JsonController {
 
     private final CmsGlobalParamsService cmsGlobalParamsService;
 
-    private final CmsUsersService cmsUsersService;
-
-    private final CmsRolesService cmsRolesService;
-
-    private final CmsUserRolesService cmsUserRolesService;
+    private final InitialConfigurationService initialConfigurationService;
 
     @Autowired
-    public InitialConfigurationController(CmsUsersService cmsUsersService, CmsUserRolesService cmsUserRolesService, CmsRolesService cmsRolesService, CmsGlobalParamsService cmsGlobalParamsService) {
-        this.cmsUsersService = cmsUsersService;
-        this.cmsUserRolesService = cmsUserRolesService;
-        this.cmsRolesService = cmsRolesService;
+    public InitialConfigurationController(
+        CmsGlobalParamsService cmsGlobalParamsService, InitialConfigurationService initialConfigurationService
+    ) {
         this.cmsGlobalParamsService = cmsGlobalParamsService;
+        this.initialConfigurationService = initialConfigurationService;
     }
 
     @RequestMapping(value = "/configuration/initialConfiguration", method = RequestMethod.GET)
     public String showInitialConfiguration() {
         try {
-            CmsGlobalParamsEntity cwsfeCmsIsConfigured = cmsGlobalParamsService.getByCode("CWSFE_CMS_IS_CONFIGURED");
-            if (cwsfeCmsIsConfigured == null || cwsfeCmsIsConfigured.getValue() == null || "N".equals(cwsfeCmsIsConfigured.getValue())) {
+            Optional<CmsGlobalParamsEntity> cwsfeCmsIsConfigured = cmsGlobalParamsService.getByCode("CWSFE_CMS_IS_CONFIGURED");
+            if (!cwsfeCmsIsConfigured.isPresent() || cwsfeCmsIsConfigured.get().getValue() == null || "N".equals(cwsfeCmsIsConfigured.get().getValue())) {
                 return "cms/configuration/InitialConfiguration";
             } else {
                 return "cms/login/Login";
@@ -71,17 +65,9 @@ class InitialConfigurationController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "password", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("PasswordMustBeSet"));
         ModelAndView modelAndView = new ModelAndView();
         if (!result.hasErrors()) {
-            CmsGlobalParamsEntity cwsfeCmsIsConfigured = cmsGlobalParamsService.getByCode("CWSFE_CMS_IS_CONFIGURED");
-            if ("N".equals(cwsfeCmsIsConfigured.getValue())) {
-//                cmsUser.setPasswordHash(BCrypt.hashpw(cmsUser.getPassword(), BCrypt.gensalt()));
-                cmsUser.setId(cmsUsersService.add(cmsUser));
-                CmsRolesEntity cwsfeCmsAdminRole = cmsRolesService.getByCode("ROLE_CWSFE_CMS_ADMIN");
-                CmsUserRolesEntity cmsUserRole = new CmsUserRolesEntity();
-                cmsUserRole.setCmsUserId(cmsUser.getId());
-                cmsUserRole.setRoleId(cwsfeCmsAdminRole.getId());
-                cmsUserRolesService.add(cmsUserRole);
-                cwsfeCmsIsConfigured.setValue("Y");
-                cmsGlobalParamsService.update(cwsfeCmsIsConfigured);
+            Optional<CmsGlobalParamsEntity> cwsfeCmsIsConfigured = cmsGlobalParamsService.getByCode("CWSFE_CMS_IS_CONFIGURED");
+            if (initialConfigurationService.isCwsfeCmsConfigured(cwsfeCmsIsConfigured)) {
+                initialConfigurationService.configureCwsfeCms(cmsUser, cwsfeCmsIsConfigured);
             }
             modelAndView.setView(new RedirectView("/", true, false, false));
         } else {

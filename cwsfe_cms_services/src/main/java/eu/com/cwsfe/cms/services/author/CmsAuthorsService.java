@@ -37,7 +37,7 @@ public class CmsAuthorsService {
     }
 
     @Transactional
-    public int countForAjax() {
+    public Long countForAjax() {
         return cmsAuthorsRepository.countForAjax(sessionFactory.getCurrentSession());
     }
 

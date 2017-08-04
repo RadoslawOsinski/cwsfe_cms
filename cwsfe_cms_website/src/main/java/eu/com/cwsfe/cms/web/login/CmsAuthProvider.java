@@ -1,8 +1,8 @@
 package eu.com.cwsfe.cms.web.login;
 
 import eu.com.cwsfe.cms.db.users.*;
-import eu.com.cwsfe.cms.services.users.CmsRolesService;
 import eu.com.cwsfe.cms.services.users.CmsUserAllowedNetAddressService;
+import eu.com.cwsfe.cms.services.users.CmsUserRolesService;
 import eu.com.cwsfe.cms.services.users.CmsUsersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -29,7 +30,7 @@ public class CmsAuthProvider implements AuthenticationProvider {
     private static final Logger LOGGER = LoggerFactory.getLogger(CmsAuthProvider.class);
 
     private CmsUsersService cmsUsersService;
-    private CmsRolesService cmsRolesService;
+    private CmsUserRolesService cmsUserRolesService;
     private CmsUserAllowedNetAddressService cmsUserAllowedNetAddressService;
 
     @Autowired
@@ -38,8 +39,8 @@ public class CmsAuthProvider implements AuthenticationProvider {
     }
 
     @Autowired
-    public void setCmsRolesService(CmsRolesService cmsRolesService) {
-        this.cmsRolesService = cmsRolesService;
+    public void setCmsUserRolesService(CmsUserRolesService cmsUserRolesService) {
+        this.cmsUserRolesService = cmsUserRolesService;
     }
 
     @Autowired
@@ -61,11 +62,11 @@ public class CmsAuthProvider implements AuthenticationProvider {
 
         if (cmsUsersService.isActiveUsernameInDatabase(String.valueOf(login))) {
             final Object password = auth.getCredentials();
-            CmsUsersEntity cmsUser = cmsUsersService.getByUsername((String) login);
-            boolean userIsUsingIPFiltering = userIsUsingIPFiltering(cmsUser.getId());
-            if (!userIsUsingIPFiltering || (userIsUsingAllowedAddress(userIPAddress, cmsUser.getId()))) {
-                if (BCrypt.checkpw(String.valueOf(password), cmsUser.getPasswordHash())) {
-                    final List<CmsRolesEntity> cmsRoles = cmsRolesService.listUserRoles(cmsUser.getId());
+            Optional<CmsUsersEntity> cmsUser = cmsUsersService.getByUsername((String) login);
+            boolean userIsUsingIPFiltering = userIsUsingIPFiltering(cmsUser.get().getId());
+            if (!userIsUsingIPFiltering || (userIsUsingAllowedAddress(userIPAddress, cmsUser.get().getId()))) {
+                if (BCrypt.checkpw(String.valueOf(password), cmsUser.get().getPasswordHash())) {
+                    final List<CmsRolesEntity> cmsRoles = cmsUserRolesService.listUserRoles(cmsUser.get().getId());
                     List<GrantedAuthority> authorities = new ArrayList<>(cmsRoles.size());
                     for (CmsRolesEntity cmsRole : cmsRoles) {
                         authorities.add(new SimpleGrantedAuthority(cmsRole.getRoleCode()));

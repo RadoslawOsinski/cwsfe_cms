@@ -4,7 +4,6 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
-import eu.com.cwsfe.cms.db.blog.BlogPostImagesEntity;
 import eu.com.cwsfe.cms.db.news.CmsNewsImagesEntity;
 import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsEntity;
 import eu.com.cwsfe.cms.services.parameters.CmsGlobalParamsService;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * @author Radoslaw Osinski
@@ -38,23 +38,10 @@ public class AWSBucketImageStorageService implements ImageStorageService {
     }
 
     public String storeNewsImage(CmsNewsImagesEntity cmsNewsImage) {
-        CmsGlobalParamsEntity newsImagesBucket = cmsGlobalParamsService.getByCode("CWSFE_CMS_S3_NEWS_IMAGES_PATH");
+        Optional<CmsGlobalParamsEntity> newsImagesBucket = cmsGlobalParamsService.getByCode("CWSFE_CMS_S3_NEWS_IMAGES_PATH");
 //        storeImage(cmsNewsImage.getFile(), newsImagesBucket.getValue());
-        CmsGlobalParamsEntity rootBucketName = cmsGlobalParamsService.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
-        return amazonS3.getUrl(rootBucketName.getValue(), newsImagesBucket.getValue() + "/" + cmsNewsImage.getFileName()).toString();
-    }
-
-    public String storeBlogImage(BlogPostImagesEntity blogPostImage) {
-        CmsGlobalParamsEntity blogImagesBucket = cmsGlobalParamsService.getByCode("CWSFE_CMS_S3_BLOG_IMAGES_PATH");
-//        storeImage(blogPostImage.getFile(), blogImagesBucket.getValue());
-        CmsGlobalParamsEntity rootBucketName = cmsGlobalParamsService.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
-        return amazonS3.getUrl(rootBucketName.getValue(), blogImagesBucket.getValue() + "/" + blogPostImage.getFileName()).toString();
-    }
-
-    @Override
-    public boolean isBlogImagesStorageInitialized() {
-        //AWS makes folders automatically
-        return true;
+        Optional<CmsGlobalParamsEntity> rootBucketName = cmsGlobalParamsService.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
+        return amazonS3.getUrl(rootBucketName.get().getValue(), newsImagesBucket.get().getValue() + "/" + cmsNewsImage.getFileName()).toString();
     }
 
     @Override
@@ -64,26 +51,25 @@ public class AWSBucketImageStorageService implements ImageStorageService {
     }
 
     @Override
-    public void initializeBlogImagesStorage() {
-        //AWS makes folders automatically
-    }
-
-    @Override
     public void initializeNewsImagesStorage() {
         //AWS makes folders automatically
     }
 
     private void storeImage(MultipartFile image, String imagePath) {
-        CmsGlobalParamsEntity rootBucketName = cmsGlobalParamsService.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
-        try {
-            PutObjectRequest putObjectRequest = new PutObjectRequest(rootBucketName.getValue(), imagePath + "/" + image.getOriginalFilename(),
-                image.getInputStream(), new ObjectMetadata());
-            putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
-            amazonS3.putObject(putObjectRequest);
-        } catch (AmazonServiceException | IOException e) {
-            LOGGER.error("Cannot save image to " + imagePath + "/" + image.getOriginalFilename(), e);
-        } catch (AmazonClientException e) {
-            LOGGER.error("Problem with AWS S3: " + imagePath + "/" + image.getOriginalFilename(), e);
+        Optional<CmsGlobalParamsEntity> rootBucketName = cmsGlobalParamsService.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
+        if (!rootBucketName.isPresent()) {
+            LOGGER.error("Missing configuration AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
+        } else {
+            try {
+                PutObjectRequest putObjectRequest = new PutObjectRequest(rootBucketName.get().getValue(), imagePath + "/" + image.getOriginalFilename(),
+                    image.getInputStream(), new ObjectMetadata());
+                putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
+                amazonS3.putObject(putObjectRequest);
+            } catch (AmazonServiceException | IOException e) {
+                LOGGER.error("Cannot save image to " + imagePath + "/" + image.getOriginalFilename(), e);
+            } catch (AmazonClientException e) {
+                LOGGER.error("Problem with AWS S3: " + imagePath + "/" + image.getOriginalFilename(), e);
+            }
         }
     }
 

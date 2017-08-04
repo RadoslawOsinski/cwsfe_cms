@@ -72,7 +72,7 @@ public class RolesController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfRoles = cmsRolesService.countForAjax();
+        final Long numberOfRoles = cmsRolesService.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfRoles);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfRoles);
         responseDetailsJson.put("aaData", jsonArray);

@@ -16,18 +16,20 @@ import javax.persistence.*;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @NamedQuery(name = CmsTextI18NEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(t) FROM CmsTextI18NEntity t")
-@NamedQuery(name = CmsTextI18NEntity.LIST, query = "SELECT t FROM CmsTextI18NEntity t order by i18NKey, i18NCategory")
-@NamedQuery(name = CmsTextI18NEntity.FIND_TRANSLATION, query = "SELECT t.i18NText FROM CmsTextI18NEntity t where t.langId in (select l.id from CmsLanguagesEntity l where l.code = :language2LetterCode) and t.i18NCategory in (select tc.id FROM CmsTextI18NCategoriesEntity tc WHERE tc.category = :category) AND t.i18NKey = :key")
+@NamedQuery(name = CmsTextI18NEntity.LIST, query = "SELECT t FROM CmsTextI18NEntity t order by i18NKey, i18nCategory")
+@NamedQuery(name = CmsTextI18NEntity.FIND_TRANSLATION, query = "SELECT t.i18NText FROM CmsTextI18NEntity t where t.langId in (select l.id from CmsLanguagesEntity l where l.code = :language2LetterCode) and t.i18nCategory in (select tc.id FROM CmsTextI18NCategoriesEntity tc WHERE tc.category = :category) AND t.i18NKey = :key")
+@NamedQuery(name = CmsTextI18NEntity.GET_EXISTING, query = "SELECT t.i18NText FROM CmsTextI18NEntity t where t.langId = :langId and t.i18nCategory = :i18nCategory AND t.i18NKey = :i18NKey")
 @Table(name = "cms_text_i18n")
 public class CmsTextI18NEntity {
 
     public static final String TOTAL_NUMBER_NOT_DELETED_QUERY = "CmsTextI18NEntity.countForAjax";
     public static final String LIST = "CmsTextI18NEntity.list";
     public static final String FIND_TRANSLATION = "CmsTextI18NEntity.findTranslation";
+    public static final String GET_EXISTING = "CmsTextI18NEntity.GET_EXISTING";
 
     private long id;
     private long langId;
-    private long i18NCategory;
+    private long i18nCategory;
     private String i18NKey;
     private String i18NText;
 
@@ -55,12 +57,12 @@ public class CmsTextI18NEntity {
 
     @Basic
     @Column(name = "i18n_category", nullable = false, precision = 0)
-    public long getI18NCategory() {
-        return i18NCategory;
+    public long getI18nCategory() {
+        return i18nCategory;
     }
 
-    public void setI18NCategory(long i18NCategory) {
-        this.i18NCategory = i18NCategory;
+    public void setI18nCategory(long i18nCategory) {
+        this.i18nCategory = i18nCategory;
     }
 
     @Basic
@@ -94,7 +96,7 @@ public class CmsTextI18NEntity {
         return new EqualsBuilder()
             .append(id, that.id)
             .append(langId, that.langId)
-            .append(i18NCategory, that.i18NCategory)
+            .append(i18nCategory, that.i18nCategory)
             .append(i18NKey, that.i18NKey)
             .append(i18NText, that.i18NText)
             .isEquals();
@@ -105,7 +107,7 @@ public class CmsTextI18NEntity {
         return new HashCodeBuilder(17, 37)
             .append(id)
             .append(langId)
-            .append(i18NCategory)
+            .append(i18nCategory)
             .append(i18NKey)
             .append(i18NText)
             .toHashCode();
@@ -116,7 +118,7 @@ public class CmsTextI18NEntity {
         return new ToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE)
             .append("id", id)
             .append("langId", langId)
-            .append("i18NCategory", i18NCategory)
+            .append("i18nCategory", i18nCategory)
             .append("i18NKey", i18NKey)
             .append("i18NText", i18NText)
             .toString();

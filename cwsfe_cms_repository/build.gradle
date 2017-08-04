@@ -1,3 +1,6 @@
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
 buildscript {
     repositories {
         mavenLocal()
@@ -60,7 +63,7 @@ jar {
             'Specification-Version': version,
             'build-number': System.getenv().BUILD_NUMBER == null ? 'local build' : System.getenv().BUILD_NUMBER,
             'build-id': System.getenv().BUILD_ID == null ? 'local build' : System.getenv().BUILD_ID,
-            'Build-Time': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            'Build-Time': ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")),
             'Build-Url': System.getenv().BUILD_URL == null ? 'local build' : System.getenv().BUILD_URL,
             'scm-version': gitCommitHash == null ? 'local build' : gitCommitHash,
             'Build-Tag': System.getenv().BUILD_TAG == null ? 'local build' : System.getenv().BUILD_TAG,
@@ -109,7 +112,7 @@ jacocoTestReport {
     reports {
         xml.enabled true
         csv.enabled false
-        html.destination "${buildDir}/reports/coverage"
+        html.setDestination(new File("${buildDir}/reports/coverage"))
     }
     executionData = files('build/jacoco/test.exec', 'build/jacoco/integration_tests_local.exec')
 }

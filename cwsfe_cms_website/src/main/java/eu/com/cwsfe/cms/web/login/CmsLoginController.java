@@ -1,17 +1,24 @@
 package eu.com.cwsfe.cms.web.login;
 
+import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsEntity;
 import eu.com.cwsfe.cms.services.parameters.CmsGlobalParamsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.Optional;
+
 /**
  * @author Radoslaw Osinski
  */
 @Controller
 class CmsLoginController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CmsLoginController.class);
 
     private final CmsGlobalParamsService cmsGlobalParamsService;
 
@@ -46,7 +53,13 @@ class CmsLoginController {
     }
 
     private void addMainSiteUrl(ModelMap model) {
-        model.addAttribute("mainSiteUrl", cmsGlobalParamsService.getByCode("MAIN_SITE").getValue());
+        Optional<CmsGlobalParamsEntity> mainSite = cmsGlobalParamsService.getByCode("MAIN_SITE");
+        if (mainSite.isPresent()) {
+            model.addAttribute("mainSiteUrl", mainSite.get().getValue());
+        } else {
+            LOG.error("Missing configuration MAIN_SITE");
+            model.addAttribute("mainSiteUrl", "");
+        }
     }
 
 }

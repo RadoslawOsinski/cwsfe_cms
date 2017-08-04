@@ -4,6 +4,8 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class KeystoresRepository {
 
@@ -17,9 +19,9 @@ public class KeystoresRepository {
         session.delete(keystore);
     }
 
-    public KeystoresEntity getByName(Session session, String name) {
+    public Optional<KeystoresEntity> getByName(Session session, String name) {
         Query query = session.getNamedQuery(KeystoresEntity.GET_BY_NAME);
         query.setParameter("name", name);
-        return (KeystoresEntity) query.getSingleResult();
+        return (Optional<KeystoresEntity>) query.uniqueResultOptional();
     }
 }

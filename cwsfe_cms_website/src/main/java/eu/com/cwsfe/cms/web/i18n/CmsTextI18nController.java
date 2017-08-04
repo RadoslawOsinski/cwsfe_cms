@@ -9,7 +9,6 @@ import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * @author Radoslaw Osinski
@@ -74,14 +70,14 @@ public class CmsTextI18nController extends JsonController {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("#", iDisplayStart + i + 1);
             formDetailsJson.put("language", cmsLanguagesService.getById(cmsTextI18ns.get(i).getLangId()).getCode());
-//            formDetailsJson.put("category", cmsTextI18nCategoryService.get(cmsTextI18ns.get(i).getI18nCategory()).getCategory());
-//            formDetailsJson.put("key", cmsTextI18ns.get(i).getI18nKey());
-//            formDetailsJson.put("text", cmsTextI18ns.get(i).getI18nText());
+            formDetailsJson.put("category", cmsTextI18nCategoryService.get(cmsTextI18ns.get(i).getI18nCategory()).getCategory());
+            formDetailsJson.put("key", cmsTextI18ns.get(i).getI18NKey());
+            formDetailsJson.put("text", cmsTextI18ns.get(i).getI18NText());
             formDetailsJson.put("id", cmsTextI18ns.get(i).getId());
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfAuthors = cmsTextI18nService.countForAjax();
+        final Long numberOfAuthors = cmsTextI18nService.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfAuthors);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfAuthors);
         responseDetailsJson.put("aaData", jsonArray);
@@ -96,14 +92,15 @@ public class CmsTextI18nController extends JsonController {
     ) {
         ValidationUtils.rejectIfEmpty(result, "langId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "i18nCategory", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CategoryMustBeSet"));
-        ValidationUtils.rejectIfEmpty(result, "i18nKey", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("KeyMustBeSet"));
-        ValidationUtils.rejectIfEmpty(result, "i18nText", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TextMustBeSet"));
+        ValidationUtils.rejectIfEmpty(result, "i18NKey", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("KeyMustBeSet"));
+        ValidationUtils.rejectIfEmpty(result, "i18NText", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TextMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            try {
+            Optional<CmsTextI18NEntity> existingTextI18n = cmsTextI18nService.getExisting(cmsTextI18n);
+            if (!existingTextI18n.isPresent()) {
                 cmsTextI18nService.add(cmsTextI18n);
                 addJsonSuccess(responseDetailsJson);
-            } catch (DuplicateKeyException e) {
+            } else {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TextI18nAlreadyExists"));
             }
         } else {

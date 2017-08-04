@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Radosław Osiński
@@ -33,7 +34,7 @@ public class CmsLanguagesService {
     }
 
     @Transactional
-    public int countForAjax() {
+    public Long countForAjax() {
         return cmsLanguagesRepository.countForAjax(sessionFactory.getCurrentSession());
     }
 
@@ -55,5 +56,10 @@ public class CmsLanguagesService {
     @Transactional
     public List<CmsLanguagesEntity> listAll() {
         return cmsLanguagesRepository.listAll(sessionFactory.getCurrentSession());
+    }
+
+    @Transactional
+    public Optional<CmsLanguagesEntity> getByCode(String code) {
+        return cmsLanguagesRepository.getByCode(sessionFactory.getCurrentSession(), code);
     }
 }

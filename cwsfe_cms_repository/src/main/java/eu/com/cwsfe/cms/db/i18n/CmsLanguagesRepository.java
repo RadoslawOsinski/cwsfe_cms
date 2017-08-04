@@ -5,13 +5,14 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CmsLanguagesRepository {
 
-    public int countForAjax(Session session) {
+    public Long countForAjax(Session session) {
         Query query = session.getNamedQuery(CmsLanguagesEntity.COUNT_FOR_AJAX_N);
-        return (int) query.uniqueResult();
+        return (Long) query.uniqueResult();
     }
 
     public List<CmsLanguagesEntity> listAll(Session session) {
@@ -38,16 +39,16 @@ public class CmsLanguagesRepository {
         return session.get(CmsLanguagesEntity.class, id);
     }
 
-    public CmsLanguagesEntity getByCode(Session session, String code) {
+    public Optional<CmsLanguagesEntity> getByCode(Session session, String code) {
         Query query = session.getNamedQuery(CmsLanguagesEntity.GET_BY_CODE);
         query.setParameter("code", code);
-        return (CmsLanguagesEntity) query.getSingleResult();
+        return (Optional<CmsLanguagesEntity>) query.uniqueResultOptional();
     }
 
-    public CmsLanguagesEntity getByCodeIgnoreCase(Session session, String code) {
+    public Optional<CmsLanguagesEntity> getByCodeIgnoreCase(Session session, String code) {
         Query query = session.getNamedQuery(CmsLanguagesEntity.GET_BY_CODE_IGNORE_CASE);
         query.setParameter("code", code);
-        return (CmsLanguagesEntity) query.getSingleResult();
+        return (Optional<CmsLanguagesEntity>) query.uniqueResultOptional();
     }
 
     public Long add(Session session, CmsLanguagesEntity language) {
@@ -62,13 +63,15 @@ public class CmsLanguagesRepository {
     }
 
     public void delete(Session session, CmsLanguagesEntity language) {
-        language.setStatus("DELETED");
-        session.update(language);
+        CmsLanguagesEntity cmsLanguagesEntity = session.get(CmsLanguagesEntity.class, language.getId());
+        cmsLanguagesEntity.setStatus("DELETED");
+        session.update(cmsLanguagesEntity);
     }
 
     public void undelete(Session session, CmsLanguagesEntity language) {
-        language.setStatus("NEW");
-        session.update(language);
+        CmsLanguagesEntity cmsLanguagesEntity = session.get(CmsLanguagesEntity.class, language.getId());
+        cmsLanguagesEntity.setStatus("NEW");
+        session.update(cmsLanguagesEntity);
     }
 
 }

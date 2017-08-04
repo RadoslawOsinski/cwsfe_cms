@@ -7,7 +7,6 @@ import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * @author Radoslaw Osinski
@@ -73,7 +69,7 @@ public class FoldersController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfFolders = cmsFoldersService.countForAjax();
+        final Long numberOfFolders = cmsFoldersService.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfFolders);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfFolders);
         responseDetailsJson.put("aaData", jsonArray);
@@ -108,10 +104,11 @@ public class FoldersController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "folderName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderNameMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            try {
+            Optional<CmsFoldersEntity> existingFolderName = cmsFoldersService.getByFolderName(cmsFolder.getFolderName());
+            if (!existingFolderName.isPresent()) {
                 cmsFoldersService.add(cmsFolder);
                 addJsonSuccess(responseDetailsJson);
-            } catch (DuplicateKeyException e) {
+            } else {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderNameAlreadyExist"));
             }
         } else {

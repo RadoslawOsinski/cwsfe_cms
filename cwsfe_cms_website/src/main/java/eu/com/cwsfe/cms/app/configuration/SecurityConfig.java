@@ -26,6 +26,9 @@ import java.util.List;
 @Import(BeforeSecurityConfiguration.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    public static final String NEWS_IMAGES = "/newsImages/";
+    public static final String BLOG_POST_IMAGES = "/blogPostImages/";
+
     @Bean
     public CmsAuthProvider getCmsAuthProvider() {
         return new CmsAuthProvider();
@@ -79,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(
                 "/loginPage", "/loginFailed", "/configuration/initialConfiguration",
                 "favicon.ico", "/rest/**", "/resources-cwsfe-cms/**",
-                "/newsImages/**", "/blogPostImages/**",
+                NEWS_IMAGES + "**", BLOG_POST_IMAGES + "**",
                 "/swagger-ui.html", "/webjars/**", "/swagger-resources", "/swagger-resources/**",
                 "/v2", "/v2/**"
             ).permitAll()

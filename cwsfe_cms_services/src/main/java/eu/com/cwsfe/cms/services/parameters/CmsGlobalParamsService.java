@@ -6,6 +6,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  * Created by Radosław Osiński
  */
@@ -21,7 +23,7 @@ public class CmsGlobalParamsService {
     }
 
     @Transactional
-    public CmsGlobalParamsEntity getByCode(String code) {
+    public Optional<CmsGlobalParamsEntity> getByCode(String code) {
         return cmsGlobalParamsRepository.getByCode(sessionFactory.getCurrentSession(), code);
     }
 

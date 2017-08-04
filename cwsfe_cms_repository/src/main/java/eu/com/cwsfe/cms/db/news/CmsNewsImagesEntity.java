@@ -9,18 +9,18 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 
 /**
  * Created by Radoslaw Osinski.
  */
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@NamedQuery(name = CmsNewsImagesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(cni) FROM CmsNewsImagesEntity cni WHERE status <> 'DELETED'")
-@NamedQuery(name = CmsNewsImagesEntity.SEARCH_BY_AJAX_QUERY, query = "SELECT cni FROM CmsNewsImagesEntity cni WHERE status <> 'DELETED' AND newsId = :newsId ORDER BY created DESC")
-@NamedQuery(name = CmsNewsImagesEntity.COUNT_TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(cni) FROM CmsNewsImagesEntity cni WHERE status <> 'DELETED' AND newsId = :newsId ORDER BY created DESC")
-@NamedQuery(name = CmsNewsImagesEntity.LIST_IMAGES_FOR_NEWS_WITHOUT_THUBNAILS, query = "SELECT count(cni) FROM CmsNewsImagesEntity cni WHERE status = 'NEW' AND newsId = :newsId AND title NOT LIKE 'thumbnail_%' ORDER BY created DESC")
-@NamedQuery(name = CmsNewsImagesEntity.GET_THUBNAIL_FOR_NEWS, query = "SELECT count(cni) FROM CmsNewsImagesEntity cni WHERE status = 'NEW' AND newsId = :newsId AND title LIKE 'thumbnail_%' ORDER BY created DESC")
+@NamedQuery(name = CmsNewsImagesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(cni) FROM CmsNewsImagesEntity cni WHERE cni.status <> 'DELETED'")
+@NamedQuery(name = CmsNewsImagesEntity.SEARCH_BY_AJAX_QUERY, query = "SELECT cni FROM CmsNewsImagesEntity cni WHERE cni.status <> 'DELETED' AND cni.newsId = :newsId ORDER BY cni.created DESC")
+@NamedQuery(name = CmsNewsImagesEntity.COUNT_TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(cni) FROM CmsNewsImagesEntity cni WHERE cni.status <> 'DELETED' AND cni.newsId = :newsId")
+@NamedQuery(name = CmsNewsImagesEntity.LIST_IMAGES_FOR_NEWS_WITHOUT_THUBNAILS, query = "SELECT count(cni) FROM CmsNewsImagesEntity cni WHERE cni.status = 'NEW' AND cni.newsId = :newsId AND cni.title NOT LIKE 'thumbnail_%' ORDER BY cni.created DESC")
+@NamedQuery(name = CmsNewsImagesEntity.GET_THUBNAIL_FOR_NEWS, query = "SELECT count(cni) FROM CmsNewsImagesEntity cni WHERE cni.status = 'NEW' AND cni.newsId = :newsId AND cni.title LIKE 'thumbnail_%'")
 @Table(name = "cms_news_images")
 public class CmsNewsImagesEntity {
 
@@ -45,9 +45,9 @@ public class CmsNewsImagesEntity {
     private Integer width;
     private Integer height;
     private String mimeType;
-    private Timestamp created;
+    private ZonedDateTime created;
     private String status;
-    private Timestamp lastModified;
+    private ZonedDateTime lastModified;
     private String url;
 
     @Id
@@ -134,16 +134,16 @@ public class CmsNewsImagesEntity {
 
     @Basic
     @Column(name = "created", nullable = false)
-    public Timestamp getCreated() {
+    public ZonedDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(Timestamp created) {
+    public void setCreated(ZonedDateTime created) {
         this.created = created;
     }
 
     @Basic
-    @Column(name = "status", nullable = false, length = -1)
+    @Column(name = "status", nullable = false)
     public String getStatus() {
         return status;
     }
@@ -154,11 +154,11 @@ public class CmsNewsImagesEntity {
 
     @Basic
     @Column(name = "last_modified", nullable = false)
-    public Timestamp getLastModified() {
+    public ZonedDateTime getLastModified() {
         return lastModified;
     }
 
-    public void setLastModified(Timestamp lastModified) {
+    public void setLastModified(ZonedDateTime lastModified) {
         this.lastModified = lastModified;
     }
 

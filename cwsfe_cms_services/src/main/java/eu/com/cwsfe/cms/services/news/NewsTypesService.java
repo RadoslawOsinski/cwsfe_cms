@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Radosław Osiński
@@ -28,7 +29,7 @@ public class NewsTypesService {
     }
 
     @Transactional
-    public int countForAjax() {
+    public Long countForAjax() {
         return newsTypesRepository.countForAjax(sessionFactory.getCurrentSession());
     }
 
@@ -50,5 +51,10 @@ public class NewsTypesService {
     @Transactional
     public CmsNewsTypesEntity get(long newsTypeId) {
         return newsTypesRepository.get(sessionFactory.getCurrentSession(), newsTypeId);
+    }
+
+    @Transactional
+    public Optional<CmsNewsTypesEntity> getByType(String type) {
+        return newsTypesRepository.getByType(sessionFactory.getCurrentSession(), type);
     }
 }

@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.web.newsletter;
 
+import eu.com.cwsfe.cms.rest.validator.EmailValidator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

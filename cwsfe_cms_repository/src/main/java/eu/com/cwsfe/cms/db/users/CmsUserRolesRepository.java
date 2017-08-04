@@ -35,4 +35,9 @@ public class CmsUserRolesRepository {
         query.executeUpdate();
     }
 
+    public List<CmsRolesEntity> listUserRoles(Session session, long userId) {
+        Query query = session.getNamedQuery(CmsUserRolesEntity.LIST_ROLES_FOR_USER);
+        query.setParameter("userId", userId);
+        return query.getResultList();
+    }
 }

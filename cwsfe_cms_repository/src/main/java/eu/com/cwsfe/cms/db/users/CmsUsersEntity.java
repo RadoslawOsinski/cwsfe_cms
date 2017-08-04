@@ -9,18 +9,17 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by Radoslaw Osinski.
  */
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@NamedQuery(name = CmsUsersEntity.IS_USER_ACTIVE, query = "SELECT count(u) FROM CmsUsersEntity u where username = :userName and status in ('NEW')")
-@NamedQuery(name = CmsUsersEntity.LIST, query = "SELECT u FROM CmsUsersEntity u where status = 'NEW' order by username")
-@NamedQuery(name = CmsUsersEntity.GET_BY_USER_NAME, query = "SELECT u FROM CmsUsersEntity u where username = :userName")
-@NamedQuery(name = CmsUsersEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT u FROM CmsUsersEntity u where status <> 'DELETED'")
-@NamedQuery(name = CmsUsersEntity.LIST_FOR_DROP_LIST, query = "SELECT u FROM CmsUsersEntity u where status = 'NEW' AND lower(username) LIKE lower(:userName) order by username")
+@NamedQuery(name = CmsUsersEntity.IS_USER_ACTIVE, query = "SELECT count(u) FROM CmsUsersEntity u where userName = :userName and status in ('NEW')")
+@NamedQuery(name = CmsUsersEntity.LIST, query = "SELECT u FROM CmsUsersEntity u where status = 'NEW' order by userName")
+@NamedQuery(name = CmsUsersEntity.GET_BY_USER_NAME, query = "SELECT u FROM CmsUsersEntity u where userName = :userName")
+@NamedQuery(name = CmsUsersEntity.TOTAL_NUMBER_NOT_DELETED_QUERY, query = "SELECT count(u) FROM CmsUsersEntity u where status <> 'DELETED'")
+@NamedQuery(name = CmsUsersEntity.LIST_FOR_DROP_LIST, query = "SELECT u FROM CmsUsersEntity u where status = 'NEW' AND lower(userName) LIKE lower(:userName) order by userName")
 @Table(name = "cms_users")
 public class CmsUsersEntity {
 
@@ -31,10 +30,9 @@ public class CmsUsersEntity {
     public static final String LIST_FOR_DROP_LIST = "CmsUsersEntity.listUsersForDropList";
 
     private long id;
-    private String username;
+    private String userName;
     private String passwordHash;
     private String status;
-    private List<CmsRolesEntity> userRoles;
 
     @Id
     @Column(name = "id", nullable = false, precision = 0)
@@ -50,12 +48,12 @@ public class CmsUsersEntity {
 
     @Basic
     @Column(name = "username", nullable = false, length = 100)
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String username) {
+        this.userName = username;
     }
 
     @Basic
@@ -69,22 +67,13 @@ public class CmsUsersEntity {
     }
 
     @Basic
-    @Column(name = "status", nullable = false, length = -1)
+    @Column(name = "status", nullable = false)
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cmsUser")
-    public List<CmsRolesEntity> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(List<CmsRolesEntity> userRoles) {
-        this.userRoles = userRoles;
     }
 
     @Override
@@ -97,7 +86,7 @@ public class CmsUsersEntity {
 
         return new EqualsBuilder()
             .append(id, that.id)
-            .append(username, that.username)
+            .append(userName, that.userName)
             .append(passwordHash, that.passwordHash)
             .append(status, that.status)
             .isEquals();
@@ -107,7 +96,7 @@ public class CmsUsersEntity {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
             .append(id)
-            .append(username)
+            .append(userName)
             .append(passwordHash)
             .append(status)
             .toHashCode();
@@ -117,7 +106,7 @@ public class CmsUsersEntity {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE)
             .append("id", id)
-            .append("username", username)
+            .append("username", userName)
             .append("passwordHash", passwordHash)
             .append("status", status)
             .toString();

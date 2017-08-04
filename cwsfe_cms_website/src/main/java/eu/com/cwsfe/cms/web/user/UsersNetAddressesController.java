@@ -72,13 +72,13 @@ class UsersNetAddressesController extends JsonController {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("#", iDisplayStart + i + 1);
             CmsUsersEntity cmsUser = cmsUsersService.get(cmsUserAllowedNetAddresses.get(i).getUserId());
-            formDetailsJson.put("userName", cmsUser == null ? "---" : cmsUser.getUsername());
+            formDetailsJson.put("userName", cmsUser == null ? "---" : cmsUser.getUserName());
             formDetailsJson.put("inetAddress", cmsUserAllowedNetAddresses.get(i).getInetAddress());
             formDetailsJson.put("id", cmsUserAllowedNetAddresses.get(i).getId());
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfAllowedNetAddresses = cmsUserAllowedNetAddressService.countForAjax();
+        final Long numberOfAllowedNetAddresses = cmsUserAllowedNetAddressService.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfAllowedNetAddresses);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfAllowedNetAddresses);
         responseDetailsJson.put("aaData", jsonArray);

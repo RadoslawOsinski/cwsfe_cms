@@ -7,7 +7,6 @@ import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * @author Radoslaw Osinski
@@ -73,7 +69,7 @@ class LanguagesController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfLanguages = cmsLanguagesService.countForAjax();
+        final Long numberOfLanguages = cmsLanguagesService.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfLanguages);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfLanguages);
         responseDetailsJson.put("aaData", jsonArray);
@@ -113,10 +109,11 @@ class LanguagesController extends JsonController {
         }
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            try {
+            Optional<CmsLanguagesEntity> languageByCode = cmsLanguagesService.getByCode(cmsLanguage.getCode());
+            if (!languageByCode.isPresent()) {
                 cmsLanguagesService.add(cmsLanguage);
                 addJsonSuccess(responseDetailsJson);
-            } catch (DuplicateKeyException e) {
+            } else {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageAlreadyExists"));
             }
         } else {

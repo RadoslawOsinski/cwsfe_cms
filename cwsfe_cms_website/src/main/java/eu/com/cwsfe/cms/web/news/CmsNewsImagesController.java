@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.web.news;
 
+import eu.com.cwsfe.cms.db.news.CmsNewsImage;
 import eu.com.cwsfe.cms.db.news.CmsNewsImagesEntity;
 import eu.com.cwsfe.cms.services.news.CmsNewsImagesService;
 import eu.com.cwsfe.cms.web.images.ImageStorageService;
@@ -18,7 +19,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -56,7 +60,7 @@ public class CmsNewsImagesController extends JsonController {
             LOGGER.error("Cms news id is not a number: {}", webRequest.getParameter("cmsNewsId"));
         }
         List<CmsNewsImagesEntity> dbList = cmsNewsImagesService.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, newsId);
-        Integer dbListDisplayRecordsSize = cmsNewsImagesService.searchByAjaxCountWithoutContent(newsId);
+        Long dbListDisplayRecordsSize = cmsNewsImagesService.searchByAjaxCountWithoutContent(newsId);
         JSONObject responseDetailsJson = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < dbList.size(); i++) {
@@ -79,28 +83,29 @@ public class CmsNewsImagesController extends JsonController {
 
     @RequestMapping(value = "/news/addCmsNewsImage", method = RequestMethod.POST)
     public ModelAndView addCmsNewsImage(
-        @ModelAttribute(value = "cmsNewsImage") CmsNewsImagesEntity cmsNewsImage,
+        @ModelAttribute(value = "cmsNewsImage") CmsNewsImage cmsNewsImage,
         BindingResult result, Locale locale
     ) {
         BufferedImage image;
-//        try {
-//            image = ImageIO.read(cmsNewsImage.getFile().getInputStream());
-//            cmsNewsImage.setWidth(image.getWidth());
-//            cmsNewsImage.setHeight(image.getHeight());
-//        } catch (IOException e) {
-//            LOGGER.error("Problem with reading image", e);
-//        }
-//        cmsNewsImage.setFileName(cmsNewsImage.getFile().getOriginalFilename());
-//        cmsNewsImage.setFileSize(cmsNewsImage.getFile().getSize());
-//        cmsNewsImage.setMimeType(cmsNewsImage.getFile().getContentType());
-//        cmsNewsImage.setCreated(new Date());
-        cmsNewsImage.setLastModified(cmsNewsImage.getCreated());
+        CmsNewsImagesEntity newCmsNewsImage = new CmsNewsImagesEntity();
+        try {
+            image = ImageIO.read(cmsNewsImage.getFile().getInputStream());
+            newCmsNewsImage.setWidth(image.getWidth());
+            newCmsNewsImage.setHeight(image.getHeight());
+        } catch (IOException e) {
+            LOGGER.error("Problem with reading image", e);
+        }
+        newCmsNewsImage.setFileName(cmsNewsImage.getFile().getOriginalFilename());
+        newCmsNewsImage.setFileSize(cmsNewsImage.getFile().getSize());
+        newCmsNewsImage.setMimeType(cmsNewsImage.getFile().getContentType());
+        newCmsNewsImage.setCreated(ZonedDateTime.now());
+        newCmsNewsImage.setLastModified(newCmsNewsImage.getCreated());
         ValidationUtils.rejectIfEmpty(result, "title", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TitleMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "newsId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CmsNewsMustBeSet"));
         if (!result.hasErrors()) {
-            cmsNewsImage.setId(cmsNewsImagesService.add(cmsNewsImage));
-//            cmsNewsImage.setUrl(imageStorageService.storeNewsImage(cmsNewsImage));
-            cmsNewsImagesService.updateUrl(cmsNewsImage);
+            cmsNewsImage.setId(cmsNewsImagesService.add(newCmsNewsImage));
+            cmsNewsImage.setUrl(imageStorageService.storeNewsImage(newCmsNewsImage));
+            cmsNewsImagesService.updateUrl(newCmsNewsImage);
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("/news/" + cmsNewsImage.getNewsId(), true, false, false));

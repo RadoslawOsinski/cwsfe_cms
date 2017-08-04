@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -38,8 +39,8 @@ public class MonitoringGeneralInformationController extends JsonController {
         model.addAttribute("osVersion", serverWatch.getOSVersion());
         model.addAttribute("architecture", serverWatch.getArchitecture());
         model.addAttribute("availableCPUs", serverWatch.getAvailableCPUs());
-        model.addAttribute("usedMemoryInMb", serverWatch.usedMemoryInMb());
-        model.addAttribute("availableMemoryInMB", serverWatch.availableMemoryInMB());
+        model.addAttribute("usedMemoryInMb", new DecimalFormat("##.##").format(serverWatch.usedMemoryInMb()));
+        model.addAttribute("availableMemoryInMB", new DecimalFormat("##.##").format(serverWatch.availableMemoryInMB()));
         return "cms/monitoring/GeneralInformation";
     }
 
@@ -59,8 +60,8 @@ public class MonitoringGeneralInformationController extends JsonController {
     @ResponseBody
     public String getGeneralMemoryInfo() {
         JSONObject responseDetailsJson = new JSONObject();
-        responseDetailsJson.put("usedMemoryInMb", serverWatch.usedMemoryInMb());
-        responseDetailsJson.put("availableMemoryInMB", serverWatch.availableMemoryInMB());
+        responseDetailsJson.put("usedMemoryInMb", new DecimalFormat("##.##").format(serverWatch.usedMemoryInMb()));
+        responseDetailsJson.put("availableMemoryInMB", new DecimalFormat("##.##").format(serverWatch.availableMemoryInMB()));
         return responseDetailsJson.toString();
     }
 

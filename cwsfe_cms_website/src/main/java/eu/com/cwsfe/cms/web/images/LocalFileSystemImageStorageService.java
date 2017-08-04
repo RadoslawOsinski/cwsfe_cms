@@ -1,6 +1,6 @@
 package eu.com.cwsfe.cms.web.images;
 
-import eu.com.cwsfe.cms.db.blog.BlogPostImagesEntity;
+import eu.com.cwsfe.cms.app.configuration.SecurityConfig;
 import eu.com.cwsfe.cms.db.news.CmsNewsImagesEntity;
 import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsEntity;
 import eu.com.cwsfe.cms.services.parameters.CmsGlobalParamsService;
@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Optional;
 
 /**
  * @author Radoslaw Osinski
@@ -33,48 +34,40 @@ public class LocalFileSystemImageStorageService implements ImageStorageService {
     }
 
     public String storeNewsImage(CmsNewsImagesEntity cmsNewsImage) {
-        CmsGlobalParamsEntity newsImagesPath = cmsGlobalParamsService.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
+        Optional<CmsGlobalParamsEntity> newsImagesPath = cmsGlobalParamsService.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
+        if (!newsImagesPath.isPresent()) {
+            LOGGER.error("Missing configuration CWSFE_CMS_NEWS_IMAGES_PATH");
+        }
 //        storeImage(cmsNewsImage.getFile(), newsImagesPath.getValue());
-        CmsGlobalParamsEntity cmsMainUrl = cmsGlobalParamsService.getByCode("CWSFE_CMS_MAIN_URL");
-        return cmsMainUrl.getValue() + "/newsImages/" + cmsNewsImage.getFileName();   //todo extract in spring security hardcoded /newsImages
-    }
-
-    public String storeBlogImage(BlogPostImagesEntity blogPostImage) {
-        CmsGlobalParamsEntity blogImagesPath = cmsGlobalParamsService.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH");
-//        storeImage(blogPostImage.getFile(), blogImagesPath.getValue());
-        CmsGlobalParamsEntity cmsMainUrl = cmsGlobalParamsService.getByCode("CWSFE_CMS_MAIN_URL");
-        return cmsMainUrl.getValue() + "/blogPostImages/" + blogPostImage.getFileName();  //todo extract in spring security hardcoded /blogPostImages
-    }
-
-    @Override
-    public boolean isBlogImagesStorageInitialized() {
-        CmsGlobalParamsEntity newsImagesPath = cmsGlobalParamsService.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH");
-        File newsImagesDirectory = new File(newsImagesPath.getValue());
-        return newsImagesDirectory.exists() && newsImagesDirectory.isDirectory();
+        Optional<CmsGlobalParamsEntity> cmsMainUrl = cmsGlobalParamsService.getByCode("CWSFE_CMS_MAIN_URL");
+        if (!cmsMainUrl.isPresent()) {
+            LOGGER.error("Missing configuration CWSFE_CMS_MAIN_URL");
+        }
+        return cmsMainUrl.get().getValue() + SecurityConfig.NEWS_IMAGES + cmsNewsImage.getFileName();
     }
 
     @Override
     public boolean isNewsImagesStorageInitialized() {
-        CmsGlobalParamsEntity newsImagesPath = cmsGlobalParamsService.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
-        File newsImagesDirectory = new File(newsImagesPath.getValue());
-        return newsImagesDirectory.exists() && newsImagesDirectory.isDirectory();
-    }
-
-    @Override
-    public void initializeBlogImagesStorage() {
-        CmsGlobalParamsEntity newsImagesPath = cmsGlobalParamsService.getByCode("CWSFE_CMS_BLOG_IMAGES_PATH");
-        File newsImagesDirectory = new File(newsImagesPath.getValue());
-        if (newsImagesDirectory.mkdir()) {
-            LOGGER.error("Failed to create folder: " + newsImagesPath.getValue());
+        Optional<CmsGlobalParamsEntity> newsImagesPath = cmsGlobalParamsService.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
+        if (!newsImagesPath.isPresent()) {
+            LOGGER.error("Missing configuration CWSFE_CMS_NEWS_IMAGES_PATH");
+            return false;
+        } else {
+            File newsImagesDirectory = new File(newsImagesPath.get().getValue());
+            return newsImagesDirectory.exists() && newsImagesDirectory.isDirectory();
         }
     }
 
     @Override
     public void initializeNewsImagesStorage() {
-        CmsGlobalParamsEntity newsImagesPath = cmsGlobalParamsService.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
-        File newsImagesDirectory = new File(newsImagesPath.getValue());
-        if (newsImagesDirectory.mkdir()) {
-            LOGGER.error("Failed to create folder: " + newsImagesPath.getValue());
+        Optional<CmsGlobalParamsEntity> newsImagesPath = cmsGlobalParamsService.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
+        if (newsImagesPath.isPresent()) {
+            File newsImagesDirectory = new File(newsImagesPath.get().getValue());
+            if (newsImagesDirectory.mkdir()) {
+                LOGGER.error("Failed to create folder: " + newsImagesPath.get().getValue());
+            }
+        } else {
+            LOGGER.error("Missing configuration CWSFE_CMS_NEWS_IMAGES_PATH");
         }
     }
 

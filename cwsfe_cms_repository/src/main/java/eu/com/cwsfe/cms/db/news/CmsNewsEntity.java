@@ -1,28 +1,48 @@
 package eu.com.cwsfe.cms.db.news;
 
+import eu.com.cwsfe.cms.db.author.CmsAuthorsEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.NamedQuery;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 
 /**
  * Created by Radoslaw Osinski.
  */
 @Entity
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NamedQuery(name = CmsNewsEntity.GET_TOTAL_NUMBER_NOT_DELETED, query = "SELECT count(n) FROM CmsNewsEntity n WHERE n.status <> :status")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "cms_news")
 public class CmsNewsEntity {
+
+    public static final String GET_TOTAL_NUMBER_NOT_DELETED = "CmsNewsEntity.GET_TOTAL_NUMBER_NOT_DELETED";
+
     private long id;
     private long authorId;
     private long newsTypeId;
-    private long folderId;
-    private Timestamp creationDate;
+    private long newsFolderId;
+    private ZonedDateTime creationDate;
     private String newsCode;
     private String status;
+
+    private CmsAuthorsEntity authorMapping;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false, insertable = false, updatable = false)
+    public CmsAuthorsEntity getAuthorMapping() {
+        return authorMapping;
+    }
+
+    public void setAuthorMapping(CmsAuthorsEntity authorMapping) {
+        this.authorMapping = authorMapping;
+    }
 
     @Id
     @Column(name = "id", nullable = false, precision = 0)
@@ -58,21 +78,21 @@ public class CmsNewsEntity {
 
     @Basic
     @Column(name = "folder_id", nullable = false, precision = 0)
-    public long getFolderId() {
-        return folderId;
+    public long getNewsFolderId() {
+        return newsFolderId;
     }
 
-    public void setFolderId(long folderId) {
-        this.folderId = folderId;
+    public void setNewsFolderId(long folderId) {
+        this.newsFolderId = folderId;
     }
 
     @Basic
     @Column(name = "creation_date", nullable = false)
-    public Timestamp getCreationDate() {
+    public ZonedDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(ZonedDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -87,7 +107,7 @@ public class CmsNewsEntity {
     }
 
     @Basic
-    @Column(name = "status", nullable = false, length = -1)
+    @Column(name = "status", nullable = false)
     public String getStatus() {
         return status;
     }
@@ -108,7 +128,7 @@ public class CmsNewsEntity {
             .append(id, that.id)
             .append(authorId, that.authorId)
             .append(newsTypeId, that.newsTypeId)
-            .append(folderId, that.folderId)
+            .append(newsFolderId, that.newsFolderId)
             .append(creationDate, that.creationDate)
             .append(newsCode, that.newsCode)
             .append(status, that.status)
@@ -121,7 +141,7 @@ public class CmsNewsEntity {
             .append(id)
             .append(authorId)
             .append(newsTypeId)
-            .append(folderId)
+            .append(newsFolderId)
             .append(creationDate)
             .append(newsCode)
             .append(status)
@@ -134,7 +154,7 @@ public class CmsNewsEntity {
             .append("id", id)
             .append("authorId", authorId)
             .append("newsTypeId", newsTypeId)
-            .append("folderId", folderId)
+            .append("newsFolderId", newsFolderId)
             .append("creationDate", creationDate)
             .append("newsCode", newsCode)
             .append("status", status)

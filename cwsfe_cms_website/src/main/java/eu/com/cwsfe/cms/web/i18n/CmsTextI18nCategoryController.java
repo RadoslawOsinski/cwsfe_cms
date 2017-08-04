@@ -72,7 +72,7 @@ public class CmsTextI18nCategoryController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfCategories = cmsTextI18nCategoryService.countForAjax();
+        final Long numberOfCategories = cmsTextI18nCategoryService.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfCategories);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfCategories);
         responseDetailsJson.put("aaData", jsonArray);

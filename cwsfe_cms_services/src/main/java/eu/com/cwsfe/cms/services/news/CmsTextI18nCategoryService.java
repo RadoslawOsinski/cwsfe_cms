@@ -28,7 +28,7 @@ public class CmsTextI18nCategoryService {
     }
 
     @Transactional
-    public int countForAjax() {
+    public Long countForAjax() {
         return cmsTextI18nCategoryRepository.countForAjax(sessionFactory.getCurrentSession());
     }
 
@@ -45,5 +45,10 @@ public class CmsTextI18nCategoryService {
     @Transactional
     public void delete(CmsTextI18NCategoriesEntity cmsTextI18nCategory) {
         cmsTextI18nCategoryRepository.delete(sessionFactory.getCurrentSession(), cmsTextI18nCategory);
+    }
+
+    @Transactional
+    public CmsTextI18NCategoriesEntity get(long i18nCategory) {
+        return cmsTextI18nCategoryRepository.get(sessionFactory.getCurrentSession(), i18nCategory);
     }
 }

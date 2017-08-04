@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Radosław Osiński
@@ -28,7 +29,7 @@ public class CmsUsersService {
     }
 
     @Transactional
-    public int countForAjax() {
+    public Long countForAjax() {
         return cmsUsersRepository.countForAjax(sessionFactory.getCurrentSession());
     }
 
@@ -38,7 +39,7 @@ public class CmsUsersService {
     }
 
     @Transactional
-    public CmsUsersEntity getByUsername(String username) {
+    public Optional<CmsUsersEntity> getByUsername(String username) {
         return cmsUsersRepository.getByUsername(sessionFactory.getCurrentSession(), username);
     }
 

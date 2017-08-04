@@ -12,14 +12,14 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'foundation', 'foundatio
             type: 'POST',
             dataType: 'json',
             url: 'updateUserBasicInfo',
-            data: "username=" + username + "&status=" + status + "&id=" + id,
+            data: "userName=" + username + "&status=" + status + "&id=" + id,
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#basicInfoFormValidation").html("<p>Success</p>").show('slow');
                 } else {
                     var errorInfo = "";
-                    for (var i = 0; i < response.result.length; i++) {
-                        errorInfo += "<br>" + (i + 1) + ". " + response.result[i].error;
+                    for (var i = 0; i < response.errorMessages.length; i++) {
+                        errorInfo += "<br>" + (i + 1) + ". " + response.errorMessages[i].error;
                     }
                     $('#basicInfoFormValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');
                 }

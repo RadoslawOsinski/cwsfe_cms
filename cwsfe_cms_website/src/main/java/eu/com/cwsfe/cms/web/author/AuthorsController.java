@@ -73,7 +73,7 @@ public class AuthorsController extends JsonController {
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfAuthors = cmsAuthorsService.countForAjax();
+        final Long numberOfAuthors = cmsAuthorsService.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfAuthors);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfAuthors);
         responseDetailsJson.put("aaData", jsonArray);

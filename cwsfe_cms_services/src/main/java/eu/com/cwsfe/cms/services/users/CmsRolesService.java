@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Radosław Osiński
@@ -23,17 +24,12 @@ public class CmsRolesService {
     }
 
     @Transactional
-    public List<CmsRolesEntity> listUserRoles(long id) {
-        return cmsRolesRepository.listUserRoles(sessionFactory.getCurrentSession(), id);
-    }
-
-    @Transactional
     public List<CmsRolesEntity> list() {
         return cmsRolesRepository.list(sessionFactory.getCurrentSession());
     }
 
     @Transactional
-    public CmsRolesEntity getByCode(String code) {
+    public Optional<CmsRolesEntity> getByCode(String code) {
         return cmsRolesRepository.getByCode(sessionFactory.getCurrentSession(), code);
     }
 
@@ -43,7 +39,7 @@ public class CmsRolesService {
     }
 
     @Transactional
-    public int countForAjax() {
+    public Long countForAjax() {
         return cmsRolesRepository.countForAjax(sessionFactory.getCurrentSession());
     }
 

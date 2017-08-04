@@ -1,6 +1,7 @@
 package eu.com.cwsfe.cms.web.user;
 
-import eu.com.cwsfe.cms.db.users.*;
+import eu.com.cwsfe.cms.db.users.CmsRolesEntity;
+import eu.com.cwsfe.cms.db.users.CmsUsersEntity;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.services.users.CmsRolesService;
 import eu.com.cwsfe.cms.services.users.CmsUserRolesService;
@@ -9,7 +10,6 @@ import eu.com.cwsfe.cms.web.mvc.JsonController;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
@@ -23,10 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -89,13 +86,13 @@ class UsersController extends JsonController {
         for (int i = 0; i < cmsUsers.size(); i++) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("#", iDisplayStart + i + 1);
-            formDetailsJson.put("userName", cmsUsers.get(i).getUsername());
+            formDetailsJson.put("userName", cmsUsers.get(i).getUserName());
             formDetailsJson.put("status", cmsUsers.get(i).getStatus());
             formDetailsJson.put("id", cmsUsers.get(i).getId());
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("sEcho", sEcho);
-        final int numberOfUsers = cmsUsersService.countForAjax();
+        final Long numberOfUsers = cmsUsersService.countForAjax();
         responseDetailsJson.put("iTotalRecords", numberOfUsers);
         responseDetailsJson.put("iTotalDisplayRecords", numberOfUsers);
         responseDetailsJson.put("aaData", jsonArray);
@@ -114,7 +111,7 @@ class UsersController extends JsonController {
         for (CmsUsersEntity cmsUser : cmsUsers) {
             JSONObject formDetailsJson = new JSONObject();
             formDetailsJson.put("id", cmsUser.getId());
-            formDetailsJson.put("userName", cmsUser.getUsername());
+            formDetailsJson.put("userName", cmsUser.getUserName());
             jsonArray.add(formDetailsJson);
         }
         responseDetailsJson.put("data", jsonArray);
@@ -132,10 +129,10 @@ class UsersController extends JsonController {
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
             cmsUser.setPasswordHash(BCrypt.hashpw(cmsUser.getPasswordHash(), BCrypt.gensalt(13)));
-            try {
-                cmsUsersService.getByUsername(cmsUser.getUsername());
+            Optional<CmsUsersEntity> userByUserName = cmsUsersService.getByUsername(cmsUser.getUserName());
+            if (userByUserName.isPresent()) {
                 addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserAlreadyExists"));
-            } catch (EmptyResultDataAccessException e) {
+            } else {
                 cmsUsersService.add(cmsUser);
                 addJsonSuccess(responseDetailsJson);
             }
@@ -202,9 +199,8 @@ class UsersController extends JsonController {
         model.addAttribute("breadcrumbs", getSingleUserBreadcrumbs(locale, id));
         final CmsUsersEntity cmsUser = cmsUsersService.get(id);
         model.addAttribute("cmsUser", cmsUser);
-        cmsUser.setUserRoles(cmsRolesService.listUserRoles(cmsUser.getId()));
         List<Long> userSelectedRoles = new ArrayList<>(5);
-        userSelectedRoles.addAll(cmsUser.getUserRoles().stream().map(CmsRolesEntity::getId).collect(Collectors.toList()));
+        userSelectedRoles.addAll(cmsUserRolesService.listUserRoles(cmsUser.getId()).stream().map(CmsRolesEntity::getId).collect(Collectors.toList()));
         model.addAttribute("userSelectedRoles", userSelectedRoles);
         model.addAttribute("cmsRoles", cmsRolesService.list());
         return "cms/users/SingleUser";
@@ -217,17 +213,7 @@ class UsersController extends JsonController {
         WebRequest webRequest, HttpServletRequest httpServletRequest
     ) {
         String[] userRolesStrings = webRequest.getParameterValues("cmsUserRoles");
-        //todo add transactions!
-        cmsUserRolesService.deleteForUser(cmsUser.getId());
-        if (userRolesStrings != null) {
-            for (String roleIdString : userRolesStrings) {
-                CmsUserRolesEntity cmsUserRole = new CmsUserRolesEntity();
-                cmsUserRole.setCmsUserId(cmsUser.getId());
-                cmsUserRole.setRoleId(Long.parseLong(roleIdString));
-                cmsUserRolesService.add(cmsUserRole);
-            }
-        }
-//        /////////// end transaction
+        cmsUserRolesService.updateUserRoles(cmsUser.getId(), userRolesStrings);
         browseUser(model, locale, cmsUser.getId(), httpServletRequest);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("/users/" + cmsUser.getId(), true, false, false));

@@ -3,6 +3,7 @@
 //import eu.com.cwsfe.cms.RepositoriesTestsConfiguration;
 //import eu.com.cwsfe.cms.db.common.NewDeletedStatus;
 //import eu.com.cwsfe.cms.db.version.DbMigrationManager;
+//import org.hibernate.SessionFactory;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,16 @@
 //    @Autowired
 //    private BlogKeywordsRepository repository;
 //
+//    @Autowired
+//    private SessionFactory sessionFactory;
+//
 //    @Sql(value = "/eu/com/cwsfe/cms/db/blog/blog-keyword-before-test.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(value = "/eu/com/cwsfe/cms/db/blog/blog-keyword-after-test.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 //    @Test
 //    void testCountForAjax() {
 //        //given
 //        //when
-//        Long result = repository.countForAjax();
+//        Long result = repository.countForAjax(sessionFactory.getCurrentSession());
 //
 //        //then
 //        assertNotNull("query should return non negative value", result);
@@ -44,7 +48,7 @@
 //    void testEmptyList() {
 //        //given
 //        //when
-//        List<BlogKeywordsEntity> list = repository.list();
+//        List<BlogKeywordsEntity> list = repository.list(sessionFactory.getCurrentSession());
 //
 //        //then
 //        assertNotNull("Empty results should not return null", list);
@@ -57,7 +61,7 @@
 //    void testNotEmptyList() {
 //        //given
 //        //when
-//        List<BlogKeywordsEntity> list = repository.list();
+//        List<BlogKeywordsEntity> list = repository.list(sessionFactory.getCurrentSession());
 //
 //        //then
 //        assertNotNull("Empty results should not return null", list);
@@ -70,7 +74,7 @@
 //    void testListAjax() {
 //        //given
 //        //when
-//        List<BlogKeywordsEntity> list = repository.listAjax(0, 1);
+//        List<BlogKeywordsEntity> list = repository.listAjax(sessionFactory.getCurrentSession(),0, 1);
 //
 //        //then
 //        assertNotNull("Empty results should not return null", list);
@@ -87,7 +91,7 @@
 //        Long addedId = 100000L;
 //
 //        //when
-//        BlogKeywordsEntity blogKeywordResult = repository.get(addedId);
+//        BlogKeywordsEntity blogKeywordResult = repository.get(sessionFactory.getCurrentSession(), addedId);
 //
 //        //then
 //        assertNotNull(blogKeywordResult);
@@ -104,10 +108,10 @@
 //        blogKeyword.setKeywordName(keywordName);
 //
 //        //when
-//        Long addedId = repository.add(blogKeyword);
+//        Long addedId = repository.add(sessionFactory.getCurrentSession(), blogKeyword);
 //
 //        //then
-//        BlogKeywordsEntity blogKeywordResult = repository.get(addedId);
+//        BlogKeywordsEntity blogKeywordResult = repository.get(sessionFactory.getCurrentSession(), addedId);
 //        assertNotNull(blogKeywordResult);
 //        assertEquals((long) addedId, (long) blogKeywordResult.getId());
 //        assertEquals(keywordName, blogKeywordResult.getKeywordName());
@@ -122,15 +126,15 @@
 //        BlogKeywordsEntity blogKeyword = new BlogKeywordsEntity();
 //        blogKeyword.setKeywordName(keywordName1);
 //        blogKeyword.setStatus(NewDeletedStatus.NEW);
-//        Long addedId = repository.add(blogKeyword);
+//        Long addedId = repository.add(sessionFactory.getCurrentSession(), blogKeyword);
 //        blogKeyword.setId(addedId);
 //        blogKeyword.setKeywordName(keywordName2);
 //
 //        //when
-//        repository.update(blogKeyword);
+//        repository.update(sessionFactory.getCurrentSession(), blogKeyword);
 //
 //        //then
-//        BlogKeywordsEntity blogKeywordResult = repository.get(addedId);
+//        BlogKeywordsEntity blogKeywordResult = repository.get(sessionFactory.getCurrentSession(), addedId);
 //        assertNotNull(blogKeywordResult);
 //        assertEquals((long) addedId, (long) blogKeywordResult.getId());
 //        assertEquals(keywordName2, blogKeywordResult.getKeywordName());
@@ -143,14 +147,14 @@
 //        BlogKeywordsEntity blogKeyword = new BlogKeywordsEntity();
 //        blogKeyword.setKeywordName(keywordName1);
 //        blogKeyword.setStatus(NewDeletedStatus.NEW);
-//        Long addedId = repository.add(blogKeyword);
+//        Long addedId = repository.add(sessionFactory.getCurrentSession(), blogKeyword);
 //        blogKeyword.setId(addedId);
 //
 //        //when
-//        repository.delete(blogKeyword);
+//        repository.delete(sessionFactory.getCurrentSession(), blogKeyword);
 //
 //        //then
-//        BlogKeywordsEntity blogKeywordResult = repository.get(addedId);
+//        BlogKeywordsEntity blogKeywordResult = repository.get(sessionFactory.getCurrentSession(), addedId);
 //        assertNotNull(blogKeywordResult);
 //        assertEquals((long) addedId, (long) blogKeywordResult.getId());
 //        assertEquals(keywordName1, blogKeywordResult.getKeywordName());
@@ -164,15 +168,15 @@
 //        BlogKeywordsEntity blogKeyword = new BlogKeywordsEntity();
 //        blogKeyword.setKeywordName(keywordName1);
 //        blogKeyword.setStatus(NewDeletedStatus.NEW);
-//        Long addedId = repository.add(blogKeyword);
+//        Long addedId = repository.add(sessionFactory.getCurrentSession(), blogKeyword);
 //        blogKeyword.setId(addedId);
-//        repository.delete(blogKeyword);
+//        repository.delete(sessionFactory.getCurrentSession(), blogKeyword);
 //
 //        //when
-//        repository.undelete(blogKeyword);
+//        repository.undelete(sessionFactory.getCurrentSession(), blogKeyword);
 //
 //        //then
-//        BlogKeywordsEntity blogKeywordResult = repository.get(addedId);
+//        BlogKeywordsEntity blogKeywordResult = repository.get(sessionFactory.getCurrentSession(), addedId);
 //        assertNotNull(blogKeywordResult);
 //        assertEquals((long) addedId, (long) blogKeywordResult.getId());
 //        assertEquals(keywordName1, blogKeywordResult.getKeywordName());

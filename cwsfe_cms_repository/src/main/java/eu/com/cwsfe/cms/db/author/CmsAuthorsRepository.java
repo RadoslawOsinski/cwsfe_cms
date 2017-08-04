@@ -15,18 +15,20 @@ import java.util.List;
 @Repository
 public class CmsAuthorsRepository {
 
-    public int countForAjax(Session session) {
+    public Long countForAjax(Session session) {
         Query query = session.getNamedQuery(CmsAuthorsEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
-        return (int) query.getSingleResult();
+        return (Long) query.getSingleResult();
     }
 
     public List<CmsAuthorsEntity> list(Session session) {
         Query query = session.getNamedQuery(CmsAuthorsEntity.LIST);
+        query.setParameter("status", NewDeletedStatus.NEW);
         return query.list();
     }
 
     public List<CmsAuthorsEntity> listAjax(Session session, int offset, int limit) {
         Query query = session.getNamedQuery(CmsAuthorsEntity.LIST);
+        query.setParameter("status", NewDeletedStatus.NEW);
         query.setMaxResults(limit);
         query.setFirstResult(offset);
         return query.getResultList();
@@ -69,13 +71,15 @@ public class CmsAuthorsRepository {
     }
 
     public void delete(Session session, CmsAuthorsEntity cmsAuthor) {
-        cmsAuthor.setStatus(NewDeletedStatus.DELETED);
-        session.update(cmsAuthor);
+        CmsAuthorsEntity cmsAuthorsEntity = session.get(CmsAuthorsEntity.class, cmsAuthor.getId());
+        cmsAuthorsEntity.setStatus(NewDeletedStatus.DELETED);
+        session.update(cmsAuthorsEntity);
     }
 
     public void undelete(Session session, CmsAuthorsEntity cmsAuthor) {
-        cmsAuthor.setStatus(NewDeletedStatus.NEW);
-        session.update(cmsAuthor);
+        CmsAuthorsEntity cmsAuthorsEntity = session.get(CmsAuthorsEntity.class, cmsAuthor.getId());
+        cmsAuthorsEntity.setStatus(NewDeletedStatus.NEW);
+        session.update(cmsAuthorsEntity);
     }
 
 }

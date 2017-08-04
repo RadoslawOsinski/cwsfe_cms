@@ -5,6 +5,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Radoslaw Osinski.
@@ -12,15 +13,9 @@ import java.util.List;
 @Repository
 public class CmsRolesRepository {
 
-    public List<CmsRolesEntity> listUserRoles(Session session, Long userId) {
-        Query query = session.getNamedQuery(CmsRolesEntity.LIST_USER_ROLES);
-        query.setParameter("userId", userId);
-        return query.getResultList();
-    }
-
-    public int countForAjax(Session session) {
+    public Long countForAjax(Session session) {
         Query query = session.getNamedQuery(CmsRolesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
-        return (int) query.getSingleResult();
+        return (Long) query.getSingleResult();
     }
 
     public List<CmsRolesEntity> list(Session session) {
@@ -46,10 +41,10 @@ public class CmsRolesRepository {
         return session.get(CmsRolesEntity.class, id);
     }
 
-    public CmsRolesEntity getByCode(Session session, String roleCode) {
+    public Optional<CmsRolesEntity> getByCode(Session session, String roleCode) {
         Query query = session.getNamedQuery(CmsRolesEntity.GET_BY_CODE);
         query.setParameter("roleCode", roleCode);
-        return (CmsRolesEntity) query.getSingleResult();
+        return (Optional<CmsRolesEntity>) query.uniqueResultOptional();
     }
 
 }

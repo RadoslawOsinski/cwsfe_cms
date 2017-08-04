@@ -11,13 +11,14 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CmsGlobalParamsRepository {
 
-    public int countForAjax(Session session) {
+    public Long countForAjax(Session session) {
         Query query = session.getNamedQuery(CmsGlobalParamsEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
-        return (int) query.getSingleResult();
+        return (Long) query.getSingleResult();
     }
 
     public List<CmsGlobalParamsEntity> list(Session session) {
@@ -52,12 +53,10 @@ public class CmsGlobalParamsRepository {
         return session.get(CmsGlobalParamsEntity.class, id);
     }
 
-    //todo move transactional to service!
-    @Transactional
-    public CmsGlobalParamsEntity getByCode(Session session, String code) {
+    public Optional<CmsGlobalParamsEntity> getByCode(Session session, String code) {
         Query query = session.getNamedQuery(CmsGlobalParamsEntity.GET_BY_CODE);
         query.setParameter("code", code);
-        return (CmsGlobalParamsEntity) query.getSingleResult();
+        return (Optional<CmsGlobalParamsEntity>) query.uniqueResultOptional();
     }
 
     public Long add(Session session, CmsGlobalParamsEntity cmsGlobalParam) {

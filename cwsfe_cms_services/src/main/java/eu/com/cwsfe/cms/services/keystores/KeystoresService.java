@@ -6,6 +6,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  * Created by Radosław Osiński
  */
@@ -21,7 +23,7 @@ public class KeystoresService {
     }
 
     @Transactional
-    public KeystoresEntity getByName(String frontendApplicationKeystore) {
+    public Optional<KeystoresEntity> getByName(String frontendApplicationKeystore) {
         return keystoresRepository.getByName(sessionFactory.getCurrentSession(), frontendApplicationKeystore);
     }
 }

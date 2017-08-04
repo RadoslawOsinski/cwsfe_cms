@@ -28,7 +28,7 @@ public class CmsUserAllowedNetAddressService {
     }
 
     @Transactional
-    public int countForAjax() {
+    public Long countForAjax() {
         return cmsUserAllowedNetAddressRepository.countForAjax(sessionFactory.getCurrentSession());
     }
 

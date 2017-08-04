@@ -21,6 +21,7 @@ configurations {
 dependencies {
     testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.0.1'
     testCompile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '3.0.1'
+    testCompile 'com.codeborne:selenide:' + project.ext.selenide_version
 }
 
 task integration_tests_local(type: Test) {
@@ -47,7 +48,7 @@ jacocoTestReport {
     reports {
         xml.enabled true
         csv.enabled false
-        html.destination "${buildDir}/reports/coverage"
+        html.setDestination(new File("${buildDir}/reports/coverage"))
     }
     executionData = files('build/jacoco/test.exec', 'build/jacoco/integration_tests_local.exec')
 }

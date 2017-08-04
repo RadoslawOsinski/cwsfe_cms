@@ -5,6 +5,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CmsNewsI18nContentsRepository {
@@ -24,11 +25,11 @@ public class CmsNewsI18nContentsRepository {
         return session.get(CmsNewsI18NContentsEntity.class, id);
     }
 
-    public CmsNewsI18NContentsEntity getByLanguageForNews(Session session, Long newsId, Long languageId) {
+    public Optional<CmsNewsI18NContentsEntity> getByLanguageForNews(Session session, Long newsId, Long languageId) {
         Query query = session.getNamedQuery(CmsNewsI18NContentsEntity.GET_BY_LANGUAGE_FOR_NEWS);
         query.setParameter("newsId", newsId);
         query.setParameter("languageId", languageId);
-        return (CmsNewsI18NContentsEntity) query.getSingleResult();
+        return (Optional<CmsNewsI18NContentsEntity>) query.uniqueResultOptional();
     }
 
     public Long add(Session session, CmsNewsI18NContentsEntity cmsNewsI18nContent) {

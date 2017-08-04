@@ -18,6 +18,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.util.Optional;
 
 
 /**
@@ -54,15 +55,20 @@ public class JWTDecoratorService {
      * @return key for reading JWT
      */
     private Key getFrontendWebsitePublicKey() {
-        try {
-            KeyStore keystore = KeyStore.getInstance("JKS");
-            KeystoresEntity frontendApplicationKeystore = keystoresService.getByName("frontendApplicationKeystore");
-            keystore.load(new BufferedInputStream(new ByteArrayInputStream(frontendApplicationKeystore.getContent())), environment.getRequiredProperty("keystore.password").toCharArray());
-            final Certificate frontendWebsiteCertificate = keystore.getCertificate(environment.getRequiredProperty("keystore.frontendWebsiteCertificate"));
-            return frontendWebsiteCertificate.getPublicKey();
-        } catch (CertificateException | NoSuchAlgorithmException | IOException | KeyStoreException e) {
-            LOGGER.error("Failed to retrieve frontend website key from domain system keystore.");
+        Optional<KeystoresEntity> frontendApplicationKeystore = keystoresService.getByName("frontendApplicationKeystore");
+        if (!frontendApplicationKeystore.isPresent()) {
+            LOGGER.error("Missing configuration for frontendApplicationKeystore");
             return null;
+        } else {
+            try {
+                KeyStore keystore = KeyStore.getInstance("JKS");
+                keystore.load(new BufferedInputStream(new ByteArrayInputStream(frontendApplicationKeystore.get().getContent())), environment.getRequiredProperty("keystore.password").toCharArray());
+                final Certificate frontendWebsiteCertificate = keystore.getCertificate(environment.getRequiredProperty("keystore.frontendWebsiteCertificate"));
+                return frontendWebsiteCertificate.getPublicKey();
+            } catch (CertificateException | NoSuchAlgorithmException | IOException | KeyStoreException e) {
+                LOGGER.error("Failed to retrieve frontend website key from domain system keystore.");
+                return null;
+            }
         }
     }
 

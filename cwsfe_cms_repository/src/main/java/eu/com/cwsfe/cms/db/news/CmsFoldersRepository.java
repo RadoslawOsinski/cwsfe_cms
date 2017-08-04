@@ -5,13 +5,14 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CmsFoldersRepository {
 
-    public int countForAjax(Session session) {
+    public Long countForAjax(Session session) {
         Query query = session.getNamedQuery(CmsFoldersEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
-        return (int) query.getSingleResult();
+        return (Long) query.getSingleResult();
     }
 
     public List<CmsFoldersEntity> list(Session session) {
@@ -37,10 +38,10 @@ public class CmsFoldersRepository {
         return session.get(CmsFoldersEntity.class, id);
     }
 
-    public CmsFoldersEntity getByFolderName(Session session, String folderName) {
+    public Optional<CmsFoldersEntity> getByFolderName(Session session, String folderName) {
         Query query = session.getNamedQuery(CmsFoldersEntity.GET_BY_FOLDER_NAME);
         query.setParameter("folderName", folderName);
-        return (CmsFoldersEntity) query.getSingleResult();
+        return (Optional<CmsFoldersEntity>) query.uniqueResultOptional();
     }
 
     public Long add(Session session, CmsFoldersEntity cmsFolder) {
@@ -55,13 +56,15 @@ public class CmsFoldersRepository {
     }
 
     public void delete(Session session, CmsFoldersEntity cmsFolder) {
-        cmsFolder.setStatus("DELETED");
-        session.update(cmsFolder);
+        CmsFoldersEntity cmsFoldersEntity = session.get(CmsFoldersEntity.class, cmsFolder.getId());
+        cmsFoldersEntity.setStatus("DELETED");
+        session.update(cmsFoldersEntity);
     }
 
     public void undelete(Session session, CmsFoldersEntity cmsFolder) {
-        cmsFolder.setStatus("NEW");
-        session.update(cmsFolder);
+        CmsFoldersEntity cmsFoldersEntity = session.get(CmsFoldersEntity.class, cmsFolder.getId());
+        cmsFoldersEntity.setStatus("NEW");
+        session.update(cmsFoldersEntity);
     }
 
 }

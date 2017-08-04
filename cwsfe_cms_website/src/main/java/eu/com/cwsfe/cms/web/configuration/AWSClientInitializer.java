@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import javax.annotation.PostConstruct;
+import java.util.Optional;
 
 /**
  * @author Radoslaw Osinski
@@ -38,16 +39,25 @@ public class AWSClientInitializer {
     @Bean
     public AmazonS3 getAmazonS3() {
         AmazonS3 s3client = new AmazonS3Client(new SystemPropertiesCredentialsProvider());
-        s3client.setRegion(Region.getRegion(Regions.valueOf(cmsGlobalParamsService.getByCode("AWS_IMAGES_BUCKET_REGION").getValue())));
+        Optional<CmsGlobalParamsEntity> awsImagesBucketRegion = cmsGlobalParamsService.getByCode("AWS_IMAGES_BUCKET_REGION");
+        if (awsImagesBucketRegion.isPresent()) {
+            s3client.setRegion(Region.getRegion(Regions.valueOf(awsImagesBucketRegion.get().getValue())));
+        } else {
+            LOGGER.error("Missing configuration for AWS_IMAGES_BUCKET_REGION");
+        }
         return s3client;
     }
 
     @PostConstruct
     public void initializeRootBucket() {
-        CmsGlobalParamsEntity rootBucketName = cmsGlobalParamsService.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
+        Optional<CmsGlobalParamsEntity> rootBucketName = cmsGlobalParamsService.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
         try {
-            if (!getAmazonS3().doesBucketExist(rootBucketName.getValue())) {
-                getAmazonS3().createBucket(new CreateBucketRequest(rootBucketName.getValue()));
+            if (rootBucketName.isPresent()) {
+                if (!getAmazonS3().doesBucketExist(rootBucketName.get().getValue())) {
+                    getAmazonS3().createBucket(new CreateBucketRequest(rootBucketName.get().getValue()));
+                }
+            } else {
+                LOGGER.error("Missing configuration for AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME parameter");
             }
         } catch (AmazonServiceException ase) {
             LOGGER.error("Problem with creating root cwsfe cms bucket", ase);

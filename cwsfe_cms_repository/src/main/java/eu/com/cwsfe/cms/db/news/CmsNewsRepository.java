@@ -1,97 +1,76 @@
 package eu.com.cwsfe.cms.db.news;
 
+import eu.com.cwsfe.cms.db.author.CmsAuthorsEntity;
+import eu.com.cwsfe.cms.db.common.NewDeletedStatus;
+import eu.com.cwsfe.cms.db.common.PublishedHiddenStatus;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.Query;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class CmsNewsRepository {
 
-//    public int getTotalNumberNotDeleted(Session session) {
-//        Query query = session.getNamedQuery(CmsNewsEntity.COUNT_FOR_AJAX_N);
-//        return (Long) query.uniqueResult();
-//
-//        String query = "SELECT count(*) FROM CMS_NEWS WHERE status <> 'D'";
-//        return jdbcTemplate.queryForObject(query, Integer.class);
-//    }
+    public Long getTotalNumberNotDeleted(Session session) {
+        Query query = session.getNamedQuery(CmsNewsEntity.GET_TOTAL_NUMBER_NOT_DELETED);
+        query.setParameter("status", PublishedHiddenStatus.DELETED.name());
+        return (Long) query.getSingleResult();
+    }
 
-//    public List<Object[]> searchByAjax(
-//        Session session, int iDisplayStart, int iDisplayLength, Integer searchAuthorId, String searchNewsCode
-//    ) {
-//        int numberOfSearchParams = 0;
-//        String additionalQuery = "";
-//        List<Object> additionalParams = new ArrayList<>(5);
-//        if ((searchNewsCode != null) && !searchNewsCode.isEmpty()) {
-//            ++numberOfSearchParams;
-//            additionalQuery += " and lower(news_code) like lower(?) ";
-//            additionalParams.add("%" + searchNewsCode + "%");
-//        }
-//        if (searchAuthorId != null) {
-//            ++numberOfSearchParams;
-//            additionalQuery += " and author_id = ? ";
-//            additionalParams.add(searchAuthorId);
-//        }
-//
-//        numberOfSearchParams++;
-//        additionalParams.add(iDisplayLength);
-//        numberOfSearchParams++;
-//        additionalParams.add(iDisplayStart);
-//        Object[] dbParams = new Object[numberOfSearchParams];
-//        for (int i = 0; i < numberOfSearchParams; ++i) {
-//            dbParams[i] = additionalParams.get(i);
-//        }
-//        String query =
-//            "select " +
-//                " cn.id, (first_name || ' ' || last_name) as author, news_type_id, folder_id, creation_date, news_code, cn.status" +
-//                " from CMS_NEWS cn left join CMS_AUTHORS ca ON cn.author_id = ca.id " +
-//                " where cn.status <> 'D' and ca.status <> 'D' " + additionalQuery +
-//                " and 1 = 1" +
-//                " order by creation_date desc" +
-//                " limit ? offset ?";
-//        return jdbcTemplate.query(query, dbParams,
-//            (resultSet, i) -> {
-//                Object[] o = new Object[7];
-//                o[0] = resultSet.getInt("ID");
-//                o[1] = resultSet.getString("AUTHOR");
-//                o[2] = resultSet.getInt("NEWS_TYPE_ID");
-//                o[3] = resultSet.getInt("FOLDER_ID");
-//                o[4] = resultSet.getDate("CREATION_DATE");
-//                o[5] = resultSet.getString("NEWS_CODE");
-//                o[6] = resultSet.getString("STATUS");
-//                return o;
-//            });
-//    }
-//
-//    public int searchByAjaxCount(Session session, Integer searchAuthorId, String searchNewsCode) {
-//        int numberOfSearchParams = 0;
-//        String additionalQuery = "";
-//        List<Object> additionalParams = new ArrayList<>(5);
-//        if ((searchNewsCode != null) && !searchNewsCode.isEmpty()) {
-//            ++numberOfSearchParams;
-//            additionalQuery += " and lower(news_code) like lower(?) ";
-//            additionalParams.add("%" + searchNewsCode + "%");
-//        }
-//        if (searchAuthorId != null) {
-//            ++numberOfSearchParams;
-//            additionalQuery += " and author_id = ? ";
-//            additionalParams.add(searchAuthorId);
-//        }
-//
-//        Object[] dbParamsForCount = new Object[numberOfSearchParams];
-//        for (int i = 0; i < numberOfSearchParams; ++i) {
-//            dbParamsForCount[i] = additionalParams.get(i);
-//        }
-//        String query =
-//            "select count(*) from (" +
-//                "select " +
-//                " id, author_id, news_type_id, folder_id, creation_date, news_code, status" +
-//                " from CMS_NEWS" +
-//                " where status <> 'D' " + additionalQuery +
-//                " and 1 = 1" +
-//                " order by creation_date desc" +
-//                ") as results";
-//        return jdbcTemplate.queryForObject(query, dbParamsForCount, Integer.class);
-//    }
-//
+    public List<SearchedNewsDTO> searchByAjax(
+        Session session, int iDisplayStart, int iDisplayLength, Integer searchAuthorId, String searchNewsCode
+    ) {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<SearchedNewsDTO> query = builder.createQuery(SearchedNewsDTO.class);
+        Root<CmsNewsEntity> news = query.from(CmsNewsEntity.class);
+        Join<CmsNewsEntity, CmsAuthorsEntity> author = news.join("authorMapping");
+
+        query.select(
+            builder.construct(SearchedNewsDTO.class,
+                news.get("id"),
+                builder.concat(author.get("firstName"), builder.concat(" ", author.get("lastName"))).alias("author"),
+                news.get("newsTypeId"),
+                news.get("newsFolderId").alias("folderId"),
+                news.get("creationDate"),
+                news.get("newsCode"),
+                news.get("status")
+            )
+        );
+        query.where(builder.and(
+            builder.not(builder.equal(news.get("status"), "DELETED"))),
+            builder.not(builder.equal(author.get("status"), NewDeletedStatus.DELETED)),
+            builder.like(builder.lower(news.get("newsCode")), "%" + searchNewsCode.toLowerCase() + "%")
+        );
+
+        List<Order> orders = new ArrayList<>();
+        orders.add(builder.asc(news.get("creationDate")));
+        query.orderBy(orders);
+
+        return session.createQuery(query)
+            .setMaxResults(iDisplayLength)
+            .setFirstResult(iDisplayStart)
+            .list();
+    }
+
+    public Long searchByAjaxCount(Session session, Integer searchAuthorId, String searchNewsCode) {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Long> query = builder.createQuery(Long.class);
+        Root<CmsNewsEntity> news = query.from(CmsNewsEntity.class);
+        Join<CmsNewsEntity, CmsAuthorsEntity> author = news.join("authorMapping");
+
+        query.select(builder.count(news));
+        query.where(builder.and(
+            builder.not(builder.equal(news.get("status"), "DELETED"))),
+            builder.not(builder.equal(author.get("status"), NewDeletedStatus.DELETED)),
+            builder.like(builder.lower(news.get("newsCode")), "%" + searchNewsCode.toLowerCase() + "%")
+        );
+
+        return session.createQuery(query).getSingleResult();
+    }
+
 //    public List<CmsNewsEntity> listAll(Session session) {
 //        Query query = session.getNamedQuery(CmsNewsEntity.LIST_N);
 //        return query.getResultList();
@@ -149,7 +128,8 @@ public class CmsNewsRepository {
 
     public void publish(Session session, CmsNewsEntity newsPost) {
         newsPost.setStatus("PUBLISHED");
-        session.update(newsPost);    }
+        session.update(newsPost);
+    }
 
 //    public List<Object[]> listByFolderLangAndNewsWithPaging(Session session, Integer newsFolderId, Long languageId, String newsType, int newsPerPage, int offset) {
 //        Object[] dbParams = new Object[6];

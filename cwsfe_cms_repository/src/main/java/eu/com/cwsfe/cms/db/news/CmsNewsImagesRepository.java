@@ -5,18 +5,19 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CmsNewsImagesRepository {
 
-    public int getTotalNumberNotDeleted(Session session) {
+    public Long getTotalNumberNotDeleted(Session session) {
         Query query = session.getNamedQuery(CmsNewsImagesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
-        return (int) query.getSingleResult();
+        return (Long) query.getSingleResult();
     }
 
-    public int countForAjax(Session session) {
+    public Long countForAjax(Session session) {
         Query query = session.getNamedQuery(CmsNewsImagesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
-        return (int) query.getSingleResult();
+        return (Long) query.getSingleResult();
     }
 
     public List<CmsNewsImagesEntity> searchByAjaxWithoutContent(Session session, int iDisplayStart, int iDisplayLength, Long newsId) {
@@ -27,10 +28,10 @@ public class CmsNewsImagesRepository {
         return query.getResultList();
     }
 
-    public int searchByAjaxCountWithoutContent(Session session, Long newsId) {
+    public Long searchByAjaxCountWithoutContent(Session session, Long newsId) {
         Query query = session.getNamedQuery(CmsNewsImagesEntity.COUNT_TOTAL_NUMBER_NOT_DELETED_QUERY);
         query.setParameter("newsId", newsId);
-        return (int) query.getSingleResult();
+        return (Long) query.getSingleResult();
     }
 
     public CmsNewsImagesEntity getWithContent(Session session, Long id) {
@@ -59,10 +60,10 @@ public class CmsNewsImagesRepository {
         return query.getResultList();
     }
 
-    public CmsNewsImagesEntity getThumbnailForNews(Session session, Long newsId) {
+    public Optional<CmsNewsImagesEntity> getThumbnailForNews(Session session, Long newsId) {
         Query query = session.getNamedQuery(CmsNewsImagesEntity.GET_THUBNAIL_FOR_NEWS);
         query.setParameter("newsId", newsId);
-        return (CmsNewsImagesEntity) query.getSingleResult();
+        return (Optional<CmsNewsImagesEntity>) query.uniqueResultOptional();
     }
 
     public CmsNewsImagesEntity get(Session session, Long id) {

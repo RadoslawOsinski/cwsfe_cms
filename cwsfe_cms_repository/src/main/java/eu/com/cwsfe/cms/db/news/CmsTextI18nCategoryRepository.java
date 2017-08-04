@@ -9,9 +9,9 @@ import java.util.List;
 @Repository
 public class CmsTextI18nCategoryRepository {
 
-    public int countForAjax(Session session) {
+    public Long countForAjax(Session session) {
         Query query = session.getNamedQuery(CmsTextI18NCategoriesEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
-        return (int) query.getSingleResult();
+        return (Long) query.getSingleResult();
     }
 
     public List<CmsTextI18NCategoriesEntity> list(Session session) {
@@ -49,13 +49,15 @@ public class CmsTextI18nCategoryRepository {
     }
 
     public void delete(Session session, CmsTextI18NCategoriesEntity cmsTextI18nCategory) {
-        cmsTextI18nCategory.setStatus("DELETED");
-        session.update(cmsTextI18nCategory);
+        CmsTextI18NCategoriesEntity cmsTextI18NCategoriesEntity = session.get(CmsTextI18NCategoriesEntity.class, cmsTextI18nCategory.getId());
+        cmsTextI18NCategoriesEntity.setStatus("DELETED");
+        session.update(cmsTextI18NCategoriesEntity);
     }
 
     public void undelete(Session session, CmsTextI18NCategoriesEntity cmsTextI18nCategory) {
-        cmsTextI18nCategory.setStatus("NEW");
-        session.update(cmsTextI18nCategory);
+        CmsTextI18NCategoriesEntity cmsTextI18NCategoriesEntity = session.get(CmsTextI18NCategoriesEntity.class, cmsTextI18nCategory.getId());
+        cmsTextI18NCategoriesEntity.setStatus("NEW");
+        session.update(cmsTextI18NCategoriesEntity);
     }
 
 }

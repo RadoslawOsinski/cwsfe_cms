@@ -1,6 +1,6 @@
 //package eu.com.cwsfe.cms.web.news;
 //
-//import eu.com.cwsfe.cms.db.news.CmsNewsI18nContentStatus;
+//import eu.com.cwsfe.cms.db.common.PublishedHiddenStatus;
 //import org.junit.Before;
 //import org.junit.Ignore;
 //import org.junit.Test;
@@ -197,7 +197,7 @@
 //        cmsNewsI18nContent.setNewsTitle(newsTitle);
 //        cmsNewsI18nContent.setNewsShortcut(newsShortcut);
 //        cmsNewsI18nContent.setNewsDescription(newsDescription);
-//        cmsNewsI18nContent.setStatus(CmsNewsI18nContentStatus.NEW);
+//        cmsNewsI18nContent.setStatus(PublishedHiddenStatus.NEW);
 //        when(cmsNewsI18nContentsDAO.getByLanguageForNews(anyLong(), anyLong())).thenReturn(cmsNewsI18nContent);
 //
 //        ResultActions resultActions = mockMvc.perform(get("/news/1/2")).andExpect(status().isOk());
@@ -209,7 +209,7 @@
 //            .andExpect(jsonPath("$.data.newsTitle").value(newsTitle))
 //            .andExpect(jsonPath("$.data.newsShortcut").value(newsShortcut))
 //            .andExpect(jsonPath("$.data.newsDescription").value(newsDescription))
-//            .andExpect(jsonPath("$.data.status").value(CmsNewsI18nContentStatus.NEW.name()));
+//            .andExpect(jsonPath("$.data.status").value(PublishedHiddenStatus.NEW.name()));
 //
 //        verify(cmsNewsI18nContentsDAO, times(1)).getByLanguageForNews(anyLong(), anyLong());
 //        verifyNoMoreInteractions(cmsNewsDAO);

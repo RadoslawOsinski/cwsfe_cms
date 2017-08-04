@@ -76,7 +76,7 @@ public class CmsNewsI18NContentsEntity {
     }
 
     @Basic
-    @Column(name = "news_shortcut", nullable = true, length = -1)
+    @Column(name = "news_shortcut", nullable = true)
     public String getNewsShortcut() {
         return newsShortcut;
     }
@@ -86,7 +86,7 @@ public class CmsNewsI18NContentsEntity {
     }
 
     @Basic
-    @Column(name = "news_description", nullable = true, length = -1)
+    @Column(name = "news_description", nullable = true)
     public String getNewsDescription() {
         return newsDescription;
     }
@@ -96,7 +96,7 @@ public class CmsNewsI18NContentsEntity {
     }
 
     @Basic
-    @Column(name = "status", nullable = false, length = -1)
+    @Column(name = "status", nullable = false)
     public String getStatus() {
         return status;
     }

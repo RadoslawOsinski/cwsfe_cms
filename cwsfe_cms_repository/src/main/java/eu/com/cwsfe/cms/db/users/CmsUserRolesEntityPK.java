@@ -13,6 +13,9 @@ import java.io.Serializable;
  * Created by Radoslaw Osinski.
  */
 public class CmsUserRolesEntityPK implements Serializable {
+
+    private static final long serialVersionUID = -7831247383748939555L;
+
     private long cmsUserId;
     private long roleId;
 

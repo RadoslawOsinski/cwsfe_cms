@@ -9,9 +9,9 @@ import java.util.List;
 @Repository
 public class CmsUserAllowedNetAddressRepository {
 
-    public int countForAjax(Session session) {
+    public Long countForAjax(Session session) {
         Query query = session.getNamedQuery(CmsUserAllowedNetAddressEntity.TOTAL_NUMBER_NOT_DELETED_QUERY);
-        return (int) query.getSingleResult();
+        return (Long) query.getSingleResult();
     }
 
     public List<CmsUserAllowedNetAddressEntity> listAjax(Session session, int offset, int limit) {

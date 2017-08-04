@@ -142,7 +142,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
             type: 'POST',
             dataType: 'json',
             url: 'addCmsTextI18n',
-            data: "langId=" + viewModel.translationViewModel.searchLanguageId + "&i18nCategory=" + viewModel.translationViewModel.searchCategoryId + "&i18nKey=" + viewModel.translationViewModel.key() + "&i18nText=" + viewModel.translationViewModel.text(),
+            data: "langId=" + viewModel.translationViewModel.searchLanguageId + "&i18nCategory=" + viewModel.translationViewModel.searchCategoryId + "&i18NKey=" + viewModel.translationViewModel.key() + "&i18NText=" + viewModel.translationViewModel.text(),
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                     $("#cmsTextI18nList").dataTable().fnDraw();

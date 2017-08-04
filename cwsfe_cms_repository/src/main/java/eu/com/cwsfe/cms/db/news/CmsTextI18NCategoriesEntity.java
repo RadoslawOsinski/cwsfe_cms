@@ -52,7 +52,7 @@ public class CmsTextI18NCategoriesEntity {
     }
 
     @Basic
-    @Column(name = "status", nullable = false, length = -1)
+    @Column(name = "status", nullable = false)
     public String getStatus() {
         return status;
     }

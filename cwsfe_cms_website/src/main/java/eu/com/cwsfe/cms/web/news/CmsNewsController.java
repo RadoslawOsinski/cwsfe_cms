@@ -2,23 +2,25 @@ package eu.com.cwsfe.cms.web.news;
 
 import eu.com.cwsfe.cms.db.news.CmsNewsEntity;
 import eu.com.cwsfe.cms.db.news.CmsNewsI18NContentsEntity;
+import eu.com.cwsfe.cms.db.common.PublishedHiddenStatus;
+import eu.com.cwsfe.cms.db.news.SearchedNewsDTO;
 import eu.com.cwsfe.cms.services.author.CmsAuthorsService;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.services.i18n.CmsLanguagesService;
-import eu.com.cwsfe.cms.services.news.CmsFoldersService;
-import eu.com.cwsfe.cms.services.news.CmsNewsI18nContentsService;
-import eu.com.cwsfe.cms.services.news.CmsNewsService;
-import eu.com.cwsfe.cms.services.news.NewsTypesService;
+import eu.com.cwsfe.cms.services.news.*;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.*;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +28,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -107,29 +111,24 @@ public class CmsNewsController extends JsonController {
                 LOGGER.error("Search author id is not a number: {}", searchAuthorIdText);
             }
         }
-//        List<Object[]> dbList = cmsNewsService.searchByAjax(iDisplayStart, iDisplayLength, searchAuthorId, searchNewsCode);
-//        Integer dbListDisplayRecordsSize = cmsNewsService.searchByAjaxCount(searchAuthorId, searchNewsCode);
+        List<SearchedNewsDTO> dbList = cmsNewsService.searchByAjax(iDisplayStart, iDisplayLength, searchAuthorId, searchNewsCode);
+        Long dbListDisplayRecordsSize = cmsNewsService.searchByAjaxCount(searchAuthorId, searchNewsCode);
         JSONObject responseDetailsJson = new JSONObject();
-//        JSONArray jsonArray = new JSONArray();
-//        for (int i = 0; i < dbList.size(); i++) {
-//            JSONObject formDetailsJson = new JSONObject();
-//            formDetailsJson.put("#", iDisplayStart + i + 1);
-//            final Object[] objects = dbList.get(i);
-//            if (objects[1] == null || ((String) objects[1]).isEmpty()) {
-//                formDetailsJson.put("author", "---");
-//            } else {
-//                formDetailsJson.put("author", objects[1]);
-//            }
-//            formDetailsJson.put("newsCode", objects[5]);
-//            //todo reconsider time management
-//            formDetailsJson.put("creationDate", ((java.sql.Date) objects[4]).toLocalDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-//            formDetailsJson.put("id", objects[0]);
-//            jsonArray.add(formDetailsJson);
-//        }
-//        responseDetailsJson.put("sEcho", sEcho);
-//        responseDetailsJson.put("iTotalRecords", cmsNewsService.getTotalNumberNotDeleted());
-//        responseDetailsJson.put("iTotalDisplayRecords", dbListDisplayRecordsSize);
-//        responseDetailsJson.put("aaData", jsonArray);
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < dbList.size(); i++) {
+            JSONObject formDetailsJson = new JSONObject();
+            formDetailsJson.put("#", iDisplayStart + i + 1);
+            final SearchedNewsDTO objects = dbList.get(i);
+            formDetailsJson.put("author", (objects.getAuthor() == null || objects.getAuthor().isEmpty()) ? "---" : objects.getAuthor());
+            formDetailsJson.put("newsCode", objects.getNewsCode());
+            formDetailsJson.put("creationDate", objects.getCreationDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+            formDetailsJson.put("id", objects.getId());
+            jsonArray.add(formDetailsJson);
+        }
+        responseDetailsJson.put("sEcho", sEcho);
+        responseDetailsJson.put("iTotalRecords", cmsNewsService.getTotalNumberNotDeleted());
+        responseDetailsJson.put("iTotalDisplayRecords", dbListDisplayRecordsSize);
+        responseDetailsJson.put("aaData", jsonArray);
         return responseDetailsJson.toString();
     }
 
@@ -145,8 +144,7 @@ public class CmsNewsController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "newsCode", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsCodeMustBeSet"));
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            //todo reconsider time management
-//            cmsNews.setCreationDate(new Date().toInstant());
+            cmsNews.setCreationDate(ZonedDateTime.now());
             cmsNewsService.add(cmsNews);
             addJsonSuccess(responseDetailsJson);
         } else {
@@ -201,7 +199,7 @@ public class CmsNewsController extends JsonController {
         model.addAttribute("cmsNews", cmsNews);
         model.addAttribute("cmsAuthor", cmsAuthorsService.get(cmsNews.getAuthorId()));
         model.addAttribute("newsType", newsTypesService.get(cmsNews.getNewsTypeId()));
-//        model.addAttribute("newsFolder", cmsFoldersService.get(cmsNews.getNewsFolderId()));
+        model.addAttribute("newsFolder", cmsFoldersService.get(cmsNews.getNewsFolderId()));
         return "cms/news/SingleNews";
     }
 
@@ -217,22 +215,23 @@ public class CmsNewsController extends JsonController {
         }
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
-            CmsNewsI18NContentsEntity cmsNewsI18nContent = cmsNewsI18nContentsService.getByLanguageForNews(newsId, langId);
-            if (cmsNewsI18nContent == null) {
-                cmsNewsI18nContent = new CmsNewsI18NContentsEntity();
-                cmsNewsI18nContent.setNewsId(newsId);
-                cmsNewsI18nContent.setLanguageId(langId);
-                cmsNewsI18nContent.setNewsTitle("");
-                cmsNewsI18nContent.setNewsShortcut("");
-                cmsNewsI18nContent.setNewsDescription("");
-//                cmsNewsI18nContent.setStatus(CmsNewsI18nContentStatus.HIDDEN);
+            Optional<CmsNewsI18NContentsEntity> cmsNewsI18nContent = cmsNewsI18nContentsService.getByLanguageForNews(newsId, langId);
+            if (!cmsNewsI18nContent.isPresent()) {
+                CmsNewsI18NContentsEntity newCmsNewsI18nContent = new CmsNewsI18NContentsEntity();
+                newCmsNewsI18nContent.setNewsId(newsId);
+                newCmsNewsI18nContent.setLanguageId(langId);
+                newCmsNewsI18nContent.setNewsTitle("");
+                newCmsNewsI18nContent.setNewsShortcut("");
+                newCmsNewsI18nContent.setNewsDescription("");
+                newCmsNewsI18nContent.setStatus(PublishedHiddenStatus.HIDDEN.name());
+                cmsNewsI18nContent = Optional.of(newCmsNewsI18nContent);
             }
             addJsonSuccess(responseDetailsJson);
             JSONObject data = new JSONObject();
-            data.put("newsTitle", cmsNewsI18nContent.getNewsTitle());
-            data.put("newsShortcut", cmsNewsI18nContent.getNewsShortcut());
-            data.put("newsDescription", cmsNewsI18nContent.getNewsDescription());
-            data.put("status", cmsNewsI18nContent.getStatus());
+            data.put("newsTitle", cmsNewsI18nContent.get().getNewsTitle());
+            data.put("newsShortcut", cmsNewsI18nContent.get().getNewsShortcut());
+            data.put("newsDescription", cmsNewsI18nContent.get().getNewsDescription());
+            data.put("status", cmsNewsI18nContent.get().getStatus());
             responseDetailsJson.put("data", data);
         } else {
             prepareErrorResponse(result, responseDetailsJson);
@@ -257,7 +256,7 @@ public class CmsNewsController extends JsonController {
     @ResponseBody
     public String updateNewsI18nContent(
         @ModelAttribute(value = "cmsNewsI18nContent") CmsNewsI18NContentsEntity cmsNewsI18nContent,
-        BindingResult result, ModelMap model, Locale locale, HttpServletRequest httpServletRequest
+        BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "newsId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "languageId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet"));
@@ -269,19 +268,15 @@ public class CmsNewsController extends JsonController {
         if (cmsNewsI18nContent.getNewsDescription() != null) {
             cmsNewsI18nContent.setNewsDescription(cmsNewsI18nContent.getNewsDescription().trim());
         }
-        CmsNewsI18NContentsEntity existingI18nContent;
+        Optional<CmsNewsI18NContentsEntity> existingI18nContent;
         JSONObject responseDetailsJson = new JSONObject();
         if (!result.hasErrors()) {
+            existingI18nContent = cmsNewsI18nContentsService.getByLanguageForNews(cmsNewsI18nContent.getNewsId(), cmsNewsI18nContent.getLanguageId());
             try {
-                existingI18nContent = cmsNewsI18nContentsService.getByLanguageForNews(cmsNewsI18nContent.getNewsId(), cmsNewsI18nContent.getLanguageId());
-            } catch (EmptyResultDataAccessException e) {
-                existingI18nContent = null;
-            }
-            try {
-                if (existingI18nContent == null) {
+                if (!existingI18nContent.isPresent()) {
                     cmsNewsI18nContentsService.add(cmsNewsI18nContent);
                 } else {
-                    cmsNewsI18nContent.setId(existingI18nContent.getId());
+                    cmsNewsI18nContent.setId(existingI18nContent.get().getId());
                     cmsNewsI18nContentsService.updateContentWithStatus(cmsNewsI18nContent);
                 }
                 addJsonSuccess(responseDetailsJson);
