@@ -45,6 +45,8 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-context', version: project.ext.spring_version
     compile group: 'org.springframework', name: 'spring-aop', version: project.ext.spring_version
     compile group: 'org.springframework', name: 'spring-jms', version: project.ext.spring_version
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: project.ext.swagger_version
+    runtimeOnly group: 'io.springfox', name: 'springfox-swagger-ui', version: project.ext.swagger_version
     compile group: 'javax.ejb', name: 'ejb-api', version: project.ext.javax_ejb_version
 //    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: project.ext.old_servlet_api_version

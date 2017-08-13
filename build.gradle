@@ -111,7 +111,7 @@ subprojects {
         hibernate_jpa2_api_version = '1.0.0.Final'
         hibernate_core_version = '5.2.10.Final'
         hibernate_validator_version = '6.0.1.Final'
-        hazelcast_hibernate52_version = '1.2.1'
+        hazelcast_hibernate52_version = '1.2.2'
         hazelcast_version = '3.8.2'
         modelmapper_version = '1.1.0'
         mockito_version = '2.8.47'
