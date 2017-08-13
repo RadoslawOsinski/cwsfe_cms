@@ -17,6 +17,7 @@ apply plugin: 'org.junit.platform.gradle.plugin'
 
 version = project.ext.project_version
 group = "eu.com.cwsfe.cms"
+ext.moduleName = 'eu.com.cwsfe.cms.web'
 compileJava.options.encoding = 'UTF-8'
 
 configurations {
@@ -93,10 +94,19 @@ war {
 
 def gitCommitHash = "git rev-parse HEAD".execute().text.trim();
 
+compileJava {
+    inputs.property("moduleName", moduleName)
+    options.compilerArgs += [
+        "--module-path", classpath.asPath
+    ]
+}
+
 war.archiveName = 'CWSFE_CMS-' + version + '.war';
 war {
+    inputs.property("moduleName", moduleName)
     manifest {
         attributes(
+            'Automatic-Module-Name': moduleName,
             'Specification-Title': project.name,
             'Specification-Version': version,
             'build-number': System.getenv().BUILD_NUMBER == null ? 'local build' : System.getenv().BUILD_NUMBER,

@@ -1,9 +1,9 @@
 package eu.com.cwsfe.cms.db.version;
 
 import org.flywaydb.core.Flyway;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 /**
@@ -12,7 +12,7 @@ import javax.sql.DataSource;
  * Created by Radosław Osiński
  */
 @Component
-public class DbMigrationManager {
+public class DbMigrationManager implements InitializingBean {
 
     private final DataSource cwsfeCmsDataSource;
 
@@ -20,7 +20,6 @@ public class DbMigrationManager {
         this.cwsfeCmsDataSource = cwsfeCmsDataSource;
     }
 
-    @PostConstruct
     public void updateCmsDatabaseSchema() {
         Flyway flyway = new Flyway();
         flyway.setDataSource(cwsfeCmsDataSource);
@@ -29,4 +28,8 @@ public class DbMigrationManager {
         flyway.repair();
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        updateCmsDatabaseSchema();
+    }
 }

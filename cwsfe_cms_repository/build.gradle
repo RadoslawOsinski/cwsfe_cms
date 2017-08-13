@@ -17,7 +17,16 @@ apply plugin: 'org.junit.platform.gradle.plugin'
 
 version = project.ext.project_version
 group = "eu.com.cwsfe.cms"
+ext.moduleName = 'eu.com.cwsfe.cms.db'
 compileJava.options.encoding = 'UTF-8'
+
+configurations.all {
+    exclude group: 'org.jboss.spec.javax.transaction', module: 'jboss-transaction-api_1.2_spec'
+}
+
+configurations {
+    tests
+}
 
 dependencies {
     compile group: 'org.springframework', name: 'spring-tx', version: project.ext.spring_version
@@ -55,10 +64,19 @@ dependencies {
 
 def gitCommitHash = "git rev-parse HEAD".execute().text.trim();
 
+compileJava {
+    inputs.property("moduleName", moduleName)
+    options.compilerArgs += [
+        "--module-path", classpath.asPath
+    ]
+}
+
 jar.archiveName = "CWSFE_CMS_REPOSITORY-" + version + ".jar"
 jar {
+    inputs.property("moduleName", moduleName)
     manifest {
         attributes(
+            'Automatic-Module-Name': moduleName,
             'Specification-Title': project.name,
             'Specification-Version': version,
             'build-number': System.getenv().BUILD_NUMBER == null ? 'local build' : System.getenv().BUILD_NUMBER,
@@ -91,10 +109,6 @@ task integration_tests_local(type: Test) {
     systemProperty "cwsfe_cms.jdbc.url", System.properties['cwsfe_cms.jdbc.url'];
     systemProperty "cwsfe_cms.jdbc.user", System.properties['cwsfe_cms.jdbc.user'];
     systemProperty "cwsfe_cms.jdbc.password", System.properties['cwsfe_cms.jdbc.password'];
-}
-
-configurations {
-    tests
 }
 
 artifacts {

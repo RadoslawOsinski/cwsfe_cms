@@ -1,3 +1,4 @@
+--add-modules java.xml.bind
 -Dspring.profiles.active=tomcat-jndi,localFileSystemImageStorage
 -Dlogback.configurationFile=/.../logback.xml
 -Dhazelcast.config=/.../cwsfeCmsHazelcast.xml
