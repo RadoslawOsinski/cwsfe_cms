@@ -9,7 +9,7 @@ buildscript {
 }
 
 apply plugin: 'maven'
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'base'
 apply plugin: 'jacoco'
 apply plugin: 'org.flywaydb.flyway'
@@ -29,29 +29,30 @@ configurations {
 }
 
 dependencies {
-    compile group: 'org.springframework', name: 'spring-tx', version: project.ext.spring_version
-    compile group: 'org.springframework', name: 'spring-jdbc', version: project.ext.spring_version
-    compileClasspath group: 'org.springframework', name: 'spring-core', version: project.ext.spring_version
-    compile group: 'org.springframework', name: 'spring-beans', version: project.ext.spring_version
-    compile group: 'org.springframework', name: 'spring-context', version: project.ext.spring_version
-    compile group: 'org.springframework', name: 'spring-context-support', version: project.ext.spring_version
-    compile group: 'org.springframework', name: 'spring-web', version: project.ext.spring_version  //dla CommonsMultipartFile
-    compile group: 'org.springframework', name: 'spring-orm', version: project.ext.spring_version
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: project.ext.logback_version
-    compile 'org.apache.commons:commons-lang3:' + project.ext.commons_lang3_version
+    implementation group: 'org.springframework', name: 'spring-tx', version: project.ext.spring_version
+    implementation group: 'org.springframework', name: 'spring-jdbc', version: project.ext.spring_version
+    implementation group: 'org.springframework', name: 'spring-core', version: project.ext.spring_version
+    implementation group: 'org.springframework', name: 'spring-beans', version: project.ext.spring_version
+    implementation group: 'org.springframework', name: 'spring-context', version: project.ext.spring_version
+    api group: 'org.springframework', name: 'spring-context-support', version: project.ext.spring_version
+    implementation group: 'org.springframework', name: 'spring-web', version: project.ext.spring_version  //dla CommonsMultipartFile
+    implementation group: 'org.springframework', name: 'spring-orm', version: project.ext.spring_version
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: project.ext.logback_version
+    implementation 'org.apache.commons:commons-lang3:' + project.ext.commons_lang3_version
 
-    compile group: 'com.hazelcast', name: 'hazelcast', version: project.ext.hazelcast_version
-    compile group: 'com.hazelcast', name: 'hazelcast-spring', version: project.ext.hazelcast_version
-    compile group: 'com.hazelcast', name: 'hazelcast-hibernate52', version: project.ext.hazelcast_hibernate52_version
+    implementation group: 'com.hazelcast', name: 'hazelcast', version: project.ext.hazelcast_version
+    implementation group: 'com.hazelcast', name: 'hazelcast-spring', version: project.ext.hazelcast_version
+    implementation group: 'com.hazelcast', name: 'hazelcast-hibernate52', version: project.ext.hazelcast_hibernate52_version
 
-    compile 'org.hibernate:hibernate-validator:' + project.ext.hibernate_validator_version
-    compile 'org.hibernate:hibernate-core:' +project.ext.hibernate_core_version
-    compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:' + project.ext.hibernate_jpa2_api_version
+    api 'org.hibernate:hibernate-validator:' + project.ext.hibernate_validator_version
+    api 'org.hibernate:hibernate-core:' +project.ext.hibernate_core_version
+    api 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:' + project.ext.hibernate_jpa2_api_version
 
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: project.ext.logback_version
-    compile group: 'org.postgresql', name: 'postgresql', version: project.ext.postgresql_version
-    compile group: 'org.flywaydb', name: 'flyway-core', version: project.ext.flyway_core_version
-    compile group: 'commons-io', name: 'commons-io', version: project.ext.commons_io_version
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: project.ext.slf4j_version
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: project.ext.logback_version
+    implementation group: 'org.postgresql', name: 'postgresql', version: project.ext.postgresql_version
+    implementation group: 'org.flywaydb', name: 'flyway-core', version: project.ext.flyway_core_version
+    implementation group: 'commons-io', name: 'commons-io', version: project.ext.commons_io_version
     testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: project.ext.junit5_platform_version
 
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: project.ext.junit5_version

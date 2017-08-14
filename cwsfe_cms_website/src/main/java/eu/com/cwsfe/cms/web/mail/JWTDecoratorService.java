@@ -5,10 +5,10 @@ import eu.com.cwsfe.cms.services.keystores.KeystoresService;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -27,11 +27,13 @@ import java.util.Optional;
 @Service
 public class JWTDecoratorService {
 
-    @Resource
-    private Environment environment;
+    private final Environment environment;
+    private final KeystoresService keystoresService;
 
-    @Resource
-    private KeystoresService keystoresService;
+    public JWTDecoratorService(Environment environment, KeystoresService keystoresService) {
+        this.environment = environment;
+        this.keystoresService = keystoresService;
+    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JWTDecoratorService.class);
 

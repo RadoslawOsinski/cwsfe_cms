@@ -1,8 +1,8 @@
 package eu.com.cwsfe.cms.web.monitoring;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.OperatingSystemMXBean;
@@ -12,13 +12,17 @@ import java.time.ZonedDateTime;
  * Created by Radosław Osiński
  */
 @Component
-class ServerWatch {
+class ServerWatch implements InitializingBean {
 
     private ZonedDateTime startTime;
     private MemoryMXBean memoryMxBean;
     private OperatingSystemMXBean osBean;
 
-    @PostConstruct
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        initialize();
+    }
+
     public void initialize() {
         this.initializeStartTime();
         this.memoryMxBean = ManagementFactory.getMemoryMXBean();

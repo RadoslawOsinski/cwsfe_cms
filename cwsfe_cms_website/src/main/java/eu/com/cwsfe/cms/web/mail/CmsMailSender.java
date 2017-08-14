@@ -4,11 +4,11 @@ import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsEntity;
 import eu.com.cwsfe.cms.services.parameters.CmsGlobalParamsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import java.util.Optional;
@@ -18,7 +18,7 @@ import java.util.Properties;
  * @author Radoslaw Osinski
  */
 @Service
-public class CmsMailSender extends JavaMailSenderImpl {
+public class CmsMailSender extends JavaMailSenderImpl implements InitializingBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(CmsMailSender.class);
 
@@ -29,7 +29,11 @@ public class CmsMailSender extends JavaMailSenderImpl {
         this.cmsGlobalParamsService = cmsGlobalParamsService;
     }
 
-    @PostConstruct
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        initMailSessionFromDataBase();
+    }
+
     private void initMailSessionFromDataBase() {
         Optional<CmsGlobalParamsEntity> mailUserName = cmsGlobalParamsService.getByCode("MAIL_USER_NAME");
         Optional<CmsGlobalParamsEntity> mailUserPassword = cmsGlobalParamsService.getByCode("MAIL_USER_PASSWORD");

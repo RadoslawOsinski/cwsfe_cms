@@ -12,12 +12,12 @@ import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsEntity;
 import eu.com.cwsfe.cms.services.parameters.CmsGlobalParamsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import javax.annotation.PostConstruct;
 import java.util.Optional;
 
 /**
@@ -25,7 +25,7 @@ import java.util.Optional;
  */
 @Profile("tomcat-aws")
 @Configuration
-public class AWSClientInitializer {
+public class AWSClientInitializer implements InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AWSClientInitializer.class);
 
@@ -48,8 +48,12 @@ public class AWSClientInitializer {
         return s3client;
     }
 
-    @PostConstruct
-    public void initializeRootBucket() {
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        initializeRootBucket();
+    }
+
+    private void initializeRootBucket() {
         Optional<CmsGlobalParamsEntity> rootBucketName = cmsGlobalParamsService.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
         try {
             if (rootBucketName.isPresent()) {
@@ -65,4 +69,5 @@ public class AWSClientInitializer {
             LOGGER.error("Problem with connecting to AWS S3", ace);
         }
     }
+
 }

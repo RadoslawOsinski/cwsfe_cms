@@ -1,16 +1,15 @@
 package eu.com.cwsfe.cms.web.configuration;
 
 import eu.com.cwsfe.cms.web.images.ImageStorageService;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
 
 /**
  * @author Radoslaw Osinski
  */
 @Service
-public class ImageStorageInitializer {
+public class ImageStorageInitializer implements InitializingBean {
 
     private final ImageStorageService imageStorageService;
 
@@ -19,10 +18,15 @@ public class ImageStorageInitializer {
         this.imageStorageService = imageStorageService;
     }
 
-    @PostConstruct
-    public void initializeImageStorage() {
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        initializeImageStorage();
+    }
+
+    private void initializeImageStorage() {
         if (!imageStorageService.isNewsImagesStorageInitialized()) {
             imageStorageService.initializeNewsImagesStorage();
         }
     }
+
 }

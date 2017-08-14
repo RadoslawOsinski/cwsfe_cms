@@ -9,7 +9,7 @@ buildscript {
 }
 
 apply plugin: 'maven'
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'base'
 apply plugin: 'jacoco'
 apply plugin: 'org.junit.platform.gradle.plugin'
@@ -20,25 +20,25 @@ ext.moduleName = 'eu.com.cwsfe.cms.services'
 compileJava.options.encoding = 'UTF-8'
 
 dependencies {
-    compile project(':cwsfe_cms_repository')
-    compile group: 'org.springframework', name: 'spring-webmvc', version: project.ext.spring_version
-    compile group: 'org.springframework', name: 'spring-tx', version: project.ext.spring_version
-    compile group: 'org.springframework', name: 'spring-core', version: project.ext.spring_version
-    compile group: 'org.springframework', name: 'spring-beans', version: project.ext.spring_version
-    compile group: 'org.springframework', name: 'spring-context', version: project.ext.spring_version
-    compile group: 'org.springframework', name: 'spring-context-support', version: project.ext.spring_version
-    compile group: 'org.springframework', name: 'spring-web', version: project.ext.spring_version  //dla CommonsMultipartFile
-    compile group: 'javax.ejb', name: 'ejb-api', version: project.ext.javax_ejb_version
-    compile group: 'javax.annotation', name: 'javax.annotation-api', version: project.ext.javax_annotation_api_version
-    compile group: 'org.modelmapper', name: 'modelmapper', version: project.ext.modelmapper_version
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: project.ext.junit5_version
+    api project(':cwsfe_cms_repository')
+    implementation group: 'org.springframework', name: 'spring-webmvc', version: project.ext.spring_version
+    implementation group: 'org.springframework', name: 'spring-tx', version: project.ext.spring_version
+    implementation group: 'org.springframework', name: 'spring-core', version: project.ext.spring_version
+    implementation group: 'org.springframework', name: 'spring-beans', version: project.ext.spring_version
+    implementation group: 'org.springframework', name: 'spring-context', version: project.ext.spring_version
+    implementation group: 'org.springframework', name: 'spring-web', version: project.ext.spring_version  //dla CommonsMultipartFile
+    implementation group: 'javax.ejb', name: 'ejb-api', version: project.ext.javax_ejb_version
+    implementation group: 'javax.annotation', name: 'javax.annotation-api', version: project.ext.javax_annotation_api_version
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: project.ext.modelmapper_version
+    api group: 'org.slf4j', name: 'slf4j-api', version: project.ext.slf4j_version
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: project.ext.junit5_version
 //    testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: project.ext.servlet_api_version //3.1.0 -newer version has problems with tests
-    testCompile group: 'javax.servlet', name: 'servlet-api', version: project.ext.old_servlet_api_version
-    testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: project.ext.junit5_platform_version
-    testCompile group: 'org.springframework', name: 'spring-test', version: project.ext.spring_version
-    testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: project.ext.json_path_version
-    testCompile group: 'com.jayway.jsonpath', name: 'json-path-assert', version: project.ext.json_path_version
-    testCompile group: 'org.mockito', name: 'mockito-core', version: project.ext.mockito_version
+    testImplementation group: 'javax.servlet', name: 'servlet-api', version: project.ext.old_servlet_api_version
+    testImplementation group: 'org.junit.platform', name: 'junit-platform-runner', version: project.ext.junit5_platform_version
+    testImplementation group: 'org.springframework', name: 'spring-test', version: project.ext.spring_version
+    testImplementation group: 'com.jayway.jsonpath', name: 'json-path', version: project.ext.json_path_version
+    testImplementation group: 'com.jayway.jsonpath', name: 'json-path-assert', version: project.ext.json_path_version
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: project.ext.mockito_version
 }
 
 def gitCommitHash = "git rev-parse HEAD".execute().text.trim();

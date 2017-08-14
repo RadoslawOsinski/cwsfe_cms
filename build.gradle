@@ -102,7 +102,7 @@ subprojects {
         ezomorph_version = '1.0.6'
         json_lib_version = '2.4'
         rome_version = '1.0.0'
-        aws_java_jdk_version = '1.11.172'
+        aws_java_jdk_version = '1.11.176'
         jwt_version = '0.7.0'
         aop_alliance_version = '1.0'
         slf4j_version = '1.7.25'
