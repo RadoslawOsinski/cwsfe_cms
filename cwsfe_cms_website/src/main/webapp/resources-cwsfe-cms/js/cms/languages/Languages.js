@@ -36,7 +36,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
             'bLengthChange': true,
             'sAjaxSource': 'languagesList',
             aoColumns: [
-                {'bSortable': false, mData: '#'},
+                {'bSortable': false, mData: 'orderNumber'},
                 {'bSortable': false, mData: 'code'},
                 {'bSortable': false, mData: 'name'},
                 {

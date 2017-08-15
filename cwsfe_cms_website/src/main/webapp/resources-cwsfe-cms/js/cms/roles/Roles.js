@@ -13,7 +13,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             'bLengthChange': true,
             'sAjaxSource': 'rolesList',
             aoColumns: [
-                {'bSortable': false, mData: '#'},
+                {'bSortable': false, mData: 'orderNumber'},
                 {'bSortable': false, mData: 'roleCode'},
                 {'bSortable': false, mData: 'roleName'}
             ]

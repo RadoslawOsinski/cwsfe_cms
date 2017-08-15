@@ -31,7 +31,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
             'bLengthChange': true,
             'sAjaxSource': 'cmsTextI18nCategoriesList',
             aoColumns: [
-                {'bSortable': false, mData: '#'},
+                {'bSortable': false, mData: 'orderNumber'},
                 {'bSortable': false, mData: 'category'},
                 {
                     'bSortable': false, mData: 'status',

@@ -56,7 +56,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                 );
             },
             aoColumns: [
-                {'bSortable': false, mData: '#'},
+                {'bSortable': false, mData: 'orderNumber'},
                 {'bSortable': false, mData: 'author'},
                 {'bSortable': false, mData: 'newsCode'},
                 {'bSortable': false, mData: 'creationDate'},

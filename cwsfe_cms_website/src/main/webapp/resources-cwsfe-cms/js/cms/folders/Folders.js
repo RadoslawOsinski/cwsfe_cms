@@ -32,9 +32,9 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
             'bLengthChange': true,
             'sAjaxSource': 'foldersList',
             aoColumns: [
-                {'bSortable': false, mData: '#'},
-                {'bSortable': false, mData: 'folderName'},
                 {'bSortable': false, mData: 'orderNumber'},
+                {'bSortable': false, mData: 'folderName'},
+                {'bSortable': false, mData: 'folderOrderNumber'},
                 {
                     'bSortable': false, mData: 'id',
                     "fnRender": function (o) {

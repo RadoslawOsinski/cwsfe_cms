@@ -37,7 +37,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
             'bLengthChange': true,
             'sAjaxSource': 'usersNetAddressesList',
             aoColumns: [
-                {'bSortable': false, mData: '#'},
+                {'bSortable': false, mData: 'orderNumber'},
                 {'bSortable': false, mData: 'userName'},
                 {'bSortable': false, mData: 'inetAddress'},
                 {

@@ -31,7 +31,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
             'bLengthChange': true,
             'sAjaxSource': 'newsTypesList',
             aoColumns: [
-                {'bSortable': false, mData: '#'},
+                {'bSortable': false, mData: 'orderNumber'},
                 {'bSortable': false, mData: 'type'},
                 {
                     'bSortable': false, mData: 'id',

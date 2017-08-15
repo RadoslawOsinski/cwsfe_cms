@@ -206,7 +206,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                 );
             },
             aoColumns: [
-                {'bSortable': false, mData: '#'},
+                {'bSortable': false, mData: 'orderNumber'},
                 {'bSortable': false, mData: 'title'},
                 {
                     'bSortable': false, mData: 'image', 'fnRender': function (o) {

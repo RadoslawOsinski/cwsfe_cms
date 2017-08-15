@@ -14,7 +14,7 @@ require(['jquery', 'cmsLayout', 'dataTable'], function ($) {
             'bLengthChange': true,
             'sAjaxSource': 'blogPostCommentsList',
             aoColumns: [
-                {'bSortable': false, mData: '#'},
+                {'bSortable': false, mData: 'orderNumber'},
                 {'bSortable': false, mData: 'username'},
                 {'bSortable': false, mData: 'comment'},
                 {'bSortable': false, mData: 'created'},

@@ -36,7 +36,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
             'bLengthChange': true,
             'sAjaxSource': 'usersList',
             aoColumns: [
-                {'bSortable': false, mData: '#'},
+                {'bSortable': false, mData: 'orderNumber'},
                 {'bSortable': false, mData: 'userName'},
                 {
                     'bSortable': false, mData: 'status',

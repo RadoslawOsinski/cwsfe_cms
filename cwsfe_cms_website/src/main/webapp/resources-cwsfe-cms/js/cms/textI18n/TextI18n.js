@@ -48,7 +48,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
             'bLengthChange': true,
             'sAjaxSource': 'cmsTextI18nList',
             aoColumns: [
-                {'bSortable': false, mData: '#'},
+                {'bSortable': false, mData: 'orderNumber'},
                 {'bSortable': false, mData: 'language'},
                 {'bSortable': false, mData: 'category'},
                 {'bSortable': false, mData: 'key'},

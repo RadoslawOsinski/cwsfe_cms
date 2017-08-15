@@ -36,7 +36,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
             'bLengthChange': true,
             'sAjaxSource': 'authorsList',
             aoColumns: [
-                {'bSortable': false, mData: '#'},
+                {'bSortable': false, mData: 'orderNumber'},
                 {'bSortable': false, mData: 'lastName'},
                 {'bSortable': false, mData: 'firstName'},
                 {'bSortable': false, mData: 'googlePlusAuthorLink'},
