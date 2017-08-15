@@ -3,9 +3,8 @@ package eu.com.cwsfe.cms.web.author;
 import eu.com.cwsfe.cms.db.author.CmsAuthorsEntity;
 import eu.com.cwsfe.cms.services.author.CmsAuthorsService;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
+import eu.com.cwsfe.cms.web.mvc.BasicResponse;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -55,85 +54,81 @@ public class AuthorsController extends JsonController {
 
     @RequestMapping(value = "/authorsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listAuthors(
+    public AuthorsDTO listAuthors(
         @RequestParam int iDisplayStart,
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
         final List<CmsAuthorsEntity> cmsAuthors = cmsAuthorsService.listAjax(iDisplayStart, iDisplayLength);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        AuthorsDTO authorsDTO = new AuthorsDTO();
         for (int i = 0; i < cmsAuthors.size(); i++) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("#", iDisplayStart + i + 1);
-            formDetailsJson.put("lastName", cmsAuthors.get(i).getLastName());
-            formDetailsJson.put("firstName", cmsAuthors.get(i).getFirstName());
-            formDetailsJson.put("googlePlusAuthorLink", cmsAuthors.get(i).getGooglePlusAuthorLink() == null ? "" : cmsAuthors.get(i).getGooglePlusAuthorLink());
-            formDetailsJson.put("id", cmsAuthors.get(i).getId());
-            jsonArray.add(formDetailsJson);
+            AuthorDTO authorDTO = new AuthorDTO();
+            authorDTO.setOrderNumber(iDisplayStart + i + 1);
+            authorDTO.setLastName(cmsAuthors.get(i).getLastName());
+            authorDTO.setFirstName(cmsAuthors.get(i).getFirstName());
+            authorDTO.setGooglePlusAuthorLink(cmsAuthors.get(i).getGooglePlusAuthorLink() == null ? "" : cmsAuthors.get(i).getGooglePlusAuthorLink());
+            authorDTO.setId(cmsAuthors.get(i).getId());
+            authorsDTO.getAaData().add(authorDTO);
         }
-        responseDetailsJson.put("sEcho", sEcho);
+        authorsDTO.setsEcho(sEcho);
         final Long numberOfAuthors = cmsAuthorsService.countForAjax();
-        responseDetailsJson.put("iTotalRecords", numberOfAuthors);
-        responseDetailsJson.put("iTotalDisplayRecords", numberOfAuthors);
-        responseDetailsJson.put("aaData", jsonArray);
-        return responseDetailsJson.toString();
+        authorsDTO.setiTotalRecords(numberOfAuthors);
+        authorsDTO.setiTotalDisplayRecords(numberOfAuthors);
+        return authorsDTO;
     }
 
     @RequestMapping(value = "/authorsDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listAuthorsForDropList(
+    public AuthorsDTO listAuthorsForDropList(
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
         final List<CmsAuthorsEntity> cmsAuthors = cmsAuthorsService.listAuthorsForDropList(term, limit);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        AuthorsDTO authorsDTO = new AuthorsDTO();
         for (CmsAuthorsEntity cmsAuthor : cmsAuthors) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("id", cmsAuthor.getId());
-            formDetailsJson.put("lastName", cmsAuthor.getLastName());
-            formDetailsJson.put("firstName", cmsAuthor.getFirstName());
-            formDetailsJson.put("googlePlusAuthorLink", cmsAuthor.getGooglePlusAuthorLink());
-            jsonArray.add(formDetailsJson);
+            AuthorDTO authorDTO = new AuthorDTO();
+            authorDTO.setId(cmsAuthor.getId());
+            authorDTO.setLastName(cmsAuthor.getLastName());
+            authorDTO.setFirstName(cmsAuthor.getFirstName());
+            authorDTO.setGooglePlusAuthorLink(cmsAuthor.getGooglePlusAuthorLink());
+            authorsDTO.getAaData().add(authorDTO);
         }
-        responseDetailsJson.put("data", jsonArray);
-        return responseDetailsJson.toString();
+        return authorsDTO;
     }
 
     @RequestMapping(value = "/addAuthor", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String addAuthor(
+    public BasicResponse addAuthor(
         @ModelAttribute(value = "cmsAuthor") CmsAuthorsEntity cmsAuthor,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "firstName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FirstNameMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "lastName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LastNameMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsAuthorsService.add(cmsAuthor);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
     @RequestMapping(value = "/deleteAuthor", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String deleteAuthor(
+    public BasicResponse deleteAuthor(
         @ModelAttribute(value = "cmsAuthor") CmsAuthorsEntity cmsAuthor,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("AuthorMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsAuthorsService.delete(cmsAuthor);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
 }

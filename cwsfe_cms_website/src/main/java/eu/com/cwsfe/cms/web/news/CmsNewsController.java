@@ -1,16 +1,18 @@
 package eu.com.cwsfe.cms.web.news;
 
+import eu.com.cwsfe.cms.db.common.PublishedHiddenStatus;
 import eu.com.cwsfe.cms.db.news.CmsNewsEntity;
 import eu.com.cwsfe.cms.db.news.CmsNewsI18NContentsEntity;
-import eu.com.cwsfe.cms.db.common.PublishedHiddenStatus;
 import eu.com.cwsfe.cms.db.news.SearchedNewsDTO;
 import eu.com.cwsfe.cms.services.author.CmsAuthorsService;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.services.i18n.CmsLanguagesService;
-import eu.com.cwsfe.cms.services.news.*;
+import eu.com.cwsfe.cms.services.news.CmsFoldersService;
+import eu.com.cwsfe.cms.services.news.CmsNewsI18nContentsService;
+import eu.com.cwsfe.cms.services.news.CmsNewsService;
+import eu.com.cwsfe.cms.services.news.NewsTypesService;
+import eu.com.cwsfe.cms.web.mvc.BasicResponse;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -113,28 +118,30 @@ public class CmsNewsController extends JsonController {
         }
         List<SearchedNewsDTO> dbList = cmsNewsService.searchByAjax(iDisplayStart, iDisplayLength, searchAuthorId, searchNewsCode);
         Long dbListDisplayRecordsSize = cmsNewsService.searchByAjaxCount(searchAuthorId, searchNewsCode);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        JsonArray jsonArray = Json.createArrayBuilder().build();
         for (int i = 0; i < dbList.size(); i++) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("#", iDisplayStart + i + 1);
             final SearchedNewsDTO objects = dbList.get(i);
-            formDetailsJson.put("author", (objects.getAuthor() == null || objects.getAuthor().isEmpty()) ? "---" : objects.getAuthor());
-            formDetailsJson.put("newsCode", objects.getNewsCode());
-            formDetailsJson.put("creationDate", objects.getCreationDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-            formDetailsJson.put("id", objects.getId());
+            JsonObject formDetailsJson = Json.createObjectBuilder()
+                .add("#", iDisplayStart + i + 1)
+                .add("author", (objects.getAuthor() == null || objects.getAuthor().isEmpty()) ? "---" : objects.getAuthor())
+                .add("newsCode", objects.getNewsCode())
+                .add("creationDate", objects.getCreationDate().format(DateTimeFormatter.ISO_LOCAL_DATE))
+                .add("id", objects.getId())
+                .build();
             jsonArray.add(formDetailsJson);
         }
-        responseDetailsJson.put("sEcho", sEcho);
-        responseDetailsJson.put("iTotalRecords", cmsNewsService.getTotalNumberNotDeleted());
-        responseDetailsJson.put("iTotalDisplayRecords", dbListDisplayRecordsSize);
-        responseDetailsJson.put("aaData", jsonArray);
+        JsonObject responseDetailsJson = Json.createObjectBuilder()
+            .add("sEcho", sEcho)
+            .add("iTotalRecords", cmsNewsService.getTotalNumberNotDeleted())
+            .add("iTotalDisplayRecords", dbListDisplayRecordsSize)
+            .add("aaData", jsonArray)
+            .build();
         return responseDetailsJson.toString();
     }
 
     @RequestMapping(value = "/addNews", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String addNews(
+    public BasicResponse addNews(
         @ModelAttribute(value = "cmsNews") CmsNewsEntity cmsNews,
         BindingResult result, Locale locale
     ) {
@@ -142,20 +149,20 @@ public class CmsNewsController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "newsTypeId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "newsFolderId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "newsCode", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsCodeMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsNews.setCreationDate(ZonedDateTime.now());
             cmsNewsService.add(cmsNews);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
     @RequestMapping(value = "/news/updateNewsBasicInfo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String updateNewsBasicInfo(
+    public BasicResponse updateNewsBasicInfo(
         @ModelAttribute(value = "cmsNews") CmsNewsEntity cmsNews,
         BindingResult result, Locale locale
     ) {
@@ -163,31 +170,31 @@ public class CmsNewsController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "newsFolderId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "newsCode", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsCodeMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "status", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("StatusMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsNewsService.updatePostBasicInfo(cmsNews);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
     @RequestMapping(value = "/deleteNews", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String deleteFolder(
+    public BasicResponse deleteFolder(
         @ModelAttribute(value = "cmsNews") CmsNewsEntity cmsNews,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsNewsService.delete(cmsNews);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
     @RequestMapping(value = "/news/{id}", method = RequestMethod.GET)
@@ -205,7 +212,7 @@ public class CmsNewsController extends JsonController {
 
     @RequestMapping(value = "/news/{id}/{langId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String getNewsI18n(ModelMap model, @PathVariable("id") Long newsId, @PathVariable("langId") Long langId, Locale locale) {
+    public NewsI18nDTO getNewsI18n(ModelMap model, @PathVariable("id") Long newsId, @PathVariable("langId") Long langId, Locale locale) {
         BindingResult result = new BeanPropertyBindingResult(null, "getNewsI18n");
         if (newsId == null) {
             result.addError(new ObjectError("id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsMustBeSet")));
@@ -213,7 +220,7 @@ public class CmsNewsController extends JsonController {
         if (langId == null) {
             result.addError(new ObjectError("langId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet")));
         }
-        JSONObject responseDetailsJson = new JSONObject();
+        NewsI18nDTO newsI18nDTO = new NewsI18nDTO();
         if (!result.hasErrors()) {
             Optional<CmsNewsI18NContentsEntity> cmsNewsI18nContent = cmsNewsI18nContentsService.getByLanguageForNews(newsId, langId);
             if (!cmsNewsI18nContent.isPresent()) {
@@ -226,17 +233,17 @@ public class CmsNewsController extends JsonController {
                 newCmsNewsI18nContent.setStatus(PublishedHiddenStatus.HIDDEN.name());
                 cmsNewsI18nContent = Optional.of(newCmsNewsI18nContent);
             }
-            addJsonSuccess(responseDetailsJson);
-            JSONObject data = new JSONObject();
-            data.put("newsTitle", cmsNewsI18nContent.get().getNewsTitle());
-            data.put("newsShortcut", cmsNewsI18nContent.get().getNewsShortcut());
-            data.put("newsDescription", cmsNewsI18nContent.get().getNewsDescription());
-            data.put("status", cmsNewsI18nContent.get().getStatus());
-            responseDetailsJson.put("data", data);
+            newsI18nDTO.setNewsTitle(cmsNewsI18nContent.get().getNewsTitle());
+            newsI18nDTO.setNewsShortcut(cmsNewsI18nContent.get().getNewsShortcut());
+            newsI18nDTO.setNewsDescription(cmsNewsI18nContent.get().getNewsDescription());
+            newsI18nDTO.setStatus(cmsNewsI18nContent.get().getStatus());
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            newsI18nDTO.setStatus(BasicResponse.JSON_STATUS_FAIL);
+            for (int i = 0; i < result.getAllErrors().size(); i++) {
+                newsI18nDTO.getErrorMessages().add(result.getAllErrors().get(i).getCode());
+            }
         }
-        return responseDetailsJson.toString();
+        return newsI18nDTO;
     }
 
     @RequestMapping(value = "/news/addNewsI18nContent", method = RequestMethod.POST)
@@ -254,7 +261,7 @@ public class CmsNewsController extends JsonController {
 
     @RequestMapping(value = "/news/updateNewsI18nContent", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String updateNewsI18nContent(
+    public BasicResponse updateNewsI18nContent(
         @ModelAttribute(value = "cmsNewsI18nContent") CmsNewsI18NContentsEntity cmsNewsI18nContent,
         BindingResult result, Locale locale
     ) {
@@ -269,7 +276,7 @@ public class CmsNewsController extends JsonController {
             cmsNewsI18nContent.setNewsDescription(cmsNewsI18nContent.getNewsDescription().trim());
         }
         Optional<CmsNewsI18NContentsEntity> existingI18nContent;
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             existingI18nContent = cmsNewsI18nContentsService.getByLanguageForNews(cmsNewsI18nContent.getNewsId(), cmsNewsI18nContent.getLanguageId());
             try {
@@ -279,14 +286,14 @@ public class CmsNewsController extends JsonController {
                     cmsNewsI18nContent.setId(existingI18nContent.get().getId());
                     cmsNewsI18nContentsService.updateContentWithStatus(cmsNewsI18nContent);
                 }
-                addJsonSuccess(responseDetailsJson);
+                basicResponse = getSuccess();
             } catch (Exception e) {
-                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("SavingFailed"));
+                basicResponse = getErrorMessage(ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("SavingFailed"));
             }
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
 }

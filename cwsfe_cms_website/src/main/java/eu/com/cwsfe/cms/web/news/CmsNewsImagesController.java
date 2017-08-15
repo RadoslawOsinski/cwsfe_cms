@@ -4,9 +4,8 @@ import eu.com.cwsfe.cms.db.news.CmsNewsImage;
 import eu.com.cwsfe.cms.db.news.CmsNewsImagesEntity;
 import eu.com.cwsfe.cms.services.news.CmsNewsImagesService;
 import eu.com.cwsfe.cms.web.images.ImageStorageService;
+import eu.com.cwsfe.cms.web.mvc.BasicResponse;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,7 @@ public class CmsNewsImagesController extends JsonController {
 
     @RequestMapping(value = "/news/cmsNewsImagesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String list(
+    public ImagesDTO list(
         @RequestParam int iDisplayStart,
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho,
@@ -61,24 +60,22 @@ public class CmsNewsImagesController extends JsonController {
         }
         List<CmsNewsImagesEntity> dbList = cmsNewsImagesService.searchByAjaxWithoutContent(iDisplayStart, iDisplayLength, newsId);
         Long dbListDisplayRecordsSize = cmsNewsImagesService.searchByAjaxCountWithoutContent(newsId);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        ImagesDTO imagesDTO = new ImagesDTO();
         for (int i = 0; i < dbList.size(); i++) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("#", iDisplayStart + i + 1);
+            ImageDTO imageDTO = new ImageDTO();
+            imageDTO.setOrderNumber(iDisplayStart + i + 1);
             final CmsNewsImagesEntity object = dbList.get(i);
-            formDetailsJson.put("image", object.getId());
-            formDetailsJson.put("title", object.getTitle());
-            formDetailsJson.put("fileName", object.getFileName());
-            formDetailsJson.put("url", object.getUrl());
-            formDetailsJson.put("id", object.getId());
-            jsonArray.add(formDetailsJson);
+            imageDTO.setImage(object.getId());
+            imageDTO.setTitle(object.getTitle());
+            imageDTO.setFileName(object.getFileName());
+            imageDTO.setUrl(object.getUrl());
+            imageDTO.setId(object.getId());
+            imagesDTO.getAaData().add(imageDTO);
         }
-        responseDetailsJson.put("sEcho", sEcho);
-        responseDetailsJson.put("iTotalRecords", cmsNewsImagesService.getTotalNumberNotDeleted());
-        responseDetailsJson.put("iTotalDisplayRecords", dbListDisplayRecordsSize);
-        responseDetailsJson.put("aaData", jsonArray);
-        return responseDetailsJson.toString();
+        imagesDTO.setsEcho(sEcho);
+        imagesDTO.setiTotalRecords(cmsNewsImagesService.getTotalNumberNotDeleted());
+        imagesDTO.setiTotalDisplayRecords(dbListDisplayRecordsSize);
+        return imagesDTO;
     }
 
     @RequestMapping(value = "/news/addCmsNewsImage", method = RequestMethod.POST)
@@ -114,19 +111,19 @@ public class CmsNewsImagesController extends JsonController {
 
     @RequestMapping(value = "/news/deleteCmsNewsImage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String deleteCmsNewsImage(
+    public BasicResponse deleteCmsNewsImage(
         @ModelAttribute(value = "cmsNewsImage") CmsNewsImagesEntity cmsNewsImage,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("ImageMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsNewsImagesService.delete(cmsNewsImage);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
 }

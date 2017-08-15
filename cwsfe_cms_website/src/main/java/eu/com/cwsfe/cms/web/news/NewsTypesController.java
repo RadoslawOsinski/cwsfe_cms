@@ -3,9 +3,8 @@ package eu.com.cwsfe.cms.web.news;
 import eu.com.cwsfe.cms.db.news.CmsNewsTypesEntity;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.services.news.NewsTypesService;
+import eu.com.cwsfe.cms.web.mvc.BasicResponse;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -52,85 +51,81 @@ class NewsTypesController extends JsonController {
 
     @RequestMapping(value = "/newsTypesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listNewsTypes(
+    public NewsTypesDTO listNewsTypes(
         @RequestParam int iDisplayStart,
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
         final List<CmsNewsTypesEntity> cmsNewsTypes = newsTypesService.listAjax(iDisplayStart, iDisplayLength);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        NewsTypesDTO newsTypesDTO = new NewsTypesDTO();
         for (int i = 0; i < cmsNewsTypes.size(); i++) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("#", iDisplayStart + i + 1);
-            formDetailsJson.put("type", cmsNewsTypes.get(i).getType());
-            formDetailsJson.put("id", cmsNewsTypes.get(i).getId());
-            jsonArray.add(formDetailsJson);
+            NewsTypeDTO newsTypeDTO = new NewsTypeDTO();
+            newsTypeDTO.setOrderNumber(iDisplayStart + i + 1);
+            newsTypeDTO.setType(cmsNewsTypes.get(i).getType());
+            newsTypeDTO.setId(cmsNewsTypes.get(i).getId());
+            newsTypesDTO.getAaData().add(newsTypeDTO);
         }
-        responseDetailsJson.put("sEcho", sEcho);
+        newsTypesDTO.setsEcho(sEcho);
         final Long numberOfNewsTypes = newsTypesService.countForAjax();
-        responseDetailsJson.put("iTotalRecords", numberOfNewsTypes);
-        responseDetailsJson.put("iTotalDisplayRecords", numberOfNewsTypes);
-        responseDetailsJson.put("aaData", jsonArray);
-        return responseDetailsJson.toString();
+        newsTypesDTO.setiTotalRecords(numberOfNewsTypes);
+        newsTypesDTO.setiTotalDisplayRecords(numberOfNewsTypes);
+        return newsTypesDTO;
     }
 
     @RequestMapping(value = "/news/newsTypesDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listNewsTypesForDropList(
+    public NewsTypesDTO listNewsTypesForDropList(
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
         final List<CmsNewsTypesEntity> results = newsTypesService.listNewsTypesForDropList(term, limit);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        NewsTypesDTO newsTypesDTO = new NewsTypesDTO();
         for (CmsNewsTypesEntity newsType : results) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("id", newsType.getId());
-            formDetailsJson.put("type", newsType.getType());
-            jsonArray.add(formDetailsJson);
+            NewsTypeDTO newsTypeDTO = new NewsTypeDTO();
+            newsTypeDTO.setId(newsType.getId());
+            newsTypeDTO.setType(newsType.getType());
+            newsTypesDTO.getAaData().add(newsTypeDTO);
         }
-        responseDetailsJson.put("data", jsonArray);
-        return responseDetailsJson.toString();
+        return newsTypesDTO;
     }
 
     @RequestMapping(value = "/addNewsType", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String addNewsType(
+    public BasicResponse addNewsType(
         @ModelAttribute(value = "newsType") CmsNewsTypesEntity newsType,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "type", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             Optional<CmsNewsTypesEntity> existingNewsType = newsTypesService.getByType(newsType.getType());
             if (!existingNewsType.isPresent()) {
                 newsTypesService.add(newsType);
-                addJsonSuccess(responseDetailsJson);
+                basicResponse = getSuccess();
             } else {
-                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeAlreadyAdded"));
+                basicResponse = getErrorMessage(ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeAlreadyAdded"));
             }
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
     @RequestMapping(value = "/deleteNewsType", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String deleteNewsType(
+    public BasicResponse deleteNewsType(
         @ModelAttribute(value = "cmsNewsType") CmsNewsTypesEntity cmsNewsType,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsTypeMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             newsTypesService.delete(cmsNewsType);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
 }

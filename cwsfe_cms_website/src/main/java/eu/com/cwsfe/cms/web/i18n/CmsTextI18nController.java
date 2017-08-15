@@ -5,9 +5,8 @@ import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.services.i18n.CmsLanguagesService;
 import eu.com.cwsfe.cms.services.news.CmsTextI18nCategoryService;
 import eu.com.cwsfe.cms.services.news.CmsTextI18nService;
+import eu.com.cwsfe.cms.web.mvc.BasicResponse;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -58,35 +57,33 @@ public class CmsTextI18nController extends JsonController {
 
     @RequestMapping(value = "/cmsTextI18nList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listCmsTextI18n(
+    public TextI18nsDTO listCmsTextI18n(
         @RequestParam int iDisplayStart,
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
         final List<CmsTextI18NEntity> cmsTextI18ns = cmsTextI18nService.listAjax(iDisplayStart, iDisplayLength);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        TextI18nsDTO textI18nsDTO = new TextI18nsDTO();
         for (int i = 0; i < cmsTextI18ns.size(); i++) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("#", iDisplayStart + i + 1);
-            formDetailsJson.put("language", cmsLanguagesService.getById(cmsTextI18ns.get(i).getLangId()).getCode());
-            formDetailsJson.put("category", cmsTextI18nCategoryService.get(cmsTextI18ns.get(i).getI18nCategory()).getCategory());
-            formDetailsJson.put("key", cmsTextI18ns.get(i).getI18NKey());
-            formDetailsJson.put("text", cmsTextI18ns.get(i).getI18NText());
-            formDetailsJson.put("id", cmsTextI18ns.get(i).getId());
-            jsonArray.add(formDetailsJson);
+            TextI18nDTO textI18nDTO = new TextI18nDTO();
+            textI18nDTO.setOrderNumber(iDisplayStart + i + 1);
+            textI18nDTO.setLanguage(cmsLanguagesService.getById(cmsTextI18ns.get(i).getLangId()).getCode());
+            textI18nDTO.setCategory(cmsTextI18nCategoryService.get(cmsTextI18ns.get(i).getI18nCategory()).getCategory());
+            textI18nDTO.setKey(cmsTextI18ns.get(i).getI18NKey());
+            textI18nDTO.setText(cmsTextI18ns.get(i).getI18NText());
+            textI18nDTO.setId(cmsTextI18ns.get(i).getId());
+            textI18nsDTO.getAaData().add(textI18nDTO);
         }
-        responseDetailsJson.put("sEcho", sEcho);
+        textI18nsDTO.setsEcho(sEcho);
         final Long numberOfAuthors = cmsTextI18nService.countForAjax();
-        responseDetailsJson.put("iTotalRecords", numberOfAuthors);
-        responseDetailsJson.put("iTotalDisplayRecords", numberOfAuthors);
-        responseDetailsJson.put("aaData", jsonArray);
-        return responseDetailsJson.toString();
+        textI18nsDTO.setiTotalRecords(numberOfAuthors);
+        textI18nsDTO.setiTotalDisplayRecords(numberOfAuthors);
+        return textI18nsDTO;
     }
 
     @RequestMapping(value = "/addCmsTextI18n", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String addTextI18n(
+    public BasicResponse addTextI18n(
         @ModelAttribute(value = "cmsTextI18n") CmsTextI18NEntity cmsTextI18n,
         BindingResult result, Locale locale
     ) {
@@ -94,36 +91,36 @@ public class CmsTextI18nController extends JsonController {
         ValidationUtils.rejectIfEmpty(result, "i18nCategory", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CategoryMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "i18NKey", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("KeyMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "i18NText", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TextMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             Optional<CmsTextI18NEntity> existingTextI18n = cmsTextI18nService.getExisting(cmsTextI18n);
             if (!existingTextI18n.isPresent()) {
                 cmsTextI18nService.add(cmsTextI18n);
-                addJsonSuccess(responseDetailsJson);
+                basicResponse = getSuccess();
             } else {
-                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TextI18nAlreadyExists"));
+                basicResponse = getErrorMessage(ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TextI18nAlreadyExists"));
             }
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
     @RequestMapping(value = "/deleteCmsTextI18n", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String deleteTextI18n(
+    public BasicResponse deleteTextI18n(
         @ModelAttribute(value = "cmsTextI18n") CmsTextI18NEntity cmsTextI18n,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TextI18nMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsTextI18nService.delete(cmsTextI18n);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
 }

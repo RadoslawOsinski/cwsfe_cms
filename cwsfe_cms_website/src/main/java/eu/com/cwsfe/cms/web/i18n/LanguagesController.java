@@ -3,9 +3,8 @@ package eu.com.cwsfe.cms.web.i18n;
 import eu.com.cwsfe.cms.db.i18n.CmsLanguagesEntity;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.services.i18n.CmsLanguagesService;
+import eu.com.cwsfe.cms.web.mvc.BasicResponse;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -52,53 +51,49 @@ class LanguagesController extends JsonController {
 
     @RequestMapping(value = "/languagesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listLanguages(
+    public LanguagesDTO listLanguages(
         @RequestParam int iDisplayStart,
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
         final List<CmsLanguagesEntity> cmsLanguages = cmsLanguagesService.listAjax(iDisplayStart, iDisplayLength);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        LanguagesDTO languagesDTO = new LanguagesDTO();
         for (int i = 0; i < cmsLanguages.size(); i++) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("#", iDisplayStart + i + 1);
-            formDetailsJson.put("code", cmsLanguages.get(i).getCode());
-            formDetailsJson.put("name", cmsLanguages.get(i).getName());
-            formDetailsJson.put("id", cmsLanguages.get(i).getId());
-            jsonArray.add(formDetailsJson);
+            LanguageDTO languageDTO = new LanguageDTO();
+            languageDTO.setOrderNumber(iDisplayStart + i + 1);
+            languageDTO.setCode(cmsLanguages.get(i).getCode());
+            languageDTO.setName(cmsLanguages.get(i).getName());
+            languageDTO.setId(cmsLanguages.get(i).getId());
+            languagesDTO.getAaData().add(languageDTO);
         }
-        responseDetailsJson.put("sEcho", sEcho);
+        languagesDTO.setsEcho(sEcho);
         final Long numberOfLanguages = cmsLanguagesService.countForAjax();
-        responseDetailsJson.put("iTotalRecords", numberOfLanguages);
-        responseDetailsJson.put("iTotalDisplayRecords", numberOfLanguages);
-        responseDetailsJson.put("aaData", jsonArray);
-        return responseDetailsJson.toString();
+        languagesDTO.setiTotalRecords(numberOfLanguages);
+        languagesDTO.setiTotalDisplayRecords(numberOfLanguages);
+        return languagesDTO;
     }
 
     @RequestMapping(value = "/cmsLanguagesDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listCmsLanguagesForDropList(
+    public LanguagesDTO listCmsLanguagesForDropList(
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
         final List<CmsLanguagesEntity> languages = cmsLanguagesService.listForDropList(term, limit);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        LanguagesDTO languagesDTO = new LanguagesDTO();
         for (CmsLanguagesEntity lang : languages) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("id", lang.getId());
-            formDetailsJson.put("code", lang.getCode());
-            formDetailsJson.put("name", lang.getName());
-            jsonArray.add(formDetailsJson);
+            LanguageDTO languageDTO = new LanguageDTO();
+            languageDTO.setId(lang.getId());
+            languageDTO.setCode(lang.getCode());
+            languageDTO.setName(lang.getName());
+            languagesDTO.getAaData().add(languageDTO);
         }
-        responseDetailsJson.put("data", jsonArray);
-        return responseDetailsJson.toString();
+        return languagesDTO;
     }
 
     @RequestMapping(value = "/addLanguage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String addLanguage(
+    public BasicResponse addLanguage(
         @ModelAttribute(value = "cmsLanguage") CmsLanguagesEntity cmsLanguage,
         BindingResult result, Locale locale
     ) {
@@ -107,36 +102,36 @@ class LanguagesController extends JsonController {
         if (Locale.forLanguageTag(cmsLanguage.getCode()).getLanguage().isEmpty()) {
             result.rejectValue("code", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("Language2LetterCodeIsInvalid"));
         }
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             Optional<CmsLanguagesEntity> languageByCode = cmsLanguagesService.getByCode(cmsLanguage.getCode());
             if (!languageByCode.isPresent()) {
                 cmsLanguagesService.add(cmsLanguage);
-                addJsonSuccess(responseDetailsJson);
+                basicResponse = getSuccess();
             } else {
-                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageAlreadyExists"));
+                basicResponse = getErrorMessage(ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageAlreadyExists"));
             }
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
     @RequestMapping(value = "/deleteLanguage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String deleteLanguage(
+    public BasicResponse deleteLanguage(
         @ModelAttribute(value = "cmsLanguage") CmsLanguagesEntity cmsLanguage,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("LanguageMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsLanguagesService.delete(cmsLanguage);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
 }

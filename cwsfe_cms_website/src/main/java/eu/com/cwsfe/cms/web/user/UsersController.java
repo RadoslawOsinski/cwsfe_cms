@@ -6,9 +6,8 @@ import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.services.users.CmsRolesService;
 import eu.com.cwsfe.cms.services.users.CmsUserRolesService;
 import eu.com.cwsfe.cms.services.users.CmsUsersService;
+import eu.com.cwsfe.cms.web.mvc.BasicResponse;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -75,122 +74,118 @@ class UsersController extends JsonController {
 
     @RequestMapping(value = "/usersList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listUsers(
+    public UsersDTO listUsers(
         @RequestParam int iDisplayStart,
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
         final List<CmsUsersEntity> cmsUsers = cmsUsersService.listAjax(iDisplayStart, iDisplayLength);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        UsersDTO usersDTO = new UsersDTO();
         for (int i = 0; i < cmsUsers.size(); i++) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("#", iDisplayStart + i + 1);
-            formDetailsJson.put("userName", cmsUsers.get(i).getUserName());
-            formDetailsJson.put("status", cmsUsers.get(i).getStatus());
-            formDetailsJson.put("id", cmsUsers.get(i).getId());
-            jsonArray.add(formDetailsJson);
+            UserDTO userDTO = new UserDTO();
+            userDTO.setOrderNumber(iDisplayStart + i + 1);
+            userDTO.setUserName(cmsUsers.get(i).getUserName());
+            userDTO.setStatus(cmsUsers.get(i).getStatus());
+            userDTO.setId(cmsUsers.get(i).getId());
+            usersDTO.getAaData().add(userDTO);
         }
-        responseDetailsJson.put("sEcho", sEcho);
+        usersDTO.setsEcho(sEcho);
         final Long numberOfUsers = cmsUsersService.countForAjax();
-        responseDetailsJson.put("iTotalRecords", numberOfUsers);
-        responseDetailsJson.put("iTotalDisplayRecords", numberOfUsers);
-        responseDetailsJson.put("aaData", jsonArray);
-        return responseDetailsJson.toString();
+        usersDTO.setiTotalRecords(numberOfUsers);
+        usersDTO.setiTotalDisplayRecords(numberOfUsers);
+        return usersDTO;
     }
 
     @RequestMapping(value = "/usersDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listUsersForDropList(
+    public UsersDTO listUsersForDropList(
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
         final List<CmsUsersEntity> cmsUsers = cmsUsersService.listUsersForDropList(term, limit);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        UsersDTO usersDTO = new UsersDTO();
         for (CmsUsersEntity cmsUser : cmsUsers) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("id", cmsUser.getId());
-            formDetailsJson.put("userName", cmsUser.getUserName());
-            jsonArray.add(formDetailsJson);
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(cmsUser.getId());
+            userDTO.setUserName(cmsUser.getUserName());
+            usersDTO.getAaData().add(userDTO);
         }
-        responseDetailsJson.put("data", jsonArray);
-        return responseDetailsJson.toString();
+        return usersDTO;
     }
 
     @RequestMapping(value = "/addUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String addUser(
+    public BasicResponse addUser(
         @ModelAttribute(value = "cmsUser") CmsUsersEntity cmsUser,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "userName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UsernameMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "passwordHash", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("PasswordMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsUser.setPasswordHash(BCrypt.hashpw(cmsUser.getPasswordHash(), BCrypt.gensalt(13)));
             Optional<CmsUsersEntity> userByUserName = cmsUsersService.getByUsername(cmsUser.getUserName());
             if (userByUserName.isPresent()) {
-                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserAlreadyExists"));
+                basicResponse = getErrorMessage(ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserAlreadyExists"));
             } else {
                 cmsUsersService.add(cmsUser);
-                addJsonSuccess(responseDetailsJson);
+                basicResponse = getSuccess();
             }
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
     @RequestMapping(value = "/deleteUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String deleteUser(
+    public BasicResponse deleteUser(
         @ModelAttribute(value = "cmsUser") CmsUsersEntity cmsUser,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsUsersService.delete(cmsUser);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
     @RequestMapping(value = "/lockUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String lockUser(
+    public BasicResponse lockUser(
         @ModelAttribute(value = "cmsUser") CmsUsersEntity cmsUser,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsUsersService.lock(cmsUser);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
     @RequestMapping(value = "/unlockUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String unlockUser(
+    public BasicResponse unlockUser(
         @ModelAttribute(value = "cmsUser") CmsUsersEntity cmsUser,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsUsersService.unlock(cmsUser);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
@@ -222,21 +217,21 @@ class UsersController extends JsonController {
 
     @RequestMapping(value = "/users/updateUserBasicInfo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String updateUserBasicInfo(
+    public BasicResponse updateUserBasicInfo(
         @ModelAttribute(value = "cmsUser") CmsUsersEntity cmsUser,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UserMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "userName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UsernameMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "status", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("StatusMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsUsersService.updatePostBasicInfo(cmsUser);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
 }

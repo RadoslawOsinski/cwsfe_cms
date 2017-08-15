@@ -1,10 +1,6 @@
 package eu.com.cwsfe.cms.services.breadcrumbs;
 
-import java.io.Serializable;
-
-public class BreadcrumbDTO implements Serializable {
-
-    private static final long serialVersionUID = -4442521382899438621L;
+public class BreadcrumbDTO {
 
     private Long id;
     private String url;

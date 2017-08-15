@@ -4,8 +4,6 @@ import eu.com.cwsfe.cms.db.users.CmsRolesEntity;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.services.users.CmsRolesService;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -56,46 +54,42 @@ public class RolesController extends JsonController {
 
     @RequestMapping(value = "/rolesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listRoles(
+    public RolesDTO listRoles(
         @RequestParam int iDisplayStart,
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
         final List<CmsRolesEntity> cmsRoles = cmsRolesService.listAjax(iDisplayStart, iDisplayLength);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        RolesDTO rolesDTO = new RolesDTO();
         for (int i = 0; i < cmsRoles.size(); i++) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("#", iDisplayStart + i + 1);
-            formDetailsJson.put("roleCode", cmsRoles.get(i).getRoleCode());
-            formDetailsJson.put("roleName", cmsRoles.get(i).getRoleName());
-            jsonArray.add(formDetailsJson);
+            RoleDTO roleDTO = new RoleDTO();
+            roleDTO.setOrderNumber(iDisplayStart + i + 1);
+            roleDTO.setRoleCode(cmsRoles.get(i).getRoleCode());
+            roleDTO.setRoleName(cmsRoles.get(i).getRoleName());
+            rolesDTO.getAaData().add(roleDTO);
         }
-        responseDetailsJson.put("sEcho", sEcho);
+        rolesDTO.setsEcho(sEcho);
         final Long numberOfRoles = cmsRolesService.countForAjax();
-        responseDetailsJson.put("iTotalRecords", numberOfRoles);
-        responseDetailsJson.put("iTotalDisplayRecords", numberOfRoles);
-        responseDetailsJson.put("aaData", jsonArray);
-        return responseDetailsJson.toString();
+        rolesDTO.setiTotalRecords(numberOfRoles);
+        rolesDTO.setiTotalDisplayRecords(numberOfRoles);
+        return rolesDTO;
     }
 
     @RequestMapping(value = "/rolesDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listRolesForDropList(
+    public RolesDTO listRolesForDropList(
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
         final List<CmsRolesEntity> cmsRoles = cmsRolesService.listRolesForDropList(term, limit);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        RolesDTO rolesDTO = new RolesDTO();
         for (CmsRolesEntity cmsRole : cmsRoles) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("id", cmsRole.getId());
-            formDetailsJson.put("roleName", cmsRole.getRoleName());
-            jsonArray.add(formDetailsJson);
+            RoleDTO roleDTO = new RoleDTO();
+            roleDTO.setOrderNumber(Long.valueOf(cmsRole.getId()).intValue());
+            roleDTO.setRoleName(cmsRole.getRoleName());
+            rolesDTO.getAaData().add(roleDTO);
         }
-        responseDetailsJson.put("data", jsonArray);
-        return responseDetailsJson.toString();
+        return rolesDTO;
     }
 
 }

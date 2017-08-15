@@ -71,8 +71,9 @@ dependencies {
     implementation group: 'commons-lang', name: 'commons-lang', version: project.ext.commons_lang_version
     implementation group: 'commons-pool', name: 'commons-pool', version: project.ext.commons_pool_version
     implementation group: 'net.sf.ezmorph', name: 'ezmorph', version: project.ext.ezomorph_version
-    implementation group: 'net.sf.json-lib', name: 'json-lib', version: project.ext.json_lib_version, classifier: 'jdk15'
-    implementation group: 'net.java.dev.rome', name: 'rome', version: project.ext.rome_version
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: project.ext.swagger_version
+    runtimeOnly group: 'io.springfox', name: 'springfox-swagger-ui', version: project.ext.swagger_version
+    implementation group: 'javax.json', name:'javax.json-api', version: project.ext.json_api_version
     implementation group: 'com.amazonaws', name: 'aws-java-sdk-ec2', version: project.ext.aws_java_jdk_version
     implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: project.ext.aws_java_jdk_version
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: project.ext.jwt_version

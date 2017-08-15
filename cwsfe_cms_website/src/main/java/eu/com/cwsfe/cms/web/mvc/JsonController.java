@@ -1,7 +1,5 @@
 package eu.com.cwsfe.cms.web.mvc;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.validation.BindingResult;
 
 /**
@@ -9,53 +7,46 @@ import org.springframework.validation.BindingResult;
  */
 public abstract class JsonController {
 
-    public static final String JSON_ERROR_MESSAGES = "errorMessages";
-    public static final String JSON_RESULT = "result";
-    public static final String JSON_STATUS = "status";
-    public static final String JSON_STATUS_SUCCESS = "SUCCESS";
-    public static final String JSON_STATUS_FAIL = "FAIL";
-
     public static final String CWSFE_CMS_RESOURCE_BUNDLE_PATH = "cwsfe_cms_i18n";
 
-    protected void prepareErrorResponse(BindingResult result, JSONObject responseDetailsJson) {
-        JSONArray jsonArray = (JSONArray) responseDetailsJson.get(JSON_ERROR_MESSAGES);
-        if (jsonArray == null) {
-            jsonArray = new JSONArray();
-        }
-        responseDetailsJson.put(JSON_STATUS, JSON_STATUS_FAIL);
+    protected BasicResponse prepareErrorResponse(BindingResult result) {
+        BasicResponse basicResponse = new BasicResponse();
+        basicResponse.setStatus(BasicResponse.JSON_STATUS_FAIL);
         for (int i = 0; i < result.getAllErrors().size(); i++) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("error", result.getAllErrors().get(i).getCode());
-            jsonArray.add(formDetailsJson);
+            basicResponse.getErrorMessages().add(result.getAllErrors().get(i).getCode());
         }
-        responseDetailsJson.remove(JSON_ERROR_MESSAGES);
-        responseDetailsJson.put(JSON_ERROR_MESSAGES, jsonArray);
+        return basicResponse;
     }
 
-    protected void addJsonSuccess(JSONObject responseDetailsJson) {
-        responseDetailsJson.put(JSON_STATUS, JSON_STATUS_SUCCESS);
-        responseDetailsJson.put(JSON_RESULT, "");
+    protected BasicResponse getSuccess() {
+        BasicResponse basicResponse = new BasicResponse();
+        basicResponse.setStatus(BasicResponse.JSON_STATUS_SUCCESS);
+        return basicResponse;
     }
 
-    protected void addErrorMessage(JSONObject responseDetailsJson, String message) {
-        String[] messages = new String[1];
-        messages[0] = message;
-        addErrorMessages(responseDetailsJson, messages);
+    protected BasicResponse getErrorMessage(String message) {
+        BasicResponse basicResponse = new BasicResponse();
+        basicResponse.setStatus(BasicResponse.JSON_STATUS_FAIL);
+        basicResponse.getErrorMessages().add(message);
+        return basicResponse;
     }
 
-    protected void addErrorMessages(JSONObject responseDetailsJson, String[] messages) {
-        JSONArray jsonArray = (JSONArray) responseDetailsJson.get(JSON_ERROR_MESSAGES);
-        if (jsonArray == null) {
-            jsonArray = new JSONArray();
-        }
-        responseDetailsJson.put(JSON_STATUS, JSON_STATUS_FAIL);
+    protected BasicResponse getErrorMessages(String[] messages) {
+        BasicResponse basicResponse = new BasicResponse();
+        basicResponse.setStatus(BasicResponse.JSON_STATUS_FAIL);
         for (String message : messages) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("error", message);
-            jsonArray.add(formDetailsJson);
+            basicResponse.getErrorMessages().add(message);
         }
-        responseDetailsJson.remove(JSON_ERROR_MESSAGES);
-        responseDetailsJson.put(JSON_ERROR_MESSAGES, jsonArray);
+        return basicResponse;
+    }
+
+    protected BasicResponse getErrorResponse(String[] messages) {
+        BasicResponse basicResponse = new BasicResponse();
+        basicResponse.setStatus(BasicResponse.JSON_STATUS_FAIL);
+        for (String message : messages) {
+            basicResponse.getErrorMessages().add(message);
+        }
+        return basicResponse;
     }
 
 }

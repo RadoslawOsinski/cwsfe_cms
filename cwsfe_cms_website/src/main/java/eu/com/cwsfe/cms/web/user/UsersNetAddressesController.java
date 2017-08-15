@@ -5,9 +5,8 @@ import eu.com.cwsfe.cms.db.users.CmsUsersEntity;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.services.users.CmsUserAllowedNetAddressService;
 import eu.com.cwsfe.cms.services.users.CmsUsersService;
+import eu.com.cwsfe.cms.web.mvc.BasicResponse;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -60,68 +59,66 @@ class UsersNetAddressesController extends JsonController {
 
     @RequestMapping(value = "/usersNetAddressesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listUsers(
+    public NetAddressesDTO listUsers(
         @RequestParam int iDisplayStart,
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
         List<CmsUserAllowedNetAddressEntity> cmsUserAllowedNetAddresses = cmsUserAllowedNetAddressService.listAjax(iDisplayStart, iDisplayLength);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        NetAddressesDTO netAddressesDTO = new NetAddressesDTO();
         for (int i = 0; i < cmsUserAllowedNetAddresses.size(); i++) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("#", iDisplayStart + i + 1);
+            NetAddressDTO netAddressDTO = new NetAddressDTO();
+            netAddressDTO.setOrderNumber(iDisplayStart + i + 1);
             CmsUsersEntity cmsUser = cmsUsersService.get(cmsUserAllowedNetAddresses.get(i).getUserId());
-            formDetailsJson.put("userName", cmsUser == null ? "---" : cmsUser.getUserName());
-            formDetailsJson.put("inetAddress", cmsUserAllowedNetAddresses.get(i).getInetAddress());
-            formDetailsJson.put("id", cmsUserAllowedNetAddresses.get(i).getId());
-            jsonArray.add(formDetailsJson);
+            netAddressDTO.setUserName(cmsUser == null ? "---" : cmsUser.getUserName());
+            netAddressDTO.setInetAddress(cmsUserAllowedNetAddresses.get(i).getInetAddress());
+            netAddressDTO.setId(cmsUserAllowedNetAddresses.get(i).getId());
+            netAddressesDTO.getAaData().add(netAddressDTO);
         }
-        responseDetailsJson.put("sEcho", sEcho);
+        netAddressesDTO.setsEcho(sEcho);
         final Long numberOfAllowedNetAddresses = cmsUserAllowedNetAddressService.countForAjax();
-        responseDetailsJson.put("iTotalRecords", numberOfAllowedNetAddresses);
-        responseDetailsJson.put("iTotalDisplayRecords", numberOfAllowedNetAddresses);
-        responseDetailsJson.put("aaData", jsonArray);
-        return responseDetailsJson.toString();
+        netAddressesDTO.setiTotalRecords(numberOfAllowedNetAddresses);
+        netAddressesDTO.setiTotalDisplayRecords(numberOfAllowedNetAddresses);
+        return netAddressesDTO;
     }
 
     @RequestMapping(value = "/addNetAddress", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String addNetAddress(
+    public BasicResponse addNetAddress(
         @ModelAttribute(value = "cmsUserAllowedNetAddress") CmsUserAllowedNetAddressEntity cmsUserAllowedNetAddress,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "userId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("UsernameMustBeSet"));
         ValidationUtils.rejectIfEmpty(result, "inetAddress", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NetAddressMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             try {
                 cmsUserAllowedNetAddressService.add(cmsUserAllowedNetAddress);
-                addJsonSuccess(responseDetailsJson);
+                basicResponse = getSuccess();
             } catch (Exception e) {
-                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NetAddressIsIncorrect"));
+                basicResponse = getErrorMessage(ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NetAddressIsIncorrect"));
             }
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
     @RequestMapping(value = "/deleteNetAddress", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String deleteUser(
+    public BasicResponse deleteUser(
         @ModelAttribute(value = "cmsUserAllowedNetAddress") CmsUserAllowedNetAddressEntity cmsUserAllowedNetAddress,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NetAddressMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsUserAllowedNetAddressService.delete(cmsUserAllowedNetAddress);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
 }

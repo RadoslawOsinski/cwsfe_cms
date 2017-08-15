@@ -3,9 +3,8 @@ package eu.com.cwsfe.cms.web.i18n;
 import eu.com.cwsfe.cms.db.news.CmsTextI18NCategoriesEntity;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.services.news.CmsTextI18nCategoryService;
+import eu.com.cwsfe.cms.web.mvc.BasicResponse;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -55,82 +54,78 @@ public class CmsTextI18nCategoryController extends JsonController {
 
     @RequestMapping(value = "/cmsTextI18nCategoriesList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listCmsTextI18nCategories(
+    public CmsTextI18NCategoriesDTO listCmsTextI18nCategories(
         @RequestParam int iDisplayStart,
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
         final List<CmsTextI18NCategoriesEntity> cmsTextI18nCategories = cmsTextI18nCategoryService.listAjax(iDisplayStart, iDisplayLength);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        CmsTextI18NCategoriesDTO cmsTextI18NCategoriesDTO = new CmsTextI18NCategoriesDTO();
         for (int i = 0; i < cmsTextI18nCategories.size(); i++) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("#", iDisplayStart + i + 1);
-            formDetailsJson.put("category", cmsTextI18nCategories.get(i).getCategory());
-            formDetailsJson.put("status", cmsTextI18nCategories.get(i).getStatus());
-            formDetailsJson.put("id", cmsTextI18nCategories.get(i).getId());
-            jsonArray.add(formDetailsJson);
+            CmsTextI18NCategoryDTO cmsTextI18NCategoryDTO = new CmsTextI18NCategoryDTO();
+            cmsTextI18NCategoryDTO.setOrderNumber(iDisplayStart + i + 1);
+            cmsTextI18NCategoryDTO.setCategory(cmsTextI18nCategories.get(i).getCategory());
+            cmsTextI18NCategoryDTO.setStatus(cmsTextI18nCategories.get(i).getStatus());
+            cmsTextI18NCategoryDTO.setId(cmsTextI18nCategories.get(i).getId());
+            cmsTextI18NCategoriesDTO.getAaData().add(cmsTextI18NCategoryDTO);
         }
-        responseDetailsJson.put("sEcho", sEcho);
+        cmsTextI18NCategoriesDTO.setsEcho(sEcho);
         final Long numberOfCategories = cmsTextI18nCategoryService.countForAjax();
-        responseDetailsJson.put("iTotalRecords", numberOfCategories);
-        responseDetailsJson.put("iTotalDisplayRecords", numberOfCategories);
-        responseDetailsJson.put("aaData", jsonArray);
-        return responseDetailsJson.toString();
+        cmsTextI18NCategoriesDTO.setiTotalRecords(numberOfCategories);
+        cmsTextI18NCategoriesDTO.setiTotalDisplayRecords(numberOfCategories);
+        return cmsTextI18NCategoriesDTO;
     }
 
     @RequestMapping(value = "/cmsTextI18nCategoryDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listCmsLanguagesForDropList(
+    public CmsTextI18NCategoriesDTO listCmsLanguagesForDropList(
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
         final List<CmsTextI18NCategoriesEntity> cmsTextI18nCategories = cmsTextI18nCategoryService.listForDropList(term, limit);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        CmsTextI18NCategoriesDTO cmsTextI18NCategoriesDTO = new CmsTextI18NCategoriesDTO();
         for (CmsTextI18NCategoriesEntity lang : cmsTextI18nCategories) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("id", lang.getId());
-            formDetailsJson.put("category", lang.getCategory());
-            jsonArray.add(formDetailsJson);
+            CmsTextI18NCategoryDTO cmsTextI18NCategoryDTO = new CmsTextI18NCategoryDTO();
+            cmsTextI18NCategoryDTO.setId(lang.getId());
+            cmsTextI18NCategoryDTO.setCategory(lang.getCategory());
+            cmsTextI18NCategoriesDTO.getAaData().add(cmsTextI18NCategoryDTO);
         }
-        responseDetailsJson.put("data", jsonArray);
-        return responseDetailsJson.toString();
+        return cmsTextI18NCategoriesDTO;
     }
 
 
     @RequestMapping(value = "/addCmsTextI18nCategory", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String addTextI18nCategory(
+    public BasicResponse addTextI18nCategory(
         @ModelAttribute(value = "cmsTextI18nCategory") CmsTextI18NCategoriesEntity cmsTextI18nCategory,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "category", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CategoryMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsTextI18nCategoryService.add(cmsTextI18nCategory);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
     @RequestMapping(value = "/deleteCmsTextI18nCategory", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String deleteTextI18nCategory(
+    public BasicResponse deleteTextI18nCategory(
         @ModelAttribute(value = "cmsTextI18nCategory") CmsTextI18NCategoriesEntity cmsTextI18nCategory,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TextI18nCategoryMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsTextI18nCategoryService.delete(cmsTextI18nCategory);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
 }

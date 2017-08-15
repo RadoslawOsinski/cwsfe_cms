@@ -3,9 +3,8 @@ package eu.com.cwsfe.cms.web.news;
 import eu.com.cwsfe.cms.db.news.CmsFoldersEntity;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.services.news.CmsFoldersService;
+import eu.com.cwsfe.cms.web.mvc.BasicResponse;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -52,86 +51,82 @@ public class FoldersController extends JsonController {
 
     @RequestMapping(value = "/foldersList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listFolders(
+    public FoldersDTO listFolders(
         @RequestParam int iDisplayStart,
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho
     ) {
         final List<CmsFoldersEntity> cmsFolders = cmsFoldersService.listAjax(iDisplayStart, iDisplayLength);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        FoldersDTO foldersDTO = new FoldersDTO();
         for (int i = 0; i < cmsFolders.size(); i++) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("#", iDisplayStart + i + 1);
-            formDetailsJson.put("folderName", cmsFolders.get(i).getFolderName());
-            formDetailsJson.put("orderNumber", cmsFolders.get(i).getOrderNumber());
-            formDetailsJson.put("id", cmsFolders.get(i).getId());
-            jsonArray.add(formDetailsJson);
+            FolderDTO folderDTO = new FolderDTO();
+            folderDTO.setOrderNumber(iDisplayStart + i + 1);
+            folderDTO.setFolderName(cmsFolders.get(i).getFolderName());
+            folderDTO.setFolderOrderNumber(cmsFolders.get(i).getOrderNumber());
+            folderDTO.setId(cmsFolders.get(i).getId());
+            foldersDTO.getAaData().add(folderDTO);
         }
-        responseDetailsJson.put("sEcho", sEcho);
+        foldersDTO.setsEcho(sEcho);
         final Long numberOfFolders = cmsFoldersService.countForAjax();
-        responseDetailsJson.put("iTotalRecords", numberOfFolders);
-        responseDetailsJson.put("iTotalDisplayRecords", numberOfFolders);
-        responseDetailsJson.put("aaData", jsonArray);
-        return responseDetailsJson.toString();
+        foldersDTO.setiTotalRecords(numberOfFolders);
+        foldersDTO.setiTotalDisplayRecords(numberOfFolders);
+        return foldersDTO;
     }
 
     @RequestMapping(value = "/news/foldersDropList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String listFoldersForDropList(
+    public FoldersDTO listFoldersForDropList(
         @RequestParam String term,
         @RequestParam Integer limit
     ) {
         final List<CmsFoldersEntity> results = cmsFoldersService.listFoldersForDropList(term, limit);
-        JSONObject responseDetailsJson = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+        FoldersDTO foldersDTO = new FoldersDTO();
         for (CmsFoldersEntity cmsFolder : results) {
-            JSONObject formDetailsJson = new JSONObject();
-            formDetailsJson.put("id", cmsFolder.getId());
-            formDetailsJson.put("folderName", cmsFolder.getFolderName());
-            jsonArray.add(formDetailsJson);
+            FolderDTO folderDTO = new FolderDTO();
+            folderDTO.setId(cmsFolder.getId());
+            folderDTO.setFolderName(cmsFolder.getFolderName());
+            foldersDTO.getAaData().add(folderDTO);
         }
-        responseDetailsJson.put("data", jsonArray);
-        return responseDetailsJson.toString();
+        return foldersDTO;
     }
 
     @RequestMapping(value = "/addFolder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String addFolder(
+    public BasicResponse addFolder(
         @ModelAttribute(value = "cmsFolder") CmsFoldersEntity cmsFolder,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "folderName", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderNameMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             Optional<CmsFoldersEntity> existingFolderName = cmsFoldersService.getByFolderName(cmsFolder.getFolderName());
             if (!existingFolderName.isPresent()) {
                 cmsFoldersService.add(cmsFolder);
-                addJsonSuccess(responseDetailsJson);
+                basicResponse = getSuccess();
             } else {
-                addErrorMessage(responseDetailsJson, ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderNameAlreadyExist"));
+                basicResponse = getErrorMessage(ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderNameAlreadyExist"));
             }
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
     @RequestMapping(value = "/deleteFolder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String deleteFolder(
+    public BasicResponse deleteFolder(
         @ModelAttribute(value = "cmsFolder") CmsFoldersEntity cmsFolder,
         BindingResult result, Locale locale
     ) {
         ValidationUtils.rejectIfEmpty(result, "id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("FolderMustBeSet"));
-        JSONObject responseDetailsJson = new JSONObject();
+        BasicResponse basicResponse;
         if (!result.hasErrors()) {
             cmsFoldersService.delete(cmsFolder);
-            addJsonSuccess(responseDetailsJson);
+            basicResponse = getSuccess();
         } else {
-            prepareErrorResponse(result, responseDetailsJson);
+            basicResponse = prepareErrorResponse(result);
         }
-        return responseDetailsJson.toString();
+        return basicResponse;
     }
 
 }

@@ -2,7 +2,6 @@ package eu.com.cwsfe.cms.web.monitoring;
 
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.web.mvc.JsonController;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -58,11 +57,11 @@ public class MonitoringGeneralInformationController extends JsonController {
 
     @RequestMapping(value = "/monitoring/generalMemoryInfo", method = RequestMethod.GET, produces = "application/json;charset=UTF-8;")
     @ResponseBody
-    public String getGeneralMemoryInfo() {
-        JSONObject responseDetailsJson = new JSONObject();
-        responseDetailsJson.put("usedMemoryInMb", new DecimalFormat("##.##").format(serverWatch.usedMemoryInMb()));
-        responseDetailsJson.put("availableMemoryInMB", new DecimalFormat("##.##").format(serverWatch.availableMemoryInMB()));
-        return responseDetailsJson.toString();
+    public GeneralMemoryInfoDTO getGeneralMemoryInfo() {
+        GeneralMemoryInfoDTO generalMemoryInfoDTO = new GeneralMemoryInfoDTO();
+        generalMemoryInfoDTO.setUsedMemoryInMb(new DecimalFormat("##.##").format(serverWatch.usedMemoryInMb()));
+        generalMemoryInfoDTO.setAvailableMemoryInMB(new DecimalFormat("##.##").format(serverWatch.availableMemoryInMB()));
+        return generalMemoryInfoDTO;
     }
 
 }

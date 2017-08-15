@@ -106,6 +106,7 @@ subprojects {
         jwt_version = '0.7.0'
         aop_alliance_version = '1.0'
         slf4j_version = '1.7.25'
+        json_api_version = '1.0'
         logback_version = '1.2.3'
         json_path_version = '2.4.0'
         hibernate_jpa2_api_version = '1.0.0.Final'
