@@ -40,6 +40,9 @@ subprojects {
         maven {
             url "https://artifacts.alfresco.com/nexus/content/repositories/public/"
         }
+        maven {
+            url "http://repo.spring.io/milestone/"
+        }
     }
 
     pitest {
@@ -72,13 +75,12 @@ subprojects {
 
     ext {
         project_version = '3.1.0';
-        spring_version = '5.0.0.M5'
-        spring_security_version = '4.2.3.RELEASE'
+        spring_version = '5.0.0.RC3'
+        spring_security_version = '5.0.0.M3'
         mail_api_version = '1.6.0'
         activation_version = '1.1.1'
         jsp_api_version = '2.2.1-b03'
-        old_servlet_api_version = '3.0.1'
-//        servlet_api_version = '4.0.0-b07'
+        servlet_api_version = '4.0.0-b07'
         mail_version = '1.5.0-b01'
         javax_ejb_version = '3.0'
         jstl_version = '1.2'
@@ -106,20 +108,21 @@ subprojects {
         jwt_version = '0.7.0'
         aop_alliance_version = '1.0'
         slf4j_version = '1.7.25'
-        json_api_version = '1.0'
+        json_api_version = '1.1.0-M2'
         logback_version = '1.2.3'
         json_path_version = '2.4.0'
         hibernate_jpa2_api_version = '1.0.0.Final'
         hibernate_core_version = '5.2.10.Final'
         hibernate_validator_version = '6.0.1.Final'
         hazelcast_hibernate52_version = '1.2.2'
-        hazelcast_version = '3.8.2'
+        hazelcast_version = '3.8'
         modelmapper_version = '1.1.0'
         mockito_version = '2.8.47'
         junit5_version = '5.0.0-RC2'
         junit5_platform_version = '1.0.0-RC2'
         jacoco_version = '0.7.8'
         selenide_version = '4.5.1'
+        selenium_version = '3.4.0'
     }
 
     dependencies {

@@ -19,8 +19,8 @@ configurations {
 }
 
 dependencies {
-    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.0.1'
-    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '3.0.1'
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: project.ext.selenium_version
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: project.ext.selenium_version
     testCompile 'com.codeborne:selenide:' + project.ext.selenide_version
 }
 
