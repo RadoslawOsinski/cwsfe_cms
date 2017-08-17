@@ -25,4 +25,5 @@ module eu.com.cwsfe.cms.db {
     requires flyway.core;
     requires slf4j.api;
     requires org.apache.commons.lang3;
+    requires HikariCP;
 }

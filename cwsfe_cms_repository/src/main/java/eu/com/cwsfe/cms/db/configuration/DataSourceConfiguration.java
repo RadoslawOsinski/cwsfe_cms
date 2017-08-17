@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.db.configuration;
 
+import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jndi.JndiObjectFactoryBean;
 
 import javax.naming.NamingException;
@@ -73,9 +73,9 @@ public class DataSourceConfiguration {
     @Bean(name = "cwsfeCmsDataSource")
     public DataSource getTomcatJndiDataSource() {
         LOGGER.info("Attaching to tomcat jndi data source");
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        HikariDataSource dataSource = new HikariDataSource();
         dataSource.setDriverClassName(environment.getProperty("dataSource.driverClassName"));
-        dataSource.setUrl(environment.getProperty("dataSource.url"));
+        dataSource.setJdbcUrl(environment.getProperty("dataSource.url"));
         dataSource.setUsername(environment.getProperty("dataSource.username"));
         dataSource.setPassword(environment.getProperty("dataSource.password"));
         return dataSource;
@@ -93,9 +93,9 @@ public class DataSourceConfiguration {
     @Bean(name = "cwsfeCmsDataSource")
     public DataSource getTomcatAwsDataSource() {
         LOGGER.info("Attaching to tomcat aws data source");
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        HikariDataSource dataSource = new HikariDataSource();
         dataSource.setDriverClassName(environment.getProperty("dataSource.driverClassName"));
-        dataSource.setUrl(environment.getProperty("dataSource.url"));
+        dataSource.setJdbcUrl(environment.getProperty("dataSource.url"));
         dataSource.setUsername(environment.getProperty("dataSource.username"));
         dataSource.setPassword(environment.getProperty("dataSource.password"));
         return dataSource;

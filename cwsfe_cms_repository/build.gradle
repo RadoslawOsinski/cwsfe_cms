@@ -29,6 +29,7 @@ configurations {
 }
 
 dependencies {
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: project.ext.hikari_version
     implementation group: 'org.springframework', name: 'spring-tx', version: project.ext.spring_version
     implementation group: 'org.springframework', name: 'spring-jdbc', version: project.ext.spring_version
     implementation group: 'org.springframework', name: 'spring-core', version: project.ext.spring_version
