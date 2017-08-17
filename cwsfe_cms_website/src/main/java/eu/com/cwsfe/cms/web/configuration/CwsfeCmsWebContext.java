@@ -33,7 +33,7 @@ import java.util.Locale;
 @Configuration
 @EnableWebMvc
 @EnableSwagger2
-@ComponentScan(value = "eu.com.cwsfe.cms.web")
+@ComponentScan(value = {"eu.com.cwsfe.cms.web", "eu.com.cwsfe.cms.rest"})
 public class CwsfeCmsWebContext extends AbstractSecurityWebApplicationInitializer {
 
     @Bean

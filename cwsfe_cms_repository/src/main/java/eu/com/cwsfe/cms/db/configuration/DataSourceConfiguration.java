@@ -58,7 +58,7 @@ public class DataSourceConfiguration {
      *
      * @return data source
      */
-    @Profile("tomcat")
+    @Profile("tomcat-jndi")
     @Bean(name = "cwsfeCmsDataSource")
     public DataSource getTomcatDataSource() {
         LOGGER.info("Attaching to tomcat jndi data source");
@@ -69,7 +69,7 @@ public class DataSourceConfiguration {
         return dataSource;
     }
 
-    @Profile("tomcat-jndi")
+    @Profile("tomcat")
     @Bean(name = "cwsfeCmsDataSource")
     public DataSource getTomcatJndiDataSource() {
         LOGGER.info("Attaching to tomcat jndi data source");

@@ -13,4 +13,5 @@ module eu.com.cwsfe.cms.services {
     requires hibernate.core;
     requires spring.context;
     requires spring.tx;
+    requires modelmapper;
 }

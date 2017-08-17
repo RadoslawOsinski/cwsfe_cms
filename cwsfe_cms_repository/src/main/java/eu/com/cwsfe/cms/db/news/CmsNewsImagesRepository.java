@@ -45,13 +45,15 @@ public class CmsNewsImagesRepository {
     }
 
     public void delete(Session session, CmsNewsImagesEntity cmsNewsImage) {
-        cmsNewsImage.setStatus("DELETE");
-        session.update(cmsNewsImage);
+        CmsNewsImagesEntity dbCmsNewsImage = session.get(CmsNewsImagesEntity.class, cmsNewsImage.getId());
+        dbCmsNewsImage.setStatus("DELETED");
+        session.update(dbCmsNewsImage);
     }
 
     public void undelete(Session session, CmsNewsImagesEntity cmsNewsImage) {
-        cmsNewsImage.setStatus("NEW");
-        session.update(cmsNewsImage);
+        CmsNewsImagesEntity dbCmsNewsImage = session.get(CmsNewsImagesEntity.class, cmsNewsImage.getId());
+        dbCmsNewsImage.setStatus("NEW");
+        session.update(dbCmsNewsImage);
     }
 
     public List<CmsNewsImagesEntity> listImagesForNewsWithoutThumbnails(Session session, Long newsId) {

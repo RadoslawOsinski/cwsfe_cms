@@ -6,4 +6,5 @@ module eu.com.cwsfe.cms.rest {
     requires spring.web;
     requires javax.servlet.api;
     requires slf4j.api;
+    requires swagger.annotations;
 }

@@ -27,6 +27,7 @@ dependencies {
     implementation group: 'org.springframework', name: 'spring-beans', version: project.ext.spring_version
     implementation group: 'org.springframework', name: 'spring-context', version: project.ext.spring_version
     implementation group: 'org.springframework', name: 'spring-web', version: project.ext.spring_version  //dla CommonsMultipartFile
+    implementation group: 'io.swagger', name: 'swagger-annotations', version: project.ext.swagger_annotations_version
     implementation group: 'javax.annotation', name: 'javax.annotation-api', version: project.ext.javax_annotation_api_version
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: project.ext.jackson_version
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: project.ext.jackson_version

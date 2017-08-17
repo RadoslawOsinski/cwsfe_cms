@@ -102,10 +102,11 @@ public class CmsNewsRepository {
 //    }
 
     public Long add(Session session, CmsNewsEntity news) {
-        news.setStatus("NEW");
-        session.saveOrUpdate(news);
+        CmsNewsEntity dbCmsNewsEntity = session.get(CmsNewsEntity.class, news.getId());
+        dbCmsNewsEntity.setStatus("NEW");
+        session.saveOrUpdate(dbCmsNewsEntity);
         session.flush();
-        return news.getId();
+        return dbCmsNewsEntity.getId();
     }
 
     public void update(Session session, CmsNewsEntity newsPost) {
@@ -117,18 +118,21 @@ public class CmsNewsRepository {
     }
 
     public void delete(Session session, CmsNewsEntity newsPost) {
-        newsPost.setStatus("DELETED");
-        session.update(newsPost);
+        CmsNewsEntity dbCmsNewsEntity = session.get(CmsNewsEntity.class, newsPost.getId());
+        dbCmsNewsEntity.setStatus("DELETED");
+        session.update(dbCmsNewsEntity);
     }
 
     public void undelete(Session session, CmsNewsEntity newsPost) {
-        newsPost.setStatus("HIDDEN");
-        session.update(newsPost);
+        CmsNewsEntity dbCmsNewsEntity = session.get(CmsNewsEntity.class, newsPost.getId());
+        dbCmsNewsEntity.setStatus("HIDDEN");
+        session.update(dbCmsNewsEntity);
     }
 
     public void publish(Session session, CmsNewsEntity newsPost) {
-        newsPost.setStatus("PUBLISHED");
-        session.update(newsPost);
+        CmsNewsEntity dbCmsNewsEntity = session.get(CmsNewsEntity.class, newsPost.getId());
+        dbCmsNewsEntity.setStatus("PUBLISHED");
+        session.update(dbCmsNewsEntity);
     }
 
 //    public List<Object[]> listByFolderLangAndNewsWithPaging(Session session, Integer newsFolderId, Long languageId, String newsType, int newsPerPage, int offset) {

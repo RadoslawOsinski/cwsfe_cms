@@ -29,9 +29,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -100,7 +97,7 @@ public class CmsNewsController extends JsonController {
 
     @RequestMapping(value = "/newsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String list(
+    public NewsesDTO list(
         @RequestParam int iDisplayStart,
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho,
@@ -118,25 +115,21 @@ public class CmsNewsController extends JsonController {
         }
         List<SearchedNewsDTO> dbList = cmsNewsService.searchByAjax(iDisplayStart, iDisplayLength, searchAuthorId, searchNewsCode);
         Long dbListDisplayRecordsSize = cmsNewsService.searchByAjaxCount(searchAuthorId, searchNewsCode);
-        JsonArray jsonArray = Json.createArrayBuilder().build();
+        NewsesDTO newsesDTO = new NewsesDTO();
         for (int i = 0; i < dbList.size(); i++) {
             final SearchedNewsDTO objects = dbList.get(i);
-            JsonObject formDetailsJson = Json.createObjectBuilder()
-                .add("#", iDisplayStart + i + 1)
-                .add("author", (objects.getAuthor() == null || objects.getAuthor().isEmpty()) ? "---" : objects.getAuthor())
-                .add("newsCode", objects.getNewsCode())
-                .add("creationDate", objects.getCreationDate().format(DateTimeFormatter.ISO_LOCAL_DATE))
-                .add("id", objects.getId())
-                .build();
-            jsonArray.add(formDetailsJson);
+            NewsDTO newsDTO = new NewsDTO();
+            newsDTO.setOrderNumber(iDisplayStart + i + 1);
+            newsDTO.setAuthor((objects.getAuthor() == null || objects.getAuthor().isEmpty()) ? "---" : objects.getAuthor());
+            newsDTO.setNewsCode(objects.getNewsCode());
+            newsDTO.setCreationDate(objects.getCreationDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+            newsDTO.setId(objects.getId());
+            newsesDTO.getAaData().add(newsDTO);
         }
-        JsonObject responseDetailsJson = Json.createObjectBuilder()
-            .add("sEcho", sEcho)
-            .add("iTotalRecords", cmsNewsService.getTotalNumberNotDeleted())
-            .add("iTotalDisplayRecords", dbListDisplayRecordsSize)
-            .add("aaData", jsonArray)
-            .build();
-        return responseDetailsJson.toString();
+        newsesDTO.setsEcho(sEcho);
+        newsesDTO.setiTotalRecords(cmsNewsService.getTotalNumberNotDeleted());
+        newsesDTO.setiTotalDisplayRecords(dbListDisplayRecordsSize);
+        return newsesDTO;
     }
 
     @RequestMapping(value = "/addNews", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

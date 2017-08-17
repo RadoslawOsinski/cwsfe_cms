@@ -2,6 +2,8 @@ package eu.com.cwsfe.cms.rest.author;
 
 import eu.com.cwsfe.cms.services.author.CmsAuthorDTO;
 import eu.com.cwsfe.cms.services.author.CmsAuthorsService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
@@ -28,9 +30,12 @@ public class AuthorRestController {
     /**
      * @return internationalized blog keywords list
      */
+    @ApiOperation(
+        value = "Returns author"
+    )
     @RequestMapping(value = "/rest/author/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public CmsAuthorDTO getAuthor(
-        @PathVariable("id") long authorId, HttpServletResponse response
+        @ApiParam(value = "Author id in cms") @PathVariable("id") long authorId, HttpServletResponse response
     ) {
         try {
             return cmsAuthorsService.get(authorId);
