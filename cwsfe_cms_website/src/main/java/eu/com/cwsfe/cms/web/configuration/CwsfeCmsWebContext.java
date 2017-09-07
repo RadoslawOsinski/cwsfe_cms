@@ -25,6 +25,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -39,7 +40,7 @@ public class CwsfeCmsWebContext extends AbstractSecurityWebApplicationInitialize
     @Bean
     public MappingJackson2HttpMessageConverter getMappingJackson2HttpMessageConverter() {
         MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
-        ArrayList<MediaType> supportedMediaTypes = new ArrayList<>();
+        List<MediaType> supportedMediaTypes = new ArrayList<>();
         supportedMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
         mappingJackson2HttpMessageConverter.setSupportedMediaTypes(supportedMediaTypes);
         return mappingJackson2HttpMessageConverter;

@@ -50,6 +50,7 @@ dependencies {
     implementation group: 'org.springframework', name: 'spring-context', version: project.ext.spring_version
     implementation group: 'org.springframework', name: 'spring-aop', version: project.ext.spring_version
     implementation group: 'org.springframework', name: 'spring-jms', version: project.ext.spring_version
+    implementation group: 'org.hibernate', name: 'hibernate-validator', version: project.ext.hibernate_validator_version
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: project.ext.swagger_version
     runtimeOnly group: 'io.springfox', name: 'springfox-swagger-ui', version: project.ext.swagger_version
     implementation group: 'javax.ejb', name: 'ejb-api', version: project.ext.javax_ejb_version
@@ -64,7 +65,7 @@ dependencies {
     implementation group: 'aopalliance', name: 'aopalliance', version: project.ext.aop_alliance_version
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: project.ext.commons_beanutils_version
     implementation group: 'commons-collections', name: 'commons-collections', version: project.ext.commons_collections_version
-    implementation group: 'commons-lang', name: 'commons-lang', version: project.ext.commons_lang_version
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: project.ext.commons_lang3_version
     implementation group: 'commons-pool', name: 'commons-pool', version: project.ext.commons_pool_version
     implementation group: 'net.sf.ezmorph', name: 'ezmorph', version: project.ext.ezomorph_version
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: project.ext.swagger_version
@@ -102,8 +103,13 @@ def gitCommitHash = "git rev-parse HEAD".execute().text.trim();
 compileJava {
     inputs.property("moduleName", moduleName)
     options.compilerArgs += [
-        "--module-path", classpath.asPath
+//        "-Xlint:deprecation",
+        "--module-path", classpath.asPath,
     ]
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:unchecked" << "-Werror"
 }
 
 war.archiveName = 'CWSFE_CMS-' + version + '.war';

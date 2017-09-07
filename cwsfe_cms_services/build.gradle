@@ -43,6 +43,7 @@ def gitCommitHash = "git rev-parse HEAD".execute().text.trim();
 compileJava {
     inputs.property("moduleName", moduleName)
     options.compilerArgs += [
+//        "-Xlint:deprecation",
         "--module-path", classpath.asPath
     ]
 }
