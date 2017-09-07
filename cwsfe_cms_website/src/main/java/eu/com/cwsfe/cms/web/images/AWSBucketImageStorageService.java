@@ -37,11 +37,21 @@ public class AWSBucketImageStorageService implements ImageStorageService {
         this.amazonS3 = amazonS3;
     }
 
-    public String storeNewsImage(CmsNewsImagesEntity cmsNewsImage) {
+    public String storeNewsImage(MultipartFile file) {
         Optional<CmsGlobalParamsEntity> newsImagesBucket = cmsGlobalParamsService.getByCode("CWSFE_CMS_S3_NEWS_IMAGES_PATH");
-//        storeImage(cmsNewsImage.getFile(), newsImagesBucket.getValue());
-        Optional<CmsGlobalParamsEntity> rootBucketName = cmsGlobalParamsService.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
-        return amazonS3.getUrl(rootBucketName.get().getValue(), newsImagesBucket.get().getValue() + "/" + cmsNewsImage.getFileName()).toString();
+        if (!newsImagesBucket.isPresent()) {
+            LOGGER.error("Missing configuration CWSFE_CMS_S3_NEWS_IMAGES_PATH");
+            return "Missing configuration CWSFE_CMS_S3_NEWS_IMAGES_PATH";
+        } else {
+            storeImage(file, newsImagesBucket.get().getValue());
+            Optional<CmsGlobalParamsEntity> rootBucketName = cmsGlobalParamsService.getByCode("AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
+            if (!rootBucketName.isPresent()) {
+                LOGGER.error("Missing configuration AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME");
+                return "Missing configuration AWS_CWSFE_CMS_S3_ROOT_BUCKET_NAME";
+            } else {
+                return amazonS3.getUrl(rootBucketName.get().getValue(), newsImagesBucket.get().getValue() + "/" + file.getOriginalFilename()).toString();
+            }
+        }
     }
 
     @Override

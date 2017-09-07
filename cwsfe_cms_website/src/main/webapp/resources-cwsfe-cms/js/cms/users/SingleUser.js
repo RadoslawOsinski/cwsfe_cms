@@ -5,9 +5,9 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'foundation', 'foundatio
     });
 
     function saveUser() {
-        var username = $('#username').val();
-        var status = $('#status').val();
-        var id = $('#cmsUserId').val();
+        const username = $('#username').val();
+        const status = $('#status').val();
+        const id = $('#cmsUserId').val();
         $.ajax({
             type: 'POST',
             dataType: 'json',
@@ -17,8 +17,8 @@ require(['jquery', 'knockout', 'jqueryUi', 'cmsLayout', 'foundation', 'foundatio
                 if (response.status === 'SUCCESS') {
                     $("#basicInfoFormValidation").html("<p>Success</p>").show('slow');
                 } else {
-                    var errorInfo = "";
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    let errorInfo = "";
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         errorInfo += "<br>" + (i + 1) + ". " + response.errorMessages[i].error;
                     }
                     $('#basicInfoFormValidation').html("<p>Please correct following errors: " + errorInfo + "</p>").show('slow');

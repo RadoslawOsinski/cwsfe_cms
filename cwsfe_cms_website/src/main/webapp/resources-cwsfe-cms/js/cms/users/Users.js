@@ -1,7 +1,7 @@
 require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
 
     function UsersViewModel() {
-        var self = this;
+        const self = this;
         self.userName = ko.observable();
         self.passwordHash = ko.observable();
 
@@ -17,7 +17,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         });
     }
 
-    var viewModel = {
+    const viewModel = {
         usersViewModel: new UsersViewModel(),
         formAlerts: new formAlertsModule.formAlerts()
     };
@@ -87,7 +87,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                     viewModel.usersViewModel.userName(null);
                     viewModel.usersViewModel.passwordHash(null);
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }

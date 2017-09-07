@@ -30,7 +30,7 @@ public class CmsNewsService {
 
     @Transactional
     public void updatePostBasicInfo(CmsNewsEntity cmsNews) {
-        cmsNewsRepository.add(sessionFactory.getCurrentSession(), cmsNews);
+        cmsNewsRepository.updatePostBasicInfo(sessionFactory.getCurrentSession(), cmsNews);
     }
 
     @Transactional

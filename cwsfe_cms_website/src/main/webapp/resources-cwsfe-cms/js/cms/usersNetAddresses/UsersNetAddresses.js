@@ -1,7 +1,7 @@
 require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
 
     function UserNetAddressesModel() {
-        var self = this;
+        const self = this;
         self.userId = ko.observable();
         self.netAddress = ko.observable();
 
@@ -17,7 +17,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         });
     }
 
-    var viewModel = {
+    const viewModel = {
         userNetAddressesModel: new UserNetAddressesModel(),
         formAlerts: new formAlertsModule.formAlerts()
     };
@@ -58,7 +58,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                         term: request.term
                     },
                     success: function (data) {
-                        response($.map(data.data, function (item) {
+                        response($.map(data.aaData, function (item) {
                             return {
                                 value: item.userName,
                                 id: item.id
@@ -96,7 +96,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                     viewModel.userNetAddressesModel.userId(null);
                     viewModel.userNetAddressesModel.netAddress(null);
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }
@@ -117,7 +117,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                 if (response.status === 'SUCCESS') {
                     $("#netAddresses").dataTable().fnDraw();
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }

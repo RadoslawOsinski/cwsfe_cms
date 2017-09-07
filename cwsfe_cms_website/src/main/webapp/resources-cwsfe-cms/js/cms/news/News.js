@@ -1,7 +1,7 @@
 require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
 
     function NewsViewModel() {
-        var self = this;
+        const self = this;
         self.authorId = null;
         self.author = ko.observable();
         self.newsTypeId = null;
@@ -30,7 +30,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         });
     }
 
-    var viewModel = {
+    const viewModel = {
         newsViewModel: new NewsViewModel(),
         formAlerts: new formAlertsModule.formAlerts()
     };
@@ -83,7 +83,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                         term: request.term
                     },
                     success: function (data) {
-                        response($.map(data.data, function (item) {
+                        response($.map(data.aaData, function (item) {
                             return {
                                 value: item.lastName + " " + item.firstName,
                                 id: item.id
@@ -109,7 +109,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                         term: request.term
                     },
                     success: function (data) {
-                        response($.map(data.data, function (item) {
+                        response($.map(data.aaData, function (item) {
                             return {
                                 value: item.lastName + " " + item.firstName,
                                 id: item.id
@@ -136,7 +136,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                         term: request.term
                     },
                     success: function (data) {
-                        response($.map(data.data, function (item) {
+                        response($.map(data.aaData, function (item) {
                             return {
                                 value: item.type,
                                 id: item.id
@@ -164,7 +164,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                         term: request.term
                     },
                     success: function (data) {
-                        response($.map(data.data, function (item) {
+                        response($.map(data.aaData, function (item) {
                             return {
                                 value: item.folderName,
                                 id: item.id
@@ -227,7 +227,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                     viewModel.newsViewModel.newsFolder(null);
                     viewModel.newsViewModel.newsCode(null);
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }
@@ -248,7 +248,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                 if (response.status === 'SUCCESS') {
                     $("#newsList").dataTable().fnDraw();
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }

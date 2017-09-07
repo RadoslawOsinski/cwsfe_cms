@@ -1,13 +1,13 @@
 package eu.com.cwsfe.cms.web.images;
 
-import eu.com.cwsfe.cms.db.news.CmsNewsImagesEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author Radoslaw Osinski
  */
 public interface ImageStorageService {
 
-    String storeNewsImage(CmsNewsImagesEntity cmsNewsImage);
+    String storeNewsImage(MultipartFile file);
 
     boolean isNewsImagesStorageInitialized();
 

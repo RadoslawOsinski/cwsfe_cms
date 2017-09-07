@@ -83,26 +83,32 @@ public class CmsNewsImagesController extends JsonController {
         @ModelAttribute(value = "cmsNewsImage") CmsNewsImage cmsNewsImage,
         BindingResult result, Locale locale
     ) {
-        BufferedImage image;
-        CmsNewsImagesEntity newCmsNewsImage = new CmsNewsImagesEntity();
-        try {
-            image = ImageIO.read(cmsNewsImage.getFile().getInputStream());
-            newCmsNewsImage.setWidth(image.getWidth());
-            newCmsNewsImage.setHeight(image.getHeight());
-        } catch (IOException e) {
-            LOGGER.error("Problem with reading image", e);
-        }
-        newCmsNewsImage.setFileName(cmsNewsImage.getFile().getOriginalFilename());
-        newCmsNewsImage.setFileSize(cmsNewsImage.getFile().getSize());
-        newCmsNewsImage.setMimeType(cmsNewsImage.getFile().getContentType());
-        newCmsNewsImage.setCreated(ZonedDateTime.now());
-        newCmsNewsImage.setLastModified(newCmsNewsImage.getCreated());
-        ValidationUtils.rejectIfEmpty(result, "title", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TitleMustBeSet"));
-        ValidationUtils.rejectIfEmpty(result, "newsId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CmsNewsMustBeSet"));
-        if (!result.hasErrors()) {
-            cmsNewsImage.setId(cmsNewsImagesService.add(newCmsNewsImage));
-            cmsNewsImage.setUrl(imageStorageService.storeNewsImage(newCmsNewsImage));
-            cmsNewsImagesService.updateUrl(newCmsNewsImage);
+        if (cmsNewsImage.getFile() == null) {
+            LOGGER.error("Image was not uploaded");
+        } else {
+            BufferedImage image;
+            CmsNewsImagesEntity newCmsNewsImage = new CmsNewsImagesEntity();
+            try {
+                image = ImageIO.read(cmsNewsImage.getFile().getInputStream());
+                newCmsNewsImage.setWidth(image.getWidth());
+                newCmsNewsImage.setHeight(image.getHeight());
+            } catch (IOException e) {
+                LOGGER.error("Problem with reading image", e);
+            }
+            newCmsNewsImage.setTitle(cmsNewsImage.getTitle());
+            newCmsNewsImage.setNewsId(cmsNewsImage.getNewsId());
+            newCmsNewsImage.setFileName(cmsNewsImage.getFile().getOriginalFilename());
+            newCmsNewsImage.setFileSize(cmsNewsImage.getFile().getSize());
+            newCmsNewsImage.setMimeType(cmsNewsImage.getFile().getContentType());
+            newCmsNewsImage.setCreated(ZonedDateTime.now());
+            newCmsNewsImage.setLastModified(newCmsNewsImage.getCreated());
+            ValidationUtils.rejectIfEmpty(result, "title", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("TitleMustBeSet"));
+            ValidationUtils.rejectIfEmpty(result, "newsId", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("CmsNewsMustBeSet"));
+            if (!result.hasErrors()) {
+                newCmsNewsImage.setId(cmsNewsImagesService.add(newCmsNewsImage));
+                newCmsNewsImage.setUrl(imageStorageService.storeNewsImage(cmsNewsImage.getFile()));
+                cmsNewsImagesService.updateUrl(newCmsNewsImage);
+            }
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("/news/" + cmsNewsImage.getNewsId(), true, false, false));

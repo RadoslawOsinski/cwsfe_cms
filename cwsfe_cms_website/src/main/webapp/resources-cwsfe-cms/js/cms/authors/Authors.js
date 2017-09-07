@@ -1,7 +1,7 @@
 require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
 
     function AuthorsViewModel() {
-        var self = this;
+        const self = this;
         self.firstName = ko.observable();
         self.lastName = ko.observable();
 
@@ -17,7 +17,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         });
     }
 
-    var viewModel = {
+    const viewModel = {
         authorsViewModel: new AuthorsViewModel(),
         formAlerts: new formAlertsModule.formAlerts()
     };
@@ -59,7 +59,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
 
     function addAuthor() {
         viewModel.formAlerts.cleanAllMessages();
-        var googlePlusAuthorLink = $('#googlePlusAuthorLink').val();
+        const googlePlusAuthorLink = $('#googlePlusAuthorLink').val();
         $.ajax({
             type: 'POST',
             dataType: 'json',
@@ -72,7 +72,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
                     viewModel.authorsViewModel.lastName('');
                     $('#googlePlusAuthorLink').val('');
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }
@@ -93,7 +93,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
                 if (response.status === 'SUCCESS') {
                     $("#authorsList").dataTable().fnDraw();
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }

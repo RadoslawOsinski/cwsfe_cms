@@ -1,7 +1,6 @@
 package eu.com.cwsfe.cms.web.images;
 
 import eu.com.cwsfe.cms.app.configuration.SecurityConfig;
-import eu.com.cwsfe.cms.db.news.CmsNewsImagesEntity;
 import eu.com.cwsfe.cms.db.parameters.CmsGlobalParamsEntity;
 import eu.com.cwsfe.cms.services.parameters.CmsGlobalParamsService;
 import eu.com.cwsfe.cms.web.news.CmsNewsImagesController;
@@ -33,17 +32,21 @@ public class LocalFileSystemImageStorageService implements ImageStorageService {
         this.cmsGlobalParamsService = cmsGlobalParamsService;
     }
 
-    public String storeNewsImage(CmsNewsImagesEntity cmsNewsImage) {
+    public String storeNewsImage(MultipartFile file) {
         Optional<CmsGlobalParamsEntity> newsImagesPath = cmsGlobalParamsService.getByCode("CWSFE_CMS_NEWS_IMAGES_PATH");
         if (!newsImagesPath.isPresent()) {
             LOGGER.error("Missing configuration CWSFE_CMS_NEWS_IMAGES_PATH");
+            return "Missing configuration CWSFE_CMS_NEWS_IMAGES_PATH";
+        } else {
+            storeImage(file, newsImagesPath.get().getValue());
+            Optional<CmsGlobalParamsEntity> cmsMainUrl = cmsGlobalParamsService.getByCode("CWSFE_CMS_MAIN_URL");
+            if (!cmsMainUrl.isPresent()) {
+                LOGGER.error("Missing configuration CWSFE_CMS_MAIN_URL");
+                return "Missing configuration CWSFE_CMS_MAIN_URL";
+            } else {
+                return cmsMainUrl.get().getValue() + SecurityConfig.NEWS_IMAGES + file.getOriginalFilename();
+            }
         }
-//        storeImage(cmsNewsImage.getFile(), newsImagesPath.getValue());
-        Optional<CmsGlobalParamsEntity> cmsMainUrl = cmsGlobalParamsService.getByCode("CWSFE_CMS_MAIN_URL");
-        if (!cmsMainUrl.isPresent()) {
-            LOGGER.error("Missing configuration CWSFE_CMS_MAIN_URL");
-        }
-        return cmsMainUrl.get().getValue() + SecurityConfig.NEWS_IMAGES + cmsNewsImage.getFileName();
     }
 
     @Override
@@ -72,9 +75,11 @@ public class LocalFileSystemImageStorageService implements ImageStorageService {
     }
 
     private void storeImage(MultipartFile image, String imagePath) {
+        assert image.getOriginalFilename() != null : "File name must be present!";
         File copiedFile = new File(imagePath, image.getOriginalFilename());
         try {
-            copiedFile.setExecutable(false);
+            boolean executableResult = copiedFile.setExecutable(false);
+            LOGGER.trace("Setting executable for file: {}, result: {}", copiedFile.getAbsolutePath(), executableResult);
             Files.copy(image.getInputStream(), copiedFile.toPath());
         } catch (IOException e) {
             LOGGER.error("Cannot save image to " + copiedFile.getAbsolutePath(), e);

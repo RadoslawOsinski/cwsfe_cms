@@ -227,8 +227,7 @@
 
                         <div class="row">
                             <label for="title"><spring:message code="Title"/></label>
-                            <input type="text" id="title" name="title" maxlength="100" required
-                                   data-bind="textInput: imageTitle"/>
+                            <input type="text" id="title" name="title" maxlength="100" required="required"/>
                         </div>
 
                         <div class="row">

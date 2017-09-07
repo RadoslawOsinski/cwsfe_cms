@@ -102,11 +102,10 @@ public class CmsNewsRepository {
 //    }
 
     public Long add(Session session, CmsNewsEntity news) {
-        CmsNewsEntity dbCmsNewsEntity = session.get(CmsNewsEntity.class, news.getId());
-        dbCmsNewsEntity.setStatus("NEW");
-        session.saveOrUpdate(dbCmsNewsEntity);
+        news.setStatus("NEW");
+        session.saveOrUpdate(news);
         session.flush();
-        return dbCmsNewsEntity.getId();
+        return news.getId();
     }
 
     public void update(Session session, CmsNewsEntity newsPost) {
@@ -114,7 +113,12 @@ public class CmsNewsRepository {
     }
 
     public void updatePostBasicInfo(Session session, CmsNewsEntity newsPost) {
-        session.update(newsPost);
+        CmsNewsEntity dbCmsNewsEntity = session.get(CmsNewsEntity.class, newsPost.getId());
+        dbCmsNewsEntity.setNewsTypeId(newsPost.getNewsTypeId());
+        dbCmsNewsEntity.setNewsFolderId(newsPost.getNewsFolderId());
+        dbCmsNewsEntity.setNewsCode(newsPost.getNewsCode());
+        dbCmsNewsEntity.setStatus(newsPost.getStatus());
+        session.update(dbCmsNewsEntity);
     }
 
     public void delete(Session session, CmsNewsEntity newsPost) {

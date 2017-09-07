@@ -1,7 +1,7 @@
 require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
 
     function LanguagesViewModel() {
-        var self = this;
+        const self = this;
         self.code = ko.observable();
         self.name = ko.observable();
 
@@ -17,7 +17,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         });
     }
 
-    var viewModel = {
+    let viewModel = {
         languagesViewModel: new LanguagesViewModel(),
         formAlerts: new formAlertsModule.formAlerts()
     };
@@ -69,7 +69,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
                     viewModel.languagesViewModel.code(null);
                     viewModel.languagesViewModel.name(null);
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }
@@ -90,7 +90,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
                 if (response.status === 'SUCCESS') {
                     $("#LanguagesList").dataTable().fnDraw();
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }

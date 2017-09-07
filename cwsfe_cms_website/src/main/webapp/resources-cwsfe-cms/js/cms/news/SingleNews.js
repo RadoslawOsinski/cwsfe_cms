@@ -1,7 +1,7 @@
 require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable', 'foundation', 'foundationTabs'], function ($, ko, formAlertsModule) {
 
     function SingleNewsViewModel() {
-        var self = this;
+        const self = this;
         self.languageId = ko.observable(null);
         self.newsTypeId = ko.observable($('#newsTypeId').val());
         self.newsType = ko.observable($('#newsType').val());
@@ -65,18 +65,18 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                 url: $('#cmsNewsId').val() + '/' + self.languageId(),
                 async: true,
                 success: function (response) {
-                    if (response !== null && 'SUCCESS' === response.status) {
-                        self.newsTitle(response.data.newsTitle);
-                        self.newsShortcut(response.data.newsShortcut);
-                        self.newsDescription(response.data.newsDescription);
-                        self.i18nStatus(response.data.status);
+                    if (response !== null) {
+                        self.newsTitle(response.newsTitle);
+                        self.newsShortcut(response.newsShortcut);
+                        self.newsDescription(response.newsDescription);
+                        self.i18nStatus(response.status);
                     }
                 }
             });
         };
     }
 
-    var singleNewsViewModel = new SingleNewsViewModel();
+    const singleNewsViewModel = new SingleNewsViewModel();
 
     $(document).ready(function () {
 
@@ -91,7 +91,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                         term: request.term
                     },
                     success: function (data) {
-                        response($.map(data.data, function (item) {
+                        response($.map(data.aaData, function (item) {
                             return {
                                 value: item.lastName + " " + item.firstName,
                                 id: item.id
@@ -117,7 +117,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                         term: request.term
                     },
                     success: function (data) {
-                        response($.map(data.data, function (item) {
+                        response($.map(data.aaData, function (item) {
                             return {
                                 value: item.type,
                                 id: item.id
@@ -144,7 +144,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                         term: request.term
                     },
                     success: function (data) {
-                        response($.map(data.data, function (item) {
+                        response($.map(data.aaData, function (item) {
                             return {
                                 value: item.folderName,
                                 id: item.id
@@ -171,7 +171,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                         term: request.term
                     },
                     success: function (data) {
-                        response($.map(data.data, function (item) {
+                        response($.map(data.aaData, function (item) {
                             return {
                                 value: item.code + " - " + item.name,
                                 id: item.id
@@ -225,7 +225,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
             saveNews();
         });
 
-        var $body = $('body');
+        const $body = $('body');
         $body.on('click', '#revertNewsI18nButton', function () {
             singleNewsViewModel.i18nContentAlerts.cleanAllMessages();
             singleNewsViewModel.initializeSingleNewsViewModel();
@@ -262,8 +262,8 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
 
     function saveNews() {
         singleNewsViewModel.basicInfoAlerts.cleanAllMessages();
-        var status = $('#status').val();
-        var id = $('#cmsNewsId').val();
+        const status = $('#status').val();
+        const id = $('#cmsNewsId').val();
         $.ajax({
             type: 'POST',
             dataType: 'json',
@@ -273,7 +273,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         singleNewsViewModel.basicInfoAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }
@@ -286,7 +286,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
 
     function updateNewsI18n() {
         singleNewsViewModel.i18nContentAlerts.cleanAllMessages();
-        var cmsNewsId = $('#cmsNewsId').val();
+        const cmsNewsId = $('#cmsNewsId').val();
         $.ajax({
             type: 'POST',
             dataType: 'json',
@@ -297,7 +297,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
             success: function (response) {
                 if (response.status === 'SUCCESS') {
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         singleNewsViewModel.i18nContentAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }
@@ -318,7 +318,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                 if (response.status === 'SUCCESS') {
                     $('#cmsNewsImagesList').dataTable().fnDraw();
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         singleNewsViewModel.imageAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }

@@ -1,7 +1,7 @@
 require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
 
     function TranslationViewModel() {
-        var self = this;
+        const self = this;
         self.searchLanguageId = null;
         self.searchLanguage = ko.observable();
         self.searchCategoryId = null;
@@ -29,7 +29,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
         });
     }
 
-    var viewModel = {
+    const viewModel = {
         translationViewModel: new TranslationViewModel(),
         formAlerts: new formAlertsModule.formAlerts()
     };
@@ -71,7 +71,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                         term: request.term
                     },
                     success: function (data) {
-                        response($.map(data.data, function (item) {
+                        response($.map(data.aaData, function (item) {
                             return {
                                 value: item.code + " - " + item.name,
                                 id: item.id
@@ -98,7 +98,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                         term: request.term
                     },
                     success: function (data) {
-                        response($.map(data.data, function (item) {
+                        response($.map(data.aaData, function (item) {
                             return {
                                 value: item.category,
                                 id: item.id
@@ -153,7 +153,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                     viewModel.translationViewModel.key(null);
                     viewModel.translationViewModel.text(null);
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }
@@ -174,7 +174,7 @@ require(['jquery', 'knockout', 'formAlerts', 'jqueryUi', 'cmsLayout', 'dataTable
                 if (response.status === 'SUCCESS') {
                     $("#cmsTextI18nList").dataTable().fnDraw();
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }

@@ -40,8 +40,7 @@ public class CmsNewsImagesRepository {
 
     public Long add(Session session, CmsNewsImagesEntity cmsNewsImage) {
         cmsNewsImage.setStatus("NEW");
-        CmsNewsImagesEntity saved = (CmsNewsImagesEntity) session.save(cmsNewsImage);
-        return saved.getId();
+        return (Long) session.save(cmsNewsImage);
     }
 
     public void delete(Session session, CmsNewsImagesEntity cmsNewsImage) {

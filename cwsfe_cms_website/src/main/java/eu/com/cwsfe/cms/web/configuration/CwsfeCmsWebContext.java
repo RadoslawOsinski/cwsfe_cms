@@ -60,7 +60,11 @@ public class CwsfeCmsWebContext extends AbstractSecurityWebApplicationInitialize
         return new StringHttpMessageConverter(Charset.forName("UTF-8"));
     }
 
-    @Bean
+    /**
+     * Do not change bean name. Otherwise file uploading does not work!
+     * @return multi part resolver
+     */
+    @Bean(name = "multipartResolver")
     public CommonsMultipartResolver getCommonsMultipartResolver() {
         CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
         commonsMultipartResolver.setMaxUploadSize(2000000000);

@@ -1,7 +1,7 @@
-var gulp = require('gulp');
-var gulpLoadPlugins = require('gulp-load-plugins');
-var plugins = gulpLoadPlugins();
-var minifyCSS = require('gulp-minify-css');
+const gulp = require('gulp');
+const gulpLoadPlugins = require('gulp-load-plugins');
+const plugins = gulpLoadPlugins();
+const minifyCSS = require('gulp-minify-css');
 //var mocha  = require('gulp-mocha');
 //var mochaPhantomJS = require('gulp-mocha-phantomjs');
 

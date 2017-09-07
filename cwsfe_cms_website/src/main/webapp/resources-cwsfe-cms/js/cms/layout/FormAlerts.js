@@ -1,7 +1,7 @@
 define('formAlerts', ['jquery', 'knockout'], function ($, ko) {
 
-    var FormAlerts = function () {
-        var self = this;
+    let FormAlerts = function () {
+        const self = this;
 
         self.formMessages = ko.observableArray([]);
 
@@ -46,7 +46,7 @@ define('formAlerts', ['jquery', 'knockout'], function ($, ko) {
             });
         };
         self.cleanMessage = function (typeType) {
-            var itemsForRemove = ko.utils.arrayFilter(self.formMessages(), function (formMessage) {
+            const itemsForRemove = ko.utils.arrayFilter(self.formMessages(), function (formMessage) {
                 return formMessage.type === typeType;
             });
             self.formMessages.removeAll(itemsForRemove);

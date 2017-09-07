@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.db.common;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.ZonedDateTime;
@@ -104,6 +106,23 @@ public abstract class CmsImage {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE)
+            .append("id", id)
+            .append("title", title)
+            .append("fileName", fileName)
+            .append("fileSize", fileSize)
+            .append("width", width)
+            .append("height", height)
+            .append("mimeType", mimeType)
+            .append("created", created)
+            .append("lastModified", lastModified)
+            .append("file", file)
+            .append("url", url)
+            .toString();
     }
 }
 

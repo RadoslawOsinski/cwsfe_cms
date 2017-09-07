@@ -1,7 +1,7 @@
 require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
 
     function NewsTypesViewModel() {
-        var self = this;
+        const self = this;
         self.type = ko.observable();
 
         self.typeIsRequiredStyle = ko.computed(function () {
@@ -12,7 +12,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         });
     }
 
-    var viewModel = {
+    const viewModel = {
         newsTypesViewModel: new NewsTypesViewModel(),
         formAlerts: new formAlertsModule.formAlerts()
     };
@@ -69,7 +69,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
                     $("#newsTypesList").dataTable().fnDraw();
                     viewModel.newsTypesViewModel.type(null);
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }
@@ -90,7 +90,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
                 if (response.status === 'SUCCESS') {
                     $("#newsTypesList").dataTable().fnDraw();
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }

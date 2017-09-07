@@ -1,12 +1,12 @@
 require(['jquery', 'knockout', 'foundation', 'foundationTabs', 'foundationOffCanvas'], function ($) {
 
     function getLoadTime() {
-        var now = new Date().getTime();
+        const now = new Date().getTime();
         // Get the performance object window .
-        var performance = window.performance || window.mozPerformance || window.msPerformance || window.webkitPerformance || {};
-        var timing = performance.timing || {};
+        const performance = window.performance || window.mozPerformance || window.msPerformance || window.webkitPerformance || {};
+        const timing = performance.timing || {};
         if (timing) {
-            var load_time = now - timing.navigationStart;
+            const load_time = now - timing.navigationStart;
             $('#loadTimeValue').html(load_time);
         }
     }
@@ -14,17 +14,17 @@ require(['jquery', 'knockout', 'foundation', 'foundationTabs', 'foundationOffCan
     function handleTabSelection() {
         //check current label
         $(this).attr('aria-selected', 'true');
-        var tabLabel = $(this).parent();
+        const tabLabel = $(this).parent();
         tabLabel.addClass('active');
 
         //uncheck other labels
-        var otherTabLabels = tabLabel.siblings("li");
+        const otherTabLabels = tabLabel.siblings("li");
         $.each(otherTabLabels, function (i, tab) {
             $(tab).removeClass('active');
             $(tab).children().filter('a[role="tab"]').attr('aria-selected', 'false');
         });
 
-        var controlledSection = $('#' + $(this).attr('aria-controls'));
+        const controlledSection = $('#' + $(this).attr('aria-controls'));
         //hide other sections
         controlledSection.siblings().removeClass('active');
         controlledSection.siblings().attr('aria-hidden', 'true');

@@ -2,7 +2,7 @@ require(['jquery', 'cmsLayout'], function ($) {
 
     $(document).ready(function () {
 
-        var refreshMemoryInfo = function () {
+        const refreshMemoryInfo = function () {
             $.ajax({
                 url: 'generalMemoryInfo',
                 dataType: "json",

@@ -1,6 +1,7 @@
 package eu.com.cwsfe.cms.db.news;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.time.ZonedDateTime;
 
@@ -85,7 +86,7 @@ public class SearchedNewsDTO {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE)
             .append("author", author)
             .append("newsCode", newsCode)
             .append("creationDate", creationDate)

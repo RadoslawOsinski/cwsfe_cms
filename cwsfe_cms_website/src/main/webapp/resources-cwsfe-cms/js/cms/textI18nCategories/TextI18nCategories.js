@@ -1,7 +1,7 @@
 require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
 
     function CategoryViewModel() {
-        var self = this;
+        const self = this;
         self.category = ko.observable();
 
         self.categoryIsRequiredStyle = ko.computed(function () {
@@ -12,7 +12,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         });
     }
 
-    var viewModel = {
+    const viewModel = {
         categoryViewModel: new CategoryViewModel(),
         formAlerts: new formAlertsModule.formAlerts()
     };
@@ -71,7 +71,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
                     $("#cmsTextI18nCategoriesList").dataTable().fnDraw();
                     viewModel.categoryViewModel.category(null);
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }
@@ -92,7 +92,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
                 if (response.status === 'SUCCESS') {
                     $("#cmsTextI18nCategoriesList").dataTable().fnDraw();
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }

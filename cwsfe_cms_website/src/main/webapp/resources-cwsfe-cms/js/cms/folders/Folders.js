@@ -1,7 +1,7 @@
 require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function ($, ko, formAlertsModule) {
 
     function FolderViewModel() {
-        var self = this;
+        const self = this;
         self.folderName = ko.observable();
         self.orderNumber = ko.observable(0);
 
@@ -13,7 +13,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
         });
     }
 
-    var viewModel = {
+    const viewModel = {
         folderViewModel: new FolderViewModel(),
         formAlerts: new formAlertsModule.formAlerts()
     };
@@ -73,7 +73,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
                     viewModel.folderViewModel.folderName(null);
                     viewModel.folderViewModel.orderNumber(0);
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }
@@ -94,7 +94,7 @@ require(['jquery', 'knockout', 'formAlerts', 'cmsLayout', 'dataTable'], function
                 if (response.status === 'SUCCESS') {
                     $("#foldersList").dataTable().fnDraw();
                 } else {
-                    for (var i = 0; i < response.errorMessages.length; i++) {
+                    for (let i = 0; i < response.errorMessages.length; i++) {
                         viewModel.formAlerts.addWarning(response.errorMessages[i].error);
                     }
                 }
