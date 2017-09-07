@@ -8,24 +8,13 @@ import eu.com.cwsfe.cms.services.parameters.CmsGlobalParamsService;
 import eu.com.cwsfe.cms.services.users.CmsRolesService;
 import eu.com.cwsfe.cms.services.users.CmsUserRolesService;
 import eu.com.cwsfe.cms.services.users.CmsUsersService;
-import eu.com.cwsfe.cms.web.mvc.JsonController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ValidationUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.Locale;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 /**
  * @author Radoslaw Osinski

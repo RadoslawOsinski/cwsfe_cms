@@ -11,6 +11,7 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CmsAuthorsRepository {
@@ -55,8 +56,8 @@ public class CmsAuthorsRepository {
             .list();
     }
 
-    public CmsAuthorsEntity get(Session session, Long id) {
-        return session.get(CmsAuthorsEntity.class, id);
+    public Optional<CmsAuthorsEntity> get(Session session, Long id) {
+        return Optional.ofNullable(session.get(CmsAuthorsEntity.class, id));
     }
 
     public Long add(Session session, CmsAuthorsEntity cmsAuthor) {

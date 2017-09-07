@@ -4,6 +4,8 @@ import eu.com.cwsfe.cms.db.users.CmsRolesEntity;
 import eu.com.cwsfe.cms.db.users.CmsUserRolesEntity;
 import eu.com.cwsfe.cms.db.users.CmsUserRolesRepository;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,8 @@ import java.util.List;
  */
 @Service
 public class CmsUserRolesService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CmsUserRolesService.class);
 
     private final SessionFactory sessionFactory;
     private final CmsUserRolesRepository cmsUserRolesRepository;
@@ -30,6 +34,7 @@ public class CmsUserRolesService {
 
     @Transactional
     public void add(CmsUserRolesEntity cmsUserRole) {
+        LOG.info("Adding user role: {}", cmsUserRole);
         cmsUserRolesRepository.add(sessionFactory.getCurrentSession(), cmsUserRole);
     }
 
@@ -40,6 +45,7 @@ public class CmsUserRolesService {
 
     @Transactional
     public void updateUserRoles(long userId, String[] userRoles) {
+        LOG.info("Updating user roles. User id: {}, roles: {}", userId, userRoles);
         cmsUserRolesRepository.deleteForUser(sessionFactory.getCurrentSession(), userId);
         if (userRoles != null) {
             for (String userRole : userRoles) {

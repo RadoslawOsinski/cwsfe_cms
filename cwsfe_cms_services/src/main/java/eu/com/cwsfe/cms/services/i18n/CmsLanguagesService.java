@@ -3,6 +3,8 @@ package eu.com.cwsfe.cms.services.i18n;
 import eu.com.cwsfe.cms.db.i18n.CmsLanguagesEntity;
 import eu.com.cwsfe.cms.db.i18n.CmsLanguagesRepository;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +17,8 @@ import java.util.Optional;
 @Service
 public class CmsLanguagesService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(CmsLanguagesService.class);
+
     private final CmsLanguagesRepository cmsLanguagesRepository;
     private final SessionFactory sessionFactory;
 
@@ -24,7 +28,7 @@ public class CmsLanguagesService {
     }
 
     @Transactional
-    public CmsLanguagesEntity getById(long langId) {
+    public Optional<CmsLanguagesEntity> getById(long langId) {
         return cmsLanguagesRepository.getById(sessionFactory.getCurrentSession(), langId);
     }
 
@@ -45,11 +49,13 @@ public class CmsLanguagesService {
 
     @Transactional
     public void add(CmsLanguagesEntity cmsLanguage) {
+        LOG.info("Adding language: {}", cmsLanguage);
         cmsLanguagesRepository.add(sessionFactory.getCurrentSession(), cmsLanguage);
     }
 
     @Transactional
     public void delete(CmsLanguagesEntity cmsLanguage) {
+        LOG.info("Deleting language: {}", cmsLanguage);
         cmsLanguagesRepository.delete(sessionFactory.getCurrentSession(), cmsLanguage);
     }
 

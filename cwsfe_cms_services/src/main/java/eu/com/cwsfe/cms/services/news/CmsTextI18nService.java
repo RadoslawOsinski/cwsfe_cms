@@ -3,6 +3,8 @@ package eu.com.cwsfe.cms.services.news;
 import eu.com.cwsfe.cms.db.news.CmsTextI18NEntity;
 import eu.com.cwsfe.cms.db.news.CmsTextI18nRepository;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,8 @@ import java.util.Optional;
  */
 @Service
 public class CmsTextI18nService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CmsTextI18nService.class);
 
     private final CmsTextI18nRepository cmsTextI18nRepository;
     private final SessionFactory sessionFactory;
@@ -35,11 +39,13 @@ public class CmsTextI18nService {
 
     @Transactional
     public void add(CmsTextI18NEntity cmsTextI18n) {
+        LOG.info("Adding news i18n text: {}", cmsTextI18n);
         cmsTextI18nRepository.add(sessionFactory.getCurrentSession(), cmsTextI18n);
     }
 
     @Transactional
     public void delete(CmsTextI18NEntity cmsTextI18n) {
+        LOG.info("Deleting news i18n text: {}", cmsTextI18n);
         cmsTextI18nRepository.delete(sessionFactory.getCurrentSession(), cmsTextI18n);
     }
 

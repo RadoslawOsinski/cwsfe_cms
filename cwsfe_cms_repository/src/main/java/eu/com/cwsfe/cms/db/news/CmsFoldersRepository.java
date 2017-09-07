@@ -34,8 +34,8 @@ public class CmsFoldersRepository {
         return query.getResultList();
     }
 
-    public CmsFoldersEntity get(Session session, Long id) {
-        return session.get(CmsFoldersEntity.class, id);
+    public Optional<CmsFoldersEntity> get(Session session, Long id) {
+        return Optional.ofNullable(session.get(CmsFoldersEntity.class, id));
     }
 
     public Optional<CmsFoldersEntity> getByFolderName(Session session, String folderName) {

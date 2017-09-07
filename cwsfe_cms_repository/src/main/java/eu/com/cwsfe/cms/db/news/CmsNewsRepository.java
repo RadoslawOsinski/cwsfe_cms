@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CmsNewsRepository {
@@ -84,8 +85,8 @@ public class CmsNewsRepository {
 //        return jdbcTemplate.query(query, (resultSet, rowNum) -> mapCmsNews(resultSet));
 //    }
 
-    public CmsNewsEntity get(Session session, Long id) {
-        return session.get(CmsNewsEntity.class, id);
+    public Optional<CmsNewsEntity> get(Session session, Long id) {
+        return Optional.ofNullable(session.get(CmsNewsEntity.class, id));
     }
 
 //    public CmsNews getByNewsTypeFolderAndNewsCode(Session session, Long newsTypeId, Long newsFolderId, String newsCode) {

@@ -21,8 +21,8 @@ public class CmsNewsI18nContentsRepository {
         return query.getResultList();
     }
 
-    public CmsNewsI18NContentsEntity get(Session session, Long id) {
-        return session.get(CmsNewsI18NContentsEntity.class, id);
+    public Optional<CmsNewsI18NContentsEntity> get(Session session, Long id) {
+        return Optional.ofNullable(session.get(CmsNewsI18NContentsEntity.class, id));
     }
 
     public Optional<CmsNewsI18NContentsEntity> getByLanguageForNews(Session session, Long newsId, Long languageId) {

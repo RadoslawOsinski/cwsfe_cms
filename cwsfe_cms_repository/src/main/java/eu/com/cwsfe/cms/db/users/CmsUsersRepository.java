@@ -50,8 +50,8 @@ public class CmsUsersRepository {
         return query.getResultList();
     }
 
-    public CmsUsersEntity get(Session session, Long id) {
-        return session.get(CmsUsersEntity.class, id);
+    public Optional<CmsUsersEntity> get(Session session, Long id) {
+        return Optional.ofNullable(session.get(CmsUsersEntity.class, id));
     }
 
     public Long add(Session session, CmsUsersEntity cmsUser) {
@@ -70,10 +70,6 @@ public class CmsUsersRepository {
         cmsUsersEntity.setUserName(cmsUser.getUserName());
         cmsUsersEntity.setStatus(cmsUser.getStatus());
         session.update(cmsUsersEntity);
-    }
-
-    public void updateWithoutPassword(Session session, CmsUsersEntity cmsUser) {
-        session.update(cmsUser);
     }
 
     public void delete(Session session, CmsUsersEntity cmsUser) {

@@ -5,7 +5,6 @@ import eu.com.cwsfe.cms.services.author.CmsAuthorsService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 /**
  * Created by Radosław Osiński
@@ -37,9 +37,10 @@ public class AuthorRestController {
     public CmsAuthorDTO getAuthor(
         @ApiParam(value = "Author id in cms") @PathVariable("id") long authorId, HttpServletResponse response
     ) {
-        try {
-            return cmsAuthorsService.get(authorId);
-        } catch (EmptyResultDataAccessException e) {
+        Optional<CmsAuthorDTO> cmsAuthorDTO = cmsAuthorsService.get(authorId);
+        if (cmsAuthorDTO.isPresent()) {
+            return cmsAuthorDTO.get();
+        } else {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }

@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.web.i18n;
 
+import eu.com.cwsfe.cms.db.i18n.CmsLanguagesEntity;
+import eu.com.cwsfe.cms.db.news.CmsTextI18NCategoriesEntity;
 import eu.com.cwsfe.cms.db.news.CmsTextI18NEntity;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.services.i18n.CmsLanguagesService;
@@ -67,8 +69,10 @@ public class CmsTextI18nController extends JsonController {
         for (int i = 0; i < cmsTextI18ns.size(); i++) {
             TextI18nDTO textI18nDTO = new TextI18nDTO();
             textI18nDTO.setOrderNumber(iDisplayStart + i + 1);
-            textI18nDTO.setLanguage(cmsLanguagesService.getById(cmsTextI18ns.get(i).getLangId()).getCode());
-            textI18nDTO.setCategory(cmsTextI18nCategoryService.get(cmsTextI18ns.get(i).getI18nCategory()).getCategory());
+            Optional<CmsLanguagesEntity> language = cmsLanguagesService.getById(cmsTextI18ns.get(i).getLangId());
+            language.ifPresent(cmsLanguagesEntity -> textI18nDTO.setLanguage(cmsLanguagesEntity.getCode()));
+            Optional<CmsTextI18NCategoriesEntity> cmsTextI18NCategoriesEntity = cmsTextI18nCategoryService.get(cmsTextI18ns.get(i).getI18nCategory());
+            cmsTextI18NCategoriesEntity.ifPresent(cmsTextI18NCategoriesEntity1 -> textI18nDTO.setCategory(cmsTextI18NCategoriesEntity1.getCategory()));
             textI18nDTO.setKey(cmsTextI18ns.get(i).getI18NKey());
             textI18nDTO.setText(cmsTextI18ns.get(i).getI18NText());
             textI18nDTO.setId(cmsTextI18ns.get(i).getId());

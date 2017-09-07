@@ -127,8 +127,4 @@
 //        return cmsNewsI18nContentsService.getByLanguageForNews(cmsNews.getId(), currentPLang.getId());
 //    }
 //
-//    @ExceptionHandler(value = EmptyResultDataAccessException.class)
-//    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-//    public void handleEmptyResult() {
-//    }
 //}

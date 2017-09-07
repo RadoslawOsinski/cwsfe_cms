@@ -34,8 +34,8 @@ public class NewsTypesRepository {
         return query.getResultList();
     }
 
-    public CmsNewsTypesEntity get(Session session, Long id) {
-        return session.get(CmsNewsTypesEntity.class, id);
+    public Optional<CmsNewsTypesEntity> get(Session session, Long id) {
+        return Optional.ofNullable(session.get(CmsNewsTypesEntity.class, id));
     }
 
     public Optional<CmsNewsTypesEntity> getByType(Session session, String type) {

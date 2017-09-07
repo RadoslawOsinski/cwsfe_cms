@@ -14,4 +14,5 @@ module eu.com.cwsfe.cms.services {
     requires spring.context;
     requires spring.tx;
     requires modelmapper;
+    requires slf4j.api;
 }

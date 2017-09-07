@@ -129,6 +129,6 @@ subprojects {
 
     dependencies {
         testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: project.ext.junit5_version
-//        testCompile group: 'org.pitest', name: 'pitest-maven', version: '1.2.0'   //todo uncomment!
+        testCompile group: 'org.pitest', name: 'pitest-maven', version: '1.2.2'
     }
 }

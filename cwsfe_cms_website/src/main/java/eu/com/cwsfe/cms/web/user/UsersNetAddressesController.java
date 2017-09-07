@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * @author Radoslaw Osinski
@@ -69,8 +66,8 @@ class UsersNetAddressesController extends JsonController {
         for (int i = 0; i < cmsUserAllowedNetAddresses.size(); i++) {
             NetAddressDTO netAddressDTO = new NetAddressDTO();
             netAddressDTO.setOrderNumber(iDisplayStart + i + 1);
-            CmsUsersEntity cmsUser = cmsUsersService.get(cmsUserAllowedNetAddresses.get(i).getUserId());
-            netAddressDTO.setUserName(cmsUser == null ? "---" : cmsUser.getUserName());
+            Optional<CmsUsersEntity> cmsUser = cmsUsersService.get(cmsUserAllowedNetAddresses.get(i).getUserId());
+            netAddressDTO.setUserName(!cmsUser.isPresent() ? "---" : cmsUser.get().getUserName());
             netAddressDTO.setInetAddress(cmsUserAllowedNetAddresses.get(i).getInetAddress());
             netAddressDTO.setId(cmsUserAllowedNetAddresses.get(i).getId());
             netAddressesDTO.getAaData().add(netAddressDTO);

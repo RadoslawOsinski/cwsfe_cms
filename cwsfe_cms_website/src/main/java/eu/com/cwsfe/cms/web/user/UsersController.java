@@ -192,11 +192,15 @@ class UsersController extends JsonController {
     public String browseUser(ModelMap model, Locale locale, @PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         model.addAttribute("mainJavaScript", setSingleUserAdditionalJS(httpServletRequest.getContextPath()));
         model.addAttribute("breadcrumbs", getSingleUserBreadcrumbs(locale, id));
-        final CmsUsersEntity cmsUser = cmsUsersService.get(id);
-        model.addAttribute("cmsUser", cmsUser);
-        List<Long> userSelectedRoles = new ArrayList<>(5);
-        userSelectedRoles.addAll(cmsUserRolesService.listUserRoles(cmsUser.getId()).stream().map(CmsRolesEntity::getId).collect(Collectors.toList()));
-        model.addAttribute("userSelectedRoles", userSelectedRoles);
+        final Optional<CmsUsersEntity> cmsUser = cmsUsersService.get(id);
+        if (cmsUser.isPresent()) {
+            model.addAttribute("cmsUser", cmsUser.get());
+            List<Long> userSelectedRoles = new ArrayList<>(5);
+            userSelectedRoles.addAll(cmsUserRolesService.listUserRoles(
+                cmsUser.get().getId()).stream().map(CmsRolesEntity::getId).collect(Collectors.toList())
+            );
+            model.addAttribute("userSelectedRoles", userSelectedRoles);
+        }
         model.addAttribute("cmsRoles", cmsRolesService.list());
         return "cms/users/SingleUser";
     }

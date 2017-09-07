@@ -5,6 +5,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CmsTextI18nCategoryRepository {
@@ -33,8 +34,8 @@ public class CmsTextI18nCategoryRepository {
         return query.getResultList();
     }
 
-    public CmsTextI18NCategoriesEntity get(Session session, Long id) {
-        return session.get(CmsTextI18NCategoriesEntity.class, id);
+    public Optional<CmsTextI18NCategoriesEntity> get(Session session, Long id) {
+        return Optional.ofNullable(session.get(CmsTextI18NCategoriesEntity.class, id));
     }
 
     public Long add(Session session, CmsTextI18NCategoriesEntity cmsTextI18nCategory) {

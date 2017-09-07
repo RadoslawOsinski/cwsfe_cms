@@ -34,10 +34,6 @@ public class CmsNewsImagesRepository {
         return (Long) query.getSingleResult();
     }
 
-    public CmsNewsImagesEntity getWithContent(Session session, Long id) {
-        return session.get(CmsNewsImagesEntity.class, id);
-    }
-
     public Long add(Session session, CmsNewsImagesEntity cmsNewsImage) {
         cmsNewsImage.setStatus("NEW");
         return (Long) session.save(cmsNewsImage);

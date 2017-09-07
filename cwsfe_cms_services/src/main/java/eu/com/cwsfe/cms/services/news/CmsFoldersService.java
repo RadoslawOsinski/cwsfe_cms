@@ -4,6 +4,8 @@ import eu.com.cwsfe.cms.db.news.CmsFoldersEntity;
 import eu.com.cwsfe.cms.db.news.CmsFoldersRepository;
 import org.hibernate.SessionFactory;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class CmsFoldersService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CmsFoldersService.class);
 
     private final CmsFoldersRepository cmsFoldersRepository;
     private final SessionFactory sessionFactory;
@@ -44,11 +48,13 @@ public class CmsFoldersService {
 
     @Transactional
     public void add(CmsFoldersEntity cmsFolder) {
+        LOG.info("Adding folder: {}", cmsFolder);
         cmsFoldersRepository.add(sessionFactory.getCurrentSession(), cmsFolder);
     }
 
     @Transactional
     public void delete(CmsFoldersEntity cmsFolder) {
+        LOG.info("Deleting folder: {}", cmsFolder);
         cmsFoldersRepository.delete(sessionFactory.getCurrentSession(), cmsFolder);
     }
 
@@ -58,7 +64,7 @@ public class CmsFoldersService {
     }
 
     @Transactional
-    public CmsFoldersEntity get(long folderId) {
+    public Optional<CmsFoldersEntity> get(long folderId) {
         return cmsFoldersRepository.get(sessionFactory.getCurrentSession(), folderId);
     }
 

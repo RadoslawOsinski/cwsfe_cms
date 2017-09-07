@@ -27,8 +27,8 @@ public class CmsTextI18nRepository {
         return query.getResultList();
     }
 
-    public CmsTextI18NEntity get(Session session, Long id) {
-        return session.get(CmsTextI18NEntity.class, id);
+    public Optional<CmsTextI18NEntity> get(Session session, Long id) {
+        return Optional.ofNullable(session.get(CmsTextI18NEntity.class, id));
     }
 
     public Optional<String> findTranslation(Session session, String language2LetterCode, String category, String key) {

@@ -35,8 +35,8 @@ public class CmsLanguagesRepository {
         return query.getResultList();
     }
 
-    public CmsLanguagesEntity getById(Session session, Long id) {
-        return session.get(CmsLanguagesEntity.class, id);
+    public Optional<CmsLanguagesEntity> getById(Session session, Long id) {
+        return Optional.ofNullable(session.get(CmsLanguagesEntity.class, id));
     }
 
     public Optional<CmsLanguagesEntity> getByCode(Session session, String code) {

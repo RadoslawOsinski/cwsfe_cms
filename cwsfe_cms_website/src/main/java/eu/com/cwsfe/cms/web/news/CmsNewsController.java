@@ -1,9 +1,8 @@
 package eu.com.cwsfe.cms.web.news;
 
 import eu.com.cwsfe.cms.db.common.PublishedHiddenStatus;
-import eu.com.cwsfe.cms.db.news.CmsNewsEntity;
-import eu.com.cwsfe.cms.db.news.CmsNewsI18NContentsEntity;
-import eu.com.cwsfe.cms.db.news.SearchedNewsDTO;
+import eu.com.cwsfe.cms.db.news.*;
+import eu.com.cwsfe.cms.services.author.CmsAuthorDTO;
 import eu.com.cwsfe.cms.services.author.CmsAuthorsService;
 import eu.com.cwsfe.cms.services.breadcrumbs.BreadcrumbDTO;
 import eu.com.cwsfe.cms.services.i18n.CmsLanguagesService;
@@ -194,12 +193,17 @@ public class CmsNewsController extends JsonController {
     public String browseNews(ModelMap model, Locale locale, @PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
         model.addAttribute("mainJavaScript", setSingleNewsAdditionalJS(httpServletRequest.getContextPath()));
         model.addAttribute("breadcrumbs", getSingleNewsBreadcrumbs(locale, id));
-        final CmsNewsEntity cmsNews = cmsNewsService.get(id);
+        final Optional<CmsNewsEntity> cmsNews = cmsNewsService.get(id);
         model.addAttribute("cmsLanguages", cmsLanguagesService.listAll());
-        model.addAttribute("cmsNews", cmsNews);
-        model.addAttribute("cmsAuthor", cmsAuthorsService.get(cmsNews.getAuthorId()));
-        model.addAttribute("newsType", newsTypesService.get(cmsNews.getNewsTypeId()));
-        model.addAttribute("newsFolder", cmsFoldersService.get(cmsNews.getNewsFolderId()));
+        if (cmsNews.isPresent()) {
+            model.addAttribute("cmsNews", cmsNews.get());
+            Optional<CmsAuthorDTO> authorDTO = cmsAuthorsService.get(cmsNews.get().getAuthorId());
+            authorDTO.ifPresent(cmsAuthorDTO -> model.addAttribute("cmsAuthor", cmsAuthorDTO));
+            Optional<CmsNewsTypesEntity> newsType = newsTypesService.get(cmsNews.get().getNewsTypeId());
+            newsType.ifPresent(cmsNewsType -> model.addAttribute("newsType", cmsNewsType));
+            Optional<CmsFoldersEntity> newsFolder = cmsFoldersService.get(cmsNews.get().getNewsFolderId());
+            newsFolder.ifPresent(cmsFoldersEntity -> model.addAttribute("newsFolder", cmsFoldersEntity));
+        }
         return "cms/news/SingleNews";
     }
 

@@ -5,6 +5,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CmsUserAllowedNetAddressRepository {
@@ -33,8 +34,8 @@ public class CmsUserAllowedNetAddressRepository {
         return query.getResultList();
     }
 
-    public CmsUserAllowedNetAddressEntity get(Session session, Long id) {
-        return session.get(CmsUserAllowedNetAddressEntity.class, id);
+    public Optional<CmsUserAllowedNetAddressEntity> get(Session session, Long id) {
+        return Optional.ofNullable(session.get(CmsUserAllowedNetAddressEntity.class, id));
     }
 
     public Long add(Session session, CmsUserAllowedNetAddressEntity cmsUserAllowedNetAddress) {

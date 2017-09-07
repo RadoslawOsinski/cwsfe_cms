@@ -3,7 +3,6 @@ package eu.com.cwsfe.cms.db.parameters;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -49,8 +48,8 @@ public class CmsGlobalParamsRepository {
             .list();
     }
 
-    public CmsGlobalParamsEntity get(Session session, Long id) {
-        return session.get(CmsGlobalParamsEntity.class, id);
+    public Optional<CmsGlobalParamsEntity> get(Session session, Long id) {
+        return Optional.ofNullable(session.get(CmsGlobalParamsEntity.class, id));
     }
 
     public Optional<CmsGlobalParamsEntity> getByCode(Session session, String code) {

@@ -37,8 +37,8 @@ public class CmsRolesRepository {
         return query.getResultList();
     }
 
-    public CmsRolesEntity get(Session session, Long id) {
-        return session.get(CmsRolesEntity.class, id);
+    public Optional<CmsRolesEntity> get(Session session, Long id) {
+        return Optional.ofNullable(session.get(CmsRolesEntity.class, id));
     }
 
     public Optional<CmsRolesEntity> getByCode(Session session, String roleCode) {

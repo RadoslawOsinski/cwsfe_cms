@@ -4,6 +4,8 @@ import eu.com.cwsfe.cms.db.news.CmsNewsImagesEntity;
 import eu.com.cwsfe.cms.db.news.CmsNewsImagesRepository;
 import org.hibernate.SessionFactory;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class CmsNewsImagesService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CmsNewsImagesService.class);
 
     private final CmsNewsImagesRepository cmsNewsImagesRepository;
     private final SessionFactory sessionFactory;
@@ -44,22 +48,25 @@ public class CmsNewsImagesService {
 
     @Transactional
     public long add(CmsNewsImagesEntity cmsNewsImage) {
+        LOG.info("Adding news image: {}", cmsNewsImage);
         return cmsNewsImagesRepository.add(sessionFactory.getCurrentSession(), cmsNewsImage);
     }
 
     @Transactional
     public void updateUrl(CmsNewsImagesEntity cmsNewsImage) {
+        LOG.info("Updating news image url: {}", cmsNewsImage);
         cmsNewsImagesRepository.updateUrl(sessionFactory.getCurrentSession(), cmsNewsImage);
     }
 
     @Transactional
     public void delete(CmsNewsImagesEntity cmsNewsImage) {
+        LOG.info("Deleting news image: {}", cmsNewsImage);
         cmsNewsImagesRepository.delete(sessionFactory.getCurrentSession(), cmsNewsImage);
     }
 
-    public CmsNewsImageDTO getThumbnailForNews(long newsId) {
+    public Optional<CmsNewsImageDTO> getThumbnailForNews(long newsId) {
         Optional<CmsNewsImagesEntity> thumbnailForNews = cmsNewsImagesRepository.getThumbnailForNews(sessionFactory.getCurrentSession(), newsId);
-        return modelMapper.map(thumbnailForNews.get(), CmsNewsImageDTO.class);
+        return thumbnailForNews.map(cmsNewsImagesEntity -> modelMapper.map(cmsNewsImagesEntity, CmsNewsImageDTO.class));
     }
 
     public List<CmsNewsImageDTO> listImagesForNewsWithoutThumbnails(long newsId) {

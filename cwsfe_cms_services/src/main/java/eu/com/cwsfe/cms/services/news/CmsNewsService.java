@@ -4,16 +4,21 @@ import eu.com.cwsfe.cms.db.news.CmsNewsEntity;
 import eu.com.cwsfe.cms.db.news.CmsNewsRepository;
 import eu.com.cwsfe.cms.db.news.SearchedNewsDTO;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Radosław Osiński
  */
 @Service
 public class CmsNewsService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CmsNewsService.class);
 
     private final CmsNewsRepository cmsNewsRepository;
     private final SessionFactory sessionFactory;
@@ -25,21 +30,24 @@ public class CmsNewsService {
 
     @Transactional
     public void add(CmsNewsEntity cmsNews) {
+        LOG.info("Adding news: {}", cmsNews);
         cmsNewsRepository.add(sessionFactory.getCurrentSession(), cmsNews);
     }
 
     @Transactional
     public void updatePostBasicInfo(CmsNewsEntity cmsNews) {
+        LOG.info("Updating news: {}", cmsNews);
         cmsNewsRepository.updatePostBasicInfo(sessionFactory.getCurrentSession(), cmsNews);
     }
 
     @Transactional
     public void delete(CmsNewsEntity cmsNews) {
+        LOG.info("Deleting news: {}", cmsNews);
         cmsNewsRepository.delete(sessionFactory.getCurrentSession(), cmsNews);
     }
 
     @Transactional
-    public CmsNewsEntity get(Long id) {
+    public Optional<CmsNewsEntity> get(Long id) {
         return cmsNewsRepository.get(sessionFactory.getCurrentSession(), id);
     }
 

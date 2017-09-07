@@ -3,6 +3,8 @@ package eu.com.cwsfe.cms.services.news;
 import eu.com.cwsfe.cms.db.news.CmsNewsTypesEntity;
 import eu.com.cwsfe.cms.db.news.NewsTypesRepository;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,8 @@ import java.util.Optional;
  */
 @Service
 public class NewsTypesService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(NewsTypesService.class);
 
     private final NewsTypesRepository newsTypesRepository;
     private final SessionFactory sessionFactory;
@@ -40,16 +44,18 @@ public class NewsTypesService {
 
     @Transactional
     public void add(CmsNewsTypesEntity newsType) {
+        LOG.info("Adding news type: {}", newsType);
         newsTypesRepository.add(sessionFactory.getCurrentSession(), newsType);
     }
 
     @Transactional
     public void delete(CmsNewsTypesEntity cmsNewsType) {
+        LOG.info("Deleting news type: {}", cmsNewsType);
         newsTypesRepository.delete(sessionFactory.getCurrentSession(), cmsNewsType);
     }
 
     @Transactional
-    public CmsNewsTypesEntity get(long newsTypeId) {
+    public Optional<CmsNewsTypesEntity> get(long newsTypeId) {
         return newsTypesRepository.get(sessionFactory.getCurrentSession(), newsTypeId);
     }
 

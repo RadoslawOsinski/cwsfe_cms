@@ -3,6 +3,8 @@ package eu.com.cwsfe.cms.services.users;
 import eu.com.cwsfe.cms.db.users.CmsUserAllowedNetAddressEntity;
 import eu.com.cwsfe.cms.db.users.CmsUserAllowedNetAddressRepository;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +15,8 @@ import java.util.List;
  */
 @Service
 public class CmsUserAllowedNetAddressService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CmsUserAllowedNetAddressService.class);
 
     private final CmsUserAllowedNetAddressRepository cmsUserAllowedNetAddressRepository;
     private final SessionFactory sessionFactory;
@@ -34,11 +38,13 @@ public class CmsUserAllowedNetAddressService {
 
     @Transactional
     public void add(CmsUserAllowedNetAddressEntity cmsUserAllowedNetAddress) {
+        LOG.info("Adding user allowed net address: {}", cmsUserAllowedNetAddress);
         cmsUserAllowedNetAddressRepository.add(sessionFactory.getCurrentSession(), cmsUserAllowedNetAddress);
     }
 
     @Transactional
     public void delete(CmsUserAllowedNetAddressEntity cmsUserAllowedNetAddress) {
+        LOG.info("Deleting user allowed net address: {}", cmsUserAllowedNetAddress);
         cmsUserAllowedNetAddressRepository.delete(sessionFactory.getCurrentSession(), cmsUserAllowedNetAddress);
     }
 
