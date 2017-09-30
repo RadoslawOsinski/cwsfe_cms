@@ -31,7 +31,7 @@ public class CmsTextI18nRestController {
     ) {
         Optional<String> translation = cmsTextI18nService.findTranslation(languageCode, category, key);
         if (translation.isPresent()) {
-            return translation.get();
+            return "{\"value \":\"" + translation.get() + "\"}";
         } else {
             response.setStatus(HttpStatus.NOT_FOUND.value());
             return null;

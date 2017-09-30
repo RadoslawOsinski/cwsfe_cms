@@ -25,10 +25,11 @@ public class CmsFoldersService {
     private final SessionFactory sessionFactory;
     private final ModelMapper modelMapper;
 
-    public CmsFoldersService(SessionFactory sessionFactory, CmsFoldersRepository cmsFoldersRepository, ModelMapper modelMapper) {
+    public CmsFoldersService(SessionFactory sessionFactory, CmsFoldersRepository cmsFoldersRepository) {
         this.cmsFoldersRepository = cmsFoldersRepository;
         this.sessionFactory = sessionFactory;
-        this.modelMapper = modelMapper;
+        this.modelMapper = new ModelMapper();
+        modelMapper.createTypeMap(CmsFoldersEntity.class, CmsFolderDTO.class);
     }
 
     @Transactional

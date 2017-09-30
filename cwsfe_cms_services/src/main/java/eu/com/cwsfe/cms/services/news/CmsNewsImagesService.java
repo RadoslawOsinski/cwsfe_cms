@@ -25,10 +25,11 @@ public class CmsNewsImagesService {
     private final SessionFactory sessionFactory;
     private final ModelMapper modelMapper;
 
-    public CmsNewsImagesService(CmsNewsImagesRepository cmsNewsImagesRepository, SessionFactory sessionFactory, ModelMapper modelMapper) {
+    public CmsNewsImagesService(CmsNewsImagesRepository cmsNewsImagesRepository, SessionFactory sessionFactory) {
         this.cmsNewsImagesRepository = cmsNewsImagesRepository;
         this.sessionFactory = sessionFactory;
-        this.modelMapper = modelMapper;
+        this.modelMapper = new ModelMapper();
+        modelMapper.createTypeMap(CmsNewsImagesEntity.class, CmsNewsImageDTO.class);
     }
 
     @Transactional

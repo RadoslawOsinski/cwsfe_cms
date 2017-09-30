@@ -3,7 +3,6 @@ package eu.com.cwsfe.cms.services.author;
 import eu.com.cwsfe.cms.db.author.CmsAuthorsEntity;
 import eu.com.cwsfe.cms.db.author.CmsAuthorsRepository;
 import org.hibernate.SessionFactory;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,12 +19,10 @@ public class CmsAuthorsService {
 
     private static final Logger LOG = LoggerFactory.getLogger(CmsAuthorsService.class);
 
-    private final ModelMapper modelMapper;
     private final CmsAuthorsRepository cmsAuthorsRepository;
     private final SessionFactory sessionFactory;
 
-    public CmsAuthorsService(ModelMapper modelMapper, CmsAuthorsRepository cmsAuthorsRepository, SessionFactory sessionFactory) {
-        this.modelMapper = modelMapper;
+    public CmsAuthorsService(CmsAuthorsRepository cmsAuthorsRepository, SessionFactory sessionFactory) {
         this.cmsAuthorsRepository = cmsAuthorsRepository;
         this.sessionFactory = sessionFactory;
     }
@@ -34,7 +31,13 @@ public class CmsAuthorsService {
     public Optional<CmsAuthorDTO> get(long authorId) {
         Optional<CmsAuthorsEntity> cmsAuthorsEntity = cmsAuthorsRepository.get(sessionFactory.getCurrentSession(), authorId);
         if (cmsAuthorsEntity.isPresent()) {
-            return Optional.of(modelMapper.map(cmsAuthorsEntity, CmsAuthorDTO.class));
+            CmsAuthorDTO cmsAuthorDTO = new CmsAuthorDTO();
+            cmsAuthorDTO.setId(cmsAuthorsEntity.get().getId());
+            cmsAuthorDTO.setFirstName(cmsAuthorsEntity.get().getFirstName());
+            cmsAuthorDTO.setLastName(cmsAuthorsEntity.get().getLastName());
+            cmsAuthorDTO.setGooglePlusAuthorLink(cmsAuthorsEntity.get().getGooglePlusAuthorLink());
+            cmsAuthorDTO.setStatus(cmsAuthorsEntity.get().getStatus());
+            return Optional.of(cmsAuthorDTO);
         } else {
             return Optional.empty();
         }

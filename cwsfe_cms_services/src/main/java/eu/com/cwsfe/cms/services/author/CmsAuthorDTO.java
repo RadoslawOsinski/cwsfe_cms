@@ -2,11 +2,7 @@ package eu.com.cwsfe.cms.services.author;
 
 import eu.com.cwsfe.cms.db.common.NewDeletedStatus;
 
-import java.io.Serializable;
-
-public class CmsAuthorDTO implements Serializable {
-
-    private static final long serialVersionUID = 9134829946664389430L;
+public class CmsAuthorDTO {
 
     private Long id;
     private String firstName;
