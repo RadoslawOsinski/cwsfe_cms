@@ -158,28 +158,6 @@
 //        ;
 //    }
 //
-//    @Ignore("Fix this failing test")
-//    @Test
-//    public void testCountListByFolderLangAndNewsWithPaging() throws Exception {
-//        CmsFolder folder = new CmsFolder();
-//        folder.setId(7L);
-//        int total = 1;
-//        when(cmsFoldersDAO.getByFolderName(anyString())).thenReturn(folder);
-//        when(cmsLanguagesDAO.getByCode(anyString())).thenReturn(new Language());
-//        when(cmsNewsDAO.countListByFolderLangAndNewsWithPaging(anyInt(), anyLong(), anyString())).thenReturn(total);
-//
-//        ResultActions resultActions = mockMvc.perform(get("/rest/newsI18nPairsTotal")
-//            .param("folderName", "folderName")
-//            .param("languageCode", "languageCode")
-//            .param("newsType", "newsType")
-//            .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));
-//
-//        resultActions
-//            .andExpect(status().isOk())
-//            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-//            .andExpect(jsonPath("$.total").value(total));
-//    }
-//
 //    @Test
 //    public void testGetByLanguageForNews() throws Exception {
 //        Language language = new Language();

@@ -19,7 +19,7 @@ public class ImageStorageInitializer implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         initializeImageStorage();
     }
 

@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.web.news;
 
+import eu.com.cwsfe.cms.db.common.PublishedHiddenStatus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +12,7 @@ public class NewsI18nDTO {
     private String newsTitle;
     private String newsShortcut;
     private String newsDescription;
-    private String status;
+    private PublishedHiddenStatus status;
     private List<String> errorMessages = new ArrayList<>();
 
     public void setNewsTitle(String newsTitle) {
@@ -37,11 +39,11 @@ public class NewsI18nDTO {
         return newsDescription;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(PublishedHiddenStatus status) {
         this.status = status;
     }
 
-    public String getStatus() {
+    public PublishedHiddenStatus getStatus() {
         return status;
     }
 

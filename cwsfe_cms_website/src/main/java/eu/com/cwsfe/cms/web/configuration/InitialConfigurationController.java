@@ -66,8 +66,8 @@ class InitialConfigurationController extends JsonController {
         ModelAndView modelAndView = new ModelAndView();
         if (!result.hasErrors()) {
             Optional<CmsGlobalParamsEntity> cwsfeCmsIsConfigured = cmsGlobalParamsService.getByCode("CWSFE_CMS_IS_CONFIGURED");
-            if (initialConfigurationService.isCwsfeCmsConfigured(cwsfeCmsIsConfigured)) {
-                initialConfigurationService.configureCwsfeCms(cmsUser, cwsfeCmsIsConfigured);
+            if (cwsfeCmsIsConfigured.isPresent() && initialConfigurationService.isCwsfeCmsConfigured(cwsfeCmsIsConfigured.get())) {
+                initialConfigurationService.configureCwsfeCms(cmsUser, cwsfeCmsIsConfigured.get());
             }
             modelAndView.setView(new RedirectView("/", true, false, false));
         } else {

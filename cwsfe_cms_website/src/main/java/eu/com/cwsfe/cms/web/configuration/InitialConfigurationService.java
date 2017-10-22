@@ -40,20 +40,25 @@ class InitialConfigurationService {
         this.cmsGlobalParamsService = cmsGlobalParamsService;
     }
 
-    boolean isCwsfeCmsConfigured(Optional<CmsGlobalParamsEntity> cwsfeCmsIsConfigured) {
-        return cwsfeCmsIsConfigured.isPresent() && "N".equals(cwsfeCmsIsConfigured.get().getValue());
+    boolean isCwsfeCmsConfigured(CmsGlobalParamsEntity cwsfeCmsIsConfigured) {
+        return "N".equals(cwsfeCmsIsConfigured.getValue());
     }
 
-    void configureCwsfeCms(CmsUsersEntity cmsUser, Optional<CmsGlobalParamsEntity> cwsfeCmsIsConfigured) {
+    void configureCwsfeCms(CmsUsersEntity cmsUser, CmsGlobalParamsEntity cwsfeCmsIsConfigured) {
         cmsUser.setPasswordHash(BCrypt.hashpw(cmsUser.getPasswordHash(), BCrypt.gensalt()));
         cmsUser.setId(cmsUsersService.add(cmsUser));
+        LOGGER.info("Created user: {}", cmsUser);
         Optional<CmsRolesEntity> cwsfeCmsAdminRole = cmsRolesService.getByCode("ROLE_CWSFE_CMS_ADMIN");
-        CmsUserRolesEntity cmsUserRole = new CmsUserRolesEntity();
-        cmsUserRole.setCmsUserId(cmsUser.getId());
-        cmsUserRole.setRoleId(cwsfeCmsAdminRole.get().getId());
-        cmsUserRolesService.add(cmsUserRole);
-        cwsfeCmsIsConfigured.get().setValue("Y");
-        cmsGlobalParamsService.update(cwsfeCmsIsConfigured.get());
+        if (cwsfeCmsAdminRole.isPresent()) {
+            CmsUserRolesEntity cmsUserRole = new CmsUserRolesEntity();
+            cmsUserRole.setCmsUserId(cmsUser.getId());
+            cmsUserRole.setRoleId(cwsfeCmsAdminRole.get().getId());
+            cmsUserRolesService.add(cmsUserRole);
+        }
+        LOGGER.info("Adding admin role to: {}", cmsUser);
+        cwsfeCmsIsConfigured.setValue("Y");
+        cmsGlobalParamsService.update(cwsfeCmsIsConfigured);
+        LOGGER.info("CMS server marked as configured");
     }
 
 }

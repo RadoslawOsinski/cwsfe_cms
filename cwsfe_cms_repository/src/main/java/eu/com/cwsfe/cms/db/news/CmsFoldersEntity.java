@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.db.news;
 
+import eu.com.cwsfe.cms.db.common.NewDeletedStatus;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -31,7 +32,7 @@ public class CmsFoldersEntity {
     private Integer parentId;
     private String folderName;
     private Integer orderNumber;
-    private String status;
+    private NewDeletedStatus status;
 
     @Id
     @Column(name = "id", nullable = false, precision = 0)
@@ -76,12 +77,13 @@ public class CmsFoldersEntity {
     }
 
     @Basic
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    public String getStatus() {
+    public NewDeletedStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(NewDeletedStatus status) {
         this.status = status;
     }
 

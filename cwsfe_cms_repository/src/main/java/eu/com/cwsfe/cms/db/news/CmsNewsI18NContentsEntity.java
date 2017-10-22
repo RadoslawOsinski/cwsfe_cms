@@ -1,5 +1,7 @@
 package eu.com.cwsfe.cms.db.news;
 
+import eu.com.cwsfe.cms.db.common.PublishedHiddenStatus;
+import eu.com.cwsfe.cms.db.i18n.CmsLanguagesEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -31,7 +33,10 @@ public class CmsNewsI18NContentsEntity {
     private String newsTitle;
     private String newsShortcut;
     private String newsDescription;
-    private String status;
+    private PublishedHiddenStatus status;
+
+    private CmsNewsEntity cmsNewsEntity;
+    private CmsLanguagesEntity language;
 
     @Id
     @Column(name = "id", nullable = false, precision = 0)
@@ -96,13 +101,34 @@ public class CmsNewsI18NContentsEntity {
     }
 
     @Basic
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    public String getStatus() {
+    public PublishedHiddenStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(PublishedHiddenStatus status) {
         this.status = status;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "news_id", nullable = false, insertable = false, updatable = false)
+    public CmsNewsEntity getCmsNewsEntity() {
+        return cmsNewsEntity;
+    }
+
+    public void setCmsNewsEntity(CmsNewsEntity cmsNewsEntity) {
+        this.cmsNewsEntity = cmsNewsEntity;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "language_id", nullable = false, insertable = false, updatable = false)
+    public CmsLanguagesEntity getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(CmsLanguagesEntity language) {
+        this.language = language;
     }
 
     @Override

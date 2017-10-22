@@ -1,29 +1,30 @@
-//package eu.com.cwsfe.cms.services.news;
-//
-//public class CmsNewsI18nPairDTO {
-//
-//    private CmsNews cmsNews;
-//
-//    private CmsNewsI18nContent cmsNewsI18nContent;
-//
-//    public CmsNewsI18nPairDTO(CmsNews cmsNews, CmsNewsI18nContent cmsNewsI18nContent) {
-//        this.cmsNews = cmsNews;
-//        this.cmsNewsI18nContent = cmsNewsI18nContent;
-//    }
-//
-//    public CmsNews getCmsNews() {
-//        return cmsNews;
-//    }
-//
-//    public void setCmsNews(CmsNews cmsNews) {
-//        this.cmsNews = cmsNews;
-//    }
-//
-//    public CmsNewsI18nContent getCmsNewsI18nContent() {
-//        return cmsNewsI18nContent;
-//    }
-//
-//    public void setCmsNewsI18nContent(CmsNewsI18nContent cmsNewsI18nContent) {
-//        this.cmsNewsI18nContent = cmsNewsI18nContent;
-//    }
-//}
+package eu.com.cwsfe.cms.services.news;
+
+public class CmsNewsI18nPairDTO {
+
+    private CmsNewsDTO cmsNewsDTO;
+
+    private CmsNewsI18nContentDTO cmsNewsI18nContentDTO;
+
+    CmsNewsI18nPairDTO(CmsNewsDTO cmsNewsDTO, CmsNewsI18nContentDTO cmsNewsI18nContentDTO) {
+        this.cmsNewsDTO = cmsNewsDTO;
+        this.cmsNewsI18nContentDTO = cmsNewsI18nContentDTO;
+    }
+
+    public CmsNewsDTO getCmsNewsDTO() {
+        return cmsNewsDTO;
+    }
+
+    public void setCmsNewsDTO(CmsNewsDTO cmsNewsDTO) {
+        this.cmsNewsDTO = cmsNewsDTO;
+    }
+
+    public CmsNewsI18nContentDTO getCmsNewsI18nContentDTO() {
+        return cmsNewsI18nContentDTO;
+    }
+
+    public void setCmsNewsI18nContentDTO(CmsNewsI18nContentDTO cmsNewsI18nContentDTO) {
+        this.cmsNewsI18nContentDTO = cmsNewsI18nContentDTO;
+    }
+
+}

@@ -1,9 +1,10 @@
 package eu.com.cwsfe.cms.services.news;
 
+import eu.com.cwsfe.cms.db.common.PublishedHiddenStatus;
+import eu.com.cwsfe.cms.db.news.CmsNewsEntity;
 import eu.com.cwsfe.cms.db.news.CmsNewsImage;
-import eu.com.cwsfe.cms.db.news.CmsNewsStatus;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public class CmsNewsDTO {
@@ -12,11 +13,21 @@ public class CmsNewsDTO {
     private Long authorId;
     private Long newsTypeId;
     private Long newsFolderId;
-    private Date creationDate;
+    private ZonedDateTime creationDate;
     private String newsCode;
     private List<CmsNewsImage> cmsNewsImages;
     private CmsNewsImage thumbnailImage;
-    private CmsNewsStatus status;
+    private PublishedHiddenStatus status;
+
+    CmsNewsDTO(CmsNewsEntity cmsNewsEntity) {
+        this.setId(cmsNewsEntity.getId());
+        this.setAuthorId(cmsNewsEntity.getAuthorId());
+        this.setNewsTypeId(cmsNewsEntity.getNewsTypeId());
+        this.setNewsFolderId(cmsNewsEntity.getNewsFolderId());
+        this.setCreationDate(cmsNewsEntity.getCreationDate());
+        this.setNewsCode(cmsNewsEntity.getNewsCode());
+        this.setStatus(cmsNewsEntity.getStatus());
+    }
 
     public Long getId() {
         return id;
@@ -50,11 +61,11 @@ public class CmsNewsDTO {
         this.newsFolderId = newsFolderId;
     }
 
-    public Date getCreationDate() {
+    public ZonedDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(ZonedDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -82,11 +93,11 @@ public class CmsNewsDTO {
         this.thumbnailImage = thumbnailImage;
     }
 
-    public CmsNewsStatus getStatus() {
+    public PublishedHiddenStatus getStatus() {
         return status;
     }
 
-    public void setStatus(CmsNewsStatus status) {
+    public void setStatus(PublishedHiddenStatus status) {
         this.status = status;
     }
 }

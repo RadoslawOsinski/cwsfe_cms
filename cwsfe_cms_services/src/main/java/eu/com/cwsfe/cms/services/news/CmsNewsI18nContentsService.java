@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -41,5 +43,15 @@ public class CmsNewsI18nContentsService {
     public void updateContentWithStatus(CmsNewsI18NContentsEntity cmsNewsI18nContent) {
         LOG.info("Updating news i18n content: {}", cmsNewsI18nContent);
         cmsNewsI18nContentsRepository.updateContentWithStatus(sessionFactory.getCurrentSession(), cmsNewsI18nContent);
+    }
+
+    @Transactional
+    public List<CmsNewsI18nPairDTO> list(String folderName, String languageCode, String newsType, int newsPerPage, int offset) {
+        List<CmsNewsI18NContentsEntity> list = cmsNewsI18nContentsRepository.list(sessionFactory.getCurrentSession(), folderName, languageCode, newsType, newsPerPage, offset);
+        List<CmsNewsI18nPairDTO> cmsNewsI18nPairs = new ArrayList<>();
+        for (CmsNewsI18NContentsEntity cmsNewsI18NContent : list) {
+            cmsNewsI18nPairs.add(new CmsNewsI18nPairDTO(new CmsNewsDTO(cmsNewsI18NContent.getCmsNewsEntity()), new CmsNewsI18nContentDTO(cmsNewsI18NContent)));
+        }
+        return cmsNewsI18nPairs;
     }
 }

@@ -52,17 +52,18 @@ public class CmsNewsService {
     }
 
     @Transactional
-    public List<SearchedNewsDTO> searchByAjax(int iDisplayStart, int iDisplayLength, Integer searchAuthorId, String searchNewsCode) {
-        return cmsNewsRepository.searchByAjax(sessionFactory.getCurrentSession(), iDisplayStart, iDisplayLength, searchAuthorId, searchNewsCode);
+    public List<SearchedNewsDTO> searchByAjax(int iDisplayStart, int iDisplayLength, String searchNewsCode) {
+        return cmsNewsRepository.searchByAjax(sessionFactory.getCurrentSession(), iDisplayStart, iDisplayLength, searchNewsCode);
     }
 
     @Transactional
-    public Long searchByAjaxCount(Integer searchAuthorId, String searchNewsCode) {
-        return cmsNewsRepository.searchByAjaxCount(sessionFactory.getCurrentSession(), searchAuthorId, searchNewsCode);
+    public Long searchByAjaxCount(String searchNewsCode) {
+        return cmsNewsRepository.searchByAjaxCount(sessionFactory.getCurrentSession(), searchNewsCode);
     }
 
     @Transactional
     public Long getTotalNumberNotDeleted() {
         return cmsNewsRepository.getTotalNumberNotDeleted(sessionFactory.getCurrentSession());
     }
+
 }

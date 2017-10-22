@@ -1,13 +1,13 @@
 package eu.com.cwsfe.cms.db.news;
 
 import eu.com.cwsfe.cms.db.author.CmsAuthorsEntity;
+import eu.com.cwsfe.cms.db.common.PublishedHiddenStatus;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
@@ -30,19 +30,11 @@ public class CmsNewsEntity {
     private long newsFolderId;
     private ZonedDateTime creationDate;
     private String newsCode;
-    private String status;
+    private PublishedHiddenStatus status;
 
     private CmsAuthorsEntity authorMapping;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", nullable = false, insertable = false, updatable = false)
-    public CmsAuthorsEntity getAuthorMapping() {
-        return authorMapping;
-    }
-
-    public void setAuthorMapping(CmsAuthorsEntity authorMapping) {
-        this.authorMapping = authorMapping;
-    }
+    private CmsNewsTypesEntity type;
+    private CmsFoldersEntity folder;
 
     @Id
     @Column(name = "id", nullable = false, precision = 0)
@@ -107,13 +99,44 @@ public class CmsNewsEntity {
     }
 
     @Basic
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    public String getStatus() {
+    public PublishedHiddenStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(PublishedHiddenStatus status) {
         this.status = status;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false, insertable = false, updatable = false)
+    public CmsAuthorsEntity getAuthorMapping() {
+        return authorMapping;
+    }
+
+    public void setAuthorMapping(CmsAuthorsEntity authorMapping) {
+        this.authorMapping = authorMapping;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "news_type_id", nullable = false, insertable = false, updatable = false)
+    public CmsNewsTypesEntity getType() {
+        return type;
+    }
+
+    public void setType(CmsNewsTypesEntity type) {
+        this.type = type;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "folder_id", nullable = false, insertable = false, updatable = false)
+    public CmsFoldersEntity getFolder() {
+        return folder;
+    }
+
+    public void setFolder(CmsFoldersEntity folder) {
+        this.folder = folder;
     }
 
     @Override

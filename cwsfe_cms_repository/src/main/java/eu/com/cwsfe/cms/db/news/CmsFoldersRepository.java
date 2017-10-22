@@ -1,5 +1,6 @@
 package eu.com.cwsfe.cms.db.news;
 
+import eu.com.cwsfe.cms.db.common.NewDeletedStatus;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
@@ -45,7 +46,7 @@ public class CmsFoldersRepository {
     }
 
     public Long add(Session session, CmsFoldersEntity cmsFolder) {
-        cmsFolder.setStatus("NEW");
+        cmsFolder.setStatus(NewDeletedStatus.NEW);
         session.saveOrUpdate(cmsFolder);
         session.flush();
         return cmsFolder.getId();
@@ -57,13 +58,13 @@ public class CmsFoldersRepository {
 
     public void delete(Session session, CmsFoldersEntity cmsFolder) {
         CmsFoldersEntity cmsFoldersEntity = session.get(CmsFoldersEntity.class, cmsFolder.getId());
-        cmsFoldersEntity.setStatus("DELETED");
+        cmsFoldersEntity.setStatus(NewDeletedStatus.DELETED);
         session.update(cmsFoldersEntity);
     }
 
     public void undelete(Session session, CmsFoldersEntity cmsFolder) {
         CmsFoldersEntity cmsFoldersEntity = session.get(CmsFoldersEntity.class, cmsFolder.getId());
-        cmsFoldersEntity.setStatus("NEW");
+        cmsFoldersEntity.setStatus(NewDeletedStatus.NEW);
         session.update(cmsFoldersEntity);
     }
 

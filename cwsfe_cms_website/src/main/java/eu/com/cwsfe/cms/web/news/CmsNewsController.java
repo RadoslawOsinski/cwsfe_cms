@@ -23,12 +23,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -100,20 +100,10 @@ public class CmsNewsController extends JsonController {
         @RequestParam int iDisplayStart,
         @RequestParam int iDisplayLength,
         @RequestParam String sEcho,
-        @RequestParam(required = false) String searchNewsCode,
-        WebRequest webRequest
+        @RequestParam(required = false) String searchNewsCode
     ) {
-        Integer searchAuthorId = null;
-        String searchAuthorIdText = webRequest.getParameter("searchAuthorId");
-        if (searchAuthorIdText != null && !searchAuthorIdText.isEmpty()) {
-            try {
-                searchAuthorId = Integer.parseInt(searchAuthorIdText);
-            } catch (NumberFormatException e) {
-                LOGGER.error("Search author id is not a number: {}", searchAuthorIdText);
-            }
-        }
-        List<SearchedNewsDTO> dbList = cmsNewsService.searchByAjax(iDisplayStart, iDisplayLength, searchAuthorId, searchNewsCode);
-        Long dbListDisplayRecordsSize = cmsNewsService.searchByAjaxCount(searchAuthorId, searchNewsCode);
+        List<SearchedNewsDTO> dbList = cmsNewsService.searchByAjax(iDisplayStart, iDisplayLength, searchNewsCode);
+        Long dbListDisplayRecordsSize = cmsNewsService.searchByAjaxCount(searchNewsCode);
         NewsesDTO newsesDTO = new NewsesDTO();
         for (int i = 0; i < dbList.size(); i++) {
             final SearchedNewsDTO objects = dbList.get(i);
@@ -209,7 +199,11 @@ public class CmsNewsController extends JsonController {
 
     @RequestMapping(value = "/news/{id}/{langId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public NewsI18nDTO getNewsI18n(ModelMap model, @PathVariable("id") Long newsId, @PathVariable("langId") Long langId, Locale locale) {
+    public NewsI18nDTO getNewsI18n(@PathVariable("id") Long newsId,
+                                   @PathVariable("langId") Long langId,
+                                   Locale locale,
+                                   HttpServletResponse response
+    ) {
         BindingResult result = new BeanPropertyBindingResult(null, "getNewsI18n");
         if (newsId == null) {
             result.addError(new ObjectError("id", ResourceBundle.getBundle(CWSFE_CMS_RESOURCE_BUNDLE_PATH, locale).getString("NewsMustBeSet")));
@@ -227,7 +221,7 @@ public class CmsNewsController extends JsonController {
                 newCmsNewsI18nContent.setNewsTitle("");
                 newCmsNewsI18nContent.setNewsShortcut("");
                 newCmsNewsI18nContent.setNewsDescription("");
-                newCmsNewsI18nContent.setStatus(PublishedHiddenStatus.HIDDEN.name());
+                newCmsNewsI18nContent.setStatus(PublishedHiddenStatus.HIDDEN);
                 cmsNewsI18nContent = Optional.of(newCmsNewsI18nContent);
             }
             newsI18nDTO.setNewsTitle(cmsNewsI18nContent.get().getNewsTitle());
@@ -235,7 +229,7 @@ public class CmsNewsController extends JsonController {
             newsI18nDTO.setNewsDescription(cmsNewsI18nContent.get().getNewsDescription());
             newsI18nDTO.setStatus(cmsNewsI18nContent.get().getStatus());
         } else {
-            newsI18nDTO.setStatus(BasicResponse.JSON_STATUS_FAIL);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             for (int i = 0; i < result.getAllErrors().size(); i++) {
                 newsI18nDTO.getErrorMessages().add(result.getAllErrors().get(i).getCode());
             }

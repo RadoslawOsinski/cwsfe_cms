@@ -7,4 +7,5 @@ module eu.com.cwsfe.cms.rest {
     requires javax.servlet.api;
     requires slf4j.api;
     requires swagger.annotations;
+    requires eu.com.cwsfe.cms.db;       //todo there should be no such requirement!
 }

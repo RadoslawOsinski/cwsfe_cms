@@ -1,6 +1,7 @@
 package eu.com.cwsfe.cms.services.news;
 
 import eu.com.cwsfe.cms.db.common.PublishedHiddenStatus;
+import eu.com.cwsfe.cms.db.news.CmsNewsI18NContentsEntity;
 
 public class CmsNewsI18nContentDTO {
 
@@ -11,6 +12,16 @@ public class CmsNewsI18nContentDTO {
     private String newsShortcut;
     private String newsDescription;
     private PublishedHiddenStatus status;
+
+    CmsNewsI18nContentDTO(CmsNewsI18NContentsEntity cmsNewsI18NContent) {
+        this.id = cmsNewsI18NContent.getId();
+        this.newsId = cmsNewsI18NContent.getNewsId();
+        this.languageId = cmsNewsI18NContent.getLanguageId();
+        this.newsTitle = cmsNewsI18NContent.getNewsTitle();
+        this.newsShortcut = cmsNewsI18NContent.getNewsShortcut();
+        this.newsDescription = cmsNewsI18NContent.getNewsDescription();
+        this.status = cmsNewsI18NContent.getStatus();
+    }
 
     public Long getId() {
         return id;
